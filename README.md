@@ -36,13 +36,13 @@ Attributions and credits
 ------------------------
 
 ### Contributors (in alphabetical order)
-Amelie Pinard, 		SINTEF Industry, Trondheim, Norway
-Dr. Loic Vichard, 	UBFC, Belfort, France
-Dr. Mike Gerhardt, 	SINTEF Indsutry, Trondheim, Norway
-Dr. Nadia Steiner, 	UBFC, Belfort, France
-Dr. Roberto Scipioni, 	SINTEF Industr,y Trondheim, Norway
-Dr. Simon Clark, 	SINTEF Industry, Trondheim, Norway
-Dr. Yash Raka, 		SINTEF Industry, Trondheim, Norway
+Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
+Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
+Dr. Mike Gerhardt, 	SINTEF Indsutry, Trondheim, Norway<br/>
+Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
+Dr. Roberto Scipioni, 	SINTEF Industr,y Trondheim, Norway<br/>
+Dr. Simon Clark, 	SINTEF Industry, Trondheim, Norway<br/>
+Dr. Yash Raka, 		SINTEF Industry, Trondheim, Norway<br/>
 
 ### Projects
 - [Virtual-FCS](http://www.virtual-fcs.eu/); Grant Agreement No 875087.
