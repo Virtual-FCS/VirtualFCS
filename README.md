@@ -38,7 +38,7 @@ Attributions and credits
 ### Contributors (in alphabetical order)
 Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
 Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
-Dr. Michael Gerhardt, 	SINTEF Indsutry, Trondheim, Norway<br/>
+Dr. Mike Gerhardt, 	SINTEF Indsutry, Trondheim, Norway<br/>
 Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
 Dr. Roberto Scipioni, 	SINTEF Industr,y Trondheim, Norway<br/>
 Dr. Simon Clark, 	SINTEF Industry, Trondheim, Norway<br/>
