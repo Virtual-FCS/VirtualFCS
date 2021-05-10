@@ -1,10 +1,9 @@
 within VirtualFCS.Control;
 model DCMotorControl
       //*** DEFINE REPLACEABLE PACKAGES ***//
-  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
-    Placement(visible = true, transformation(extent = {{-152, -68}, {-132, -48}}, rotation = 0))) constrainedby
+  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData constrainedby
     Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM
-    annotation (Placement(transformation(extent={{20,-80},{40,-60}})));
+    annotation(Placement(visible = true, transformation(extent = {{-152, -68}, {-132, -48}}, rotation = 0)));
 
 //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(
