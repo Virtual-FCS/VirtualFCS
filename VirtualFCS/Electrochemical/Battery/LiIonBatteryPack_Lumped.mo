@@ -8,7 +8,7 @@ model LiIonBatteryPack_Lumped "LiIonBatteryPack implements a 2RC equivalent circ
   parameter Real Cp(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
   // Cell parameters
   parameter Real chargeCapacity_cell(unit = "A.h") = 2.2 "Cell Charge Capacity";
-  parameter Real coolingArea_cell(unit = "A.h") = 2.2 "Cell Charge Capacity";
+  parameter Real coolingArea_cell(unit = "m2") = 0.003675 "Surface area for cooling";
   parameter Real Rohm_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
   parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
   parameter Real R2_0(unit = "Ohm") = 0.005 "Second RC Resistance";
