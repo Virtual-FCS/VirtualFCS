@@ -29,7 +29,7 @@ model FuelCellStack
   Real R = 8.314;
   Real F = 96485;
   // Fuel cell variables
-  Real V_cell;
+  Real V_cell(start=1.23);
   Real j;
   Real P_th;
   Real p_H2(min = 0);
@@ -40,16 +40,12 @@ model FuelCellStack
   inner Modelica.Fluid.System system(energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(visible = true, transformation(extent = {{-140, -142}, {-120, -122}}, rotation = 0)));
   // Electrical Components
-  Modelica.Electrical.Analog.Basic.Resistor R_chargeTransfer(R = R_1) annotation(
-    Placement(visible = true, transformation(origin = {56, 122}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {56, 146}, extent = {{12, -12}, {-12, 12}}, rotation = 0), iconTransformation(origin = {82, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Resistor R_membrane(R = R_0, useHeatPort = false) annotation(
     Placement(visible = true, transformation(origin = {32, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.SignalVoltage potentialSource annotation(
     Placement(visible = true, transformation(origin = {-54, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Electrical.Analog.Basic.Capacitor C_doubleLayer(C = C_1) annotation(
-    Placement(visible = true, transformation(origin = {84, 122}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
@@ -128,14 +124,6 @@ equation
     Line(points = {{-54, 110}, {-54, 110}, {-54, 100}, {-10, 100}, {-10, 100}}, color = {0, 0, 255}));
   connect(currentSensor.n, R_membrane.p) annotation(
     Line(points = {{10, 100}, {22, 100}, {22, 100}, {22, 100}}, color = {0, 0, 255}));
-  connect(R_membrane.n, R_chargeTransfer.p) annotation(
-    Line(points = {{42, 100}, {56, 100}, {56, 112}, {56, 112}}, color = {0, 0, 255}));
-  connect(R_chargeTransfer.n, pin_p) annotation(
-    Line(points = {{56, 132}, {56, 132}, {56, 146}, {56, 146}}, color = {0, 0, 255}));
-  connect(R_chargeTransfer.n, C_doubleLayer.n) annotation(
-    Line(points = {{56, 132}, {84, 132}, {84, 132}, {84, 132}}, color = {0, 0, 255}));
-  connect(R_chargeTransfer.p, C_doubleLayer.p) annotation(
-    Line(points = {{56, 112}, {84, 112}, {84, 112}, {84, 112}}, color = {0, 0, 255}));
   connect(port_a_H2, qH2.port_1) annotation(
     Line(points = {{-148, 80}, {-118, 80}, {-118, 50}, {-118, 50}}));
   connect(port_b_H2, qH2.port_2) annotation(
@@ -162,10 +150,12 @@ equation
     Line(points = {{0, -144}, {0, -114}}, color = {191, 0, 0}));
   connect(thermalConductor.port_a, heatCapacitor.port) annotation(
     Line(points = {{0, -76}, {0, -76}, {0, -114}, {0, -114}}, color = {191, 0, 0}));
+  connect(pin_p, R_membrane.n) annotation(
+    Line(points = {{56, 146}, {58, 146}, {58, 102}, {42, 102}, {42, 100}}, color = {0, 0, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
     version = "",
     uses(Modelica(version = "3.2.3")),
-  Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC) stack. The model includes components describing the electrical, fluidic, and thermal properties of the stack.<div><br></div><div>The electrical performance is modelled using a simple 1RC equivalent circuit.&nbsp;</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the stack using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 50&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>kg</div><div>volume&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.001&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>m3</div><div><br></div><div>Cp&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 800&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>J/(kg.K)</div><div>N_cell&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 100</div><div>A_cell&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.0237&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>m2</div><div><br></div><div>i_0&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.0002&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>A</div><div>i_L&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 520&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>A</div><div>i_x <span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.001 <span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>A&nbsp;</div><div>b_1&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.025&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>V/dec</div><div>b_2&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.25&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>V/dec</div><div>R_0&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.02&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>Ohm</div><div>R_1&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.01&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>Ohm</div><div>C_1&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.003&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>F</div><div><br></div></body></html>"));
+    Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC) stack. The model includes components describing the electrical, fluidic, and thermal properties of the stack.<div><br></div><div>The electrical performance is modelled using a simple 1RC equivalent circuit.&nbsp;</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the stack using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 50&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>kg</div><div>volume&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.001&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>m3</div><div><br></div><div>Cp&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 800&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>J/(kg.K)</div><div>N_cell&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 100</div><div>A_cell&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.0237&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>m2</div><div><br></div><div>i_0&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.0002&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>A</div><div>i_L&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 520&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>A</div><div>i_x <span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.001 <span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>A&nbsp;</div><div>b_1&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.025&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>V/dec</div><div>b_2&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.25&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>V/dec</div><div>R_0&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.02&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>Ohm</div><div>R_1&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.01&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>Ohm</div><div>C_1&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.003&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>F</div><div><br></div></body></html>"));
 end FuelCellStack;

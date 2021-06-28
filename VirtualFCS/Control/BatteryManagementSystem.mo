@@ -47,5 +47,6 @@ equation
     Line(points = {{-64, -74}, {-64, -96}, {-44, -96}}, color = {0, 0, 255}));
   annotation(
     Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {2, 72}, lineColor = {255, 255, 255}, extent = {{-26, 22}, {26, -22}}, textString = "Load"), Text(origin = {0, -52}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {48, -36}}, textString = "Battery"), Text(origin = {104, 146}, lineColor = {0, 0, 255}, extent = {{-26, 22}, {84, -80}}, textString = "%name"), Text(origin = {62, 24}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {26, -24}}, textString = "SOC_init"), Text(origin = {106, -52}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {-8, 10}}, textString = "Q")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
-    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}})));
+    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}})),
+  Documentation);
 end BatteryManagementSystem;
