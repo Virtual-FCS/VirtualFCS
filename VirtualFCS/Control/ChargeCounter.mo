@@ -1,13 +1,13 @@
 within VirtualFCS.Control;
 
-model ChargeCounter "Determine the state-of-charge of a battery using a charge counting algorithm"
-  Modelica.Blocks.Interfaces.RealInput SOC_init annotation(
+block ChargeCounter "Determine the state-of-charge of a battery using a charge counting algorithm"
+  input Modelica.Blocks.Interfaces.RealInput SOC_init "Initial state of charge of the battery." annotation(
     Placement(visible = true, transformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput chargeCapacity annotation(
+  input Modelica.Blocks.Interfaces.RealInput chargeCapacity "Nominal capacity of the battery." annotation(
     Placement(visible = true, transformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput electricCurrent annotation(
+  input Modelica.Blocks.Interfaces.RealInput electricCurrent "Measured electric current to/from the battery." annotation(
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput SOC annotation(
+  output Modelica.Blocks.Interfaces.RealOutput SOC "Battery state of charge at the current time step." annotation(
     Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Add add(k2 = -1) annotation(
     Placement(visible = true, transformation(origin = {39, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -41,5 +41,5 @@ equation
 
 <div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\">SOC = SOC_init - \int_0^t{i/C dt}</div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><br></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><b>Operation</b></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><br></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><br></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\">
 
-<b>Main Authors</b></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\">Dr. Simon Clark</div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><br></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\">List of Updates</div><!--EndFragment--></body></html>", __OpenModelica_infoHeader = "<html><head></head><body><br></body></html>"));
+<b>Main Authors</b></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><a href=\"https://scholar.google.no/citations?user=YyXXh8UAAAAJ&amp;hl=en\">Dr. Simon Clark</a></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\"><br></div><div class=\"SCXW49888958 BCX0\" style=\"orphans: auto; widows: auto; margin: 0px; padding: 0px; -webkit-user-drag: none; -webkit-tap-highlight-color: transparent;\">List of Updates</div><!--EndFragment--></body></html>", __OpenModelica_infoHeader = "<html><head></head><body><br></body></html>"));
 end ChargeCounter;
