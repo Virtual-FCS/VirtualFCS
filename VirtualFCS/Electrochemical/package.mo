@@ -6,5 +6,5 @@ package Electrochemical "Electrochemical energy storage and conversion devices."
 
 
   annotation(
-    Documentation(info = "<html><head></head><body>Electrochemical power sources and supporting components.</body></html>"));
+    Documentation(info = "<html><head></head><body>This sub-package includes electrochemical power sources and supporting components.</body></html>"));
 end Electrochemical;
