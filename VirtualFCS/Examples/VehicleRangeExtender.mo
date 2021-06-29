@@ -4,8 +4,6 @@ model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a 
   extends Modelica.Icons.Example;
   VirtualFCS.Vehicles.VehicleProfile vehicleProfile(v = VirtualFCS.Vehicles.VehicleProfile.speed_profile.WLTC)  annotation(
     Placement(visible = true, transformation(origin = {-70, 68}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(mass = 100)  annotation(
-    Placement(visible = true, transformation(origin = {0, 8}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   VirtualFCS.Electrical.DC_converter dC_converter(Td = 1e-2)  annotation(
     Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   VirtualFCS.Control.EnergyManagementSystem EMS annotation(
@@ -42,6 +40,10 @@ model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a 
     Placement(visible = true, transformation(origin = {61.6687, 36.8875}, extent = {{-15.1687, -9.10122}, {15.1687, 10.1125}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_LowVoltage(SOC_init = 0.9,p = 10, s = 6)  annotation(
     Placement(visible = true, transformation(origin = {1.76023, -88.5439}, extent = {{-13.2602, -7.95614}, {13.2602, 8.84016}}, rotation = 0)));
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(mass = 100)  annotation(
+    Placement(visible = true, transformation(origin = {0, 6}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(visible = true, transformation(origin = {-38, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(BMS.sensorInterface, EMS.sensorInterface) annotation(
     Line(points = {{49, 70}, {40, 70}, {40, 40}}, color = {0, 0, 127}));
@@ -59,22 +61,6 @@ equation
     Line(points = {{-62, 66}, {-12, 66}, {-12, 50}, {-10, 50}, {-10, 50}}, color = {0, 0, 255}));
   connect(vehicleProfile.pin_p, dC_converter.pin_pBus) annotation(
     Line(points = {{-62, 70}, {8, 70}, {8, 50}, {10, 50}, {10, 50}}, color = {0, 0, 255}));
-  connect(dC_converter.pin_nFC, fuelCellStack.pin_n) annotation(
-    Line(points = {{-10, 30}, {-8, 30}, {-8, 20}, {-8, 20}}, color = {0, 0, 255}));
-  connect(dC_converter.pin_pFC, fuelCellStack.pin_p) annotation(
-    Line(points = {{10, 30}, {8, 30}, {8, 20}, {8, 20}}, color = {0, 0, 255}));
-  connect(subSystemHydrogen.port_StackToH2, fuelCellStack.port_b_H2) annotation(
-    Line(points = {{-48, 4}, {-12, 4}, {-12, 0}}, color = {0, 127, 255}));
-  connect(subSystemHydrogen.port_H2ToStack, fuelCellStack.port_a_H2) annotation(
-    Line(points = {{-48, 16}, {-12, 16}}, color = {0, 127, 255}));
-  connect(fuelCellStack.port_a_Air, subSystemAir.Output) annotation(
-    Line(points = {{12, 16}, {49, 16}, {49, 14}}, color = {0, 127, 255}));
-  connect(fuelCellStack.port_b_Air, subSystemAir.Input) annotation(
-    Line(points = {{12, 0}, {49, 0}, {49, 2}}, color = {0, 127, 255}));
-  connect(fuelCellStack.port_a_Coolant, subSystemCooling.Output) annotation(
-    Line(points = {{-4, -2}, {-4, -2}, {-4, -14}, {16, -14}, {16, -24}, {12, -24}, {12, -24}}, color = {0, 127, 255}));
-  connect(fuelCellStack.port_b_Coolant, subSystemCooling.Input) annotation(
-    Line(points = {{4, -2}, {4, -2}, {4, -8}, {20, -8}, {20, -36}, {12, -36}, {12, -36}}, color = {0, 127, 255}));
   connect(subSystemCooling.pin_n, BMS_LV.pin_n_load) annotation(
     Line(points = {{-6, -40}, {-6, -40}, {-6, -50}, {-4, -50}}, color = {0, 0, 255}));
   connect(subSystemCooling.pin_p, BMS_LV.pin_p_load) annotation(
@@ -83,8 +69,6 @@ equation
     Line(points = {{-79, 15}, {-51.5, 15}, {-51.5, 16}, {-71, 16}}, color = {0, 0, 127}));
   connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
     Line(points = {{-20, -24}, {-12, -24}, {-12, -24}, {-10, -24}}, color = {0, 0, 127}));
-  connect(temperatureSensor.port, fuelCellStack.heatPort) annotation(
-    Line(points = {{-32, -24}, {-40, -24}, {-40, -10}, {0, -10}, {0, 0}, {0, 0}}, color = {191, 0, 0}));
   connect(subSystemHydrogen.pin_n, BMS_LV.pin_n_load) annotation(
     Line(points = {{-64, 0}, {-64, 0}, {-64, -44}, {-6, -44}, {-6, -50}, {-4, -50}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_p, BMS_LV.pin_p_load) annotation(
@@ -109,6 +93,26 @@ equation
     Line(points = {{56, 0}, {54, 0}, {54, -44}, {6, -44}, {6, -50}, {6, -50}}, color = {0, 0, 255}));
   connect(subSystemAir.pin_n, BMS_LV.pin_n_load) annotation(
     Line(points = {{66, 0}, {64, 0}, {64, -46}, {-6, -46}, {-6, -50}, {-4, -50}}, color = {0, 0, 255}));
-annotation(
+  connect(dC_converter.pin_nFC, fuelCellStack.pin_n) annotation(
+    Line(points = {{-10, 30}, {-6, 30}, {-6, 22}, {-6, 22}}, color = {0, 0, 255}));
+  connect(dC_converter.pin_pFC, fuelCellStack.pin_p) annotation(
+    Line(points = {{10, 30}, {6, 30}, {6, 22}, {6, 22}}, color = {0, 0, 255}));
+  connect(fuelCellStack.port_a_Air, subSystemAir.Output) annotation(
+    Line(points = {{12, 14}, {48, 14}, {48, 14}, {50, 14}}, color = {0, 127, 255}));
+  connect(fuelCellStack.port_b_Air, subSystemAir.Input) annotation(
+    Line(points = {{12, -2}, {48, -2}, {48, 2}, {50, 2}}, color = {0, 127, 255}));
+  connect(fuelCellStack.port_b_H2, subSystemHydrogen.port_StackToH2) annotation(
+    Line(points = {{-12, -2}, {-48, -2}, {-48, 4}, {-48, 4}}, color = {0, 127, 255}));
+  connect(subSystemHydrogen.port_H2ToStack, fuelCellStack.port_a_H2) annotation(
+    Line(points = {{-48, 16}, {-10, 16}, {-10, 14}, {-12, 14}}, color = {0, 127, 255}));
+  connect(fuelCellStack.port_a_Coolant, subSystemCooling.Output) annotation(
+    Line(points = {{-4, -4}, {-4, -4}, {-4, -16}, {16, -16}, {16, -26}, {12, -26}, {12, -24}}, color = {0, 127, 255}));
+  connect(fuelCellStack.port_b_Coolant, subSystemCooling.Input) annotation(
+    Line(points = {{4, -4}, {4, -4}, {4, -12}, {24, -12}, {24, -36}, {12, -36}, {12, -34}}, color = {0, 127, 255}));
+  connect(temperatureSensor.port, fuelCellStack.heatPort) annotation(
+    Line(points = {{-32, -24}, {-38, -24}, {-38, -10}, {0, -10}, {0, -2}, {0, -2}}, color = {191, 0, 0}));
+  connect(ground.p, fuelCellStack.pin_n) annotation(
+    Line(points = {{-38, 48}, {-18, 48}, {-18, 20}, {-6, 20}, {-6, 22}}, color = {0, 0, 255}));
+  annotation(
     Documentation(info = "<html><head></head><body>This example demonstrates the use of the VirtualFCS library to simulate the performance of a hybrid fuel cell range extender for an electric vehicle.<div><br></div><div>The model includes three power sources: a high voltage Li-ion battery pack to power the vehicle, a fuel cell stack to extend the range of the vehicle, and a low-voltage Li-ion battery pack to power the vehicle support systems.</div><div><br></div><div>The operation profiles of the two batteries are controlled using dedicated battery management systems. The division of power demand between the battery and fuel cell is achieved in the energy management system. &nbsp;</div></body></html>"));
 end VehicleRangeExtender;

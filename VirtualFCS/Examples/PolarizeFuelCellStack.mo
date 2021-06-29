@@ -16,14 +16,6 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
     Placement(visible = true, transformation(origin = {1.77636e-15, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-79, -79}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
-  Modelica.Electrical.Analog.Sources.RampCurrent rampCurrent(I = 0.95 * fuelCellStack.i_L, duration = 500, offset = 0, startTime = 10)  annotation(
-    Placement(visible = true, transformation(origin = {-2, 92}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
-    Placement(visible = true, transformation(origin = {-12, 70}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(mass = 55)  annotation(
-    Placement(visible = true, transformation(origin = {0, 30}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
-    Placement(visible = true, transformation(origin = {-25, -10}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Control.BatteryManagementSystem BMS_LV(p = liIonBatteryPack_LowVoltage.p, s = liIonBatteryPack_LowVoltage.s) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));
   Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_LowVoltage(p = 10, s = 6) annotation(
@@ -34,25 +26,17 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
     Placement(visible = true, transformation(origin = {47, -69}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init_LV(y = liIonBatteryPack_LowVoltage.SOC_init) annotation(
     Placement(visible = true, transformation(origin = {47, -53}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack2(mass = 55)  annotation(
+    Placement(visible = true, transformation(origin = {-1, 29}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
+    Placement(visible = true, transformation(origin = {-29, -5}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+  Modelica.Electrical.Analog.Sources.RampCurrent rampCurrent(I = 500, duration = 500)  annotation(
+    Placement(visible = true, transformation(origin = {0, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(visible = true, transformation(origin = {-50, 82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
+    Placement(visible = true, transformation(origin = {-20, 70}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
 equation
-  connect(subSystemHydrogen.port_StackToH2, fuelCellStack.port_b_H2) annotation(
-    Line(points = {{-46, 23}, {-18, 23}, {-18, 19}}, color = {0, 127, 255}));
-  connect(subSystemHydrogen.port_H2ToStack, fuelCellStack.port_a_H2) annotation(
-    Line(points = {{-46, 37}, {-18, 37}, {-18, 41}}, color = {0, 127, 255}));
-  connect(subSystemAir.Output, fuelCellStack.port_a_Air) annotation(
-    Line(points = {{56, 38}, {18, 38}, {18, 42}}, color = {0, 127, 255}));
-  connect(subSystemAir.Input, fuelCellStack.port_b_Air) annotation(
-    Line(points = {{56, 22}, {20, 22}, {20, 19}, {18, 19}}, color = {0, 127, 255}));
-  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
-    Line(points = {{-18, -10}, {-14, -10}, {-14, -5}, {-11, -5}}, color = {0, 0, 127}));
-  connect(currentSensor.n, fuelCellStack.pin_n) annotation(
-    Line(points = {{-12, 62}, {-12, 50}, {-13, 50}, {-13, 48}}, color = {0, 0, 255}));
-  connect(currentSensor.i, subSystemHydrogen.control) annotation(
-    Line(points = {{-21, 70}, {-80, 70}, {-80, 37}, {-73, 37}}, color = {0, 0, 127}));
-  connect(rampCurrent.n, currentSensor.p) annotation(
-    Line(points = {{-12, 92}, {-12, 78}}, color = {0, 0, 255}));
-  connect(rampCurrent.p, fuelCellStack.pin_p) annotation(
-    Line(points = {{8, 92}, {12, 92}, {12, 48}, {13, 48}}, color = {0, 0, 255}));
   connect(BMS_LV.SOC_init, getSOC_init_LV.y) annotation(
     Line(points = {{12, -56}, {22, -56}, {22, -52}, {32, -52}, {32, -52}}, color = {0, 0, 127}));
   connect(BMS_LV.chargeCapacity, getChargeCapacity_LV.y) annotation(
@@ -67,10 +51,6 @@ equation
     Line(points = {{-4, -18}, {-6, -18}, {-6, -50}, {-4, -50}}, color = {0, 0, 255}));
   connect(subSystemCooling.pin_p, BMS_LV.pin_p_load) annotation(
     Line(points = {{6, -18}, {4, -18}, {4, -50}, {6, -50}}, color = {0, 0, 255}));
-  connect(fuelCellStack.port_a_Coolant, subSystemCooling.Output) annotation(
-    Line(points = {{-4, 16}, {-4, 16}, {-4, 2}, {16, 2}, {16, -6}, {12, -6}, {12, -4}}, color = {0, 127, 255}));
-  connect(fuelCellStack.port_b_Coolant, subSystemCooling.Input) annotation(
-    Line(points = {{4, 16}, {6, 16}, {6, 6}, {28, 6}, {28, -16}, {12, -16}, {12, -14}}, color = {0, 127, 255}));
   connect(subSystemAir.pin_p, BMS_LV.pin_p_load) annotation(
     Line(points = {{64, 18}, {64, 18}, {64, -34}, {4, -34}, {4, -50}, {6, -50}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_n, BMS_LV.pin_n_load) annotation(
@@ -79,8 +59,32 @@ equation
     Line(points = {{-54, 20}, {-54, 20}, {-54, -30}, {4, -30}, {4, -50}, {6, -50}}, color = {0, 0, 255}));
   connect(subSystemAir.pin_n, BMS_LV.pin_n_load) annotation(
     Line(points = {{76, 18}, {76, 18}, {76, -40}, {-6, -40}, {-6, -50}, {-4, -50}}, color = {0, 0, 255}));
-  connect(fuelCellStack.heatPort, temperatureSensor.port) annotation(
-    Line(points = {{0, 18}, {0, 18}, {0, 10}, {-40, 10}, {-40, -10}, {-32, -10}, {-32, -10}}, color = {191, 0, 0}));
+  connect(fuelCellStack2.port_a_Air, subSystemAir.Output) annotation(
+    Line(points = {{16, 40}, {56, 40}, {56, 38}, {56, 38}}, color = {0, 127, 255}));
+  connect(fuelCellStack2.port_b_Air, subSystemAir.Input) annotation(
+    Line(points = {{16, 18}, {56, 18}, {56, 22}, {56, 22}}, color = {0, 127, 255}));
+  connect(fuelCellStack2.port_b_Coolant, subSystemCooling.Output) annotation(
+    Line(points = {{4, 14}, {4, 14}, {4, 4}, {14, 4}, {14, -6}, {12, -6}, {12, -4}}, color = {0, 127, 255}));
+  connect(fuelCellStack2.port_a_Coolant, subSystemCooling.Input) annotation(
+    Line(points = {{-6, 14}, {-6, 14}, {-6, 8}, {20, 8}, {20, -16}, {12, -16}, {12, -14}}));
+  connect(subSystemHydrogen.port_StackToH2, fuelCellStack2.port_b_H2) annotation(
+    Line(points = {{-46, 24}, {-20, 24}, {-20, 18}, {-18, 18}}, color = {0, 127, 255}));
+  connect(subSystemHydrogen.port_H2ToStack, fuelCellStack2.port_a_H2) annotation(
+    Line(points = {{-46, 38}, {-18, 38}, {-18, 40}, {-18, 40}}, color = {0, 127, 255}));
+  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
+    Line(points = {{-22, -4}, {-12, -4}, {-12, -4}, {-10, -4}}, color = {0, 0, 127}));
+  connect(fixedTemperature1.port, temperatureSensor.port) annotation(
+    Line(points = {{26, -92}, {-36, -92}, {-36, -4}, {-36, -4}}, color = {191, 0, 0}));
+  connect(rampCurrent.p, fuelCellStack2.pin_p) annotation(
+    Line(points = {{10, 90}, {22, 90}, {22, 52}, {8, 52}, {8, 54}}, color = {0, 0, 255}));
+  connect(ground.p, rampCurrent.n) annotation(
+    Line(points = {{-50, 92}, {-10, 92}, {-10, 90}, {-10, 90}}, color = {0, 0, 255}));
+  connect(rampCurrent.n, currentSensor.p) annotation(
+    Line(points = {{-10, 90}, {-20, 90}, {-20, 76}, {-20, 76}}, color = {0, 0, 255}));
+  connect(currentSensor.n, fuelCellStack2.pin_n) annotation(
+    Line(points = {{-20, 64}, {-20, 64}, {-20, 52}, {-10, 52}, {-10, 54}}, color = {0, 0, 255}));
+  connect(currentSensor.i, subSystemHydrogen.control) annotation(
+    Line(points = {{-26, 70}, {-88, 70}, {-88, 38}, {-74, 38}, {-74, 38}}, color = {0, 0, 127}));
   annotation(
     Diagram,
     Icon,
