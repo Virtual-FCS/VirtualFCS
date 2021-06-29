@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Composite 
-  // DECLARE PARAMETERS //
+// DECLARE PARAMETERS //
   // Physical parameters
   parameter Real mass(unit = "kg") = 0.050 "Mass of the pack";
   //  parameter Real vol(unit = "L") = 0.016 "Volume of the pack";
@@ -37,7 +37,7 @@ model LiIonBatteryPack_Composite
 equation
 // ***DEFINE EQUATIONS ***//
   chargeCapacity = p * s * liIonCell[1].chargeCapacity;
-  // coolingArea = p * s * liIonCell[1].coolingArea;
+// coolingArea = p * s * liIonCell[1].coolingArea;
 // Calculate the open-circuit voltage at given temperature and state of charge
 // Thermal equations
 //  prescribedHeatFlow.Q_flow = p * s * abs((OCV.v - pin_p.v) * sensorCurrent.i + Rohm.R_actual * sensorCurrent.i ^ 2);
