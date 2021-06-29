@@ -59,5 +59,6 @@ equation
     Line(points = {{-21, -44}, {-35, -44}, {-35, -8}}, color = {0, 0, 127}));  protected
  annotation(
     uses(Modelica(version = "3.2.3")),
-    Icon(graphics = {Polygon(origin = {-50, 0}, points = {{-10, 40}, {-10, -40}, {50, 0}, {-10, 40}}), Polygon(origin = {50, 0}, points = {{10, 40}, {10, -40}, {-50, 0}, {10, 40}}), Line(origin = {0, 30}, points = {{0, -30}, {0, 30}}), Line(origin = {-80, 0}, points = {{-20, 0}, {20, 0}, {20, 0}}), Line(origin = {80, 0}, points = {{20, 0}, {-20, 0}}), Line(origin = {40, 29}, points = {{-40, 31}, {40, 31}, {40, -31}})}, coordinateSystem(initialScale = 0.1)));
+    Icon(graphics = {Polygon(origin = {-50, 0}, points = {{-10, 40}, {-10, -40}, {50, 0}, {-10, 40}}), Polygon(origin = {50, 0}, points = {{10, 40}, {10, -40}, {-50, 0}, {10, 40}}), Line(origin = {0, 30}, points = {{0, -30}, {0, 30}}), Line(origin = {-80, 0}, points = {{-20, 0}, {20, 0}, {20, 0}}), Line(origin = {80, 0}, points = {{20, 0}, {-20, 0}}), Line(origin = {40, 29}, points = {{-40, 31}, {40, 31}, {40, -31}})}, coordinateSystem(initialScale = 0.1)),
+ Documentation(info = "<html><head></head><body>The PressureRegulator model is designed to reduce the pressure from a high-pressure source on the upstream side to a lower pressure on the downstream side by regulating the opening in a compressible fluid valve. Regulation of the valve opening is managed using a PID controller.</body></html>"));
 end PressureRegulator;
