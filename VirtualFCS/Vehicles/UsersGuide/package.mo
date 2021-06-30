@@ -1,5 +1,5 @@
 within VirtualFCS.Vehicles;
 
-package UsersGuide
+package UsersGuide "User information for the Vehicles sub-library"
   extends Modelica.Icons.Information;
 end UsersGuide;

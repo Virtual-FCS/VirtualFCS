@@ -1,5 +1,5 @@
 within VirtualFCS.Control;
-model DCMotorControl
+model DCMotorControl "Control the speed of a DC motor"
       //*** DEFINE REPLACEABLE PACKAGES ***//
   replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
     Placement(visible = true, transformation(extent = {{-152, -68}, {-132, -48}}, rotation = 0))) constrainedby

@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-block PumpSpeedControl
+block PumpSpeedControl "Control the speed of a DC electric pump"
   Modelica.Blocks.Continuous.LimPID limPID( initType = Modelica.Blocks.Types.InitPID.InitialOutput, limitsAtInit = true, yMax = 1, yMin = 0, y_start = 0) annotation(
     Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput setMassFlow annotation(

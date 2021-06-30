@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
-model FuelCell
+model FuelCell "Model for a single PEM fuel cell"
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;

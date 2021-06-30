@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model EnergyManagementSystem
+model EnergyManagementSystem "Implement algorithms to control the energy and power distribution in a hybrid system."
 
   Modelica.Blocks.Sources.Constant shut_down(k = 0) annotation(
     Placement(visible = true, transformation(origin = {-70, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-model LiIonBatteryPack_Composite 
+model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual Li-ion cell models."
 // DECLARE PARAMETERS //
   // Physical parameters
   parameter Real mass(unit = "kg") = 0.050 "Mass of the pack";

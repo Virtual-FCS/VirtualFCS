@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model VoltageLimiter
+model VoltageLimiter "Enforce voltage limits on battery cells."
 
   parameter Real upperVoltageLimit(unit = "V") = 3.6 "Upper Voltage Limit";
   parameter Real lowerVoltageLimit(unit = "V") = 2.0 "Lower Voltage Limit";

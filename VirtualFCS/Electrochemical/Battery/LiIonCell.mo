@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-model LiIonCell
+model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   // DECLARE PARAMETERS //
   // Physical parameters
   parameter Real mass(unit = "kg") = 0.045 "Mass of the pack";

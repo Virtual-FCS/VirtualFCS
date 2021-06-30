@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-model LiIonBatteryPack_Lumped 
+model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
   // DECLARE PARAMETERS //
   // Physical parameters
   parameter Real mass(unit = "kg") = 1 "Mass of the pack";

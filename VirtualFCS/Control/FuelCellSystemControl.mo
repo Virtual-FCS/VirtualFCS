@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model FuelCellSystemControl
+model FuelCellSystemControl "Implement algorithms for the control of fuel cell systems."
   Modelica.Blocks.Interfaces.RealOutput controlH2Subsystem[3] annotation(
     Placement(visible = true, transformation(origin = {94, 198}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {219, -79}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput sensorH2Subsystem[2] annotation(

@@ -1,6 +1,6 @@
 within VirtualFCS;
 
-package SubSystems "A collection of convenient encapsulated support subsystems for modelling fuel cell systems."
+package SubSystems "Encapsulated support subsystems for modelling fuel cell systems."
   extends Modelica.Icons.Package;
   
 

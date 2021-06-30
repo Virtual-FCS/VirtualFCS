@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model BatteryManagementSystem
+model BatteryManagementSystem "Implement algorithms for the control of battery systems."
 
   parameter Integer s "Number of Cells in Series";
   parameter Integer p "Number of Cells in Parallel";
