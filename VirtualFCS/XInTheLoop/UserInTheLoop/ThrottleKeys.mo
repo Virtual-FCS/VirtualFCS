@@ -1,7 +1,6 @@
 within VirtualFCS.XInTheLoop.UserInTheLoop;
 
 block ThrottleKeys
-  extends Modelica.Icons.VariantsPackage;
 
 
  Modelica.Blocks.Continuous.Integrator integrator annotation(
@@ -45,7 +44,7 @@ equation
     Line(points = {{-70, -10}, {-70, -10}, {-70, -50}, {-42, -50}, {-42, -50}}, color = {255, 0, 255}));
   annotation(
     uses(Modelica(version = "3.2.3"), Modelica_DeviceDrivers(version = "1.7.1")),
-    Icon(graphics = {Rectangle(fillColor = {79, 188, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {5, -57}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {-7, -41}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{-13, 13}, {27, 13}, {7, -27}, {-13, 13}}), Rectangle(origin = {5, 39}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {7, 43}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{-13, 13}, {27, 13}, {7, -27}, {-13, 13}})}, coordinateSystem(initialScale = 0.1)));
+    Icon(graphics = {Rectangle(origin = {5, -49}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {-7, -45}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{-13, 13}, {27, 13}, {7, -7}, {-13, 13}}), Rectangle(origin = {5, 29}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {7, 41}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{-13, 13}, {27, 13}, {7, -9}, {-13, 13}}), Rectangle(origin = {71, -49}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Rectangle(origin = {-61, -49}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {-63, -31}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{17, 9}, {-3, 29}, {-3, -11}, {17, 9}}), Polygon(origin = {87, -7}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{27, 53}, {27, 13}, {7, 33}, {27, 53}})}, coordinateSystem(initialScale = 0.1)));
 
 
 end ThrottleKeys;

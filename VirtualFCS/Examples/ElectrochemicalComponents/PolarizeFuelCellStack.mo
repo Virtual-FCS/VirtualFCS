@@ -1,4 +1,4 @@
-within VirtualFCS.Examples;
+within VirtualFCS.Examples.ElectrochemicalComponents;
 
 model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack."
   extends Modelica.Icons.Example;
@@ -88,5 +88,6 @@ equation
   annotation(
     Diagram,
     Icon,
-  Documentation(info = "<html><head></head><body>This example demonstrates the setup for a fuel cell system to generate a polarization curve. The fuel cell stack is connected to subsystems for hydrogen, air, and cooling. The electrical load is provided by a ramp voltage source that sweeps the current domain over a period of 500 seconds.&nbsp;</body></html>"));
+  Documentation(info = "<html><head></head><body>This example demonstrates the setup for a fuel cell system to generate a polarization curve. The fuel cell stack is connected to subsystems for hydrogen, air, and cooling. The electrical load is provided by a ramp voltage source that sweeps the current domain over a period of 500 seconds.&nbsp;</body></html>"),
+  experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-6, Interval = 1));
 end PolarizeFuelCellStack;

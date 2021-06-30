@@ -1,4 +1,4 @@
-within VirtualFCS.Examples;
+within VirtualFCS.Examples.ElectrochemicalComponents;
 
 model CycleBatteryCell "Example demonstrating constant-current constant-voltage cycling of a Li-ion battery cell."
   extends Modelica.Icons.Example;
@@ -48,5 +48,6 @@ equation
   connect(pulseCurrent.n, BMS.pin_p_load) annotation(
     Line(points = {{18, 80}, {40, 80}, {40, 58}, {10, 58}, {10, 48}, {12, 48}}, color = {0, 0, 255}));
   annotation(
-    Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery cell. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;</body></html>"));
+    Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery cell. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;</body></html>"),
+    experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-6, Interval = 1));
 end CycleBatteryCell;
