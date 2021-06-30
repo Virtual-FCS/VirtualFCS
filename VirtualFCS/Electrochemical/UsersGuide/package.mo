@@ -12,7 +12,7 @@ package UsersGuide "User information for the Electrochemical sub-library"
    
 	
    
-      <table border=\"0.5\">
+      <table border=\"0.9\">
          <tbody><tr>
             <th>Name</th>
             <th>Description</th>
