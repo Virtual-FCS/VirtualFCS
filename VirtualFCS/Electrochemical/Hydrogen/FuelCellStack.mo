@@ -96,11 +96,10 @@ equation
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the Nernst equilibrium voltage
   potentialSource.v = N_cell * (1.229 - R * 298 / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1 * log((R_ohmic.i + i_x) / i_0) + b_2 * log(1 - (R_ohmic.i + i_x) / i_L));
-
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_cell;
 // THERMAL EQUATIONS //
- P_th = (1.481 - V_cell) * currentSensor.i * N_cell;
+  P_th = (1.481 - V_cell) * currentSensor.i * N_cell;
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
