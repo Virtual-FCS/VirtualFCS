@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model PurgeValveControl "Control the state of the purge valve in a hydrogen fuel cell system."
+block PurgeValveControl "Control the state of the purge valve in a hydrogen fuel cell system."
   Modelica.Blocks.Logical.Switch switch annotation(
     Placement(visible = true, transformation(origin = {54, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Trapezoid setPurgeValveState(amplitude = 0.01, falling = 0.05, period = 40, rising = 0.05, width = 0.350) annotation(
