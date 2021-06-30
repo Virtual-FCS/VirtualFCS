@@ -16,9 +16,9 @@ Documentation for the VirtualFCS library is maintained regularly and available o
 ## System Requirements and Installation
 The VirtualFCS library is designed to work with OpenModelica and supports up through version 1.14. To install OpenModelica, please visit their website:
 
-[Information about OpenModelica](https://www.openmodelica.org/)
-[Download OpenModelica v1.14 for Windows](https://build.openmodelica.org/omc/builds/windows/releases/1.14/final/)
-[OpenModelica on GitHub](https://github.com/OpenModelica)
+[Information about OpenModelica](https://www.openmodelica.org/)<br/>
+[Download OpenModelica v1.14 for Windows](https://build.openmodelica.org/omc/builds/windows/releases/1.14/final/)<br/>
+[OpenModelica on GitHub](https://github.com/OpenModelica)<br/>
 
 To use the VirtualFCS library, follow these steps:
 1. Clone this repository to your computer
