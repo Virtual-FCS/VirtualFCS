@@ -3,7 +3,7 @@ within VirtualFCS.Fluid;
 package UsersGuide "User information for the Fluid sub-library"
   extends Modelica.Icons.Information;
   annotation(
-    Documentation(info = "<html><head></head><body>The Fluid category of the VirtualFCS library contains all the components that have to do with the flow of fluids in the system. This sub-package includes&nbsp;<div><br><table border=\"1\"><tbody><tr><th>Name</th>
+    Documentation(info = "<html><head></head><body>The Fluid category of the VirtualFCS library contains all the components that have to do with the flow of fluids in the system. This sub-package includes&nbsp;<div><br><table border=\"0.9\"><tbody><tr><th>Name</th>
             <th>Description</th>
             <th>Version</th>
          </tr>
