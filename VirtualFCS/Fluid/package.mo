@@ -17,25 +17,25 @@ package Fluid "Fluid components supplementing the Modelica Standard Library."
             <th>Version</th>
          </tr>
          <tr>
-            <td>PressureRegulator</td>
+            <td><a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">PressureRegulator</td>
             <td>It regulates valve to maintain desired pressure.</td>
             <td>PR.1.ddmmyy</td>
          </tr>
          
          <tr>
-            <td>PumpElectricDC</td>
+            <td><a href=\"modelica://VirtualFCS.Fluid.PumpElectricDC\">PumpElectricDC</td>
             <td></td><td>PED.no.ddmmyy</td>
          </tr>
          <tr>
-            <td>ThrottleValve</td>
+            <td><a href=\"modelica://VirtualFCS.Fluid.ThrottleValve\">ThrottleValve</td>
             <td>It regulates valve to maintain high pressure on upstream side.</td><td>TV.no.ddmmyy</td>
          </tr>
          <tr>
-            <td>RecirculationBlower</td>
+            <td><a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">RecirculationBlower</td>
             <td>It maintains hydrogen gas circulation in hydrogen subsystem.</td><td>RB.no.ddmmyy</td>
          </tr>
          <tr>
-            <td>Compressor</td>
+            <td><a href=\"modelica://VirtualFCS.Fluid.Compressor\">Compressor</td>
             <td></td><td>C.no.ddmmyy</td>
          </tr>
       </tbody></table>
