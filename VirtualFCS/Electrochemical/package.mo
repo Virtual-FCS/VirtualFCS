@@ -22,13 +22,13 @@ package Electrochemical "Electrochemical energy storage and conversion devices."
             <th>Version</th>
          </tr>
          <tr>
-            <td><a href=\"VirtualFCS.Electrochemical.Battery\">Battery</a></td>
+            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery\">Battery</a></td>
             <td>It includes the models for batteries with different chemistries</td>
             <td>B.no.ddmmyy</td>
          </tr>
          
          <tr>
-            <td>Hydrogen</td>
+            <td><a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen\">Hydrogen</td>
             <td>It includes the models for fuel cell and fuel cell stack </td>
             <td>H.no.ddmmyy</td>
          </tr>
