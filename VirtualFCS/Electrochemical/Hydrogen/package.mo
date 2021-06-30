@@ -7,7 +7,7 @@ package Hydrogen "Models for hydrogen fuel cell devices."
 
 
   annotation(
-    Documentation(info = "<html><head></head><body>This sub-package includes&nbsp;<div><br><table border=\"1\"><tbody><tr><th>Name</th>
+    Documentation(info = "<html><head></head><body>This sub-package includes&nbsp;<div><br><table border=\"0.9\"><tbody><tr><th>Name</th>
             <th>Description</th>
             <th>Version</th>
          </tr>
