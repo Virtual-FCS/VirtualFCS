@@ -2,7 +2,8 @@ within VirtualFCS.Electrochemical;
 
 package Hydrogen "Models for hydrogen fuel cell devices."
   extends Modelica.Icons.VariantsPackage;
-  
+
+
 
 
   annotation(
@@ -11,9 +12,9 @@ package Hydrogen "Models for hydrogen fuel cell devices."
             <th>Version</th>
          </tr>
          <tr>
-            <td>FuelCellStack</td>
+            <td><a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a></td>
             <td>Simulates proton exchange membrane fuel cell stack</td>
-            <td>L.1.ddmmyy</td>
+            <td>FCS.1.ddmmyy</td>
          </tr>
          
       </tbody></table>
