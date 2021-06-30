@@ -11,6 +11,21 @@ The model is rather dedicated to transport applications. However, it should rema
 
 ![picture](img/VirtualFCS_Model_Scope.png)
 
+Documentation for the VirtualFCS library is maintained regularly and available online at the URL: https://virtual-fcs.github.io/VirtualFCS/ 
+
+## System Requirements and Installation
+The VirtualFCS library is designed to work with OpenModelica and supports up through version 1.14. To install OpenModelica, please visit their website:
+
+[Information about OpenModelica](https://www.openmodelica.org/)
+[Download OpenModelica v1.14 for Windows](https://build.openmodelica.org/omc/builds/windows/releases/1.14/final/)
+[OpenModelica on GitHub](https://github.com/OpenModelica)
+
+To use the VirtualFCS library, follow these steps:
+1. Clone this repository to your computer
+2. Open the OpenModelica Connection Editor
+3. Open the file VirtualFCS\package.mo
+4. The VirtualFCS library will load in the library browser on the left of the Connection Editor
+
 Development and conventions
 ------------------------
 
