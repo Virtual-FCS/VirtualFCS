@@ -37,11 +37,11 @@ Issues can be reported using the [«Issues](https://github.com/Virtual-FCS/Virtu
 ### Naming conventions
 Naming conventions are laid out below:
 
-Classes. Classes should be nouns in UpperCamelCase (e.g. FuelCellStack).
-Instance. Instance names should be nouns in lowerCamelCase. An underscore at the end of the name may be used to characterize an upper or lower index (e.g. automotiveStack, pin_a).
-Method. Methods should be verbs in lowerCamelCase (e.g. updateFuelCellStack).
-Variables. Local variables, instance variables, and class variables are also written either as single letters or in lowerCamelCase (e.g. U, cellVoltage).
-Constants. Constants should be written in uppercase characters separated by underscores (e.g. T_REF).
+Classes. Classes should be nouns in UpperCamelCase (e.g. FuelCellStack).<br/>
+Instance. Instance names should be nouns in lowerCamelCase. An underscore at the end of the name may be used to characterize an upper or lower index (e.g. automotiveStack, pin_a).<br/>
+Method. Methods should be verbs in lowerCamelCase (e.g. updateFuelCellStack).<br/>
+Variables. Local variables, instance variables, and class variables are also written either as single letters or in lowerCamelCase (e.g. U, cellVoltage).<br/>
+Constants. Constants should be written in uppercase characters separated by underscores (e.g. T_REF).<br/>
 
 License
 -------
