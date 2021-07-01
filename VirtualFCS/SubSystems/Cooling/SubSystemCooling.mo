@@ -70,7 +70,7 @@ equation
   annotation(
     experiment(StopTime = 50),
     __Dymola_Commands(file = "modelica://Modelica/Resources/Scripts/Dymola/Fluid/EmptyTanks/plot level and port.p.mos" "plot level and port.p"),
-    Documentation(info = "<html><head></head><body><br></body></html>"),
+    Documentation(info = "<html><head></head><body>The SubSystemCooling model provides a template for the construction of a cooling sub-system for the fuel cell stack. The model comprises a coolant tank, pre-heater, pump, and heat sink. The subsystem features 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports connect to the cooling interfaces on the fuel cell stack, the electrical ports connect to the low-voltage power supply to provide power to the BoP components, and the control interface connects to the FuelCellControlUnit, which controls the pump, pre-heater, and heat sink.</body></html>"),
     uses(Modelica(version = "3.2.3")),
     Icon(graphics = {Rectangle(fillColor = {180, 233, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {9, -11}, extent = {{-81, 89}, {65, -55}}, textString = "Cooling")}, coordinateSystem(initialScale = 0.1)),
     Diagram(graphics = {Text(origin = {35, 0}, extent = {{-19, 4}, {15, -2}}, textString = "Pump")}, coordinateSystem(initialScale = 0.1)));

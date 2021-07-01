@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model VoltageLimiter
+model VoltageLimiter "Enforce voltage limits on battery cells."
 
   parameter Real upperVoltageLimit(unit = "V") = 3.6 "Upper Voltage Limit";
   parameter Real lowerVoltageLimit(unit = "V") = 2.0 "Lower Voltage Limit";
@@ -68,5 +68,6 @@ equation
     Line(points = {{-50, 42}, {-50, 42}, {-50, 60}, {0, 60}, {0, 70}, {0, 70}}, color = {0, 0, 127}));
   annotation(
     Icon(graphics = {Rectangle(origin = {-100, 100}, fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {300, -300}}), Text(origin = {2, 137}, lineColor = {255, 255, 255}, extent = {{-74, 31}, {74, -31}}, textString = "Battery"), Text(origin = {-4, -101}, lineColor = {255, 255, 255}, extent = {{-74, 31}, {74, -31}}, textString = "Load"), Text(origin = {-7, 253}, lineColor = {0, 0, 255}, extent = {{-181, 45}, {181, -45}}, textString = "%name")}, coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1)),
-    Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})));
+    Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
+  Documentation(info = "<html><head></head><body>The voltage limiter block enforces user-defined upper and lower voltage limits for battery cells and packs.&nbsp;</body></html>"));
 end VoltageLimiter;

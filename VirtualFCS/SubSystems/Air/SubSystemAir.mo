@@ -75,5 +75,6 @@ protected
     Icon(graphics = {Rectangle(fillColor = {197, 224, 180}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-44, 70}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}, coordinateSystem(initialScale = 0.1)),
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {23, -3}, extent = {{-7, 3}, {29, -3}}, textString = "Air compressor speed")}),
-    version = "");
+    version = "",
+  Documentation(info = "<html><head></head><body>An air sub-system template is provided in the example model SubSystemAir. The model consists of an air compressor and throttle valve connected to a fixed boundary condition reflecting the ambient conditions. The subsystem model contains 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports provide the connection to the fuel cell stack. The electrical ports interface with the low-voltage DC power-supply to power the BoP components (in this case, the air compressor). The control port provides an interface to the FuelCellControlUnit, which controls the air compressor. A throttle valve is connected downstream from the fuel cell stack to maintain the set pressure in the air line. Future expansions on the air subsystem will include options for humidification and temperature control.</body></html>"));
 end SubSystemAir;

@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-model LiIonBatteryPack_Lumped "LiIonBatteryPack implements a 2RC equivalent circuit model for a Li-ion battery pack."
+model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
   // DECLARE PARAMETERS //
   // Physical parameters
   parameter Real mass(unit = "kg") = 1 "Mass of the pack";
@@ -128,6 +128,7 @@ protected
     Icon(graphics = {Rectangle(origin = {0, -15}, fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-130, 85}, {130, -75}}), Rectangle(origin = {0, 85}, fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-150, 15}, {150, -15}}), Text(origin = {68, 93}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {10, -19}}, textString = "+"), Text(origin = {-74, 105}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {52, -41}}, textString = "-"), Text(origin = {-34, -103}, lineColor = {0, 0, 255}, extent = {{-22, 15}, {86, -41}}, textString = "%name")}, coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
-    version = "");
+    version = "",
+  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a lumped of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. It simulates the single cell equation and multiplies is by number of cells in series and parallel. This setup has the advantage of low computational time.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">		</span>= 2.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>kg</div><div>Cp&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">		</span>= 1000&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>= 0.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>-</div><div>p<span class=\"Apple-tab-span\" style=\"white-space: pre;\">		</span>= 5<span class=\"Apple-tab-span\" style=\"white-space: pre;\">		</span>Cells in parallel</div><div>s&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">		</span>= 10&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">		</span>Cells in series</div></body></html>"));
 
 end LiIonBatteryPack_Lumped;

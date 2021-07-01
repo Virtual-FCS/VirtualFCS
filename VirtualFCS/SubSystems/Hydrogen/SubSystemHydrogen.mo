@@ -110,5 +110,6 @@ equation
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-32, 90}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator"), Text(origin = {50, 14}, extent = {{-14, 4}, {22, -6}}, textString = "Recirculation blower")}),
     Icon(graphics = {Rectangle(fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-78, 83}, extent = {{30, -23}, {128, -141}}, textString = "H2"), Text(origin = {-74, -57}, extent = {{-28, 7}, {36, -11}}, textString = "Sensors"), Text(origin = {-75, 64}, extent = {{-19, 10}, {29, -18}}, textString = "Control")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
-    version = "");
+    version = "",
+  Documentation(info = "<html><head></head><body>A hydrogen sub-system template is provided in the example model SubSystemHydrogen. The model comprises a hydrogen tank, pressure regulator, recirculation blower, and a purge valve linked to a fixed ambient boundary condition. The subsystem features 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports connect to the hydrogen interfaces on the fuel cell stack, the electrical ports connect to the low-voltage power supply to provide power to the BoP components, and the control interface connects to the FuelCellSystemControl, which controls the recirculation blower.</body></html>"));
 end SubSystemHydrogen;

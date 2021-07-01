@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
-model FuelCell
+model FuelCell "Model for a single PEM fuel cell"
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
@@ -95,7 +95,7 @@ equation
 // THERMAL EQUATIONS //
   P_th = (1.481 - pin_p.v) * currentSensor.i + R_ohm * currentSensor.i ^ 2;
 // Assign the thermal power value to the heat flow component
-  // prescribedHeatFlow.Q_flow = P_th;
+// prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
   connect(pipeCoolant.port_b, port_b_Coolant) annotation(
     Line(points = {{-60, -56}, {130, -56}}, color = {0, 127, 255}, thickness = 1));
@@ -141,5 +141,6 @@ equation
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Text(origin = {111, -142}, lineColor = {0, 170, 255}, extent = {{-37, 4}, {45, -8}}, textString = "Thermal model")}),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
     version = "",
-    uses(Modelica(version = "3.2.3")));
+    uses(Modelica(version = "3.2.3")),
+  Documentation);
 end FuelCell;
