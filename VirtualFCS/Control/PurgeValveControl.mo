@@ -31,5 +31,5 @@ equation
 
 annotation(
     Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-3, 126}, lineColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body>Write some text.</body></html>"));
+    Documentation(info = "<html><head></head><body>Fuel cell systems often contain a purge valve in the hydrogen subsystem that is designed to purge impurities from the hydrogen line. There are different strategies for controlling this behaviour. Some systems open the purge valve at regular intervals during fuel cell operation. Others employ a charge counting algorithm to open the valve for every X Ah that passes through the fuel cell stack. In this implementation, the block first determines if the fuel cell stack is on (i.e. abs(i_FC &gt; 1)). If it is not on, then the purve valve is closed. If it is on, then the purge valve is opened at regular intervals defined by the setPurgeValveState block. The control signal is then sent to the valve.&nbsp;<div><br></div><div>Future development of this block will include alternative algorithms for determining the purging behaviour.&nbsp;</div></body></html>"));
 end PurgeValveControl;

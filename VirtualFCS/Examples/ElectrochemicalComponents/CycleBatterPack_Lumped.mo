@@ -1,4 +1,4 @@
-within VirtualFCS.Examples;
+within VirtualFCS.Examples.ElectrochemicalComponents;
 
 model CycleBatterPack_Lumped "Example demonstrating constant-current constant-voltage cycling of a lumped Li-ion battery pack model."
   extends Modelica.Icons.Example;

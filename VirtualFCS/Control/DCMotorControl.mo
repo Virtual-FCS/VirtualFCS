@@ -94,10 +94,9 @@ equation
  connect(currentController.feedForward, measuredSpeedInput) annotation(
     Line(points = {{-12, -12}, {-12, -36}, {-88, -36}, {-88, -64}}, color = {0, 0, 127}));
   annotation(
-    Documentation(info = "<html>
-<p>This is a partial model of a controlled DC PM drive.</p>
+    Documentation(info = "<html><head></head><body><p>This is a partial model of a controlled DC PM drive.</p>
 <p>
-Electrical power is taken from a battery (constant voltage with inner resistance) and fed to the motor via a DC-DC inverter.
+Electrical power is fed to the motor via a DC-DC inverter.
 The level of detail of the DC-DC inverter may be chosen from ideal averaging or switching.
 The DC-DC inverter is commanded by the current controller.
 The current controller is parameterized according to the absolute optimum.
@@ -105,8 +104,8 @@ The current controller is parameterized according to the absolute optimum.
 <p>
 Further reading:
 <a href=\"modelica://Modelica/Resources/Documentation/Electrical/Machines/DriveControl.pdf\">Tutorial at the Modelica Conference 2017</a>
-</p>
-</html>"),
+</p><p>This model is adapted from the DC PM drive control model used in the Modelica Standard Library.</p>
+</body></html>"),
     Diagram(coordinateSystem(extent = {{-200, -100}, {100, 100}})),
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-87, 9}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {27, -21}}, textString = "s"), Text(origin = {-3, 73}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {27, -17}}, textString = "pwr"), Text(origin = {73, 9}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {35, -23}}, textString = "m"), Text(origin = {-5, -57}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {27, -19}}, textString = "out"), Text(origin = {161, 84}, lineColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}),
     uses(Modelica(version = "3.2.3")));

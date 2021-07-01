@@ -1,4 +1,4 @@
-within VirtualFCS.Examples;
+within VirtualFCS.Examples.VehicleExamples;
 
 model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a range extended in an electric vehicle."
   extends Modelica.Icons.Example;
@@ -114,5 +114,6 @@ equation
   connect(ground.p, fuelCellStack.pin_n) annotation(
     Line(points = {{-38, 48}, {-18, 48}, {-18, 20}, {-6, 20}, {-6, 22}}, color = {0, 0, 255}));
   annotation(
-    Documentation(info = "<html><head></head><body>This example demonstrates the use of the VirtualFCS library to simulate the performance of a hybrid fuel cell range extender for an electric vehicle.<div><br></div><div>The model includes three power sources: a high voltage Li-ion battery pack to power the vehicle, a fuel cell stack to extend the range of the vehicle, and a low-voltage Li-ion battery pack to power the vehicle support systems.</div><div><br></div><div>The operation profiles of the two batteries are controlled using dedicated battery management systems. The division of power demand between the battery and fuel cell is achieved in the energy management system. &nbsp;</div></body></html>"));
+    Documentation(info = "<html><head></head><body>This example demonstrates the use of the VirtualFCS library to simulate the performance of a hybrid fuel cell range extender for an electric vehicle.<div><br></div><div>The model includes three power sources: a high voltage Li-ion battery pack to power the vehicle, a fuel cell stack to extend the range of the vehicle, and a low-voltage Li-ion battery pack to power the vehicle support systems.</div><div><br></div><div>The operation profiles of the two batteries are controlled using dedicated battery management systems. The division of power demand between the battery and fuel cell is achieved in the energy management system. &nbsp;</div></body></html>"),
+    experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-6, Interval = 1));
 end VehicleRangeExtender;

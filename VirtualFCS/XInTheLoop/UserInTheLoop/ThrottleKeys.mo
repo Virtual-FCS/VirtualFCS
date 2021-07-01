@@ -6,7 +6,7 @@ block ThrottleKeys
  Modelica.Blocks.Continuous.Integrator integrator annotation(
     Placement(visible = true, transformation(origin = {10, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput y(unit = "km/h") annotation(
-    Placement(visible = true, transformation(origin = {117, 1}, extent = {{-17, -17}, {17, 17}}, rotation = 0), iconTransformation(extent = {{99, -17}, {133, 17}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {117, 1}, extent = {{-17, -17}, {17, 17}}, rotation = 0), iconTransformation(extent = {{99, 25}, {133, 59}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal annotation(
     Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal1 annotation(
@@ -19,7 +19,7 @@ block ThrottleKeys
     Placement(visible = true, transformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.Integrator integrator1 annotation(
     Placement(visible = true, transformation(origin = {10, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant Gain(k = 10) annotation(
+  Modelica.Blocks.Sources.Constant Gain(k = 1) annotation(
     Placement(visible = true, transformation(origin = {50, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica_DeviceDrivers.Blocks.InputDevices.KeyboardInput keyboardInput annotation(
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

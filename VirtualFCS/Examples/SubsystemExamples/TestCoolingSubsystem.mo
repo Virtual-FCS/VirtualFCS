@@ -1,4 +1,4 @@
-within VirtualFCS.Examples;
+within VirtualFCS.Examples.SubsystemExamples;
 
 model TestCoolingSubsystem "Example to evaluate the performance of the cooling subsystem."
   extends Modelica.Icons.Example;

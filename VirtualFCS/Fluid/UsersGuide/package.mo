@@ -10,24 +10,24 @@ package UsersGuide "User information for the Fluid sub-library"
          <tr>
             <td><a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">PressureRegulator</a></td>
             <td>It regulates valve to maintain desired pressure.</td>
-            <td>PR.1.ddmmyy</td>
+            <td><br></td>
          </tr>
          
          <tr>
             <td><a href=\"modelica://VirtualFCS.Fluid.PumpElectricDC\">PumpElectricDC</a></td>
-            <td></td><td>PED.no.ddmmyy</td>
+            <td></td><td><br></td>
          </tr>
          <tr>
             <td><a href=\"modelica://VirtualFCS.Fluid.ThrottleValve\">ThrottleValve</a></td>
-            <td>It regulates valve to maintain high pressure on upstream side.</td><td>TV.no.ddmmyy</td>
+            <td>It regulates valve to maintain high pressure on upstream side.</td><td><br></td>
          </tr>
          <tr>
             <td><a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">RecirculationBlower</a></td>
-            <td>It maintains hydrogen gas circulation in hydrogen subsystem.</td><td>RB.no.ddmmyy</td>
+            <td>It maintains hydrogen gas circulation in hydrogen subsystem.</td><td><br></td>
          </tr>
          <tr>
             <td><a href=\"modelica://VirtualFCS.Fluid.Compressor\">Compressor</a></td>
-            <td></td><td>C.no.ddmmyy</td>
+            <td></td><td><br></td>
          </tr>
       </tbody></table>
    

@@ -20,14 +20,13 @@ package UsersGuide "User information for the Electrochemical sub-library"
          </tr>
          <tr>
             <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery\">Battery</a></td>
-            <td>It includes the models for batteries with different chemistries</td>
-            <td>B.no.ddmmyy</td>
+            <td>It includes the models for batteries with different chemistries</td><td><br></td>
          </tr>
          
          <tr>
             <td><a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen\">Hydrogen</a></td>
             <td>It includes the models for fuel cell and fuel cell stack </td>
-            <td>H.no.ddmmyy</td>
+            <td><br></td>
          </tr>
       </tbody></table>
    

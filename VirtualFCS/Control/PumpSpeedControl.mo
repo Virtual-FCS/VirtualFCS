@@ -17,5 +17,6 @@ equation
   connect(limPID.y, setPumpSpeed) annotation(
     Line(points = {{-18, 30}, {40, 30}, {40, 0}, {110, 0}, {110, 0}}, color = {0, 0, 127}));
   annotation(
-    Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-3, 126}, lineColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}, coordinateSystem(initialScale = 0.1)));
+    Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-3, 126}, lineColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}, coordinateSystem(initialScale = 0.1)),
+    Documentation(info = "<html><head></head><body>This block uses a simple PID control to set pump speed as a function of mass flow.&nbsp;<div><br></div><div>The block requires that a sensor be placed to measure the mass flow through the pump in question. The measured value for the mass flow is taken in the getMassFlow interface, while the desired mass flow is set in the setMassFlowInterface. Properties of the PID control can be adjusted in the limPID block, and the resulting control signal is sent to the setPumpSpeed interface.&nbsp;</div></body></html>"));
 end PumpSpeedControl;

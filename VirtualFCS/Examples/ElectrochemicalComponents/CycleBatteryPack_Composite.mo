@@ -1,4 +1,4 @@
-within VirtualFCS.Examples;
+within VirtualFCS.Examples.ElectrochemicalComponents;
 
 model CycleBatteryPack_Composite "Example demonstrating constant-current constant-voltage cycling of a composite Li-ion battery pack model."
   extends Modelica.Icons.Example;
