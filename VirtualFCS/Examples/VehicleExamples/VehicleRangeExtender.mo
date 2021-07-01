@@ -2,13 +2,13 @@ within VirtualFCS.Examples.VehicleExamples;
 
 model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a range extended in an electric vehicle."
   extends Modelica.Icons.Example;
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(v = VirtualFCS.Vehicles.VehicleProfile.speed_profile.WLTC)  annotation(
+  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(v = VirtualFCS.Vehicles.VehicleProfile.speed_profile.WLTC) annotation(
     Placement(visible = true, transformation(origin = {-70, 68}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
-  VirtualFCS.Electrical.DC_converter dC_converter(Td = 1e-2)  annotation(
+  VirtualFCS.Electrical.DC_converter dC_converter(Td = 1e-2) annotation(
     Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   VirtualFCS.Control.EnergyManagementSystem EMS annotation(
     Placement(visible = true, transformation(origin = {30, 40}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
-  VirtualFCS.Control.BatteryManagementSystem BMS(p = liIonBatteryPack_HighVoltage.p, s = liIonBatteryPack_HighVoltage.s)  annotation(
+  VirtualFCS.Control.BatteryManagementSystem BMS(p = liIonBatteryPack_HighVoltage.p, s = liIonBatteryPack_HighVoltage.s) annotation(
     Placement(visible = true, transformation(origin = {60, 70}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init(y = liIonBatteryPack_HighVoltage.SOC_init) annotation(
     Placement(visible = true, transformation(origin = {95, 75}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
@@ -24,7 +24,7 @@ model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a 
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init_LV(y = liIonBatteryPack_LowVoltage.SOC_init) annotation(
     Placement(visible = true, transformation(origin = {47, -58}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
-  VirtualFCS.Control.BatteryManagementSystem BMS_LV(p = liIonBatteryPack_LowVoltage.p, s = liIonBatteryPack_LowVoltage.s)  annotation(
+  VirtualFCS.Control.BatteryManagementSystem BMS_LV(p = liIonBatteryPack_LowVoltage.p, s = liIonBatteryPack_LowVoltage.s) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getChargeCapacity_LV(y = liIonBatteryPack_LowVoltage.chargeCapacity * 3600) annotation(
     Placement(visible = true, transformation(origin = {47, -70}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
@@ -33,14 +33,14 @@ model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a 
   Modelica.Blocks.Sources.RealExpression getFuelCellCurrent(y = dC_converter.I_Ref) annotation(
     Placement(visible = true, transformation(origin = {-90, 15}, extent = {{-10, -7}, {10, 7}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
-    Placement(visible = true, transformation(origin = { -26, -24}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-26, -24}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_HighVoltage(SOC_init = 0.9, p = 16, s = 32)  annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_HighVoltage(SOC_init = 0.9, p = 16, s = 32) annotation(
     Placement(visible = true, transformation(origin = {61.6687, 36.8875}, extent = {{-15.1687, -9.10122}, {15.1687, 10.1125}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_LowVoltage(SOC_init = 0.9,p = 10, s = 6)  annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_LowVoltage(SOC_init = 0.9, p = 10, s = 6) annotation(
     Placement(visible = true, transformation(origin = {1.76023, -88.5439}, extent = {{-13.2602, -7.95614}, {13.2602, 8.84016}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(mass = 100)  annotation(
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(mass = 100) annotation(
     Placement(visible = true, transformation(origin = {0, 6}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(visible = true, transformation(origin = {-38, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -115,5 +115,5 @@ equation
     Line(points = {{-38, 48}, {-18, 48}, {-18, 20}, {-6, 20}, {-6, 22}}, color = {0, 0, 255}));
   annotation(
     Documentation(info = "<html><head></head><body>This example demonstrates the use of the VirtualFCS library to simulate the performance of a hybrid fuel cell range extender for an electric vehicle.<div><br></div><div>The model includes three power sources: a high voltage Li-ion battery pack to power the vehicle, a fuel cell stack to extend the range of the vehicle, and a low-voltage Li-ion battery pack to power the vehicle support systems.</div><div><br></div><div>The operation profiles of the two batteries are controlled using dedicated battery management systems. The division of power demand between the battery and fuel cell is achieved in the energy management system. &nbsp;</div></body></html>"),
-    experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-6, Interval = 1));
+    experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-06, Interval = 1));
 end VehicleRangeExtender;

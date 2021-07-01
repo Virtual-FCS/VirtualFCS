@@ -67,5 +67,6 @@ equation
   annotation(
     Diagram,
     Icon,
-  Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the hydrogen subsystem both for optimization and troubleshooting purposes.</body></html>"));
+  Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the hydrogen subsystem both for optimization and troubleshooting purposes.</body></html>"),
+  experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
 end TestHydrogenSubsystem;

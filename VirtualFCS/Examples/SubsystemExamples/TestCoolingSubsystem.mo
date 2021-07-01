@@ -66,5 +66,6 @@ equation
     Diagram,
     Icon,
   __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian,newInst aliasConflicts",
-  Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the cooling subsystem both for optimization and troubleshooting purposes.</body></html>"));
+  Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the cooling subsystem both for optimization and troubleshooting purposes.</body></html>"),
+  experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
 end TestCoolingSubsystem;

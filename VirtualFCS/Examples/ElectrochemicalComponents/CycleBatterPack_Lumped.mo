@@ -30,5 +30,6 @@ equation
   connect(pulseCurrent.p, BMS.pin_p_load) annotation(
     Line(points = {{16, 84}, {18, 84}, {18, 60}, {12, 60}, {12, 48}, {12, 48}}, color = {0, 0, 255}));
 annotation(
-    Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery pack. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;<div><br></div><div>The pack considered in this example is a lumped model considering the summed performance of all the cells in the pack. For investigations where cell-level resolution is necessary (e.g. cell balancing), please see LiIonBatteryPack_Composite.</div></body></html>"));
+    Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery pack. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;<div><br></div><div>The pack considered in this example is a lumped model considering the summed performance of all the cells in the pack. For investigations where cell-level resolution is necessary (e.g. cell balancing), please see LiIonBatteryPack_Composite.</div></body></html>"),
+    experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-6, Interval = 1));
 end CycleBatterPack_Lumped;
