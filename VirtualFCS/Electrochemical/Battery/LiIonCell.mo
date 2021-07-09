@@ -105,7 +105,7 @@ equation
 <table border=\"0.9\">
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Battery Parameters</u></b></caption>
 <tbody><tr><th>Parameter name</th>
-            <th>Value</th>
+            <th align=\"Left\">Value</th>
             
          </tr>
          <tr>
@@ -138,7 +138,8 @@ equation
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Equivalent Circuit Parameters</u></b></caption>
 <tbody><tr><th>Parameter name</th>
             <th>Value</th>
-         <tr>
+            <th>Unit</th>
+         </tr><tr>
             <td align=\"Left\">R_0</td>
             <td>=0.02</td>
 	      <td align=\"Right\">Ohm</td>
@@ -171,7 +172,8 @@ equation
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Thermal Parameters</u></b></caption>
 <tbody><tr><th>Parameter name</th>
             <th>Value</th>
-         <tr>
+            <th>Unit</th>
+         </tr><tr>
             <td align=\"Left\">specificHeatCapacity</td>
             <td>=1000</td>
 	      <td align=\"Right\">J/(kg*K)</td>
@@ -184,9 +186,9 @@ equation
          <tr>
             <td align=\"Left\">coolingArea</td>
             <td>=0.003675</td>
-            <td align=\"Right\">m2</td>
+            <td align=\"Right\">m<sup>2</sup></td>
          </tr>
       </tbody></table>
 
-</body></html>"));
+</div></div></div></div></body></html>"));
 end LiIonCell;
