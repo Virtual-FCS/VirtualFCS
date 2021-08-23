@@ -11,6 +11,21 @@ The model is rather dedicated to transport applications. However, it should rema
 
 ![picture](img/VirtualFCS_Model_Scope.png)
 
+Documentation for the VirtualFCS library is maintained regularly and available online at the URL: https://virtual-fcs.github.io/VirtualFCS/ 
+
+## System Requirements and Installation
+The VirtualFCS library is designed to work with OpenModelica and supports up through version 1.14. To install OpenModelica, please visit their website:
+
+[Information about OpenModelica](https://www.openmodelica.org/)<br/>
+[Download OpenModelica v1.14 for Windows](https://build.openmodelica.org/omc/builds/windows/releases/1.14/final/)<br/>
+[OpenModelica on GitHub](https://github.com/OpenModelica)<br/>
+
+To use the VirtualFCS library, follow these steps:
+1. Clone this repository to your computer
+2. Open the OpenModelica Connection Editor
+3. Open the file VirtualFCS\package.mo
+4. The VirtualFCS library will load in the library browser on the left of the Connection Editor
+
 Development and conventions
 ------------------------
 
@@ -22,11 +37,11 @@ Issues can be reported using the [«Issues](https://github.com/Virtual-FCS/Virtu
 ### Naming conventions
 Naming conventions are laid out below:
 
-Classes. Classes should be nouns in UpperCamelCase (e.g. FuelCellStack).
-Instance. Instance names should be nouns in lowerCamelCase. An underscore at the end of the name may be used to characterize an upper or lower index (e.g. automotiveStack, pin_a).
-Method. Methods should be verbs in lowerCamelCase (e.g. updateFuelCellStack).
-Variables. Local variables, instance variables, and class variables are also written either as single letters or in lowerCamelCase (e.g. U, cellVoltage).
-Constants. Constants should be written in uppercase characters separated by underscores (e.g. T_REF).
+Classes. Classes should be nouns in UpperCamelCase (e.g. FuelCellStack).<br/>
+Instance. Instance names should be nouns in lowerCamelCase. An underscore at the end of the name may be used to characterize an upper or lower index (e.g. automotiveStack, pin_a).<br/>
+Method. Methods should be verbs in lowerCamelCase (e.g. updateFuelCellStack).<br/>
+Variables. Local variables, instance variables, and class variables are also written either as single letters or in lowerCamelCase (e.g. U, cellVoltage).<br/>
+Constants. Constants should be written in uppercase characters separated by underscores (e.g. T_REF).<br/>
 
 License
 -------

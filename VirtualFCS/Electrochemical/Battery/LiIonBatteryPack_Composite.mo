@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-model LiIonBatteryPack_Composite 
+model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual Li-ion cell models."
   // DECLARE PARAMETERS //
   // Physical parameters
   parameter Real mass(unit = "kg") = 0.050 "Mass of the pack";
@@ -37,7 +37,7 @@ model LiIonBatteryPack_Composite
 equation
 // ***DEFINE EQUATIONS ***//
   chargeCapacity = p * s * liIonCell[1].chargeCapacity;
-  // coolingArea = p * s * liIonCell[1].coolingArea;
+// coolingArea = p * s * liIonCell[1].coolingArea;
 // Calculate the open-circuit voltage at given temperature and state of charge
 // Thermal equations
 //  prescribedHeatFlow.Q_flow = p * s * abs((OCV.v - pin_p.v) * sensorCurrent.i + Rohm.R_actual * sensorCurrent.i ^ 2);
@@ -73,5 +73,5 @@ protected
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of LiIonCell models. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells. For simulations where speed is a priority, use the LiIonBatteryPack_Lumped model.</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass <span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 2.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>kg</div><div>Cp&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 1000&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>-</div><div>p<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 5<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>Cells in parallel</div><div>s&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 10&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>Cells in series</div><div><br></div></body></html>"));
+  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell models</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass <span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 2.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>kg</div><div>Cp&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 1000&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>-</div><div>p<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 5<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>Cells in parallel</div><div>s&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 10&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>Cells in series</div><div><br></div></body></html>"));
 end LiIonBatteryPack_Composite;

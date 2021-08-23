@@ -12,5 +12,5 @@ package Fluid "Fluid components supplementing the Modelica Standard Library."
 
 
   annotation(
-    Documentation(info = "<html><head></head><body><br></body></html>"));
+    Documentation);
 end Fluid;

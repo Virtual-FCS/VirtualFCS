@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-package Parameters
+package Parameters "Parameters for battery models"
   extends Modelica.Icons.UtilitiesPackage;
 
   package Functions

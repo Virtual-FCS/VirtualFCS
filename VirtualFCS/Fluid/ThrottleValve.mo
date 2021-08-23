@@ -71,5 +71,6 @@ equation
     Line(points = {{-80, 70}, {-42, 70}, {-42, 70}, {-42, 70}}, color = {0, 0, 127}));
   annotation(
     uses(Modelica(version = "3.2.3")),
-    Icon(graphics = {Polygon(origin = {-50, 0}, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}}), Polygon(origin = {50, 0}, rotation = 180, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}})}, coordinateSystem(initialScale = 0.1)));
+    Icon(graphics = {Polygon(origin = {-50, 0}, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}}), Polygon(origin = {50, 0}, rotation = 180, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body>The ThrottleValve model is designed to maintain a set higher pressure on the upstream side relative to a lower pressure on the downstream side by regulating the opening in a compressible fluid valve. Regulation of the valve opening is managed using a PID controller.</body></html>"));
 end ThrottleValve;
