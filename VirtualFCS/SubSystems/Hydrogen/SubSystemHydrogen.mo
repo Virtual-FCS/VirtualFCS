@@ -5,19 +5,19 @@ model SubSystemHydrogen
   // Medium models
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   // Parameter definition
-  parameter Real Tank_Volume = 0.13 "Volume of the tank";
-  parameter Real Tank_Pressure = 3500000 "Initial pressure";
+  parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
+  parameter Real p_tank_H2(unit="Pa") = 3500000 "H2 tank initial pressure";
   //*** INSTANTIATE COMPONENTS ***//
   // System
   // Interfaces and boundaries
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, T = 293.15, nPorts = 1, p = 101325) annotation(
     Placement(visible = true, transformation(origin = {-120, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_H2ToStack(redeclare package Medium = Anode_Medium) annotation(
-    Placement(visible = true, transformation(origin = {79, 74}, extent = {{-9, -9}, {9, 9}}, rotation = 0), iconTransformation(origin = {118, 60}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {79, 74}, extent = {{-9, -9}, {9, 9}}, rotation = 0), iconTransformation(origin = {-60,118}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_StackToH2(redeclare package Medium = Anode_Medium) annotation(
-    Placement(visible = true, transformation(origin = {77, -76}, extent = {{-9, -9}, {9, 9}}, rotation = 0), iconTransformation(origin = {118, -57}, extent = {{-18, -19}, {18, 19}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {77, -76}, extent = {{-9, -9}, {9, 9}}, rotation = 0), iconTransformation(origin = {60, 119}, extent = {{-18, -19}, {18, 19}}, rotation = 0)));
   // Vessels
-  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = Tank_Volume, nPorts = 1, p_start = Tank_Pressure, use_HeatTransfer = false, use_portsData = false) annotation(
+  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, nPorts = 1, p_start = p_tank_H2, use_HeatTransfer = false, use_portsData = false) annotation(
     Placement(visible = true, transformation(origin = {-117, 74}, extent = {{17, -17}, {-17, 17}}, rotation = 90)));
   // Machines
   // Valves

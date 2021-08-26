@@ -8,22 +8,23 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
-  parameter Real mass(unit = "kg") = 1 "Mass of the Stack";
-  parameter Real volume(unit = "m3") = 0.001 "Volume of the Stack";
+  // Fuel Cell Stack Paramters
+  parameter Real m_FC_stack(unit = "kg") = 1 "FC stack mass";
+  parameter Real V_FC_stack(unit = "m3") = 0.001 "FC stack volume";
   // Thermal parameters
-  parameter Real heatCapacity(unit = "J/(kg.K)") = 800 "Specific Specific Heat Capacity";
+  parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 800 "FC stack specific heat capacity";
   // Stack design parameters
-  parameter Real N_cell(unit = "1") = 100 "Number of Cells";
-  parameter Real A_cell(unit = "m2") = 0.0237 "Active Area of the Cell";
+  parameter Real N_FC_stack(unit = "1") = 100 "FC stack number of cells";
+  parameter Real A_FC_stack(unit = "m2") = 0.0237 "FC stack active area of cell";
   // Electrochemical parameters
-  parameter Real i_0(unit = "A") = 0.0002 "Exchange Current";
-  parameter Real i_L(unit = "A") = 520 "Maximum Current Limit";
-  parameter Real i_x(unit = "A") = 0.001 "Cross-over Current";
-  parameter Real b_1(unit = "V/dec") = 0.025 "Tafel Slope";
-  parameter Real b_2(unit = "V/dec") = 0.25 "Transport Limitation Factor";
-  parameter Real R_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
-  parameter Real R_1(unit = "Ohm") = 0.01 "Charge Transfer Resistance";
-  parameter Real C_1(unit = "F") = 3e-3 "Double Layer Capacitance";
+  parameter Real i_0_FC_stack(unit = "A") = 0.0002 "FC stack cell exchange current";
+  parameter Real i_L_FC_stack(unit = "A") = 520 "FC stack cell maximum limiting current";
+  parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
+  parameter Real b_1_FC_stack(unit = "V/dec") = 0.025 "FC stack cell Tafel slope";
+  parameter Real b_2_FC_stack(unit = "V/dec") = 0.25 "FC stack cell trasport limitation factor";
+  parameter Real R_0_FC_stack(unit = "Ohm") = 0.02 "FC stack cell ohmic resistance";
+  parameter Real R_1_FC_stack(unit = "Ohm") = 0.01 "FC stack cell charge transfer resistance";
+  parameter Real C_1_FC_stack(unit = "F") = 3e-3 "FC stack cell double layer capacitance";
   //*** DECLARE VARIABLES ***//
   // Physical constants
   Real R = 8.314;
@@ -51,7 +52,7 @@ model FuelCellStack "Model for a PEM fuel cell stack"
     Placement(visible = true, transformation(origin = {-134, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_b_Coolant(redeclare package Medium = Coolant_Medium) annotation(
     Placement(visible = true, transformation(origin = {130, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Pipes.DynamicPipe pipeCoolant(redeclare package Medium = Coolant_Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = 500, p_a_start = 102502, use_HeatTransfer = true) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe pipeCoolant(redeclare package Medium = Coolant_Medium, T_start = 298.15, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = 500, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {0, -42}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a_Air(redeclare package Medium = Cathode_Medium) annotation(
     Placement(visible = true, transformation(origin = {150, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -69,21 +70,21 @@ model FuelCellStack "Model for a PEM fuel cell stack"
     Placement(visible = true, transformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_0) annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_0_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sources.SignalVoltage potentialSource annotation(
     Placement(visible = true, transformation(origin = {-60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain H2_mflow(k = -0.00202 / (96485 * 2) * N_cell) annotation(
+  Modelica.Blocks.Math.Gain H2_mflow(k = -0.00202 / (96485 * 2) * N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-28, 51}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain O2_mflow(k = -0.032 / (96485 * 4) * N_cell) annotation(
+  Modelica.Blocks.Math.Gain O2_mflow(k = -0.032 / (96485 * 4) * N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {32, 50}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 1777) annotation(
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = heatCapacity * mass, T(fixed = false, start = 293.15), der_T(fixed = false)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_FC_stack * m_FC_stack, T(fixed = true, start = 293.15), der_T(fixed = false)) annotation(
     Placement(visible = true, transformation(origin = {0, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
     Placement(visible = true, transformation(origin = {48, -114}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -92,14 +93,14 @@ equation
 // Redeclare variables
   p_H2 = H2_sink.ports[1].p;
   p_O2 = 0.2 * O2_sink.ports[1].p;
-  j = currentSensor.i / A_cell;
+  j = currentSensor.i / A_FC_stack;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the Nernst equilibrium voltage
-  potentialSource.v = N_cell * (1.229 - R * 298 / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1 * log((R_ohmic.i + i_x) / i_0) + b_2 * log(1 - (R_ohmic.i + i_x) / i_L));
+  potentialSource.v = N_FC_stack * (1.229 - R * 298 / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1_FC_stack * log((R_ohmic.i + i_x_FC_stack) / i_0_FC_stack) + b_2_FC_stack * log(1 - (R_ohmic.i + i_x_FC_stack) / i_L_FC_stack));
 // Calculate the voltage of the cell
-  V_cell = pin_p.v / N_cell;
+  V_cell = pin_p.v / N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = (1.481 - V_cell) * currentSensor.i * N_cell;
+  P_th = (1.481 - V_cell) * currentSensor.i * N_FC_stack;
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//

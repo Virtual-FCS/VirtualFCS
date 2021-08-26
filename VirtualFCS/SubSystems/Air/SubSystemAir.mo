@@ -13,9 +13,9 @@ class SubSystemAir
   Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 2) annotation(
     Placement(visible = true, transformation(origin = {-80.5, -50.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {88, -35}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {88, -35}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {62, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b Output(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {88, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {88, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-60, 121}, extent = {{-20, -19}, {20, 19}}, rotation = 0)));
   // Machines
   VirtualFCS.Fluid.Compressor compressor annotation(
     Placement(visible = true, transformation(origin = {12, 18}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
