@@ -9,29 +9,32 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 1 "FC stack mass";
-  parameter Real V_FC_stack(unit = "m3") = 0.001 "FC stack volume";
-  // Thermal parameters
-  parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 800 "FC stack specific heat capacity";
-  // Stack design parameters
-  parameter Real N_FC_stack(unit = "1") = 100 "FC stack number of cells";
-  parameter Real A_FC_stack(unit = "m2") = 0.0237 "FC stack active area of cell";
+  parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
+  parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
+  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack length";
+  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack length";
+  parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
+  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage"; 
+  parameter Real I_rated_FC_stack(unit="A") = 300 "Minimum stack operating voltage";
+  parameter Real i_L_FC_stack(unit = "A") = 1.3 * I_rated_FC_stack "FC stack cell maximum limiting current";
+  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
+  parameter Real A_FC_surf(unit = "m2") = 2 * (L_FC_stack * W_FC_stack) + 2 * (L_FC_stack * H_FC_stack) + 2 * (W_FC_stack * H_FC_stack) "FC stack surface area";
   // Electrochemical parameters
   parameter Real i_0_FC_stack(unit = "A") = 0.0002 "FC stack cell exchange current";
-  parameter Real i_L_FC_stack(unit = "A") = 520 "FC stack cell maximum limiting current";
   parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.025 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.25 "FC stack cell trasport limitation factor";
   parameter Real R_0_FC_stack(unit = "Ohm") = 0.02 "FC stack cell ohmic resistance";
   parameter Real R_1_FC_stack(unit = "Ohm") = 0.01 "FC stack cell charge transfer resistance";
   parameter Real C_1_FC_stack(unit = "F") = 3e-3 "FC stack cell double layer capacitance";
+  // Thermal parameters
+  parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 1100 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
   Real R = 8.314;
   Real F = 96485;
   // Fuel cell variables
   Real V_cell;
-  Real j;
   Real P_th;
   Real p_H2(min = 0);
   Real p_O2(min = 0);
@@ -52,7 +55,7 @@ model FuelCellStack "Model for a PEM fuel cell stack"
     Placement(visible = true, transformation(origin = {-134, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_b_Coolant(redeclare package Medium = Coolant_Medium) annotation(
     Placement(visible = true, transformation(origin = {130, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Pipes.DynamicPipe pipeCoolant(redeclare package Medium = Coolant_Medium, T_start = 298.15, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = 500, p_a_start = 102502, use_HeatTransfer = true) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe pipeCoolant(redeclare package Medium = Coolant_Medium, T_start = 293.15, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = 500, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {0, -42}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a_Air(redeclare package Medium = Cathode_Medium) annotation(
     Placement(visible = true, transformation(origin = {150, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -83,7 +86,7 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 1777) annotation(
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
-    Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_FC_stack * m_FC_stack, T(fixed = true, start = 293.15), der_T(fixed = false)) annotation(
     Placement(visible = true, transformation(origin = {0, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
@@ -93,14 +96,13 @@ equation
 // Redeclare variables
   p_H2 = H2_sink.ports[1].p;
   p_O2 = 0.2 * O2_sink.ports[1].p;
-  j = currentSensor.i / A_FC_stack;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the Nernst equilibrium voltage
   potentialSource.v = N_FC_stack * (1.229 - R * 298 / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1_FC_stack * log((R_ohmic.i + i_x_FC_stack) / i_0_FC_stack) + b_2_FC_stack * log(1 - (R_ohmic.i + i_x_FC_stack) / i_L_FC_stack));
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = (1.481 - V_cell) * currentSensor.i * N_FC_stack;
+  P_th = ((1.481 - V_cell) * currentSensor.i + currentSensor.i^2 * R_ohmic.R_actual) * N_FC_stack;
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
@@ -172,7 +174,7 @@ equation
 </tr>
 <tr>
 <td align=\"Left\">Cp</td>
-<td>=800</td>
+<td>=1100</td>
 <td align=\"Left\">J/(kg.K)</td>
 </tr>
 <tr>

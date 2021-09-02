@@ -2,8 +2,7 @@ within VirtualFCS.Control;
 
 model BatteryManagementSystem "Implement algorithms for the control of battery systems."
 
-  parameter Integer s "Number of Cells in Series";
-  parameter Integer p "Number of Cells in Parallel";
+  parameter Real N_s "Number of Cells in Series";
 
   VirtualFCS.Control.ChargeCounter chargeCounter annotation(
     Placement(visible = true, transformation(origin = {25, -1}, extent = {{25, -25}, {-25, 25}}, rotation = 0)));
@@ -22,7 +21,7 @@ model BatteryManagementSystem "Implement algorithms for the control of battery s
     Placement(visible = true, transformation(origin = {150, 20}, extent = {{20, -20}, {-20, 20}}, rotation = 0), iconTransformation(origin = {110, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput chargeCapacity annotation(
     Placement(visible = true, transformation(origin = {150, -20}, extent = {{20, -20}, {-20, 20}}, rotation = 0), iconTransformation(origin = {110, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  VoltageLimiter voltageLimiter(lowerVoltageLimit = s * 2, upperVoltageLimit = s * 3.6) annotation(
+  VoltageLimiter voltageLimiter(lowerVoltageLimit = N_s * 2, upperVoltageLimit = N_s * 3.6) annotation(
     Placement(visible = true, transformation(origin = {-78, -2}, extent = {{-26, 26}, {26, -26}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput sensorInterface annotation(
     Placement(visible = true, transformation(origin = {-30, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

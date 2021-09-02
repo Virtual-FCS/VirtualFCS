@@ -2,20 +2,31 @@ within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
   // DECLARE PARAMETERS //
-  // Physical parameters
-  parameter Real mass(unit = "kg") = 1 "Mass of the pack";
-  //  parameter Real vol(unit = "L") = 0.016 "Volume of the pack";
-  parameter Real Cp(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
-  // Cell parameters
-  parameter Real chargeCapacity_cell(unit = "A.h") = 2.2 "Cell Charge Capacity";
-  parameter Real coolingArea_cell(unit = "A.h") = 2.2 "Cell Charge Capacity";
-  parameter Real Rohm_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
-  parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
-  parameter Real R2_0(unit = "Ohm") = 0.005 "Second RC Resistance";
-  parameter Real C1_0(unit = "F") = 5000 "First RC Capacitance";
-  parameter Real C2_0(unit = "F") = 20000 "Second RC Capacitance";
+  // Pack-level parameters
+  parameter Real m_bat_pack(unit = "kg") = 1 "Mass of the pack";
+  parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
+  parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
+  parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height";
+  parameter Real Cp_bat_pack(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
+  parameter Real V_min_bat_pack(unit = "V") = 37.5 "Battery pack minimum voltage";
+  parameter Real V_nom_bat_pack(unit = "V") = 48 "Battery pack nominal voltage";
+  parameter Real V_max_bat_pack(unit = "V") = 54.75 "Battery pack maximum voltage";
+  parameter Real C_bat_pack(unit = "A.h") = 2700 "Battery pack nominal capacity";
+  parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
+  
+  parameter Real N_s = ceil(V_max_bat_pack / V_chem_max);
+
+  
+  
+  
+  Real vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
+  
+  
+  // ADD dropdown menu for selecting chemistry type
+  
   // Coefficients for open-circuit voltage calculation
   // LFP
+  parameter Real V_chem_max = 3.65;
   Real a1 = 3.25;
   Real b1 = -1e-4;
   Real c1 = -0.08;
@@ -25,13 +36,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
   Real g1 = -0.06;
   Real h1 = -0.02;
   Real i1 = -0.002;
-  // Pack design parameters
-  parameter Real SOC_init(unit = "1") = 0.5 "Initial State of Charge";
-  parameter Integer p = 5 "Number of Cells in Parallel";
-  parameter Integer s = 10 "Number of Cells in Series";  
-  parameter Real coolingArea(unit = "m2") = p * s * coolingArea_cell "Cooling Area";
-  Real chargeCapacity(unit = "A.h") = chargeCapacity_cell * p;
-  
+   
   
   
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
@@ -46,7 +51,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
     Placement(visible = true, transformation(origin = {-50, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Capacitor C2(C = C2_0, v(fixed = true)) annotation(
     Placement(visible = true, transformation(origin = {-14, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp * mass) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_bat_pack * m_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-70, 12}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor sensorCurrent annotation(
     Placement(visible = true, transformation(origin = {20, 52}, extent = {{11, 11}, {-11, -11}}, rotation = 180)));
@@ -62,24 +67,33 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
     Placement(visible = true, transformation(origin = {-90, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init(y = SOC_init) annotation(
     Placement(visible = true, transformation(origin = {42, -34}, extent = {{-16, -10}, {16, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression getChargeCapacity(y = chargeCapacity * 3600) annotation(
+  Modelica.Blocks.Sources.RealExpression getChargeCapacity(y = C_bat_pack * 3600) annotation(
     Placement(visible = true, transformation(origin = {39, -82}, extent = {{-19, -10}, {19, 10}}, rotation = 0)));
   VirtualFCS.Control.ChargeCounter chargeCounter annotation(
     Placement(visible = true, transformation(origin = {108, -58}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * coolingArea) annotation(
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * A_cool_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-10, -50}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
     Placement(visible = true, transformation(origin = {-50, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heatBoundary annotation(
     Placement(visible = true, transformation(origin = {-70, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * coolingArea) annotation(
+  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+
+protected
+  parameter Real Rohm_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
+  parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
+  parameter Real R2_0(unit = "Ohm") = 0.005 "Second RC Resistance";
+  parameter Real C1_0(unit = "F") = 5000 "First RC Capacitance";
+  parameter Real C2_0(unit = "F") = 20000 "Second RC Capacitance";
+  parameter Real A_cool_bat_pack = L_bat_pack * W_bat_pack;
+
 equation
 // ***DEFINE EQUATIONS ***//
 // Calculate the open-circuit voltage at given temperature and state of charge
-  OCV.v = s * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15)));
+  OCV.v = V_max_bat_pack * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15)))/V_chem_max;
 // Thermal equations
-  heatSource.Q_flow = p * s * abs((OCV.v - pin_p.v) * sensorCurrent.i + R0.R_actual * sensorCurrent.i ^ 2);
+  heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i + R0.R_actual * sensorCurrent.i ^ 2);
 // ***DEFINE CONNECTIONS ***//
   connect(pin_n, OCV.n) annotation(
     Line(points = {{-146, 52}, {-130, 52}, {-130, 52}, {-130, 52}}, color = {0, 0, 255}));
