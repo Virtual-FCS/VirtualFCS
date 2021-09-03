@@ -5,11 +5,11 @@ block EnergyManagementSystem "Implement algorithms to control the energy and pow
   parameter Real I_nom_FC_stack(unit = "A") = 100 "FC stack nominal operating current";
   parameter Real ramp_up(unit = "1/s") = 20 "FC stack current ramp up rate";
 
-  Modelica.Blocks.Sources.Constant shut_down(k = 0) annotation(
+  Modelica.Blocks.Sources.Constant ON(k = V_nom_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-70, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = true, uHigh = 0.8, uLow = 0.2) annotation(
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant setFuelCellCurrent(k = I_nom_FC_stack) annotation(
+  Modelica.Blocks.Sources.Constant OFF(k = 0) annotation(
     Placement(visible = true, transformation(origin = {-70, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Abs abs1 annotation(
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -30,9 +30,9 @@ equation
     Line(points = {{2, 0}, {16, 0}, {16, 0}, {18, 0}}, color = {0, 0, 127}));
   connect(hysteresis.y, switch1.u2) annotation(
     Line(points = {{-58, 0}, {-24, 0}, {-24, 0}, {-22, 0}}, color = {255, 0, 255}));
-  connect(shut_down.y, switch1.u1) annotation(
+  connect(ON.y, switch1.u1) annotation(
     Line(points = {{-58, 40}, {-40, 40}, {-40, 8}, {-22, 8}, {-22, 8}}, color = {0, 0, 127}));
-  connect(setFuelCellCurrent.y, switch1.u3) annotation(
+  connect(OFF.y, switch1.u3) annotation(
     Line(points = {{-58, -40}, {-40, -40}, {-40, -8}, {-22, -8}, {-22, -8}}, color = {0, 0, 127}));
   connect(sensorInterface, hysteresis.u) annotation(
     Line(points = {{-120, 0}, {-82, 0}, {-82, 0}, {-82, 0}}, color = {0, 0, 127}));
