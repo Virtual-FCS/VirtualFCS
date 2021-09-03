@@ -11,7 +11,7 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
   parameter Real C_D(unit = "1") = 0.26 "Drag coefficient";
   parameter Real D_tire(unit = "m") = 0.4318 "Tire Diameter";
   parameter Real R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
-  parameter Real V_load(unit = "V") = 200 "Load Voltage";
+  parameter Real V_load(unit = "V") = 240 "Load Voltage";
   parameter Boolean useRegenerativeBreaking = false annotation(
     choices(checkBox = true));
   // Efficiency coefficients
