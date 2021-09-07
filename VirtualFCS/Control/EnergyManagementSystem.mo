@@ -5,7 +5,7 @@ block EnergyManagementSystem "Implement algorithms to control the energy and pow
   parameter Real I_nom_FC_stack(unit = "A") = 100 "FC stack nominal operating current";
   parameter Real ramp_up(unit = "1/s") = 20 "FC stack current ramp up rate";
 
-  Modelica.Blocks.Sources.Constant ON(k = V_nom_bat_pack) annotation(
+  Modelica.Blocks.Sources.Constant ON(k = Vehicles.VehicleProfile.V_load) annotation(
     Placement(visible = true, transformation(origin = {-70, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = true, uHigh = 0.8, uLow = 0.2) annotation(
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
