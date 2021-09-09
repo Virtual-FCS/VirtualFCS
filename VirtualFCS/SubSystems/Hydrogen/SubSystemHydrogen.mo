@@ -7,6 +7,7 @@ model SubSystemHydrogen
   // Parameter definition
   parameter Real m_system_H2(unit = "kg") = 61 "H2 system mass";
   parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
+  parameter Real A_tank_H2(unit="m2") = 2 "H2 tank surface area";
   parameter Real p_tank_H2(unit="Pa") = 3500000 "H2 tank initial pressure";
   //*** INSTANTIATE COMPONENTS ***//
   // System
@@ -61,6 +62,14 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Routing.DeMultiplex3 controlSignals annotation(
     Placement(visible = true, transformation(origin = {-56, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 293.15) annotation(
+    Placement(visible = true, transformation(origin = {-122, 160}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
+  Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
+    Placement(visible = true, transformation(origin = {-100, 116}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 12) annotation(
+    Placement(visible = true, transformation(origin = {-60, 116}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_tank_H2) annotation(
+    Placement(visible = true, transformation(origin = {-140, 116}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(sensors, multiplex.y) annotation(
@@ -107,6 +116,16 @@ equation
     Line(points = {{-76, -12}, {-68, -12}, {-68, -12}, {-68, -12}}, color = {0, 0, 127}, thickness = 0.5));
   connect(sensors, subSystemHydrogenControl.signalInterface_H2) annotation(
     Line(points = {{146, 0}, {162, 0}, {162, -112}, {-160, -112}, {-160, -24}, {-120, -24}, {-120, -24}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
+    Line(points = {{-122, 150}, {-122, 150}, {-122, 136}, {-140, 136}, {-140, 126}, {-140, 126}}, color = {191, 0, 0}));
+  connect(fixedTemperature.port, convection.fluid) annotation(
+    Line(points = {{-122, 150}, {-122, 150}, {-122, 136}, {-100, 136}, {-100, 126}, {-100, 126}}, color = {191, 0, 0}));
+  connect(bodyRadiation.port_a, tankHydrogen.heatPort) annotation(
+    Line(points = {{-140, 106}, {-140, 106}, {-140, 100}, {-118, 100}, {-118, 92}, {-116, 92}}, color = {191, 0, 0}));
+  connect(convection.solid, tankHydrogen.heatPort) annotation(
+    Line(points = {{-100, 106}, {-100, 106}, {-100, 100}, {-118, 100}, {-118, 92}, {-116, 92}}, color = {191, 0, 0}));
+  connect(setConvectiveCoefficient.y, convection.Gc) annotation(
+    Line(points = {{-76, 116}, {-88, 116}, {-88, 116}, {-90, 116}}, color = {0, 0, 127}));
   annotation(
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-32, 90}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator"), Text(origin = {50, 14}, extent = {{-14, 4}, {22, -6}}, textString = "Recirculation blower")}),

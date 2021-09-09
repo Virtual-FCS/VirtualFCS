@@ -19,7 +19,7 @@ class DC_converter "An ideal DC-DC converter"
         rotation=90,
         origin={50,0})));
   Modelica.Blocks.Continuous.Integrator powerController(
-    initType=Modelica.Blocks.Types.Init.InitialOutput, k = 1e-6,
+    initType=Modelica.Blocks.Types.Init.InitialOutput, k = 1 / Ti,
     y_start=0) annotation (Placement(transformation(extent={{30,10},{10,30}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_nFC annotation (
       Placement(visible = true,transformation(origin = {-80, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0),

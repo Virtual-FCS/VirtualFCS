@@ -2,10 +2,18 @@ within VirtualFCS.Vehicles;
 
 class VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
   import Modelica.Blocks.Tables.Internal;
+  
+  
+  type vehicle_name = enumeration(Default "Default", Mirai "Mirai",  UserDefined "User Defined") annotation(
+    Evaluate = true);
+  parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default "Vehicle name";
+  //parameter
+  Real m(unit="kg") "mass of the vehicle";
+  
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // *** DECLARE PARAMETERS *** //
   // Parameters of the vehicle and the air
-  parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
+  //parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
   parameter Real rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
   parameter Real A_front(unit = "m2") = 2.7 "Front area of the vehicle";
   parameter Real C_D(unit = "1") = 0.26 "Drag coefficient";
@@ -41,6 +49,16 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
 
 equation
 // *** DEFINE EQUATIONS *** //
+
+if VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai then 
+    m=1850;
+    elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default then 
+    m=1980;
+    elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.UserDefined then 
+    m=1100;
+    
+   end if;
+
 // Redeclare variables
   V = vehicleVelocity;
 // Change of units (from km/h to m/s)
