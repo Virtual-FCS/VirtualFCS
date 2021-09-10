@@ -23,6 +23,10 @@ model DC_DC_Converter "DC controlled single phase DC/AC converter"
     Placement(transformation(extent = {{-8, -50}, {12, -30}})));
   Modelica.Blocks.Math.Gain gain(final k = -1) annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {0, 0})));
+  Modelica.Electrical.Analog.Basic.Resistor resistor(R = 0.001)  annotation(
+    Placement(visible = true, transformation(origin = {-90, -32}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
+  Modelica.Electrical.Analog.Basic.Resistor resistor1(R = 0.001)  annotation(
+    Placement(visible = true, transformation(origin = {80, 36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
 equation
   connect(currentSensor.n, signalVoltage.p) annotation(
     Line(points = {{-90, 26}, {-90, 26}, {-90, 10}}, color = {0, 0, 255}));
@@ -48,14 +52,18 @@ equation
     Line(points = {{90, -10}, {90, -10}, {90, 0}, {80, 0}}, color = {0, 0, 255}));
   connect(currentSensor.p, dc_p1) annotation(
     Line(points = {{-90, 46}, {-90, 46}, {-90, 60}, {-100, 60}}, color = {0, 0, 255}));
-  connect(signalVoltage.n, dc_n1) annotation(
-    Line(points = {{-90, -10}, {-90, -10}, {-90, -60}, {-100, -60}}, color = {0, 0, 255}));
-  connect(powerSensor.pc, dc_p2) annotation(
-    Line(points = {{80, 0}, {80, 60}, {100, 60}}, color = {0, 0, 255}));
   connect(variableCurrentSource.p, dc_n2) annotation(
     Line(points = {{80, -50}, {80, -50}, {80, -58}, {80, -58}, {80, -60}, {100, -60}}, color = {0, 0, 255}));
   connect(dc_n2, powerSensor.nv) annotation(
     Line(points = {{100, -60}, {90, -60}, {60, -60}, {60, -26}, {60, -10}, {70, -10}}, color = {0, 0, 255}));
+  connect(signalVoltage.n, resistor.p) annotation(
+    Line(points = {{-90, -10}, {-90, -10}, {-90, -22}, {-90, -22}}, color = {0, 0, 255}));
+  connect(resistor.n, dc_n1) annotation(
+    Line(points = {{-90, -42}, {-90, -42}, {-90, -60}, {-100, -60}, {-100, -60}}, color = {0, 0, 255}));
+  connect(powerSensor.pc, resistor1.n) annotation(
+    Line(points = {{80, 0}, {80, 0}, {80, 26}, {80, 26}}, color = {0, 0, 255}));
+  connect(resistor1.p, dc_p2) annotation(
+    Line(points = {{80, 46}, {80, 46}, {80, 58}, {100, 58}, {100, 60}}, color = {0, 0, 255}));
   annotation(
     defaultComponentName = "converter",
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "Low"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "High"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "="), Rectangle(origin = {-87, 79}, extent = {{-13, 21}, {187, -179}}), Line(origin = {0.792902, 1.64825}, points = {{-100.793, -101.648}, {99.2071, 98.3518}, {99.2071, 44.3518}})}),
