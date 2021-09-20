@@ -42,7 +42,7 @@ class DriveCycle
   end speed_profile_name;
  
 // *** INSTANTIATE COMPONENTS *** //
-  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(fileName = filepath, table = fill(0.0, 0, 2), tableName = table_Name, tableOnFile = true) annotation(
+  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic,fileName = filepath, smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative, table = fill(0.0, 0, 2), tableName = table_Name, tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-1, 0}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput y annotation(
     Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

@@ -9,7 +9,7 @@ model FuelCellSubSystems
 // H2 Subsystem Paramters
   parameter Real m_FC_subsystems(unit = "kg") = subSystemHydrogen.m_system_H2 + subSystemAir.m_system_air + subSystemCooling.m_system_coolant + batterySystem.m_bat_pack;
   parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit="Pa") = 3500000 "H2 tank initial pressure";
+  parameter Real p_tank_H2(unit="Pa") = 35000000 "H2 tank initial pressure";
 
 
   VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation(

@@ -8,7 +8,7 @@ model SubSystemHydrogen
   parameter Real m_system_H2(unit = "kg") = 61 "H2 system mass";
   parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
   parameter Real A_tank_H2(unit="m2") = 2 "H2 tank surface area";
-  parameter Real p_tank_H2(unit="Pa") = 3500000 "H2 tank initial pressure";
+  parameter Real p_tank_H2(unit="Pa") = 35000000 "H2 tank initial pressure";
   //*** INSTANTIATE COMPONENTS ***//
   // System
   // Interfaces and boundaries
@@ -19,7 +19,7 @@ model SubSystemHydrogen
   Modelica.Fluid.Interfaces.FluidPort_a port_StackToH2(redeclare package Medium = Anode_Medium) annotation(
     Placement(visible = true, transformation(origin = {77, -76}, extent = {{-9, -9}, {9, 9}}, rotation = 0), iconTransformation(origin = {60, 119}, extent = {{-18, -19}, {18, 19}}, rotation = 0)));
   // Vessels
-  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, nPorts = 1, p_start = p_tank_H2, use_HeatTransfer = false, use_portsData = false) annotation(
+  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, nPorts = 1, p_start = p_tank_H2, use_HeatTransfer = true, use_portsData = false) annotation(
     Placement(visible = true, transformation(origin = {-117, 74}, extent = {{17, -17}, {-17, 17}}, rotation = 90)));
   // Machines
   // Valves

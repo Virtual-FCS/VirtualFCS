@@ -2,15 +2,15 @@ within VirtualFCS.Electrochemical.Battery;
 
 model BatterySystem
   // Battery Pack Parameters
-  parameter Real m_bat_pack(unit = "kg") = 1 "Mass of the pack";
+  parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
   parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
   parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
   parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height";
   parameter Real Cp_bat_pack(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
-  parameter Real V_min_bat_pack(unit = "V") = 37.5 "Battery pack minimum voltage";
-  parameter Real V_nom_bat_pack(unit = "V") = 48 "Battery pack nominal voltage";
-  parameter Real V_max_bat_pack(unit = "V") = 54.75 "Battery pack maximum voltage";
-  parameter Real C_bat_pack(unit = "A.h") = 2700 "Battery pack nominal capacity";
+  parameter Real V_min_bat_pack(unit = "V") = 240 "Battery pack minimum voltage";
+  parameter Real V_nom_bat_pack(unit = "V") = 336 "Battery pack nominal voltage";
+  parameter Real V_max_bat_pack(unit = "V") = 403.2 "Battery pack maximum voltage";
+  parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
 
   VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped batteryPack(C_bat_pack = C_bat_pack, Cp_bat_pack = Cp_bat_pack, H_bat_pack = H_bat_pack, L_bat_pack = L_bat_pack, SOC_init = SOC_init, V_max_bat_pack = V_max_bat_pack, V_min_bat_pack = V_min_bat_pack, V_nom_bat_pack = V_nom_bat_pack, W_bat_pack = W_bat_pack, m_bat_pack = m_bat_pack)   annotation(
