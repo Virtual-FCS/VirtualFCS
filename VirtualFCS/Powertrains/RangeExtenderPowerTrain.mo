@@ -18,7 +18,7 @@ model RangeExtenderPowerTrain
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   parameter Real V_rated_FC_stack(unit="V") = 57.9 "FC stack maximum operating voltage"; 
   parameter Real I_rated_FC_stack(unit="A") = 300 "FC stack minimum operating voltage";
-  parameter Real i_L_FC_stack(unit = "A") = 3 * I_rated_FC_stack "FC stack maximum limiting current";
+  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack maximum limiting current";
   parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
 
@@ -46,7 +46,7 @@ model RangeExtenderPowerTrain
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = C_bat_pack, Cp_bat_pack = Cp_bat_pack, H_bat_pack = H_bat_pack, L_bat_pack = L_bat_pack, SOC_init = SOC_init, V_max_bat_pack = V_max_bat_pack, V_min_bat_pack = V_min_bat_pack, V_nom_bat_pack = V_nom_bat_pack, W_bat_pack = W_bat_pack)  annotation(
     Placement(visible = true, transformation(origin = {-28, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrical.DCConverter converter(vDCref = V_HV_Bus)  annotation(
-    Placement(visible = true, transformation(origin = { -28, 28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   VirtualFCS.Electrical.DC_converter dC_converter annotation(
     Placement(visible = true, transformation(origin = {22, -44}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
   VirtualFCS.Control.EnergyManagementSystem energyManagementSystem annotation(
@@ -55,13 +55,13 @@ equation
   connect(pin_n, ground.p) annotation(
     Line(points = {{-40, 96}, {-68, 96}, {-68, 14}}, color = {0, 0, 255}));
   connect(converter.dc_n2, batterySystem.pin_n) annotation(
-    Line(points = {{-34, 18}, {-34, -22}, {-32, -22}, {-32, -62}}, color = {0, 0, 255}));
+    Line(points = {{-6, 20}, {-6, -22}, {-32, -22}, {-32, -62}}, color = {0, 0, 255}));
   connect(converter.dc_p2, batterySystem.pin_p) annotation(
-    Line(points = {{-22, 18}, {-22, -36}, {-24, -36}, {-24, -62}}, color = {0, 0, 255}));
+    Line(points = {{6, 20}, {6, -36}, {-24, -36}, {-24, -62}}, color = {0, 0, 255}));
   connect(converter.dc_n1, pin_n) annotation(
-    Line(points = {{-34, 38}, {-38, 38}, {-38, 96}, {-40, 96}}, color = {0, 0, 255}));
+    Line(points = {{-6, 40}, {-38, 40}, {-38, 96}, {-40, 96}}, color = {0, 0, 255}));
   connect(converter.dc_p1, pin_p) annotation(
-    Line(points = {{-22, 38}, {-22, 80}, {40, 80}, {40, 96}}, color = {0, 0, 255}));
+    Line(points = {{6, 40}, {6, 80}, {40, 80}, {40, 96}}, color = {0, 0, 255}));
   connect(energyManagementSystem.sensorInterface, batterySystem.sensorOutput) annotation(
     Line(points = {{-54, -72}, {-40, -72}, {-40, -72}, {-38, -72}}, color = {0, 0, 127}));
   connect(energyManagementSystem.controlInterface, dC_converter.I_Ref) annotation(

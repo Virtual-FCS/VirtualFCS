@@ -12,7 +12,7 @@ model CycleBatteryCell_RealTime "Example demonstrating constant-current constant
     Placement(visible = true, transformation(origin = {74, 10}, extent = {{14, -10}, {-14, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init(y = liIonCell.SOC_init) annotation(
     Placement(visible = true, transformation(origin = {75, 40}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
-  VirtualFCS.Control.BatteryManagementSystem BMS(p = 1, s = 1) annotation(
+  VirtualFCS.Control.BatteryManagementSystem BMS(N_s = 1) annotation(
     Placement(visible = true, transformation(origin = {0.5, 30}, extent = {{-31.5, -21}, {31.5, 21}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
     Placement(visible = true, transformation(origin = {20, -70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -22,7 +22,7 @@ model CycleBatteryCell_RealTime "Example demonstrating constant-current constant
     Placement(visible = true, transformation(origin = {-70, -88}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * liIonCell.coolingArea) annotation(
     Placement(visible = true, transformation(origin = {75, -70}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
-  Modelica_DeviceDrivers.Blocks.OperatingSystem.SynchronizeRealtime synchronizeRealtime(enable = true) annotation(
+  Modelica_DeviceDrivers.Blocks.OperatingSystem.RealtimeSynchronize realtimeSynchronize annotation(
     Placement(visible = true, transformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(getSOC_init.y, BMS.SOC_init) annotation(

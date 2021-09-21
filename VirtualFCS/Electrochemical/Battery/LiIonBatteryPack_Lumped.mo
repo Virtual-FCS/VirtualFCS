@@ -3,7 +3,7 @@ within VirtualFCS.Electrochemical.Battery;
 model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
   // DECLARE PARAMETERS //
   // Pack-level parameters
-  parameter Real m_bat_pack(unit = "kg") = 1 "Mass of the pack";
+  parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
   parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
   parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
   parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height";
@@ -11,18 +11,15 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
   parameter Real V_min_bat_pack(unit = "V") = 37.5 "Battery pack minimum voltage";
   parameter Real V_nom_bat_pack(unit = "V") = 48 "Battery pack nominal voltage";
   parameter Real V_max_bat_pack(unit = "V") = 54.75 "Battery pack maximum voltage";
-  parameter Real C_bat_pack(unit = "A.h") = 2700 "Battery pack nominal capacity";
-  parameter Real C_chem_max(unit = "A.h") = 180 "Battery cell nominal capacity";
-
+  parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
-  
+
   parameter Real N_s = ceil(V_max_bat_pack / V_chem_max);
-  parameter Real N_p = ceil(C_bat_pack / C_chem_max);
   Real vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
-  
-  
+
+
   // ADD dropdown menu for selecting chemistry type
-  
+
   // Coefficients for open-circuit voltage calculation
   // LFP
   parameter Real V_chem_max = 3.65;
@@ -35,9 +32,9 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
   Real g1 = -0.06;
   Real h1 = -0.02;
   Real i1 = -0.002;
-   
-  
-  
+
+
+
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {146, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
@@ -179,7 +176,7 @@ protected
             <td align=\"Left\">s</td>
             <td>=2</td>
             <td align=\"Right\">Cells in series</td>
-         </tr>         
+         </tr>
       </tbody></table>
 </body></html>"));
 

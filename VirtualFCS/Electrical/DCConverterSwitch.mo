@@ -15,7 +15,7 @@ model DCConverterSwitch "DC controlled single phase DC/AC converter"
   Modelica.Blocks.Math.Feedback feedback annotation(
     Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 270, origin = {-30, 0})));
   Modelica.Electrical.Analog.Sources.SignalCurrent variableCurrentSource annotation(
-    Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {80, -40})));
+    Placement(visible = true, transformation(origin = {80, -40}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.PowerSensor powerSensor annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {80, -10})));
   Modelica.Blocks.Continuous.Integrator integrator(k = 1 / vDCref / Ti) annotation(
@@ -47,14 +47,10 @@ equation
     Line(points = {{-11, 1.33227e-15}, {-21, 1.33227e-15}, {-21, 0}, {-10, 0}, {-22, 0}}, color = {0, 0, 127}));
   connect(gain.u, powerSensor.power) annotation(
     Line(points = {{12, -1.33227e-15}, {12, 0}, {40, 0}, {60, 0}, {60, -2}, {69, -2}}, color = {0, 0, 127}));
-  connect(powerSensor.nc, variableCurrentSource.n) annotation(
-    Line(points = {{80, -20}, {80, -30}}, color = {0, 0, 255}));
   connect(powerSensor.pv, powerSensor.pc) annotation(
     Line(points = {{90, -10}, {90, -10}, {90, 0}, {80, 0}}, color = {0, 0, 255}));
   connect(currentSensor.p, dc_p1) annotation(
     Line(points = {{-90, 54}, {-90, 60}, {-100, 60}}, color = {0, 0, 255}));
-  connect(variableCurrentSource.p, dc_n2) annotation(
-    Line(points = {{80, -50}, {80, -50}, {80, -58}, {80, -58}, {80, -60}, {100, -60}}, color = {0, 0, 255}));
   connect(dc_n2, powerSensor.nv) annotation(
     Line(points = {{100, -60}, {90, -60}, {60, -60}, {60, -26}, {60, -10}, {70, -10}}, color = {0, 0, 255}));
   connect(signalVoltage.n, resistor2.p) annotation(
@@ -68,7 +64,7 @@ equation
   connect(integrator.y, switch1.u1) annotation(
     Line(points = {{4, -40}, {22, -40}, {22, -40}, {24, -40}}, color = {0, 0, 127}));
   connect(switch1.y, variableCurrentSource.i) annotation(
-    Line(points = {{48, -48}, {52, -48}, {52, -40}, {68, -40}, {68, -40}}, color = {0, 0, 127}));
+    Line(points = {{48, -48}, {52, -48}, {52, -40}, {68, -40}}, color = {0, 0, 127}));
   connect(switch1.u3, const.y) annotation(
     Line(points = {{24, -56}, {8, -56}, {8, -72}, {2, -72}, {2, -72}}, color = {0, 0, 127}));
   connect(switch1.u2, u) annotation(
@@ -83,6 +79,10 @@ equation
     Line(points = {{-78, 14}, {-60, 14}, {-60, -68}, {-60, -68}}, color = {0, 0, 127}));
   connect(product.u2, realExpression.y) annotation(
     Line(points = {{-62, 24}, {-68, 24}, {-68, 14}, {-60, 14}, {-60, -68}, {-60, -68}}, color = {0, 0, 127}));
+  connect(powerSensor.nc, variableCurrentSource.p) annotation(
+    Line(points = {{80, -20}, {80, -20}, {80, -30}, {80, -30}}, color = {0, 0, 255}));
+  connect(variableCurrentSource.n, dc_n2) annotation(
+    Line(points = {{80, -50}, {80, -50}, {80, -60}, {100, -60}, {100, -60}}, color = {0, 0, 255}));
   annotation(
     defaultComponentName = "converter",
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "hi"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "lo"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "=")}),

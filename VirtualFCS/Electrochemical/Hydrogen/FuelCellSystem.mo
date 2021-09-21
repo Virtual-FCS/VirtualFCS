@@ -12,7 +12,7 @@ model FuelCellSystem
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage"; 
   parameter Real I_rated_FC_stack(unit="A") = 300 "Minimum stack operating voltage";
-  parameter Real i_L_FC_stack(unit = "A") = 1.3 * I_rated_FC_stack "FC stack cell maximum limiting current";
+  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack cell maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
   // H2 Subsystem Paramters
   parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";

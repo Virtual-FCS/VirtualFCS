@@ -4,7 +4,7 @@ model CycleBatteryCell "Example demonstrating constant-current constant-voltage 
   extends Modelica.Icons.Example;
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(visible = true, transformation(origin = {-60, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell(SOC_init = 0.01) annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell(SOC_init = 0.5) annotation(
     Placement(visible = true, transformation(origin = {0, -28}, extent = {{-37, -37}, {37, 37}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.PulseCurrent pulseCurrent(I = 4.4, offset = -2.2, period = 7200, width = 50) annotation(
     Placement(visible = true, transformation(origin = {0, 80}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
@@ -12,15 +12,15 @@ model CycleBatteryCell "Example demonstrating constant-current constant-voltage 
     Placement(visible = true, transformation(origin = {74, 10}, extent = {{14, -10}, {-14, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init(y = liIonCell.SOC_init) annotation(
     Placement(visible = true, transformation(origin = {75, 40}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
-  VirtualFCS.Control.BatteryManagementSystem BMS(p = 1, s = 1) annotation(
+  VirtualFCS.Control.BatteryManagementSystem BMS(N_s = 1) annotation(
     Placement(visible = true, transformation(origin = {0.5, 30}, extent = {{-31.5, -21}, {31.5, 21}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
     Placement(visible = true, transformation(origin = {20, -70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * liIonCell.coolingArea)  annotation(
+  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * liIonCell.coolingArea) annotation(
     Placement(visible = true, transformation(origin = {-20, -70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 298.15)  annotation(
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 298.15) annotation(
     Placement(visible = true, transformation(origin = {-70, -88}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * liIonCell.coolingArea)  annotation(
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * liIonCell.coolingArea) annotation(
     Placement(visible = true, transformation(origin = {75, -70}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
 equation
   connect(getSOC_init.y, BMS.SOC_init) annotation(
@@ -49,5 +49,5 @@ equation
     Line(points = {{18, 80}, {40, 80}, {40, 58}, {10, 58}, {10, 48}, {12, 48}}, color = {0, 0, 255}));
   annotation(
     Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery cell. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;</body></html>"),
-    experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-6, Interval = 1));
+    experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell;

@@ -16,11 +16,11 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   parameter Real V_rated_FC_stack(unit="V") = 57.9 "FC stack rated voltage"; 
   parameter Real I_rated_FC_stack(unit="A") = 300 "FC stack rated current";
-  parameter Real i_L_FC_stack(unit = "A") = 1.3 * I_rated_FC_stack "FC stack cell maximum limiting current";
+  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack cell maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
   parameter Real A_FC_surf(unit = "m2") = 2 * (L_FC_stack * W_FC_stack) + 2 * (L_FC_stack * H_FC_stack) + 2 * (W_FC_stack * H_FC_stack) "FC stack surface area";
   // Electrochemical parameters
-  parameter Real i_0_FC_stack(unit = "A") = 0.0002 "FC stack cell exchange current";
+  parameter Real i_0_FC_stack(unit = "A") = 2 "FC stack cell exchange current";
   parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.025 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.25 "FC stack cell trasport limitation factor";
