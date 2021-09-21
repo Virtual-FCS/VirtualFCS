@@ -24,7 +24,7 @@ model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a 
     Placement(visible = true, transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init_LV(y = liIonBatteryPack_LowVoltage.SOC_init) annotation(
     Placement(visible = true, transformation(origin = {47, -58}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
-  VirtualFCS.Control.BatteryManagementSystem BMS_LV(p = liIonBatteryPack_LowVoltage.p, s = liIonBatteryPack_LowVoltage.s) annotation(
+  VirtualFCS.Control.BatteryManagementSystem BMS_LV(p = liIonBatteryPack_LowVoltage.N_p, s = liIonBatteryPack_LowVoltage.N_s) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getChargeCapacity_LV(y = liIonBatteryPack_LowVoltage.chargeCapacity * 3600) annotation(
     Placement(visible = true, transformation(origin = {47, -70}, extent = {{13, -9}, {-13, 9}}, rotation = 0)));
@@ -36,11 +36,11 @@ model VehicleRangeExtender "Example of a hybrid fuel cell & battery system as a 
     Placement(visible = true, transformation(origin = {-26, -24}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_HighVoltage(SOC_init = 0.9, p = 16, s = 32) annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_HighVoltage(SOC_init = 0.9, N_p = 16, N_s = 32) annotation(
     Placement(visible = true, transformation(origin = {61.6687, 36.8875}, extent = {{-15.1687, -9.10122}, {15.1687, 10.1125}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_LowVoltage(SOC_init = 0.9, p = 10, s = 6) annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_LowVoltage(SOC_init = 0.9, N_p = 10, N_s = 6) annotation(
     Placement(visible = true, transformation(origin = {1.76023, -88.5439}, extent = {{-13.2602, -7.95614}, {13.2602, 8.84016}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(mass = 100) annotation(
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(m_FC_stack = 100) annotation(
     Placement(visible = true, transformation(origin = {0, 6}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(visible = true, transformation(origin = {-38, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

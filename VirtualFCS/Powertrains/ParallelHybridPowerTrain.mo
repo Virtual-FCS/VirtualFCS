@@ -55,7 +55,7 @@ model ParallelHybridPowerTrain
     Placement(visible = true, transformation(origin = {22, -44}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   Modelica.Blocks.Sources.Step step(height = 50, startTime = 25)  annotation(
     Placement(visible = true, transformation(origin = {0, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile2 vehicleProfile2(V_load = V_HV_Bus)  annotation(
+  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(V_load = V_HV_Bus)  annotation(
     Placement(visible = true, transformation(origin = {-67, 137}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
   Modelica.Blocks.Sources.Ramp ramp(duration = 10, height = 50, offset = 10)  annotation(
     Placement(visible = true, transformation(origin = {-138, 138}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -90,11 +90,11 @@ equation
     Line(points = {{12, -34}, {-24, -34}, {-24, -62}, {-24, -62}}, color = {0, 0, 255}));
   connect(step.y, dC_converter.I_Ref) annotation(
     Line(points = {{12, -2}, {22, -2}, {22, -32}, {22, -32}}, color = {0, 0, 127}));
-  connect(vehicleProfile2.pin_n, pin_n) annotation(
+  connect(vehicleProfile.pin_n, pin_n) annotation(
     Line(points = {{-54, 130}, {-40, 130}, {-40, 96}}, color = {0, 0, 255}));
-  connect(vehicleProfile2.pin_p, pin_p) annotation(
+  connect(vehicleProfile.pin_p, pin_p) annotation(
     Line(points = {{-54, 144}, {40, 144}, {40, 96}}, color = {0, 0, 255}));
-  connect(ramp.y, vehicleProfile2.vehicleVelocity) annotation(
+  connect(ramp.y, vehicleProfile.vehicleVelocity) annotation(
     Line(points = {{-126, 138}, {-86, 138}, {-86, 138}, {-84, 138}}, color = {0, 0, 127}));
 protected
   annotation(
