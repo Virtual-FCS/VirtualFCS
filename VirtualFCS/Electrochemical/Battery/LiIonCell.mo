@@ -97,5 +97,98 @@ equation
   annotation(
     Icon(graphics = {Rectangle(origin = {4, -9}, fillColor = {85, 170, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-104, 49}, {96, -31}}), Rectangle(origin = {104, 4}, fillColor = {200, 200, 200}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-4, 20}, {10, -28}}), Text(origin = {-19, 70}, lineColor = {0, 0, 255}, extent = {{-37, 18}, {57, -32}}, textString = "%name"), Text(origin = {-79, 10}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {57, -32}}, textString = "-"), Text(origin = {87, 2}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {31, -16}}, textString = "+")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body>The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the internal electrochemical reaction (internal resistance) of a lithium ion cell.<div>The model comes pre-programmed with default parameters for both lithium iron phosphate (LFP) and nickel manganese cobalt (NMC) battery cells. The state-of-charge of the battery is calculated using a charge counting method.&nbsp;</div><div><div><div><br></div><div><div><b>Default Battery Parameters</b></div></div><div>chemistry <span class=\"Apple-tab-span\" style=\"white-space:pre\">			</span>=&nbsp;LFP-Graphite</div><div>format&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">			</span>= 18650 Cylindrical</div><div>mass <span class=\"Apple-tab-span\" style=\"white-space:pre\">				</span>=&nbsp;45 g</div><div>chargeCapacity <span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 2.2 Ah</div><div><br></div><div><div><b>Default Equivalent Circuit Parameters</b></div><div>R0 = 20 mOhm</div><div>R1 = 10 mOhm</div><div>R2 = 5 mOhm</div><div>C1 = 5000 F</div><div>C2 = 20000 F</div><div><br></div><div><br></div><div><div>The heat generated from the electrochemical reaction is approximated as:</div><div></div></div><div><b><br></b></div><div><b>Default Thermal Parameters</b></div><div>specificHeatCapacity&nbsp;<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>= 1000 J/(kg*K)</div><div>surfaceEmissivity &nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.95</div><div>coolingArea&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 0.003675 m2</div><div><br></div><div><div><div><b>References</b></div></div></div></div><div>[1] Vichard et al. A method to estimate battery SOH indicators based on vehicles operating data only, Energy, vol. 225, 15 June 2021, 120235.</div><div><br></div><div>[2] Shen et al. The Co-estimation of State of Charge, State of Health, and State of Function for Lithium-Ion Batteries in Electric Vehicles, IEEE Transactions on Vehicular Technology, vol. 67, no. 1, January 2018.</div><div><br></div><div>[3] Lievre et al. Practical Online Estimation of Lithium-Ion Battery Apparent Series Resistance for Mild Hybrid Vehicles, IEEE Transactions on Vehicular Technology, vol. 65, no. 6, June 2016.</div></div></div></body></html>"));
+    Documentation(info = "<html><head></head><body>The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the internal electrochemical reaction (internal resistance) of a lithium ion cell.<div>The model comes pre-programmed with default parameters for both lithium iron phosphate (LFP) and nickel manganese cobalt (NMC) battery cells. The state-of-charge of the battery is calculated using a charge counting method.&nbsp;</div><div><div><div><br></div><div><div>
+
+<br>
+<br>
+
+<table border=\"0.9\">
+<caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Battery Parameters</u></b></caption>
+<tbody><tr><th>Parameter name</th>
+            <th align=\"Left\">Value</th>
+            
+         </tr>
+         <tr>
+            <td align=\"Left\">Chemistry</td>
+            <td>=LFP-Graphite </td>
+            
+         </tr>
+         
+         <tr>
+            <td align=\"Left\">Size</td>
+            <td>=18650 Cylindrical</td>
+	     
+         </tr>
+         <tr>
+            <td align=\"Left\">mass</td>
+            <td>=45</td>
+            
+         </tr>
+	   <tr>
+            <td align=\"Left\">Charge capacity </td>
+            <td>=2.2</td>
+            
+         </tr>
+         </tbody></table>
+         
+<br>
+<br>
+
+<table border=\"0.9\">
+<caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Equivalent Circuit Parameters</u></b></caption>
+<tbody><tr><th>Parameter name</th>
+            <th>Value</th>
+            <th>Unit</th>
+         </tr><tr>
+            <td align=\"Left\">R_0</td>
+            <td>=0.02</td>
+	      <td align=\"Right\">Ohm</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">R_1</td>
+            <td>=0.01</td>
+            <td align=\"Right\">Ohm</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">R_2</td>
+            <td>=0.005</td>
+            <td align=\"Right\">Ohm</td>
+         </tr>
+	   <tr>
+            <td align=\"Left\">C_1</td>
+            <td>=5000</td>
+            <td align=\"Right\">F</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">C_2</td>
+            <td>=20000</td>
+            <td align=\"Right\">F</td>
+         </tr>         
+      </tbody></table>
+<br>
+<br>
+
+<table border=\"0.9\">
+<caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Thermal Parameters</u></b></caption>
+<tbody><tr><th>Parameter name</th>
+            <th>Value</th>
+            <th>Unit</th>
+         </tr><tr>
+            <td align=\"Left\">specificHeatCapacity</td>
+            <td>=1000</td>
+	      <td align=\"Right\">J/(kg*K)</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">surfaceEmissivity</td>
+            <td>=0.95</td>
+            <td align=\"Right\"></td>
+         </tr>
+         <tr>
+            <td align=\"Left\">coolingArea</td>
+            <td>=0.003675</td>
+            <td align=\"Right\">m<sup>2</sup></td>
+         </tr>
+      </tbody></table>
+
+</div></div></div></div></body></html>"));
 end LiIonCell;

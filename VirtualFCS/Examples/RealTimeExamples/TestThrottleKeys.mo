@@ -3,7 +3,7 @@ within VirtualFCS.Examples.RealTimeExamples;
 model TestThrottleKeys
   extends Modelica.Icons.Example;
   VirtualFCS.XInTheLoop.UserInTheLoop.ThrottleKeys throttleKeys annotation(
-    Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {0, 2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
 equation
 
 annotation(

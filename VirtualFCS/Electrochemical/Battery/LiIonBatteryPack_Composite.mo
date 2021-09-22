@@ -73,5 +73,41 @@ protected
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell models</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass <span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 2.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>kg</div><div>Cp&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 1000&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>= 0.5&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span>-</div><div>p<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 5<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>Cells in parallel</div><div>s&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>= 10&nbsp;<span class=\"Apple-tab-span\" style=\"white-space:pre\">		</span>Cells in series</div><div><br></div></body></html>"));
+  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell models</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
+
+<br>
+<br>
+
+<table border=\"0.9\">
+<caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Parameters</u></b></caption>
+<tbody><tr><th>Parameter name</th>
+            <th>Value</th>
+            <th>Unit</th>
+         </tr><tr>
+            <td align=\"Left\">mass</td>
+            <td>=2.5</td>
+	      <td align=\"Right\">kg</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">Cp</td>
+            <td>=1000</td>
+            <td align=\"Right\">J/(kg.K)</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">SOC_init</td>
+            <td>=0.5</td>
+            <td align=\"Right\">-</td>
+         </tr>
+	   <tr>
+            <td align=\"Left\">p</td>
+            <td>=5</td>
+            <td align=\"Right\">Cells in parallel</td>
+         </tr>
+         <tr>
+            <td align=\"Left\">s</td>
+            <td>=2</td>
+            <td align=\"Right\">Cells in series</td>
+         </tr>         
+      </tbody></table>
+</body></html>"));
 end LiIonBatteryPack_Composite;

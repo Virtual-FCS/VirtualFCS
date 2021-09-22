@@ -41,7 +41,7 @@ model PumpElectricDC
   Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {21, -32}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal / 9.5493) annotation(
-    Placement(visible = true, transformation(origin = {-61, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
   torque.tau = -9.5488 * pump.W_total / pump.N;
 //*** DEFINE CONNECTIONS ***//
@@ -76,9 +76,9 @@ equation
   connect(gain.u, speedSensor.w) annotation(
     Line(points = {{22, -24}, {20, -24}, {20, 34}, {40, 34}, {40, 32}}, color = {0, 0, 127}));
   connect(gain1.y, dCMotorControl.setSpeedInput) annotation(
-    Line(points = {{-56, 42}, {-46, 42}, {-46, 40}, {-44, 40}}, color = {0, 0, 127}));
+    Line(points = {{-54.5, 41}, {-46, 41}, {-46, 40}, {-44, 40}}, color = {0, 0, 127}));
   connect(contol_input, gain1.u) annotation(
-    Line(points = {{-72, 66}, {-56, 66}, {-56, 54}, {-76, 54}, {-76, 42}, {-66, 42}, {-66, 42}}, color = {0, 0, 127}));
+    Line(points = {{-72, 66}, {-56, 66}, {-56, 54}, {-76, 54}, {-76, 41}, {-66, 41}}, color = {0, 0, 127}));
   connect(dCMotorControl.measuredSpeedInput, speedSensor.w) annotation(
     Line(points = {{4, 40}, {40, 40}, {40, 32}, {40, 32}}, color = {0, 0, 127}));
 protected
