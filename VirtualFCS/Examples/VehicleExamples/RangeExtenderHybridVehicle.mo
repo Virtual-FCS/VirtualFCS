@@ -2,7 +2,6 @@ within VirtualFCS.Examples.VehicleExamples;
 
 model RangeExtenderHybridVehicle
   extends Modelica.Icons.Example;
-  extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack = 50, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation(
