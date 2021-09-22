@@ -47,7 +47,7 @@ model SubSystemHydrogen
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-15, -11}, extent = {{11, 11}, {-11, -11}}, rotation = 0), iconTransformation(origin = {-30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput sensors[2] annotation(
-    Placement(visible = true, transformation(origin = {146, -1}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -60}, extent = {{10, 10}, {-10, -10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {138, -1}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -60}, extent = {{10, 10}, {-10, -10}}, rotation = 0)));
   Modelica.Blocks.Routing.Multiplex2 multiplex(n1 = 1, n2 = 1) annotation(
     Placement(visible = true, transformation(origin = {112, -21}, extent = {{-8, 8}, {8, -8}}, rotation = 0)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, m_flow_nominal = 1e-5, m_flow_small = 1e-7) annotation(
@@ -73,7 +73,7 @@ model SubSystemHydrogen
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(sensors, multiplex.y) annotation(
-    Line(points = {{146, -1}, {122.5, -1}, {122.5, -21}, {121, -21}}, color = {0, 0, 127}));
+    Line(points = {{138, -1}, {122.5, -1}, {122.5, -21}, {121, -21}}, color = {0, 0, 127}));
   connect(teeJunctionIdeal.port_2, port_H2ToStack) annotation(
     Line(points = {{36, 74}, {79, 74}}, color = {255, 0, 0}, thickness = 1));
   connect(teeJunctionIdeal2.port_1, port_StackToH2) annotation(
@@ -115,6 +115,7 @@ equation
   connect(subSystemHydrogenControl.controlInterface, controlSignals.u) annotation(
     Line(points = {{-76, -12}, {-68, -12}, {-68, -12}, {-68, -12}}, color = {0, 0, 127}, thickness = 0.5));
   connect(sensors, subSystemHydrogenControl.signalInterface_H2) annotation(
+
     Line(points = {{146, 0}, {162, 0}, {162, -112}, {-160, -112}, {-160, -24}, {-120, -24}, {-120, -24}}, color = {0, 0, 127}, thickness = 0.5));
   connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
     Line(points = {{-122, 150}, {-122, 150}, {-122, 136}, {-140, 136}, {-140, 126}, {-140, 126}}, color = {191, 0, 0}));
@@ -126,6 +127,7 @@ equation
     Line(points = {{-100, 106}, {-100, 106}, {-100, 100}, {-118, 100}, {-118, 92}, {-116, 92}}, color = {191, 0, 0}));
   connect(setConvectiveCoefficient.y, convection.Gc) annotation(
     Line(points = {{-76, 116}, {-88, 116}, {-88, 116}, {-90, 116}}, color = {0, 0, 127}));
+
   annotation(
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-32, 90}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator"), Text(origin = {50, 14}, extent = {{-14, 4}, {22, -6}}, textString = "Recirculation blower")}),

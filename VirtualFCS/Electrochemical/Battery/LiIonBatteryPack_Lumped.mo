@@ -2,6 +2,7 @@ within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
   // DECLARE PARAMETERS //
+
   // Pack-level parameters
   parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
   parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
@@ -19,7 +20,6 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
 
 
   // ADD dropdown menu for selecting chemistry type
-
   // Coefficients for open-circuit voltage calculation
   // LFP
   parameter Real V_chem_max = 3.65;
