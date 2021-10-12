@@ -106,7 +106,7 @@ equation
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = ((1.481 - V_cell) * currentSensor.i + currentSensor.i ^ 2 * R_ohmic.R_actual) * N_FC_stack;
+  P_th = ((1.481 - V_cell) * currentSensor.i + currentSensor.i ^ 2 * R_ohmic.R_actual);
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
