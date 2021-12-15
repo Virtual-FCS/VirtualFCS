@@ -29,9 +29,9 @@ equation
     Line(points = {{2, 0}, {16, 0}, {16, 0}, {18, 0}}, color = {0, 0, 127}));
   connect(hysteresis.y, switch1.u2) annotation(
     Line(points = {{-58, 0}, {-24, 0}, {-24, 0}, {-22, 0}}, color = {255, 0, 255}));
-  connect(ON.y, switch1.u1) annotation(
+  connect(shut_down.y, switch1.u1) annotation(
     Line(points = {{-58, 40}, {-40, 40}, {-40, 8}, {-22, 8}, {-22, 8}}, color = {0, 0, 127}));
-  connect(OFF.y, switch1.u3) annotation(
+  connect(setFuelCellCurrent.y, switch1.u3) annotation(
     Line(points = {{-58, -40}, {-40, -40}, {-40, -8}, {-22, -8}, {-22, -8}}, color = {0, 0, 127}));
   connect(sensorInterface, hysteresis.u) annotation(
     Line(points = {{-120, 0}, {-82, 0}, {-82, 0}, {-82, 0}}, color = {0, 0, 127}));
