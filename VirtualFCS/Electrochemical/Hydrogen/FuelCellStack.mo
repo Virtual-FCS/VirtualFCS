@@ -106,7 +106,7 @@ equation
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = ((1.481 - V_cell) * currentSensor.i + currentSensor.i ^ 2 * R_ohmic.R_actual) * N_FC_stack;
+  P_th = (1.481 - V_cell) * currentSensor.i + currentSensor.i ^ 2 * R_ohmic.R_actual;
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
@@ -188,8 +188,8 @@ equation
 <td align=\"Left\">J/(kg.K)</td>
 </tr>
 <tr>
-<td align=\"Left\">N_cell</td>
-<td>=100</td>
+<td align=\"Left\">N_FC_stack</td>
+<td>=90</td>
 <td align=\"Right\">-</td>
 </tr>
 <tr>
@@ -199,12 +199,12 @@ equation
 </tr>
 <tr>
 <td align=\"Left\">i_0</td>
-<td>=0.0002</td>
+<td>=2</td>
 <td align=\"Right\">A</td>
 </tr>
 <tr>
 <td align=\"Left\">i_L</td>
-<td>=520</td>
+<td>=510</td>
 <td align=\"Right\">A</td>
 </tr>
 <tr>
