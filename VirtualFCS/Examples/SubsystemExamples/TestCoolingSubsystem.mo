@@ -34,7 +34,7 @@ equation
     Diagram,
     Icon,
   __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian,newInst aliasConflicts",
-  Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the cooling subsystem both for optimization and troubleshooting purposes.<div><br></div><div>
+  Documentation(info = "<html><head></head><body><font size=\"4\" face=\"Arial\">This example is intended as a means to evaluate the performance of the cooling subsystem both for optimization and troubleshooting purposes.</font><div><font size=\"4\" face=\"Arial\"><br></font></div><div>
 
 
 
@@ -699,7 +699,7 @@ equation
 
 <!--StartFragment-->
 
-<p class=\"MsoNormal\">What it does-&nbsp;<o:p></o:p>Significance/purpose</p><p class=\"MsoNormal\">
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\">What it does-&nbsp;<o:p></o:p>Significance/purpose</font></p><p class=\"MsoNormal\">
 
 
 
@@ -1364,31 +1364,28 @@ equation
 
 
 
-<!--StartFragment--><span style=\"font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;mso-ascii-theme-font:
-minor-latin;mso-fareast-font-family:Calibri;mso-fareast-theme-font:minor-latin;
-mso-hansi-theme-font:minor-latin;mso-bidi-theme-font:minor-latin;mso-ansi-language:
-EN-GB;mso-fareast-language:EN-US;mso-bidi-language:AR-SA\">Cooling system regulates the stack working
+<!--StartFragment--><font size=\"4\" face=\"Arial\">Cooling system regulates the stack working
 temperature to its setpoint, takes away the electrochemical reaction heat
-generated through circulated cooling water. In contemprary automotive vehicles, a cooling system uses mixture of 50% ethylene glycol and 50% water as the coolant as it </span><span style=\"font-family: Calibri, sans-serif; font-size: 11pt;\">can
-operate at sub-zero temperatures.&nbsp;</span><br></p>
+generated through circulated cooling water. In contemprary automotive vehicles, a cooling system uses mixture of 50% ethylene glycol and 50% water as the coolant as it can
+operate at sub-zero temperatures.&nbsp;<br></font></p>
 
-<p class=\"MsoNormal\">References to base model/related packages<o:p></o:p></p>
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\">References to base model/related packages<o:p></o:p></font></p>
 
-<p class=\"MsoNormal\"><a href=\"VirtualFCS.SubSystems.Cooling.SubSystemCooling\">Cooling</a><a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\"> sub system</a></p>
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\"><a href=\"VirtualFCS.SubSystems.Cooling.SubSystemCooling\">Cooling</a><a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\"> sub system</a>, <a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCoolingControl\">Cooling sub system control</a>&nbsp;and&nbsp;<a href=\"VirtualFCS.Electrochemical.Battery.BatterySystem\">Batter</a><a href=\"modelica://VirtualFCS.Electrochemical.Battery.BatterySystem\">y system</a></font></p>
 
-<p class=\"MsoNormal\"><span lang=\"NO-BOK\">&nbsp;</span></p>
+<p class=\"MsoNormal\"><span lang=\"NO-BOK\"><font size=\"4\" face=\"Arial\">&nbsp;</font></span></p>
 
-<p class=\"MsoNormal\"><span lang=\"NO-BOK\">Operation-&nbsp;</span>Explain with diagram view</p><p class=\"MsoNormal\"><o:p></o:p></p><p class=\"MsoNormal\"><span style=\"font-family: Calibri, sans-serif; font-size: 15px;\">This example comprises of three parts Input signal (temperature), Cooling sub system, Battery system. The cooling sub system includes devices such as fans, blowers, or pumps to circulate the liquid coolant stream. Typically, these devices consume some power&nbsp;</span><span style=\"font-family: Calibri, sans-serif; font-size: 15px;\">produced by the fuel cell stack but here they are powered by auxillary battery system</span><span style=\"font-family: Calibri, sans-serif; font-size: 15px;\">.&nbsp;</span></p><p class=\"MsoNormal\"><br></p>
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\"><span lang=\"NO-BOK\">Operation-&nbsp;</span>Explain with diagram view</font></p><p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\"><o:p></o:p></font></p><p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\">This example comprises of three parts Input signal (temperature), Cooling sub system, Battery system. The cooling sub system includes devices such as&nbsp;coolant tank, pre-heater, pump, and heat sink&nbsp;pumps to circulate the liquid coolant stream. Typically, these devices consume some power&nbsp;produced by the fuel cell stack but here they are powered by auxillary battery system.&nbsp;</font></p><p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\"><br></font></p>
 
-<p class=\"MsoNormal\">Operational range <o:p></o:p></p><p class=\"MsoNormal\"><br></p>
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\">Operational range <o:p></o:p></font></p><p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\"><br></font></p>
 
-<p class=\"MsoNormal\">Initial/default inputs (unique conditions if any)<o:p></o:p></p><p class=\"MsoNormal\"><ol><li>Get Temperature</li><li>Cooling system mass</li><li>Battery system Specification (as listed here)</li></ol></p>
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\">Initial/default inputs (unique conditions if any)<o:p></o:p></font></p><p class=\"MsoNormal\"></p><ol><li><font size=\"4\" face=\"Arial\">Get Temperature</font></li><li><font size=\"4\" face=\"Arial\">Cooling system mass</font></li><li><font size=\"4\" face=\"Arial\">Battery system Specification (as listed here)</font></li></ol><p></p>
 
-<p class=\"MsoNormal\">List of output parameters under consideration and their
+<p class=\"MsoNormal\"><font size=\"4\" face=\"Arial\">List of output parameters under consideration and their
 expected range. <span lang=\"NO-BOK\">Explain with
-graph</span></p>
+graph</span></font></p>
 
-<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p><p class=\"MsoNormal\"><o:p>Future work</o:p></p><p class=\"MsoNormal\"><o:p><span style=\"font-family: Calibri, sans-serif; font-size: 15px;\">The selection of fan, blower, or pump depends on the required cooling rate, overcoming any pressure drop in the coolant channels, and meeting overall system electrical efficiency, weight, and volume requirements.&nbsp;</span></o:p></p>
+<p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">&nbsp;</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">Future work</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">The selection of fan, blower, or pump depends on the required cooling rate, overcoming any pressure drop in the coolant channels, and meeting overall system electrical efficiency, weight, and volume requirements.&nbsp;</font></o:p></p>
 
 <!--EndFragment--></div></body></html>"),
   experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
