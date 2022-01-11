@@ -109,5 +109,5 @@ protected
             <td align=\"Right\">Cells in series</td>
          </tr>         
       </tbody></table>
-</body></html>"));
+</div></body></html>"));
 end LiIonBatteryPack_Composite;
