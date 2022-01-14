@@ -7,7 +7,7 @@ model TestCoolingSubsystem "Example to evaluate the performance of the cooling s
   
   VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant getTermperature(k = 80)  annotation(
+  Modelica.Blocks.Sources.Constant getTermperature(k = 273.15 +80)  annotation(
     Placement(visible = true, transformation(origin = {-60, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipe1(redeclare package Medium = Medium, diameter = 0.01, length = 0.2, nParallel = 5, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {-12, 50}, extent = {{10, 10}, {-10, -10}}, rotation = 270)));
@@ -15,7 +15,7 @@ model TestCoolingSubsystem "Example to evaluate the performance of the cooling s
     Placement(visible = true, transformation(origin = {12, 50}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9,V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48)  annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 10,SOC_init = 0.9,V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48, m_bat_pack = 1)  annotation(
     Placement(visible = true, transformation(origin = {-3.55271e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
   connect(getTermperature.y, subSystemCooling.controlInterface) annotation(

@@ -13,13 +13,13 @@ model RangeExtenderPowerTrain
 // Fuel Cell Stack Paramters
   parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
   parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack length";
-  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack length";
+  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack width";
+  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack height";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   parameter Real V_rated_FC_stack(unit="V") = 57.9 "FC stack maximum operating voltage"; 
-  parameter Real I_rated_FC_stack(unit="A") = 300 "FC stack minimum operating voltage";
-  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack maximum limiting current";
-  parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
+  parameter Real I_rated_FC_stack(unit="A") = 300 "FC stack minimum operating current";
+  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack limiting current (max)";
+  parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack nominal current";
   parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
 
 // Battery Pack Parameters

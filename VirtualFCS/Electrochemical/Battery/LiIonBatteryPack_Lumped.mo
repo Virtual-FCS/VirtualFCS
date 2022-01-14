@@ -137,45 +137,45 @@ protected
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a lumped of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. It simulates the single cell equation and multiplies is by number of cells in series and parallel. This setup has the advantage of low computational time.&nbsp;</div><div>
+  Documentation(info = "<html><head></head><body><div><font face=\"Arial\" size=\"4\">This model describes a lithium-ion battery pack as a lumped of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. It simulates the single cell equation and multiplies is by number of cells in series and parallel. This setup has the advantage of low computational time.&nbsp;</font></div><div>
 
 
 
 
-<br>
+<font face=\"Arial\" size=\"4\"><br>
 The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard&nbsp;<i>et al.</i>&nbsp;[1], and is parameterized to the LFP chemistry by default.<br><br>
 
-<table border=\"0.9\">
-<caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Parameters</u></b></caption>
-<tbody><tr><th>Parameter name</th>
-            <th>Value</th>
-            <th>Unit</th>
+</font><table border=\"0.9\">
+<caption align=\"Left\" style=\"text-align: left;\"> <b><u><font face=\"Arial\" size=\"4\">Default Parameters</font></u></b></caption>
+<tbody><tr><th><font face=\"Arial\" size=\"4\">Parameter name</font></th>
+            <th><font face=\"Arial\" size=\"4\">Value</font></th>
+            <th><font face=\"Arial\" size=\"4\">Unit</font></th>
          </tr><tr>
-            <td align=\"Left\">mass</td>
-            <td>=2.5</td>
-	      <td align=\"Right\">kg</td>
+            <td align=\"Left\"><font face=\"Arial\" size=\"4\">mass</font></td>
+            <td><font face=\"Arial\" size=\"4\">=2.5</font></td>
+	      <td align=\"Right\"><font face=\"Arial\" size=\"4\">kg</font></td>
          </tr>
          <tr>
-            <td align=\"Left\">Cp</td>
-            <td>=1000</td>
-            <td align=\"Right\">J/(kg.K)</td>
+            <td align=\"Left\"><font face=\"Arial\" size=\"4\">Cp</font></td>
+            <td><font face=\"Arial\" size=\"4\">=1000</font></td>
+            <td align=\"Right\"><font face=\"Arial\" size=\"4\">J/(kg.K)</font></td>
          </tr>
          <tr>
-            <td align=\"Left\">SOC_init</td>
-            <td>=0.5</td>
-            <td align=\"Right\">-</td>
+            <td align=\"Left\"><font face=\"Arial\" size=\"4\">SOC_init</font></td>
+            <td><font face=\"Arial\" size=\"4\">=0.5</font></td>
+            <td align=\"Right\"><font face=\"Arial\" size=\"4\">-</font></td>
          </tr>
 	   <tr>
-            <td align=\"Left\">p</td>
-            <td>=5</td>
-            <td align=\"Right\">Cells in parallel</td>
+            <td align=\"Left\"><font face=\"Arial\" size=\"4\">p</font></td>
+            <td><font face=\"Arial\" size=\"4\">=5</font></td>
+            <td align=\"Right\"><font face=\"Arial\" size=\"4\">Cells in parallel</font></td>
          </tr>
          <tr>
-            <td align=\"Left\">s</td>
-            <td>=2</td>
-            <td align=\"Right\">Cells in series</td>
+            <td align=\"Left\"><font face=\"Arial\" size=\"4\">s</font></td>
+            <td><font face=\"Arial\" size=\"4\">=2</font></td>
+            <td align=\"Right\"><font face=\"Arial\" size=\"4\">Cells in series</font></td>
          </tr>
-      </tbody></table><br>
-</div><div><div style=\"font-size: 12px;\"><b><u>References</u></b></div><div style=\"font-size: 12px;\"><div class=\"csl-bib-body\" style=\"line-height: 2;\"><div class=\"csl-entry\" style=\"clear: left;\"><div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em; text-align: right; width: 1em;\">1.</div><div class=\"csl-right-inline\" style=\"margin: 0px 0.4em 0px 1.5em;\">Vichard, L.&nbsp;<i>et al.</i>&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;<i>Energy</i>&nbsp;<b>225</b>, 120235 (2021).</div></div></div></div></div></body></html>"));
+      </tbody></table><font face=\"Arial\" size=\"4\"><br>
+</font></div><div><div><b><u><font face=\"Arial\" size=\"4\">References</font></u></b></div><div><div class=\"csl-bib-body\" style=\"line-height: 2;\"><div class=\"csl-entry\" style=\"clear: left;\"><div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em; text-align: right; width: 1em;\"><font face=\"Arial\" size=\"4\">1.</font></div><div class=\"csl-right-inline\" style=\"margin: 0px 0.4em 0px 1.5em;\"><font face=\"Arial\" size=\"4\">Vichard, L.&nbsp;<i>et al.</i>&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;<i>Energy</i>&nbsp;<b>225</b>, 120235 (2021).</font></div></div></div></div></div></body></html>"));
 
 end LiIonBatteryPack_Lumped;
