@@ -25,8 +25,7 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.025 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.25 "FC stack cell trasport limitation factor";
   parameter Real R_0_FC_stack(unit = "Ohm") = 0.02 "FC stack cell ohmic resistance";
-  parameter Real R_1_FC_stack(unit = "Ohm") = 0.01 "FC stack cell charge transfer resistance";
-  parameter Real C_1_FC_stack(unit = "F") = 3e-3 "FC stack cell double layer capacitance";
+
   // Thermal parameters
   parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 1100 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
