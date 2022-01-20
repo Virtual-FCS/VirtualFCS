@@ -1377,7 +1377,7 @@ computer<o:p></o:p></span></p>
 <p class=\"MsoListParagraphCxSpMiddle\" style=\"text-indent:-18.0pt;mso-list:l0 level1 lfo1\"><!--[if !supportLists]--><span lang=\"EN-GB\">3.<span style=\"font-size: 7pt; font-family: 'Times New Roman';\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span lang=\"EN-GB\">Open the OpenModelica Connection
 Editor<o:p></o:p></span></p>
 
-<p class=\"MsoListParagraphCxSpMiddle\" style=\"text-indent:-18.0pt;mso-list:l0 level1 lfo1\"><!--[if !supportLists]--><span lang=\"EN-GB\">4.<span style=\"font-size: 7pt; font-family: 'Times New Roman';\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span lang=\"EN-GB\">Open the file VirtualFCS\package.mo<o:p></o:p></span></p>
+<p class=\"MsoListParagraphCxSpMiddle\" style=\"text-indent:-18.0pt;mso-list:l0 level1 lfo1\"><!--[if !supportLists]--><span lang=\"EN-GB\">4.<span style=\"font-size: 7pt; font-family: 'Times New Roman';\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span lang=\"EN-GB\">Open the file VirtualFCS/package.mo<o:p></o:p></span></p>
 
 <p class=\"MsoListParagraphCxSpLast\" style=\"text-indent:-18.0pt;mso-list:l0 level1 lfo1\"><!--[if !supportLists]--><span lang=\"EN-GB\">5.<span style=\"font-size: 7pt; font-family: 'Times New Roman';\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><!--[endif]--><span lang=\"EN-GB\">The VirtualFCS library will load in
 the library browser on the left of the Connection Editor</span></p></div><div><div id=\"ftn2\">
