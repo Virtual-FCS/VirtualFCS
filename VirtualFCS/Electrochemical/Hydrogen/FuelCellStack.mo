@@ -9,24 +9,25 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
-  parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack length";
-  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack length";
+  parameter Real m_FC_stack(unit = "kg") = 42 "FC stack mass";
+  parameter Real L_FC_stack(unit = "m") = 0.420 "FC stack length";
+  parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack length";
+  parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack length";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real V_rated_FC_stack(unit="V") = 57.9 "FC stack rated voltage"; 
-  parameter Real I_rated_FC_stack(unit="A") = 300 "FC stack rated current";
-  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack cell maximum limiting current";
-  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
+  //parameter Real V_rated_FC_stack(unit="V") = 57.9 "FC stack rated voltage"; 
+  parameter Real I_rated_FC_stack(unit="A") = 450 "FC stack rated current";
+  parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
+  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   parameter Real A_FC_surf(unit = "m2") = 2 * (L_FC_stack * W_FC_stack) + 2 * (L_FC_stack * H_FC_stack) + 2 * (W_FC_stack * H_FC_stack) "FC stack surface area";
   // Electrochemical parameters
-  parameter Real i_0_FC_stack(unit = "A") = 2 "FC stack cell exchange current";
+  parameter Real i_0_FC_stack(unit = "A") = 0.0091 "FC stack cell exchange current";
   parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
-  parameter Real b_1_FC_stack(unit = "V/dec") = 0.025 "FC stack cell Tafel slope";
-  parameter Real b_2_FC_stack(unit = "V/dec") = 0.25 "FC stack cell trasport limitation factor";
-  parameter Real R_0_FC_stack(unit = "Ohm") = 0.02 "FC stack cell ohmic resistance";
+  parameter Real b_1_FC_stack(unit = "V/dec") = 0.06 "FC stack cell Tafel slope";
+  parameter Real b_2_FC_stack(unit = "V/dec") = 0.06 "FC stack cell trasport limitation factor";
+  parameter Real R_0_FC_stack(unit = "Ohm") = 0.00037*N_FC_stack "FC stack cell ohmic resistance";
+  parameter Real OCV(unit = "V") = 1.078 "Cell open-circuit voltage";
 
-  // Thermal parameters
+// Thermal parameters
   parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 1100 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
@@ -79,9 +80,9 @@ model FuelCellStack "Model for a PEM fuel cell stack"
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain H2_mflow(k = 0.00202 / (96485 * 2) * N_FC_stack) annotation(
-    Placement(visible = true, transformation(origin = {-28, 51}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-26, 59}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
   Modelica.Blocks.Math.Gain O2_mflow(k = 0.032 / (96485 * 4) * N_FC_stack) annotation(
-    Placement(visible = true, transformation(origin = {32, 50}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 1777) annotation(
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
@@ -100,8 +101,8 @@ equation
   p_H2 = H2_sink.ports[1].p;
   p_O2 = 0.2 * O2_sink.ports[1].p;
 // ELECTROCHEMICAL EQUATIONS //
-// Calculate the Nernst equilibrium voltage
-  potentialSource.v = N_FC_stack * (1.229 - R * 298 / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1_FC_stack * log((abs(R_ohmic.i) + i_x_FC_stack) / i_0_FC_stack) + b_2_FC_stack * log(1 - (abs(R_ohmic.i) + i_x_FC_stack) / i_L_FC_stack));
+// Calculate the stack voltage
+  potentialSource.v = N_FC_stack * (1.229 - R * temperatureSensor.T / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1_FC_stack * log10((abs(currentSensor.i) + i_x_FC_stack) / i_0_FC_stack) + b_2_FC_stack * log10(1 - (abs(currentSensor.i) + i_x_FC_stack) / i_L_FC_stack));
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_FC_stack;
 // THERMAL EQUATIONS //
@@ -130,13 +131,9 @@ equation
   connect(pin_n, potentialSource.n) annotation(
     Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
   connect(O2_mflow.y, O2_sink.m_flow_in) annotation(
-    Line(points = {{40, 50}, {74, 50}, {74, 48}, {74, 48}}, color = {0, 0, 127}));
+    Line(points = {{43, 60}, {74, 60}, {74, 48}}, color = {0, 0, 127}));
   connect(H2_mflow.y, H2_sink.m_flow_in) annotation(
-    Line(points = {{-36, 52}, {-68, 52}, {-68, 50}, {-70, 50}}, color = {0, 0, 127}));
-  connect(currentSensor.i, H2_mflow.u) annotation(
-    Line(points = {{0, 89}, {0, 52}, {-18, 52}}, color = {0, 0, 127}));
-  connect(currentSensor.i, O2_mflow.u) annotation(
-    Line(points = {{0, 89}, {0, 50}, {22, 50}}, color = {0, 0, 127}));
+    Line(points = {{-35, 59}, {-68, 59}, {-68, 50}, {-70, 50}}, color = {0, 0, 127}));
   connect(thermalConductor.port_b, pipeCoolant.heatPorts[1]) annotation(
     Line(points = {{0, -56}, {0, -56}, {0, -46}, {0, -46}}, color = {191, 0, 0}));
   connect(thermalConductor.port_a, heatCapacitor.port) annotation(
@@ -155,6 +152,10 @@ equation
     Line(points = {{10, 100}, {60, 100}, {60, 110}, {60, 110}}, color = {0, 0, 255}));
   connect(currentSensor.n, potentialSource.p) annotation(
     Line(points = {{-10, 100}, {-60, 100}, {-60, 110}, {-60, 110}}, color = {0, 0, 255}));
+  connect(currentSensor.i, H2_mflow.u) annotation(
+    Line(points = {{0, 90}, {-4, 90}, {-4, 58}, {-16, 58}, {-16, 60}}, color = {0, 0, 127}));
+  connect(currentSensor.i, O2_mflow.u) annotation(
+    Line(points = {{0, 90}, {10, 90}, {10, 60}, {24, 60}, {24, 60}}, color = {0, 0, 127}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
