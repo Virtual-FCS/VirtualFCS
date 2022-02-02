@@ -37,10 +37,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
 equation
 // ***DEFINE EQUATIONS ***//
   chargeCapacity = p * s * liIonCell[1].chargeCapacity;
-// coolingArea = p * s * liIonCell[1].coolingArea;
-// Calculate the open-circuit voltage at given temperature and state of charge
-// Thermal equations
-//  prescribedHeatFlow.Q_flow = p * s * abs((OCV.v - pin_p.v) * sensorCurrent.i + Rohm.R_actual * sensorCurrent.i ^ 2);
+
 // ***DEFINE CONNECTIONS ***//
   for i in 1:p loop
     connect(pin_n, liIonCell[s * (i - 1) + 1].pin_n);
@@ -73,10 +70,10 @@ protected
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell models</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
+  Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of several separate instances of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investigations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
 
 <br>
-<br>
+This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face=\"Consolas\">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span style=\"font-family: Consolas;\">pin_p</span>&nbsp;and&nbsp;<span style=\"font-family: Consolas;\">pin_n</span>.</div><div><br></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack.</div><div><br>
 
 <table border=\"0.9\">
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Parameters</u></b></caption>
@@ -105,9 +102,9 @@ protected
          </tr>
          <tr>
             <td align=\"Left\">s</td>
-            <td>=2</td>
+            <td>=10</td>
             <td align=\"Right\">Cells in series</td>
          </tr>         
-      </tbody></table>
-</div></body></html>"));
+      </tbody></table><br>
+</div><div><br></div></body></html>"));
 end LiIonBatteryPack_Composite;

@@ -106,28 +106,28 @@ equation
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Battery Parameters</u></b></caption>
 <tbody><tr><th>Parameter name</th>
             <th align=\"Left\">Value</th>
-            
+            <th>Unit</th>
          </tr>
          <tr>
             <td align=\"Left\">Chemistry</td>
             <td>=LFP-Graphite </td>
-            
+            <td> -- </td>
          </tr>
          
          <tr>
             <td align=\"Left\">Size</td>
             <td>=18650 Cylindrical</td>
-	     
+            <td> -- </td>
          </tr>
          <tr>
             <td align=\"Left\">mass</td>
-            <td>=45</td>
-            
+            <td>=0.045</td>
+            <td> kg </td>
          </tr>
 	   <tr>
             <td align=\"Left\">Charge capacity </td>
             <td>=2.2</td>
-            
+            <td> Ah </td>
          </tr>
          </tbody></table>
          

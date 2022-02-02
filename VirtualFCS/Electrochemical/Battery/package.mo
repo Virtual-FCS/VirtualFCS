@@ -12,23 +12,23 @@ package Battery "Models for battery cells and packs."
 
 
   annotation(
-    Documentation(info = "<html><head></head><body>This sub-package includes&nbsp;<div><br><table border=\"0.9\"><tbody><tr><th>Name</th>
+    Documentation(info = "<html><head></head><body>This sub-package includes models for simulating the performance of lithium-ion cells and packs.<div><br><table border=\"0.9\"><tbody><tr><th>Name</th>
             <th>Description</th>
             <th>Version</th>
          </tr>
          <tr>
             <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell</a></td>
-            <td>Simulates lithium iron phosphate (LFP) cell</td>
+            <td>Simulates lithium-ion battery cell</td>
             <td>LIC.no.ddmmyy</td>
          </tr>
          
          <tr>
-            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatPackComp\">LiIonBatPackComp</a></td>
-            <td>Simulates individual LFP cells in a battery pack</td><td>LBPC.no.ddmmyy</td>
+            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite\">LiIonBatteryPack_Composite</a></td>
+            <td>Simulates individual lithium-ion battery cells in a battery pack by automatically generating multiple instances of LiIonCell.</td><td>LBPC.no.ddmmyy</td>
          </tr>
          <tr>
-            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatPackComp\">LiIonBatPackLump</a></td>
-            <td>Simulates LFP total number of cells in a battery pack</td><td>LBPL.no.ddmmyy</td>
+            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\">LiIonBatteryPack_Lumped</a></td>
+            <td>Simulates lithium-ion battery pack given a number of cells, assuming every cell is identical.</td><td>LBPL.no.ddmmyy</td>
          </tr>
       </tbody></table>
    
