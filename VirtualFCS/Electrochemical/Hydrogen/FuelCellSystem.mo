@@ -5,21 +5,21 @@ model FuelCellSystem
   parameter Real m_FC_system(unit = "kg") = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
 
 // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
-  parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack length";
-  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack length";
+  parameter Real m_FC_stack(unit = "kg") = 42 "FC stack mass";
+  parameter Real L_FC_stack(unit = "m") = 0.420 "FC stack length";
+  parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack length";
+  parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack length";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage"; 
-  parameter Real I_rated_FC_stack(unit="A") = 300 "Minimum stack operating voltage";
-  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack cell maximum limiting current";
-  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
+//  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage"; 
+  parameter Real I_rated_FC_stack(unit="A") = 450 "FC stack rated current";
+  parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
+  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   // H2 Subsystem Paramters
   parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
   parameter Real p_tank_H2(unit="Pa") = 35000000 "H2 tank initial pressure";
   
 
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack( H_FC_stack = H_FC_stack, I_rated_FC_stack = I_rated_FC_stack, L_FC_stack = L_FC_stack, V_rated_FC_stack = V_rated_FC_stack, W_FC_stack = W_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack)  annotation(
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack( H_FC_stack = H_FC_stack, I_rated_FC_stack = I_rated_FC_stack, L_FC_stack = L_FC_stack, W_FC_stack = W_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack)  annotation(
     Placement(visible = true, transformation(origin = {-1, 10}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
