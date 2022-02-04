@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Battery;
 
-model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
+model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single lumped battery model."
   // DECLARE PARAMETERS //
   // Pack-level parameters
   parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
@@ -137,45 +137,75 @@ protected
     uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-  Documentation(info = "<html><head></head><body><div><font face=\"Arial\" size=\"4\">This model describes a lithium-ion battery pack as a lumped of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. It simulates the single cell equation and multiplies is by number of cells in series and parallel. This setup has the advantage of low computational time.&nbsp;</font></div><div>
+  Documentation(info = "<html><head></head><body><div><font face=\"Arial\">This model describes a lithium-ion battery pack as a lumped version of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. It simulates the single cell equation and scales based on the maximum voltage and capacity of the battery pack. This setup has the advantage of low computational time.</font></div><div><font face=\"Arial\"><br></font></div><div><font face=\"Arial\">The model includes a <a href=\"modelica://VirtualFCS.Control.ChargeCounter\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery.</font></div><div>
 
 
 
 
-<font face=\"Arial\" size=\"4\"><br>
+<font face=\"Arial\"><br>
 The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard&nbsp;<i>et al.</i>&nbsp;[1], and is parameterized to the LFP chemistry by default.<br><br>
 
 </font><table border=\"0.9\">
-<caption align=\"Left\" style=\"text-align: left;\"> <b><u><font face=\"Arial\" size=\"4\">Default Parameters</font></u></b></caption>
-<tbody><tr><th><font face=\"Arial\" size=\"4\">Parameter name</font></th>
-            <th><font face=\"Arial\" size=\"4\">Value</font></th>
-            <th><font face=\"Arial\" size=\"4\">Unit</font></th>
+<caption align=\"Left\" style=\"text-align: left;\"> <b><u><font face=\"Arial\">Default Parameters</font></u></b></caption>
+<tbody><tr><th><font face=\"Arial\">Parameter name</font></th>
+            <th><font face=\"Arial\">Value</font></th>
+            <th><font face=\"Arial\">Unit</font></th>
          </tr><tr>
-            <td align=\"Left\"><font face=\"Arial\" size=\"4\">mass</font></td>
-            <td><font face=\"Arial\" size=\"4\">=2.5</font></td>
-	      <td align=\"Right\"><font face=\"Arial\" size=\"4\">kg</font></td>
+            <td align=\"Left\"><font face=\"Arial\">m_bat_pack</font></td>
+            <td><font face=\"Arial\">=100</font></td>
+	      <td align=\"Right\"><font face=\"Arial\">kg<br></font></td>
          </tr>
          <tr>
-            <td align=\"Left\"><font face=\"Arial\" size=\"4\">Cp</font></td>
-            <td><font face=\"Arial\" size=\"4\">=1000</font></td>
-            <td align=\"Right\"><font face=\"Arial\" size=\"4\">J/(kg.K)</font></td>
+            <td align=\"Left\"><font face=\"Arial\">L_bat_pack</font></td>
+            <td><font face=\"Arial\">=0.6</font></td>
+            <td align=\"Right\"><font face=\"Arial\">m</font></td>
          </tr>
          <tr>
-            <td align=\"Left\"><font face=\"Arial\" size=\"4\">SOC_init</font></td>
-            <td><font face=\"Arial\" size=\"4\">=0.5</font></td>
-            <td align=\"Right\"><font face=\"Arial\" size=\"4\">-</font></td>
-         </tr>
-	   <tr>
-            <td align=\"Left\"><font face=\"Arial\" size=\"4\">p</font></td>
-            <td><font face=\"Arial\" size=\"4\">=5</font></td>
-            <td align=\"Right\"><font face=\"Arial\" size=\"4\">Cells in parallel</font></td>
+            <td align=\"Left\"><font face=\"Arial\">W_bat_pack</font></td>
+            <td><font face=\"Arial\">=0.45</font></td>
+            <td align=\"Right\"><font face=\"Arial\">m</font></td>
          </tr>
          <tr>
-            <td align=\"Left\"><font face=\"Arial\" size=\"4\">s</font></td>
-            <td><font face=\"Arial\" size=\"4\">=2</font></td>
-            <td align=\"Right\"><font face=\"Arial\" size=\"4\">Cells in series</font></td>
+            <td align=\"Left\"><font face=\"Arial\">H_bat_pack</font></td>
+            <td><font face=\"Arial\">=0.1</font></td>
+            <td align=\"Right\"><font face=\"Arial\">m</font></td>
          </tr>
-      </tbody></table><font face=\"Arial\" size=\"4\"><br>
-</font></div><div><div><b><u><font face=\"Arial\" size=\"4\">References</font></u></b></div><div><div class=\"csl-bib-body\" style=\"line-height: 2;\"><div class=\"csl-entry\" style=\"clear: left;\"><div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em; text-align: right; width: 1em;\"><font face=\"Arial\" size=\"4\">1.</font></div><div class=\"csl-right-inline\" style=\"margin: 0px 0.4em 0px 1.5em;\"><font face=\"Arial\" size=\"4\">Vichard, L.&nbsp;<i>et al.</i>&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;<i>Energy</i>&nbsp;<b>225</b>, 120235 (2021).</font></div></div></div></div></div></body></html>"));
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">Cp</font></td>
+            <td><font face=\"Arial\">=1000</font></td>
+            <td align=\"Right\"><font face=\"Arial\">J/(kg.K)</font></td>
+         </tr>
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">V_min_bat_pack</font></td>
+            <td><font face=\"Arial\">=37.5</font></td>
+            <td align=\"Right\"><font face=\"Arial\">V</font></td>
+         </tr>
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">V_nom_bat_pack</font></td>
+            <td><font face=\"Arial\">=48</font></td>
+            <td align=\"Right\"><font face=\"Arial\">V</font></td>
+         </tr>
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">V_max_bat_pack</font></td>
+            <td><font face=\"Arial\">=54.75</font></td>
+            <td align=\"Right\"><font face=\"Arial\">V</font></td>
+         </tr>
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">C_bat_pack</font></td>
+            <td><font face=\"Arial\">=200</font></td>
+            <td align=\"Right\"><font face=\"Arial\">Ah</font></td>
+         </tr>
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">SOC_init</font></td>
+            <td><font face=\"Arial\">=0.5</font></td>
+            <td align=\"Right\"><font face=\"Arial\">-</font></td>
+         </tr>
+         <tr>
+            <td align=\"Left\"><font face=\"Arial\">V_chem_max</font></td>
+            <td><font face=\"Arial\">=3.65</font></td>
+            <td align=\"Right\"><font face=\"Arial\">V<br></font></td>
+         </tr>
+      </tbody></table><font face=\"Arial\"><br></font><table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><b><u><font face=\"Arial\">Default Equivalent Circuit Parameters</font></u></b></caption><tbody><tr><th><font face=\"Arial\">Parameter name</font></th><th><font face=\"Arial\">Value</font></th><th><font face=\"Arial\">Unit</font></th></tr><tr><td align=\"Left\"><font face=\"Arial\">R_0</font></td><td><font face=\"Arial\">=0.02</font></td><td align=\"Right\"><font face=\"Arial\">Ohm</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">R_1</font></td><td><font face=\"Arial\">=0.01</font></td><td align=\"Right\"><font face=\"Arial\">Ohm</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">R_2</font></td><td><font face=\"Arial\">=0.005</font></td><td align=\"Right\"><font face=\"Arial\">Ohm</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">C_1</font></td><td><font face=\"Arial\">=5000</font></td><td align=\"Right\"><font face=\"Arial\">F</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">C_2</font></td><td><font face=\"Arial\">=20000</font></td><td align=\"Right\"><font face=\"Arial\">F<br><br></font></td></tr></tbody></table><font face=\"Arial\"><br>
+</font></div><div><div><b><u><font face=\"Arial\">References</font></u></b></div><div><div class=\"csl-bib-body\" style=\"line-height: 2;\"><div class=\"csl-entry\" style=\"clear: left;\"><div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em; text-align: right; width: 1em;\"><font face=\"Arial\">1.</font></div><div class=\"csl-right-inline\" style=\"margin: 0px 0.4em 0px 1.5em;\"><font face=\"Arial\">Vichard, L.&nbsp;<i>et al.</i>&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;<i>Energy</i>&nbsp;<b>225</b>, 120235 (2021).</font></div></div></div></div></div></body></html>"));
 
 end LiIonBatteryPack_Lumped;
