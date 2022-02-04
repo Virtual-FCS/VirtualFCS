@@ -159,7 +159,7 @@ equation
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
     version = "",
     uses(Modelica(version = "3.2.3")),
-    Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC) stack. The model includes components describing the electrical, fluidic, and thermal properties of the stack.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model to calculate the activation amd mass-transport overpotentials, and a simple resistor to calculate Ohmic voltage loss.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the stack using Faraday's law.&nbsp;&nbsp;
+    Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC) stack. The model includes components describing the electrical, fluidic, and thermal properties of the stack.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style=\"font-family: 'Courier New'; font-size: 12pt;\">potentialSource.v,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell. Default parameters fit the polarization curve given by Powercell in their Powercellution data sheet, available <a href=\"https://powercellution.com/p-stack\">here</a>.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the stack using Faraday's law.&nbsp;&nbsp;
 </div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.<div><br></div><div><br>&nbsp; 
 
 <table border=\"0.9\"><caption style=\"text-align: left;\" align=\"Left\"><strong><u>Default Parameters</u></strong></caption><caption style=\"text-align: left;\" align=\"Left\"><strong><u><br></u></strong></caption>
@@ -170,70 +170,73 @@ equation
 <th>Unit</th>
 </tr>
 <tr>
-<td align=\"Left\">mass</td>
-<td>=50</td>
+<td align=\"Left\">m_FC_stack</td>
+<td>=42</td>
 <td align=\"Right\">kg</td>
 </tr>
 <tr>
-<td align=\"Left\">volume</td>
+<td align=\"Left\">L_FC_stack</td>
+<td>=0.42</td>
+<td align=\"Right\">m</td>
+</tr>
+<tr>
+<td align=\"Left\">W_FC_stack</td>
+<td>=0.582</td>
+<td align=\"Right\">m</td>
+</tr>
+<tr>
+<td align=\"Left\">H_FC_stack</td>
+<td>=0.156</td>
+<td align=\"Right\">m</td>
+</tr>
+<tr>
+<td align=\"Left\">I_rated_FC_stack</td>
+<td>=450</td>
+<td align=\"Right\">A</td>
+</tr>
+<tr>
+<td align=\"Left\">i_L_FC_stack</td>
+<td>=760</td>
+<td align=\"Right\">A</td>
+</tr>
+
+<tr>
+<td align=\"Left\">N_FC_stack</td>
+<td>=455</td>
+<td align=\"Right\">-</td>
+</tr>
+
+<tr>
+<td align=\"Left\">i_0_FC_stack</td>
+<td>=0.0091</td>
+<td align=\"Right\">A</td>
+</tr>
+<tr>
+<td align=\"Left\">i_x_FC_stack</td>
 <td>=0.001</td>
-<td align=\"Right\">m<sup>3</sup></td>
+<td align=\"Right\">A</td>
+</tr>
+<tr>
+<td align=\"Left\">b_1_FC_stack</td>
+<td>=0.0985</td>
+<td align=\"Right\">V/dec</td>
+</tr>
+<tr>
+<td align=\"Left\">b_2_FC_stack</td>
+<td>=0.0985</td>
+<td align=\"Right\">V/dec</td>
+</tr>
+<tr>
+<td align=\"Left\">R_0</td>
+<td>=0.00022*N_FC_stack</td>
+<td align=\"Right\">Ohm</td>
 </tr>
 <tr>
 <td align=\"Left\">Cp</td>
 <td>=1100</td>
 <td align=\"Left\">J/(kg.K)</td>
 </tr>
-<tr>
-<td align=\"Left\">N_FC_stack</td>
-<td>=90</td>
-<td align=\"Right\">-</td>
-</tr>
-<tr>
-<td align=\"Left\">A_cell</td>
-<td>=0.0237</td>
-<td align=\"Right\">m<sup>2</sup></td>
-</tr>
-<tr>
-<td align=\"Left\">i_0</td>
-<td>=2</td>
-<td align=\"Right\">A</td>
-</tr>
-<tr>
-<td align=\"Left\">i_L</td>
-<td>=510</td>
-<td align=\"Right\">A</td>
-</tr>
-<tr>
-<td align=\"Left\">i_x</td>
-<td>=0.001</td>
-<td align=\"Right\">A</td>
-</tr>
-<tr>
-<td align=\"Left\">b_1</td>
-<td>=0.025</td>
-<td align=\"Right\">V/dec</td>
-</tr>
-<tr>
-<td align=\"Left\">b_2</td>
-<td>=0.25</td>
-<td align=\"Right\">V/dec</td>
-</tr>
-<tr>
-<td align=\"Left\">R_0</td>
-<td>=0.02</td>
-<td align=\"Right\">Ohm</td>
-</tr>
-<tr>
-<td align=\"Left\">R_1</td>
-<td>=0.01</td>
-<td align=\"Right\">Ohm</td>
-</tr>
-<tr>
-<td align=\"Left\">C_1</td>
-<td>=0.003</td>
-<td align=\"Right\">F</td>
-</tr>
+
 </tbody>
 </table><br><br><br>
 
@@ -248,9 +251,8 @@ equation
 <p>η<sup>con </sup>= N<sub>cell <sup>. </sup></sub>(b<sub>2 </sub>ln( 1-(i<sub>FC </sub>+ i<sub>x</sub>) / i<sub>L</sub>))</p>
 <p><span style=\"text-decoration: underline;\"><strong>Thermal equations:</strong> </span></p>
 <p><strong>Electrochemical heat generation</strong></p>
-<p>Q<sub>FC</sub><sup>rea </sup>= 1.481- (U<sub>FC</sub>i<sub>FC</sub>)</p>
-<p><strong>Joule heating</strong></p>
-<p>Q<sub>FC</sub><sup>Joule </sup>= i<sub>FC</sub><sup>2</sup> R<sub>FC</sub><sup>Ohm</sup></p>
+<p>Q<sub>gen</sub><sup>&nbsp;</sup>= (V<sub>TN</sub> - V<sub><font size=\"2\">stack</font></sub>)i<sub>stack</sub></p>
+<p><br></p>
 <p>&nbsp;</p>
 
 
