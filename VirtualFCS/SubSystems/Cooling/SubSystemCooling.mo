@@ -72,46 +72,17 @@ equation
   annotation(
     experiment(StopTime = 50),
     __Dymola_Commands(file = "modelica://Modelica/Resources/Scripts/Dymola/Fluid/EmptyTanks/plot level and port.p.mos" "plot level and port.p"),
-    Documentation(info = "<html><head></head><body><span style=\"font-family: Arial; font-size: large;\">What it
-does</span><br><div><p class=\"MsoNormal\"><span style=\"font-family: Arial; font-size: large;\">The SubSystemCooling model provides a template for the construction of a cooling sub-system for the fuel cell stack.&nbsp;</span></p><div><span lang=\"NO-BOK\"><font face=\"Arial\" size=\"4\"><br></font></span></div>
+    Documentation(info = "<html><head></head><body><span style=\"font-family: Arial; font-size: large;\">The SubSystemCooling model provides a template for the construction of a cooling sub-system for the fuel cell stack.&nbsp;</span><br><div><div><span lang=\"NO-BOK\"><font face=\"Arial\" size=\"4\"><br></font></span></div>
 
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">References to base model/related packages<o:p></o:p></font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><a href=\"modelica://VirtualFCS.Thermal.HeatSink\">Heat sink</a>, <a href=\"modelica://VirtualFCS.Fluid.PumpElectricDC\">DC Pump</a> and <a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCoolingControl\">Cooling subsystem control</a></font></p>
+<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><b>References to base model/related packages</b><o:p></o:p></font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">&nbsp;</font><a href=\"modelica://VirtualFCS.Thermal.HeatSink\" style=\"font-family: Arial; font-size: large;\">Heat Sink</a><span style=\"font-family: Arial; font-size: large;\">,&nbsp;</span><a href=\"modelica://VirtualFCS.Fluid.PumpElectricDC\" style=\"font-family: Arial; font-size: large;\">DC Pump</a><span style=\"font-family: Arial; font-size: large;\">&nbsp;and&nbsp;</span><a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCoolingControl\" style=\"font-family: Arial; font-size: large;\">Cooling Subsystem Control</a><font face=\"Arial\" size=\"4\">&nbsp;</font></p>
 
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Standard component/protocol (any specific commercial)<o:p></o:p></font></p>
+<p class=\"MsoNormal\"><span style=\"font-family: Arial; font-size: large;\">&nbsp;</span></p>
 
-<p class=\"MsoNormal\"><span lang=\"NO-BOK\"><font face=\"Arial\" size=\"4\">&nbsp;</font></span></p>
+<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><b>Description&nbsp;</b></font></p><p class=\"MsoNormal\"><span style=\"font-family: Arial; font-size: large;\">The subsystem features 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports connect to the cooling interfaces on the fuel cell stack, the electrical ports connect to the low-voltage power supply to provide power to the BoP components, and the control interface connects to the FuelCellControlUnit, which controls the pump, pre-heater, and heat sink.</span></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><br></font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><b>List of components<o:p></o:p></b></font></p>
 
-<p class=\"MsoNormal\"><span lang=\"NO-BOK\"><font face=\"Arial\" size=\"4\">&nbsp;</font></span></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Description&nbsp;</font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Purpose/where to use</font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">The subsystem features 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports connect to the cooling interfaces on the fuel cell stack, the electrical ports connect to the low-voltage power supply to provide power to the BoP components, and the control interface connects to the FuelCellControlUnit, which controls the pump, pre-heater, and heat sink.</font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><br></font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">List of components<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">The model comprises a coolant tank, pre-heater, pump, and heat sink.&nbsp;</font></o:p></p>
+<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">The model comprises a <a href=\"modelica://Modelica.Fluid.Vessels.OpenTank\">Coolant Tank</a>, </font><a href=\"modelica://VirtualFCS.Thermal.HeatSink\" style=\"font-family: Arial; font-size: large;\">Heat Sink</a><span style=\"font-family: Arial; font-size: large;\">,&nbsp;</span><a href=\"modelica://VirtualFCS.Fluid.PumpElectricDC\" style=\"font-family: Arial; font-size: large;\">DC Pump</a><span style=\"font-family: Arial; font-size: large;\">&nbsp;and&nbsp;</span><a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCoolingControl\" style=\"font-family: Arial; font-size: large;\">Cooling Subsystem Control</a><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
 
 <p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Assumptions<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Formula<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Operation<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Explain with diagram view<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Operating range <o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Initial/default inputs<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Output-Explain with graph</font><o:p></o:p></p>
 
 <!--EndFragment--></div></body></html>"),
     uses(Modelica(version = "3.2.3")),
