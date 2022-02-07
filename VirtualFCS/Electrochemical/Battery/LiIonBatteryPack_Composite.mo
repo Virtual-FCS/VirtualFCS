@@ -36,7 +36,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
     Placement(visible = true, transformation(origin = {0, -84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // ***DEFINE EQUATIONS ***//
-  chargeCapacity = p * s * liIonCell[1].chargeCapacity;
+  chargeCapacity = p * liIonCell[1].chargeCapacity;
 // coolingArea = p * s * liIonCell[1].coolingArea;
 // Calculate the open-circuit voltage at given temperature and state of charge
 // Thermal equations
