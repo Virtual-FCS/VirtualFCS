@@ -36,8 +36,11 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
     Placement(visible = true, transformation(origin = {0, -84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // ***DEFINE EQUATIONS ***//
-  chargeCapacity = p * s * liIonCell[1].chargeCapacity;
-
+  chargeCapacity = p * liIonCell[1].chargeCapacity;
+// coolingArea = p * s * liIonCell[1].coolingArea;
+// Calculate the open-circuit voltage at given temperature and state of charge
+// Thermal equations
+//  prescribedHeatFlow.Q_flow = p * s * abs((OCV.v - pin_p.v) * sensorCurrent.i + Rohm.R_actual * sensorCurrent.i ^ 2);
 // ***DEFINE CONNECTIONS ***//
   for i in 1:p loop
     connect(pin_n, liIonCell[s * (i - 1) + 1].pin_n);
