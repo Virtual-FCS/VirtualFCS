@@ -2,19 +2,17 @@ within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual Li-ion cell models."
   // DECLARE PARAMETERS //
-  // Physical parameters
-  parameter Real mass(unit = "kg") = 0.050 "Mass of the pack";
-  //  parameter Real vol(unit = "L") = 0.016 "Volume of the pack";
-  parameter Real Cp(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
+
   // Pack design parameters
   parameter Real SOC_init(unit = "1") = 0.5 "Initial State of Charge";
   parameter Integer p = 5 "Number of Cells in Parallel";
   parameter Integer s = 10 "Number of Cells in Series";
   
   parameter Real coolingArea = p * s * liIonCell[1].coolingArea "Cooling Area";
+  parameter Real heatTransferCoefficient(unit="W/(m^2*K)") = 7.8 * 10 ^ 0.78;
   Real chargeCapacity;
   
-  VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell[s * p](each SOC_init = 0.5) annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell[s * p](each SOC_init = SOC_init) annotation(
     Placement(visible = true, transformation(origin = {0, 50.3333}, extent = {{-37, -24.6667}, {37, 24.6667}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -26,7 +24,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
     Placement(visible = true, transformation(origin = {0, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * coolingArea) annotation(
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = heatTransferCoefficient * coolingArea) annotation(
     Placement(visible = true, transformation(origin = {80, -50}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
     Placement(visible = true, transformation(origin = {20, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -37,10 +35,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
 equation
 // ***DEFINE EQUATIONS ***//
   chargeCapacity = p * liIonCell[1].chargeCapacity;
-// coolingArea = p * s * liIonCell[1].coolingArea;
-// Calculate the open-circuit voltage at given temperature and state of charge
-// Thermal equations
-//  prescribedHeatFlow.Q_flow = p * s * abs((OCV.v - pin_p.v) * sensorCurrent.i + Rohm.R_actual * sensorCurrent.i ^ 2);
+
 // ***DEFINE CONNECTIONS ***//
   for i in 1:p loop
     connect(pin_n, liIonCell[s * (i - 1) + 1].pin_n);
@@ -83,15 +78,6 @@ This class automatically generates instances of the LiIonCell model based on the
 <tbody><tr><th>Parameter name</th>
             <th>Value</th>
             <th>Unit</th>
-         </tr><tr>
-            <td align=\"Left\">mass</td>
-            <td>=2.5</td>
-	      <td align=\"Right\">kg</td>
-         </tr>
-         <tr>
-            <td align=\"Left\">Cp</td>
-            <td>=1000</td>
-            <td align=\"Right\">J/(kg.K)</td>
          </tr>
          <tr>
             <td align=\"Left\">SOC_init</td>
@@ -107,7 +93,12 @@ This class automatically generates instances of the LiIonCell model based on the
             <td align=\"Left\">s</td>
             <td>=10</td>
             <td align=\"Right\">Cells in series</td>
-         </tr>         
+         </tr>   
+         <tr>
+            <td align=\"Left\">heatTransferCoefficient</td>
+            <td>=7.8 * 10 ^ 0.78</td>
+            <td align=\"Right\">W/(m<sup>2</sup> K)</td>
+         </tr>        
       </tbody></table><br>
 </div><div><br></div></body></html>"));
 end LiIonBatteryPack_Composite;
