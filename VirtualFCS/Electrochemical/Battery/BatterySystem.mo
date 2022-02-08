@@ -716,47 +716,9 @@ annotation(
 
 <!--StartFragment-->
 
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">What it does<o:p></o:p></font></p>
+<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">The BatterySystem class packages together a&nbsp;</font><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\" style=\"font-family: Arial; font-size: large;\">lumped model of a lithium-ion battery pack</a><font face=\"Arial\" size=\"4\">&nbsp;and a&nbsp;</font><a href=\"modelica://VirtualFCS.Control.BatteryManagementSystem\" style=\"font-family: Arial; font-size: large;\">battery management system</a><font face=\"Arial\" size=\"4\">. This class can be directly integrated into a powertrain model, for example in <a href=\"modelica://VirtualFCS.Powertrains.BatteryPowerTrain\">BatteryPowerTrain</a> and <a href=\"modelica://VirtualFCS.Powertrains.RangeExtenderPowerTrain\">RangeExtenderPowerTrain</a>.<o:p></o:p></font></p>
 
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">References to base model/related packages<o:p></o:p></font></p><p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\">Lithium Battery pack (lumped)</a> and <a href=\"modelica://VirtualFCS.Control.BatteryManagementSystem\">Battery management system</a></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Standard component/protocol (any specific commercial)<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Description<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Purpose/where to use<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">List of components<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Assumptions<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Formula<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><o:p><font face=\"Arial\" size=\"4\">&nbsp;</font></o:p></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Operation<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Explain with diagram view<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Operating range <o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Initial/default inputs<o:p></o:p></font></p>
-
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">Output-Explain with graph</font><o:p></o:p></p>
+<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\"><b><u>Related packages:</u></b><o:p></o:p></font></p><p class=\"MsoNormal\"></p><ul><li><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\" style=\"font-family: Arial; font-size: large;\">LiIonBatteryPack_Lumped</a></li><li><a href=\"modelica://VirtualFCS.Control.BatteryManagementSystem\" style=\"font-family: Arial; font-size: large;\">BatteryManagementSystem</a></li></ul><table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><b><u><font face=\"Arial\" size=\"4\">Default Parameters</font></u></b></caption><tbody><tr><th><font face=\"Arial\" size=\"4\">Parameter name</font></th><th><font face=\"Arial\" size=\"4\">Value</font></th><th><font face=\"Arial\" size=\"4\">Unit</font></th></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">m_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=100</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">kg<br></font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">L_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=0.6</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">m</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">W_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=0.45</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">m</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">H_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=0.1</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">m</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">Cp</font></td><td><font face=\"Arial\" size=\"4\">=1000</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">J/(kg.K)</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">V_min_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=240</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">V</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">V_nom_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=336</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">V</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">V_max_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=403.2</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">V</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">C_bat_pack</font></td><td><font face=\"Arial\" size=\"4\">=200</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">Ah</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\" size=\"4\">SOC_init</font></td><td><font face=\"Arial\" size=\"4\">=0.5</font></td><td align=\"Right\"><font face=\"Arial\" size=\"4\">-</font></td></tr></tbody></table>
 
 <!--EndFragment--></body></html>"));
 end BatterySystem;
