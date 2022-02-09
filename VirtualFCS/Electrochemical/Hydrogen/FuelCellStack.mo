@@ -11,8 +11,8 @@ model FuelCellStack
   // Fuel Cell Stack Paramters
   parameter Real m_FC_stack(unit = "kg") = 42 "FC stack mass";
   parameter Real L_FC_stack(unit = "m") = 0.420 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack length";
-  parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack length";
+  parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack width";
+  parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack height";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   parameter Real I_rated_FC_stack(unit="A") = 450 "FC stack rated current";
   parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
