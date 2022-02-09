@@ -8,10 +8,10 @@ model FuelCell "Model for a single PEM fuel cell"
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
-  parameter Real mass(unit = "kg") = 1 "Mass of the Stack";
-  parameter Real volume(unit = "m3") = 0.001 "Volume of the Stack";
+  parameter Real mass(unit = "kg") = 1 "Mass of the cell";
+  parameter Real volume(unit = "m3") = 0.001 "Volume of the cell";
   // Thermal parameters
-  parameter Real heatCapacity(unit = "J/(kg.K)") = 800 "Specific Specific Heat Capacity";
+  parameter Real heatCapacity(unit = "J/(kg.K)") = 800 "Specific Heat Capacity";
   // Stack design parameters
   parameter Real N_cell(unit = "1") = 1 "Number of Cells";
   parameter Real A_cell(unit = "m2") = 0.0237 "Active Area of the Cell";
@@ -87,6 +87,8 @@ model FuelCell "Model for a single PEM fuel cell"
     Placement(visible = true, transformation(origin = {0, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
     Placement(visible = true, transformation(origin = {48, -114}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
+    Placement(visible = true, transformation(origin = {-50, -92}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
 equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
@@ -95,7 +97,7 @@ equation
   j = currentSensor.i / A_cell;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the Nernst equilibrium voltage
-  potentialSource.v = N_cell * (1.229 - R * 298 / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1 * log((R_ohmic.i + i_x) / i_0) + b_2 * log(1 - (R_ohmic.i + i_x) / i_L));
+  potentialSource.v = N_cell * (1.229 - R * temperatureSensor.T / (2 * F) * log(1 / (p_H2 / p_0 * (p_O2 / p_0) ^ 0.5)) - b_1 * log((R_ohmic.i + i_x) / i_0) + b_2 * log(1 - (R_ohmic.i + i_x) / i_L));
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_cell;
 // THERMAL EQUATIONS //
@@ -139,6 +141,10 @@ equation
     Line(points = {{0, -56}, {0, -56}, {0, -46}, {0, -46}}, color = {191, 0, 0}));
   connect(thermalConductor.port_a, heatCapacitor.port) annotation(
     Line(points = {{0, -76}, {0, -76}, {0, -114}, {0, -114}}, color = {191, 0, 0}));
+    connect(temperatureSensor.port, heatCapacitor.port) annotation(
+    Line(points = {{-50, -102}, {-50, -102}, {-50, -114}, {2, -114}, {2, -114}, {0, -114}}, color = {191, 0, 0}));
+  connect(temperatureSensor.T, H2_sink.T_in) annotation(
+    Line(points = {{-50, -82}, {-50, -82}, {-50, 44}, {-68, 44}, {-68, 46}}, color = {0, 0, 127}));
   connect(heatCapacitor.port, heatPort) annotation(
     Line(points = {{0, -114}, {0, -114}, {0, -144}, {0, -144}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, prescribedHeatFlow.port) annotation(
@@ -148,8 +154,7 @@ equation
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
     version = "",
     uses(Modelica(version = "3.2.3")),
-    Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC). The model includes components describing the electrical, fluidic, and thermal properties of the cell.<div><br></div><div>The electrical performance is modelled using a simple 1RC equivalent circuit.&nbsp;</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the cell using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.&nbsp;
-<br> 
+    Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC). The model includes components describing the electrical, fluidic, and thermal properties of the cell.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style=\"font-family: 'Courier New';\">potentialSource.v</span><span style=\"font-family: 'Courier New'; font-size: 12pt;\">,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the cell using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.</div><div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using the&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.FuelCellSubSystems\">FuelCellSubSystems</a>&nbsp;block, or individual&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>,&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, and&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>&nbsp;blocks.<br> 
 <br> 
 
 
@@ -165,7 +170,7 @@ equation
          </tr>
          <tr>
             <td align=\"Left\">mass</td>
-            <td>=50 </td>
+            <td>=1 </td>
             <td align=\"Right\">kg</td>
          </tr>
          
@@ -233,6 +238,6 @@ equation
          </tr>
          
          
-      </tbody></table>
-</div></body></html>"));
+      </tbody></table><br>
+</div><div><div><span style=\"text-decoration: underline;\"><strong>Electrochemical equations:</strong></span></div><div>In the equations below, i<sub>stack</sub>&nbsp;represents the current flowing through the stack, accessible in the code as&nbsp;<font face=\"Courier New\">currentSensor.i</font>.</div><p><i><u>The Nernst equilibrium potential</u></i></p><p>U<sub>FC</sub><sup>Nernst&nbsp;</sup>= (U<sup>0</sup>&nbsp;-((RT)/(2F) ln( 1/(p<sub>H2</sub>&nbsp;(p<sub>O2</sub><sup>0.5</sup>))), U<sup>0&nbsp;</sup>= 1.229 V</p><p><span style=\"text-decoration: underline;\"><i>Activation overpotential</i></span></p><p>η<sup>act&nbsp;</sup>= b<sub>1&nbsp;</sub>ln( 1-(i<sub>cell&nbsp;</sub>+ i<sub>x</sub>) / i<sub>0</sub>)</p><p><u><i>Concentration overpotential</i></u></p><p>η<sup>con&nbsp;</sup>= -b<sub>2&nbsp;</sub>ln( 1-(i<sub>cell&nbsp;</sub>+ i<sub>x</sub>) / i<sub>L</sub>)</p><p><u><i>Cell voltage</i></u></p><p>V<sub>cell</sub>&nbsp;= N<sub>cell</sub>&nbsp;(U<sub>FC</sub><sup>Nernst</sup>&nbsp;- η<sup>act&nbsp;</sup>&nbsp;- i<sub>FC</sub>R<sub>0</sub>&nbsp;- η<sup>con</sup>)</p><p><span style=\"text-decoration: underline;\"><strong>Thermal equations:</strong></span></p><p><i><u>Electrochemical heat generation</u></i></p><p>Q<sub>gen</sub><sup>&nbsp;</sup>= (V<sub>TN</sub>&nbsp;- V<sub><font size=\"2\">cell</font></sub>)i<sub>cell</sub>, V<sub>TN</sub>&nbsp;= 1.481 V</p></div></body></html>"));
 end FuelCell;
