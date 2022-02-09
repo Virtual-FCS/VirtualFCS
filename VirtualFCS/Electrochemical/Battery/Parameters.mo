@@ -22,5 +22,5 @@ package Parameters "Parameters for battery models"
     end getOCP_NMC;
   end Functions;
   annotation(
-    Documentation(info = "<html><head></head><body>This package includes functions to calculate the battery's open-circuit potential for various chemistries based on state of charge, SOC.&nbsp;</body></html>"));
+    Documentation(info = "<html><head></head><body>This package includes functions to calculate the battery's open-circuit potential for various chemistries based on state of charge, SOC.&nbsp;<div><br></div><div>As of February 2022, it is not used in any other Virtual-FCS model or component, but is included in the releases anyway as a placeholder for future development. Ideally, this framework can be used to select between different battery chemistries in a vehicle model.</div></body></html>"));
 end Parameters;

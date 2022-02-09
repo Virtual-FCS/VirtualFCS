@@ -20,7 +20,7 @@ model DC_DC_Converter "DC controlled single phase DC/AC converter"
   Modelica.Electrical.Analog.Sensors.PowerSensor powerSensor annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {80, -10})));
   Modelica.Blocks.Continuous.Integrator integrator(k = 1 / VRef / Ti) annotation(
-    Placement(transformation(extent = {{-8, -50}, {12, -30}})));
+    Placement(visible = true, transformation(extent = {{-2, -50}, {18, -30}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(final k = -1) annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {0, 0})));
   Modelica.Electrical.Analog.Basic.Resistor resistor(R = 0.001)  annotation(
@@ -39,7 +39,7 @@ equation
   connect(product.y, feedback.u1) annotation(
     Line(points = {{-39, 30}, {-30, 30}, {-30, 8}}, color = {0, 0, 127}));
   connect(feedback.y, integrator.u) annotation(
-    Line(points = {{-30, -9}, {-30, -9}, {-30, -20}, {-30, -40}, {-10, -40}}, color = {0, 0, 127}));
+    Line(points = {{-30, -9}, {-30, -40}, {-4, -40}}, color = {0, 0, 127}));
   connect(gain.y, feedback.u2) annotation(
     Line(points = {{-11, 1.33227e-15}, {-21, 1.33227e-15}, {-21, 0}, {-10, 0}, {-22, 0}}, color = {0, 0, 127}));
   connect(gain.u, powerSensor.power) annotation(
@@ -47,7 +47,7 @@ equation
   connect(powerSensor.nc, variableCurrentSource.n) annotation(
     Line(points = {{80, -20}, {80, -30}}, color = {0, 0, 255}));
   connect(integrator.y, variableCurrentSource.i) annotation(
-    Line(points = {{13, -40}, {42, -40}, {73, -40}}, color = {0, 0, 127}));
+    Line(points = {{19, -40}, {73, -40}}, color = {0, 0, 127}));
   connect(powerSensor.pv, powerSensor.pc) annotation(
     Line(points = {{90, -10}, {90, -10}, {90, 0}, {80, 0}}, color = {0, 0, 255}));
   connect(currentSensor.p, dc_p1) annotation(

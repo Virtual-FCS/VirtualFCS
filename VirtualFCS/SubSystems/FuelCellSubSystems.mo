@@ -34,7 +34,7 @@ model FuelCellSubSystems
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9)  annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 5, SOC_init = 0.9, m_bat_pack = 1)  annotation(
     Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(subSystemHydrogen.port_H2ToStack, H2_port_a) annotation(
