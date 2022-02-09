@@ -2,7 +2,6 @@ within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single lumped battery model."
   // DECLARE PARAMETERS //
-
   // Pack-level parameters
   parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
   parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
@@ -18,8 +17,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprised of a single
   parameter Real N_s = ceil(V_max_bat_pack / V_chem_max);
   Real vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
 
-
-  // ADD dropdown menu for selecting chemistry type
+// ADD dropdown menu for selecting chemistry type
   // Coefficients for open-circuit voltage calculation
   // LFP
   parameter Real V_chem_max = 3.65;
@@ -87,7 +85,7 @@ protected
 equation
 // ***DEFINE EQUATIONS ***//
 // Calculate the open-circuit voltage at given temperature and state of charge
-  OCV.v = V_max_bat_pack * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15)))/V_chem_max;
+  OCV.v = V_max_bat_pack * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15))) / V_chem_max;
 // Thermal equations
   heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i + R0.R_actual * sensorCurrent.i ^ 2);
 // ***DEFINE CONNECTIONS ***//
@@ -145,7 +143,7 @@ protected
 
 
 <br>
-<br>
+The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard&nbsp;<i>et al.</i>&nbsp;[1], and is parameterized to the LFP chemistry by default.<br><br>
 
 <table border=\"0.9\">
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Parameters</u></b></caption>
@@ -177,7 +175,7 @@ protected
             <td>=2</td>
             <td align=\"Right\">Cells in series</td>
          </tr>
-      </tbody></table>
-</body></html>"));
+      </tbody></table><br>
+</div><div><div style=\"font-size: 12px;\"><b><u>References</u></b></div><div style=\"font-size: 12px;\"><div class=\"csl-bib-body\" style=\"line-height: 2;\"><div class=\"csl-entry\" style=\"clear: left;\"><div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em; text-align: right; width: 1em;\">1.</div><div class=\"csl-right-inline\" style=\"margin: 0px 0.4em 0px 1.5em;\">Vichard, L.&nbsp;<i>et al.</i>&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;<i>Energy</i>&nbsp;<b>225</b>, 120235 (2021).</div></div></div></div></div></body></html>"));
 
 end LiIonBatteryPack_Lumped;

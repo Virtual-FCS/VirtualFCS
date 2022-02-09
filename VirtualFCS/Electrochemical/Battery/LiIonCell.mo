@@ -97,7 +97,7 @@ equation
   annotation(
     Icon(graphics = {Rectangle(origin = {4, -9}, fillColor = {85, 170, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-104, 49}, {96, -31}}), Rectangle(origin = {104, 4}, fillColor = {200, 200, 200}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-4, 20}, {10, -28}}), Text(origin = {-19, 70}, lineColor = {0, 0, 255}, extent = {{-37, 18}, {57, -32}}, textString = "%name"), Text(origin = {-79, 10}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {57, -32}}, textString = "-"), Text(origin = {87, 2}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {31, -16}}, textString = "+")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body>The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the internal electrochemical reaction (internal resistance) of a lithium ion cell.<div>The model comes pre-programmed with default parameters for both lithium iron phosphate (LFP) and nickel manganese cobalt (NMC) battery cells. The state-of-charge of the battery is calculated using a charge counting method.&nbsp;</div><div><div><div><br></div><div><div>
+    Documentation(info = "<html><head></head><body>The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the internal electrochemical reaction (internal resistance) of a lithium ion cell.<div>The model comes pre-programmed with default parameters for both lithium iron phosphate (LFP) and nickel manganese cobalt (NMC) battery cells. The state-of-charge of the battery is calculated using a charge counting method.&nbsp;</div><div><div><div><br></div><div>The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard <i>et al.</i> [1], and is parameterized to the LFP chemistry by default.</div><div><div>
 
 <br>
 <br>
@@ -188,7 +188,12 @@ equation
             <td>=0.003675</td>
             <td align=\"Right\">m<sup>2</sup></td>
          </tr>
-      </tbody></table>
+      </tbody></table><br>
 
-</div></div></div></div></body></html>"));
+</div></div></div></div><div><b><u>References</u></b></div><div><!--StartFragment--><div class=\"csl-bib-body\" style=\"line-height: 2; \">
+  <div class=\"csl-entry\" style=\"clear: left; \">
+    <div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em;text-align: right; width: 1em;\">1.</div><div class=\"csl-right-inline\" style=\"margin: 0 .4em 0 1.5em;\">Vichard, L. <i>et al.</i> A method to estimate battery SOH indicators based on vehicle operating data only. <i>Energy</i> <b>225</b>, 120235 (2021).</div>
+  </div>
+  <span class=\"Z3988\" title=\"url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.energy.2021.120235&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=A%20method%20to%20estimate%20battery%20SOH%20indicators%20based%20on%20vehicle%20operating%20data%20only&amp;rft.jtitle=Energy&amp;rft.stitle=Energy&amp;rft.volume=225&amp;rft.aufirst=L.&amp;rft.aulast=Vichard&amp;rft.au=L.%20Vichard&amp;rft.au=A.%20Ravey&amp;rft.au=P.%20Venet&amp;rft.au=F.%20Harel&amp;rft.au=S.%20Pelissier&amp;rft.au=D.%20Hissel&amp;rft.date=2021-06-15&amp;rft.pages=120235&amp;rft.issn=0360-5442&amp;rft.language=en\"></span>
+</div><!--EndFragment--></div></body></html>"));
 end LiIonCell;
