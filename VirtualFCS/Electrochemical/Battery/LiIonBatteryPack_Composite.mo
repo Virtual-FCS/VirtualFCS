@@ -2,19 +2,17 @@ within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual Li-ion cell models."
   // DECLARE PARAMETERS //
-  // Physical parameters
-  parameter Real mass(unit = "kg") = 0.050 "Mass of the pack";
-  //  parameter Real vol(unit = "L") = 0.016 "Volume of the pack";
-  parameter Real Cp(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
+
   // Pack design parameters
   parameter Real SOC_init(unit = "1") = 0.5 "Initial State of Charge";
   parameter Integer p = 5 "Number of Cells in Parallel";
   parameter Integer s = 10 "Number of Cells in Series";
   
   parameter Real coolingArea = p * s * liIonCell[1].coolingArea "Cooling Area";
+  parameter Real heatTransferCoefficient(unit="W/(m^2*K)") = 7.8 * 10 ^ 0.78;
   Real chargeCapacity;
   
-  VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell[s * p](each SOC_init = 0.5) annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell[s * p](each SOC_init = SOC_init) annotation(
     Placement(visible = true, transformation(origin = {0, 50.3333}, extent = {{-37, -24.6667}, {37, 24.6667}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -26,7 +24,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
     Placement(visible = true, transformation(origin = {0, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 7.8 * 10 ^ 0.78 * coolingArea) annotation(
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = heatTransferCoefficient * coolingArea) annotation(
     Placement(visible = true, transformation(origin = {80, -50}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
     Placement(visible = true, transformation(origin = {20, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -36,7 +34,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
     Placement(visible = true, transformation(origin = {0, -84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 // ***DEFINE EQUATIONS ***//
-  chargeCapacity = p * s * liIonCell[1].chargeCapacity;
+  chargeCapacity = p * liIonCell[1].chargeCapacity;
 
 // ***DEFINE CONNECTIONS ***//
   for i in 1:p loop
@@ -73,22 +71,13 @@ protected
   Documentation(info = "<html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of several separate instances of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investigations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
 
 <br>
-This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face=\"Consolas\">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span style=\"font-family: Consolas;\">pin_p</span>&nbsp;and&nbsp;<span style=\"font-family: Consolas;\">pin_n</span>.</div><div><br></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack.</div><div><br>
+This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face=\"Consolas\">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span style=\"font-family: Consolas;\">pin_p</span>&nbsp;and&nbsp;<span style=\"font-family: Consolas;\">pin_n</span>.</div><div><br></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack. The ambient temperature T<sub>0</sub> is determined by connection to the heatBoundary.</div><div><br>
 
 <table border=\"0.9\">
 <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Parameters</u></b></caption>
 <tbody><tr><th>Parameter name</th>
             <th>Value</th>
             <th>Unit</th>
-         </tr><tr>
-            <td align=\"Left\">mass</td>
-            <td>=2.5</td>
-	      <td align=\"Right\">kg</td>
-         </tr>
-         <tr>
-            <td align=\"Left\">Cp</td>
-            <td>=1000</td>
-            <td align=\"Right\">J/(kg.K)</td>
          </tr>
          <tr>
             <td align=\"Left\">SOC_init</td>
@@ -104,7 +93,12 @@ This class automatically generates instances of the LiIonCell model based on the
             <td align=\"Left\">s</td>
             <td>=10</td>
             <td align=\"Right\">Cells in series</td>
-         </tr>         
+         </tr>   
+         <tr>
+            <td align=\"Left\">heatTransferCoefficient</td>
+            <td>=7.8 * 10 ^ 0.78</td>
+            <td align=\"Right\">W/(m<sup>2</sup> K)</td>
+         </tr>        
       </tbody></table><br>
-</div><div><br></div></body></html>"));
+</div><div><div><i><u>Convective Heat Transfer</u></i></div><div>Q<sub>conv</sub>&nbsp;= hA<sub>cool</sub>(T&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;T<sub>0</sub>)</div><div><br></div><div><div><i><u>Radiative Heat Transfer</u></i></div><div>Q<sub>rad</sub>&nbsp;= 0.95A<sub>cool</sub><span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(255, 255, 255);\">σ</span>(T<sup>4</sup>&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;(T<sub>0</sub>)<sup>4</sup>)</div></div></div></body></html>"));
 end LiIonBatteryPack_Composite;
