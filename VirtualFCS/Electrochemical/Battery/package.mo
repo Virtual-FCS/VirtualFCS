@@ -20,16 +20,9 @@ package Battery "Models for battery cells and packs."
          <tr>
             <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell</a></td>
             <td>Simulates lithium-ion battery cell</td>
-            <td>LIC.no.ddmmyy</td>
-         </tr>
-         
-         <tr>
-            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite\">LiIonBatteryPack_Composite</a></td>
-            <td>Simulates individual lithium-ion battery cells in a battery pack by automatically generating multiple instances of LiIonCell.</td><td>LBPC.no.ddmmyy</td>
-         </tr>
-         <tr>
-            <td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\">LiIonBatteryPack_Lumped</a></td>
-            <td>Simulates lithium-ion battery pack given a number of cells, assuming every cell is identical.</td><td>LBPL.no.ddmmyy</td>
+            <td>2022.1.0</td></tr><tr><td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite\">LiIonBatteryPack_Composite</a></td>
+            <td>Simulates individual lithium-ion battery cells in a battery pack by automatically generating multiple instances of LiIonCell.</td><td>2022.1.0</td></tr><tr><td><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\">LiIonBatteryPack_Lumped</a></td>
+            <td>Simulates lithium-ion battery pack given a number of cells, assuming every cell is identical.</td><td>2022.1.0</td>
          </tr>
       </tbody></table>
    
