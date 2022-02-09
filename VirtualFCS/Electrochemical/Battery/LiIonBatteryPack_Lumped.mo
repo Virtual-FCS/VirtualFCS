@@ -13,7 +13,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   parameter Real V_max_bat_pack(unit = "V") = 54.75 "Battery pack maximum voltage";
   parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
-  parameter Real heatTransferCoefficient(unit="W/(m^2*K)") = 7.8 * 10 ^ 0.78;
+  parameter Real heatTransferCoefficient(unit="W/(m2.K)") = 7.8 * 10 ^ 0.78;
   parameter Real N_s = ceil(V_max_bat_pack / V_chem_max);
   Real vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
 
