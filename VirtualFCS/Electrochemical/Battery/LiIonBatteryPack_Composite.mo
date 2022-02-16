@@ -9,7 +9,7 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
   parameter Integer s = 10 "Number of Cells in Series";
   
   parameter Real coolingArea = p * s * liIonCell[1].coolingArea "Cooling Area";
-  parameter Real heatTransferCoefficient(unit="W/(m^2*K)") = 7.8 * 10 ^ 0.78;
+  parameter Real heatTransferCoefficient(unit="W/(m2.K)") = 7.8 * 10 ^ 0.78;
   Real chargeCapacity;
   
   VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell[s * p](each SOC_init = SOC_init) annotation(
