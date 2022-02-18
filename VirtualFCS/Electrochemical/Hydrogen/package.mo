@@ -14,7 +14,7 @@ package Hydrogen "Models for hydrogen fuel cell devices."
          <tr>
             <td><a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a></td>
             <td>Simulates proton exchange membrane fuel cell stack</td>
-            <td>FCS.1.ddmmyy</td>
+            <td>2022.1.0</td>
          </tr>
          
       </tbody></table>
