@@ -38,7 +38,7 @@ model FuelCellSystem
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
     Placement(visible = true, transformation(origin = {92, 42}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = heatTrasnferCoefficient) annotation(
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = heatTransferCoefficient) annotation(
     Placement(visible = true, transformation(origin = {132, 42}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * fuelCellStack.A_FC_surf) annotation(
     Placement(visible = true, transformation(origin = {52, 42}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
