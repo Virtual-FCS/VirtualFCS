@@ -87,7 +87,7 @@ equation
 // Calculate the open-circuit voltage at given temperature and state of charge
   OCV.v = V_max_bat_pack * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15))) / V_chem_max;
 // Thermal equations
-  heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i + R0.R_actual * sensorCurrent.i ^ 2);
+  heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i);
 // ***DEFINE CONNECTIONS ***//
   connect(pin_n, OCV.n) annotation(
     Line(points = {{-146, 52}, {-130, 52}, {-130, 52}, {-130, 52}}, color = {0, 0, 255}));
