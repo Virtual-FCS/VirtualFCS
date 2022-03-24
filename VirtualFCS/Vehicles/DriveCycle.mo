@@ -3,7 +3,7 @@ within VirtualFCS.Vehicles;
 class DriveCycle
   import Modelica.Blocks.Tables.Internal;
  ////////////////////// Choose speed_profile  //////////////////////////////////////////////////////
-  type speed_profile = enumeration(NEDC "NEDC", WLTC "WLTC", custom "custom") annotation(
+  type speed_profile = enumeration(NEDC "NEDC", WLTC "WLTC", ArtMw130 "ArtMw130", ArtMw150 "ArtMw150", ArtRoad "ArtRoad", ECER15 "ECER15", EUDC "EUDC", FTP "FTP", HWFET "HWFET", IM240 "IM240", UDDS "UDDS", WLTP1 "WLTP1", WLTP2 "WLTP2", WLTP3 "WLTP3", custom "custom") annotation(
     Evaluate = true);
   parameter speed_profile v = VirtualFCS.Vehicles.DriveCycle.speed_profile.custom "Speed profile";
   parameter String fileName = "NoName" "File where matrix is stored" annotation(
@@ -20,6 +20,30 @@ class DriveCycle
       file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/NEDC.mat");
     elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTC then
       file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/WLTC.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ArtMw130 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/ArtMw130.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ArtMw150 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/ArtMw150.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ArtRoad then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/ArtRoad.mat");  
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ECER15 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/ECER15.mat");  
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.EUDC then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/EUDC.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.FTP then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/FTP.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.HWFET then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/HWFET.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.IM240 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/IM240.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.UDDS then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/UDDS.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTP1 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/WLTP1.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTP2 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/WLTP2.mat");
+    elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTP3 then
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/WLTP3.mat");                
     elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.custom then
       file := path;
     end if;
@@ -36,6 +60,34 @@ class DriveCycle
       name := "NEDC";
     elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTC then
       name := "WLTC";
+        elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ArtMw130 then
+      name := "ArtMw130";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ArtMw150 then
+      name := "ArtMw150";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ArtRoad then
+      name := "ArtRoad";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.ECER15 then
+      name := "ECER15";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.EUDC then
+      name := "EUDC";          
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.FTP then
+      name := "FTP";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.HWFET then
+      name := "HWFET";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.IM240 then
+      name := "IM240";
+          elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.UDDS then
+      name := "UDDS";
+       elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.UDDS then
+      name := "WLTC";
+       elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTP1 then
+      name := "WLTP1";
+       elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTP2 then
+      name := "WLTP2";
+       elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTP3 then
+      name := "WLTP3";
+
+        
     elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.custom then
       name := table;
     end if;
