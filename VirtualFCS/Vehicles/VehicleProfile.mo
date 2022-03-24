@@ -2,15 +2,14 @@ within VirtualFCS.Vehicles;
 
 class VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
   import Modelica.Blocks.Tables.Internal;
-  type vehicle_name = enumeration(Default "Default", Mirai "Mirai", UserDefined "User Defined") annotation(
+  type vehicle_name = enumeration(Bus "Bus", Mirai "Mirai", UserDefined "User Defined") annotation(
     Evaluate = true);
   parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default "Vehicle name";
-  //parameter
-  Real m(unit = "kg") "mass of the vehicle";
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////
   // *** DECLARE PARAMETERS *** //
   // Parameters of the vehicle and the air
-  //parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
+  parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
   parameter Real rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
   parameter Real A_front(unit = "m2") = 2.7 "Front area of the vehicle";
   parameter Real C_D(unit = "1") = 0.26 "Drag coefficient";
@@ -48,9 +47,21 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
 equation
 // *** DEFINE EQUATIONS *** //
   if VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai then
-    m = 1850;
-  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default then
-    m = 1980;
+      m(unit = "kg") = 1850 "Mass of the vehicle";
+      rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
+      A_front(unit = "m2") = 2.7 "Front area of the vehicle";
+      C_D(unit = "1") = 0.26 "Drag coefficient";
+      D_tire(unit = "m") = 0.4318 "Tire Diameter";
+      R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
+      
+  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Bus then
+      m(unit = "kg") = 1850 "Mass of the vehicle";
+      rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
+      A_front(unit = "m2") = 8.7 "Front area of the vehicle";
+      C_D(unit = "1") = 0.79 "Drag coefficient";
+      D_tire(unit = "m") = 0.95 "Tire Diameter";
+      R_gear(unit = "1") = 7.8 "Reduction Gear Ratio";
+      
   elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.UserDefined then
     m = 1100;
   end if;
