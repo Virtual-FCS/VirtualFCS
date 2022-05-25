@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
-model FuelCellStack 
-//*** DEFINE REPLACEABLE PACKAGES ***//
+model FuelCellStack
+  //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
@@ -14,7 +14,7 @@ model FuelCellStack
   parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack width";
   parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack height";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real I_rated_FC_stack(unit="A") = 450 "FC stack rated current";
+  parameter Real I_rated_FC_stack(unit = "A") = 450 "FC stack rated current";
   parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   parameter Real A_FC_surf(unit = "m2") = 2 * (L_FC_stack * W_FC_stack) + 2 * (L_FC_stack * H_FC_stack) + 2 * (W_FC_stack * H_FC_stack) "FC stack surface area";
@@ -23,9 +23,8 @@ model FuelCellStack
   parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
-  parameter Real R_0_FC_stack(unit = "Ohm") = 0.00022*N_FC_stack "FC stack cell ohmic resistance";
-
-// Thermal parameters
+  parameter Real R_0_FC_stack(unit = "Ohm") = 0.00022 * N_FC_stack "FC stack cell ohmic resistance";
+  // Thermal parameters
   parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 1100 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
@@ -81,8 +80,6 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {-26, 59}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
   Modelica.Blocks.Math.Gain O2_mflow(k = 0.032 / (96485 * 4) * N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 1777) annotation(
-    Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_FC_stack * m_FC_stack, T(fixed = true, start = 293.15), der_T(fixed = false)) annotation(
@@ -93,6 +90,8 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {-100, 128}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
     Placement(visible = true, transformation(origin = {-50, -92}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 1000000) annotation(
+    Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
 equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
@@ -104,7 +103,7 @@ equation
 // Calculate the voltage of the cell
   V_cell = pin_p.v / N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = (1.481 - V_cell) * abs(currentSensor.i);
+  P_th = (1.481 - V_cell) * abs(currentSensor.i) * N_FC_stack;
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
@@ -132,10 +131,6 @@ equation
     Line(points = {{43, 60}, {74, 60}, {74, 48}}, color = {0, 0, 127}));
   connect(H2_mflow.y, H2_sink.m_flow_in) annotation(
     Line(points = {{-35, 59}, {-68, 59}, {-68, 50}, {-70, 50}}, color = {0, 0, 127}));
-  connect(thermalConductor.port_b, pipeCoolant.heatPorts[1]) annotation(
-    Line(points = {{0, -56}, {0, -56}, {0, -46}, {0, -46}}, color = {191, 0, 0}));
-  connect(thermalConductor.port_a, heatCapacitor.port) annotation(
-    Line(points = {{0, -76}, {0, -76}, {0, -114}, {0, -114}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, heatPort) annotation(
     Line(points = {{0, -114}, {0, -114}, {0, -144}, {0, -144}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, prescribedHeatFlow.port) annotation(
@@ -154,6 +149,10 @@ equation
     Line(points = {{0, 90}, {-4, 90}, {-4, 58}, {-16, 58}, {-16, 60}}, color = {0, 0, 127}));
   connect(currentSensor.i, O2_mflow.u) annotation(
     Line(points = {{0, 90}, {10, 90}, {10, 60}, {24, 60}, {24, 60}}, color = {0, 0, 127}));
+  connect(thermalConductor.port_a, heatCapacitor.port) annotation(
+    Line(points = {{0, -76}, {0, -114}}, color = {191, 0, 0}));
+  connect(thermalConductor.port_b, pipeCoolant.heatPorts[1]) annotation(
+    Line(points = {{0, -56}, {0, -56}, {0, -46}, {0, -46}}, color = {191, 0, 0}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
