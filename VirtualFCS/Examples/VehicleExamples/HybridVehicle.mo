@@ -1,12 +1,12 @@
 within VirtualFCS.Examples.VehicleExamples;
 
-model RangeExtenderHybridVehicle
+model HybridVehicle
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack = 50, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation(
     Placement(visible = true, transformation(origin = {60, 3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai) annotation(
+  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Truck) annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   VirtualFCS.Vehicles.DriveCycle driveCycle(v = VirtualFCS.Vehicles.DriveCycle.speed_profile.NEDC) annotation(
     Placement(visible = true, transformation(origin = {-60, 1}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
@@ -20,4 +20,4 @@ equation
 protected
   annotation(
     experiment(StartTime = 0, StopTime = 25000, Tolerance = 1e-06, Interval = 1));
-end RangeExtenderHybridVehicle;
+end HybridVehicle;
