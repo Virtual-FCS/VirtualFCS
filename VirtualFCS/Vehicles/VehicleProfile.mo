@@ -2,13 +2,6 @@ within VirtualFCS.Vehicles;
 
 class VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
   import Modelica.Blocks.Tables.Internal;
-<<<<<<< Updated upstream
-  type vehicle_name = enumeration(Bus "Bus", Mirai "Mirai", UserDefined "User Defined") annotation(
-    Evaluate = true);
-  parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default "Vehicle name";
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-=======
   type vehicle_name = enumeration(Truck "Truck", Mirai "Mirai", Bus "Bus") annotation(
     Evaluate = true);
   parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Truck "Truck";
@@ -19,8 +12,8 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
   Real C_D(unit = "1") "Drag coefficient";
   //Real D_tire(unit = "m") "Tire Diameter";
   //Real R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
-  ////////////////////////////////////////////////////////////////////////////////////////////////////
->>>>>>> Stashed changes
+
+  
   // *** DECLARE PARAMETERS *** //
   // Parameters of the vehicle and the air
   parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
@@ -62,10 +55,10 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.SignalCurrent signalCurrent annotation(
     Placement(visible = true, transformation(origin = {40, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
+
 equation
 // *** DEFINE EQUATIONS *** //
   if VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai then
-<<<<<<< Updated upstream
       m(unit = "kg") = 1850 "Mass of the vehicle";
       rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
       A_front(unit = "m2") = 2.7 "Front area of the vehicle";
@@ -81,14 +74,6 @@ equation
       D_tire(unit = "m") = 0.95 "Tire Diameter";
       R_gear(unit = "1") = 7.8 "Reduction Gear Ratio";
       
-  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.UserDefined then
-    m = 1100;
-=======
-    m = 1850;
-    mu = 0.01;
-    A_front=2.7;
-    C_D=0.26;
-    
   elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Truck then
     m = 16000;
     mu = 0.05;
@@ -100,9 +85,8 @@ equation
     mu = 0.01;
     A_front=8.66;
     C_D=0.6;
-    
->>>>>>> Stashed changes
   end if;
+
 // Redeclare variables
   V = vehicleVelocity;
 // Change of units (from km/h to m/s)
