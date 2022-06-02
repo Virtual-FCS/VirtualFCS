@@ -4,7 +4,7 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
   import Modelica.Blocks.Tables.Internal;
   type vehicle_name = enumeration(Truck "Truck", Mirai "Mirai", Bus "Bus") annotation(
     Evaluate = true);
-  parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Truck "Truck";
+  parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai "Mirai";
   //parameter
   Real m(unit = "kg") "mass of the vehicle";
   Real mu(unit = "1") "Rolling resistance coefficient";//between tire and road
@@ -16,10 +16,8 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
   
   // *** DECLARE PARAMETERS *** //
   // Parameters of the vehicle and the air
-  parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
   parameter Real rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
-  
-  parameter Real V_load(unit = "V") = 343 "Load Voltage";
+    parameter Real V_load(unit = "V") = 343 "Load Voltage";
   parameter Boolean useRegenerativeBreaking = false annotation(
     choices(checkBox = true));
   
@@ -59,21 +57,11 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
 equation
 // *** DEFINE EQUATIONS *** //
   if VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai then
-      m(unit = "kg") = 1850 "Mass of the vehicle";
-      rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
-      A_front(unit = "m2") = 2.7 "Front area of the vehicle";
-      C_D(unit = "1") = 0.26 "Drag coefficient";
-      D_tire(unit = "m") = 0.4318 "Tire Diameter";
-      R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
-      
-  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Bus then
-      m(unit = "kg") = 1850 "Mass of the vehicle";
-      rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
-      A_front(unit = "m2") = 8.7 "Front area of the vehicle";
-      C_D(unit = "1") = 0.79 "Drag coefficient";
-      D_tire(unit = "m") = 0.95 "Tire Diameter";
-      R_gear(unit = "1") = 7.8 "Reduction Gear Ratio";
-      
+      m= 1850 ;
+      mu = 0.01;
+      A_front= 2.7 ;
+      C_D= 0.26 ;
+           
   elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Truck then
     m = 16000;
     mu = 0.05;
