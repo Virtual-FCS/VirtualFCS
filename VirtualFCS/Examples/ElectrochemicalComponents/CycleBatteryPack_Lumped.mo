@@ -1,6 +1,6 @@
 within VirtualFCS.Examples.ElectrochemicalComponents;
 
-model CycleBatterPack_Lumped "Example demonstrating constant-current constant-voltage cycling of a lumped Li-ion battery pack model."
+model CycleBatteryPack_Lumped "Example demonstrating constant-current constant-voltage cycling of a lumped Li-ion battery pack model."
   extends Modelica.Icons.Example;
   Modelica.Electrical.Analog.Sources.PulseCurrent pulseCurrent(I = 400, offset = -200, period = 7200, width = 50) annotation(
     Placement(visible = true, transformation(origin = {1, 83}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
@@ -32,4 +32,4 @@ equation
   annotation(
     Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery pack. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;<div><br></div><div>The pack considered in this example is a lumped model considering the summed performance of all the cells in the pack. For investigations where cell-level resolution is necessary (e.g. cell balancing), please see LiIonBatteryPack_Composite.</div></body></html>"),
     experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
-end CycleBatterPack_Lumped;
+end CycleBatteryPack_Lumped;

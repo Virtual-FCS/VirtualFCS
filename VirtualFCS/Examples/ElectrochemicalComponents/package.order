@@ -1,4 +1,4 @@
 CycleBatteryCell
 PolarizeFuelCellStack
-CycleBatterPack_Lumped
 CycleBatteryPack_Composite
+CycleBatteryPack_Lumped
