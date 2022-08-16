@@ -42,6 +42,8 @@ equation
     Line(points = {{-218, -120}, {-176, -120}}, color = {0, 0, 127}, thickness = 0.5));
   connect(signalInterface_FC, purgeValveControl.fuelCellCurrent) annotation(
     Line(points = {{-220, 120}, {-102, 120}, {-102, 40}, {-36, 40}, {-36, 40}}, color = {0, 0, 127}));
+  connect(setH2MassFlow.y, pumpSpeedControl.FCTemp) annotation(
+    Line(points = {{-70, -14}, {-40, -14}, {-40, -20}, {-38, -20}}, color = {0, 0, 127}));
   annotation(
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin = {-9, 240}, lineColor = {0, 0, 255}, extent = {{-137, 34}, {137, -34}}, textString = "%name")}),

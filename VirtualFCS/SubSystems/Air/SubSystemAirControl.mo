@@ -10,7 +10,7 @@ block SubSystemAirControl
   Modelica.Blocks.Sources.Constant setAirPressure(k = pressure_Air_set) annotation(
     Placement(visible = true, transformation(origin = {1, 145}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setAirMassFlow(k = massFlow_Air_set) annotation(
-    Placement(visible = true, transformation(origin = {-144, 28}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-114, 44}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
   
   
   Modelica.Blocks.Routing.Multiplex2 multiplex2 annotation(
@@ -36,6 +36,10 @@ equation
     Line(points = {{-220, 0}, {-182, 0}, {-182, -120}, {-164, -120}, {-164, -120}}, color = {0, 0, 127}));
   connect(getAirMassFlow.y, pumpSpeedControl.getMassFlow) annotation(
     Line(points = {{-96, -32}, {-66, -32}, {-66, -30}, {-64, -30}}, color = {0, 0, 127}));
+  connect(setAirMassFlow.y, pumpSpeedControl.setValue) annotation(
+    Line(points = {{-98, 44}, {-70, 44}, {-70, 46}, {-66, 46}}, color = {0, 0, 127}));
+  connect(getAirMassFlow.y, pumpSpeedControl.getValue) annotation(
+    Line(points = {{-96, -32}, {-68, -32}, {-68, -30}, {-64, -30}}, color = {0, 0, 127}));
   annotation(
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin = {-25, 244}, lineColor = {0, 0, 255}, extent = {{-53, 28}, {91, -54}}, textString = "%name")}),

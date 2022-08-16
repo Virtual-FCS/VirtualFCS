@@ -4,7 +4,6 @@ model SubSystemCooling
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  
   parameter Real m_system_coolant(unit = "kg") = 44 "Coolant system mass";
   //*** INSTANTIATE COMPONENTS ***//
   // System
@@ -23,7 +22,7 @@ model SubSystemCooling
     Placement(visible = true, transformation(origin = {80, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   // Vessels
   Modelica.Fluid.Vessels.OpenTank tankCoolant(redeclare package Medium = Coolant_Medium, crossArea = 0.0314, height = 0.160, level_start = 0.12, nPorts = 1, portsData = {Modelica.Fluid.Vessels.BaseClasses.VesselPortsData(diameter = 0.1)}) annotation(
-    Placement(visible = true, transformation(origin = {-77, 17}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-79, 7}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
   // Machines
   VirtualFCS.Fluid.PumpElectricDC pumpElectricDC(redeclare package Medium = Coolant_Medium) annotation(
     Placement(visible = true, transformation(origin = {34, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -33,20 +32,26 @@ model SubSystemCooling
     Placement(visible = true, transformation(origin = {-52, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Fluid.Pipes.DynamicPipe pipeReturn(redeclare package Medium = Coolant_Medium, T_start = system.T_start, diameter = 0.01, length = 0.2, nParallel = 5, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {34, -32}, extent = {{10, 10}, {-10, -10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput controlInterface annotation(
-    Placement(visible = true, transformation(origin = {-113, 79}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {-109, 51}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput FCTemp annotation(
+    Placement(visible = true, transformation(origin = {-115, 73}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {-109, 51}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression setPumpSpeed(y = max(0.3, 1 - subSystemCoolingControl.controlInterface)) annotation(
     Placement(visible = true, transformation(origin = {8, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  SubSystemCoolingControl subSystemCoolingControl annotation(
+  VirtualFCS.SubSystems.Cooling.SubSystemCoolingControl subSystemCoolingControl(temperature_Cooling_set = 353.15) annotation(
     Placement(visible = true, transformation(origin = {-44, 64}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipeSend(redeclare package Medium = Coolant_Medium, T_start = system.T_start, diameter = 0.01, length = 0.2, nParallel = 5, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {68, 16}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   VirtualFCS.Thermal.HeatSink heatSink(redeclare package Medium = Coolant_Medium) annotation(
     Placement(visible = true, transformation(origin = {-20, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Math.Gain mass(k = 997) annotation(
+    Placement(visible = true, transformation(origin = {-109, 25}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensorPipeReturn annotation(
+    Placement(visible = true, transformation(origin = {93, -55}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
+    Placement(visible = true, transformation(origin = {91, 49}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(tankCoolant.ports[1], teeJunctionTankCoolant.port_3) annotation(
-    Line(points = {{-77, 6}, {-78, 6}, {-78, -8}, {-62, -8}}, color = {0, 170, 255}, thickness = 1));
+    Line(points = {{-79, -4}, {-78, -4}, {-78, -8}, {-62, -8}}, color = {0, 170, 255}, thickness = 1));
   connect(pipeReturn.port_a, Input) annotation(
     Line(points = {{44, -32}, {100, -32}}, color = {0, 170, 255}, thickness = 1));
   connect(pin_n, pumpElectricDC.pin_n) annotation(
@@ -59,8 +64,6 @@ equation
     Line(points = {{37, 8}, {37, -4}, {80, -4}}, color = {0, 0, 127}, thickness = 0.5));
   connect(teeJunctionTankCoolant.port_2, pumpElectricDC.Input) annotation(
     Line(points = {{-52, 2}, {-52, 2}, {-52, 16}, {26, 16}, {26, 16}}, color = {0, 127, 255}));
-  connect(controlInterface, subSystemCoolingControl.sensorInterface) annotation(
-    Line(points = {{-112, 80}, {-84, 80}, {-84, 64}, {-66, 64}, {-66, 64}}, color = {0, 0, 127}));
   connect(pumpElectricDC.Output, pipeSend.port_a) annotation(
     Line(points = {{44, 16}, {58, 16}, {58, 16}, {58, 16}}, color = {0, 127, 255}));
   connect(pipeSend.port_b, Output) annotation(
@@ -69,6 +72,16 @@ equation
     Line(points = {{-10, -34}, {24, -34}, {24, -32}}, color = {0, 127, 255}));
   connect(heatSink.port_a, teeJunctionTankCoolant.port_1) annotation(
     Line(points = {{-30, -34}, {-52, -34}, {-52, -18}, {-52, -18}}, color = {0, 127, 255}));
+  connect(sensors[1], mass.u) annotation(
+    Line(points = {{80, -4}, {114, -4}, {114, -40}, {-124, -40}, {-124, 25}, {-117, 25}}, color = {0, 0, 127}));
+  connect(pipeReturn.heatPorts[1], temperatureSensorPipeReturn.port) annotation(
+    Line(points = {{34, -36}, {34, -53.5}, {86, -53.5}, {86, -55}}, color = {191, 0, 0}));
+  connect(pipeSend.heatPorts[1], temperatureSensor.port) annotation(
+    Line(points = {{68, 12}, {66, 12}, {66, 49}, {84, 49}}, color = {191, 0, 0}));
+  connect(FCTemp, subSystemCoolingControl.FCTemp) annotation(
+    Line(points = {{-114, 74}, {-68, 74}, {-68, 80}, {-66, 80}}, color = {0, 0, 127}));
+  connect(subSystemCoolingControl.CoolantFlow, mass.y) annotation(
+    Line(points = {{-66, 48}, {-102, 48}, {-102, 26}, {-102, 26}}, color = {0, 0, 127}));
   annotation(
     experiment(StopTime = 50),
     __Dymola_Commands(file = "modelica://Modelica/Resources/Scripts/Dymola/Fluid/EmptyTanks/plot level and port.p.mos" "plot level and port.p"),
