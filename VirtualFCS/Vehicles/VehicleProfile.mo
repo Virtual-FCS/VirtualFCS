@@ -2,48 +2,41 @@ within VirtualFCS.Vehicles;
 
 class VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
   import Modelica.Blocks.Tables.Internal;
-  type vehicle_name = enumeration(Truck "Truck", Mirai "Mirai", Bus "Bus") annotation(
+  type vehicle_name = enumeration(Default "Default", Mirai "Mirai", UserDefined "User Defined") annotation(
     Evaluate = true);
-  parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai "Mirai";
+  parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default "Vehicle name";
   //parameter
   Real m(unit = "kg") "mass of the vehicle";
-  Real mu(unit = "1") "Rolling resistance coefficient";//between tire and road
-  Real A_front(unit = "m2") "Front area of the vehicle";
-  Real C_D(unit = "1") "Drag coefficient";
-  //Real D_tire(unit = "m") "Tire Diameter";
-  //Real R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
-
-  
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
   // *** DECLARE PARAMETERS *** //
   // Parameters of the vehicle and the air
+  //parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
   parameter Real rho_air(unit = "kg/m3") = 1.2 "Volumic mass of the air";
-    parameter Real V_load(unit = "V") = 343 "Load Voltage";
+  parameter Real A_front(unit = "m2") = 2.7 "Front area of the vehicle";
+  parameter Real C_D(unit = "1") = 0.26 "Drag coefficient";
+  parameter Real D_tire(unit = "m") = 0.4318 "Tire Diameter";
+  parameter Real R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
+  parameter Real V_load(unit = "V") = 343 "Load Voltage";
+  parameter Real mu(unit="")=0.01 "Rolling resistance coefficient";
   parameter Boolean useRegenerativeBreaking = false annotation(
     choices(checkBox = true));
-  
   // Efficiency coefficients
   parameter Real eff_drivetrain(unit = "1") = 0.9 "Efficiency of the drivetrain";
   parameter Real eff_brake(unit = "1") = 0.5 "Efficiency of the regenerative breaking";
-  
   // --- Class Outputs --- //
-  
   // Derived Quantities
   Real V(unit = "km/h") "Vehicle Speed";
   Real v(unit = "m/s") "Speed of the vehicle in m/s";
   Real a(unit = "m/s2") "Vehicle acceleration";
-  
   Real F_accel(unit = "N") "Vehicle acceleration force";
   Real F_drag(unit = "N") "Vehicle drag force";
   Real F_roll(unit = "N") "Vehicle rolling force";
   Real F_T(unit = "N") "Vehicle total force";
-  
-  //Real omega_engine(unit = "rad/s") "Motor Rotation, rad/s";
-  //Real N_engine(unit = "rpm") "Motor Rotation, rpm";
-  
+  Real omega_engine(unit = "rad/s") "Motor Rotation, rad/s";
+  Real N_engine(unit = "rpm") "Motor Rotation, rpm";
   //  Real tau(unit = "N.m") "Motor Torque";
   Real x(unit = "m") "Position";
   Real P(unit = "W");
-  
   // *** INSTANTIATE COMPONENTS *** //
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {72, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{80, -60}, {100, -40}}, rotation = 0)));
@@ -53,28 +46,15 @@ class VehicleProfile "Calculates the driving power for a vehicle that correspond
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.SignalCurrent signalCurrent annotation(
     Placement(visible = true, transformation(origin = {40, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-
 equation
 // *** DEFINE EQUATIONS *** //
   if VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai then
-      m= 1850 ;
-      mu = 0.01;
-      A_front= 2.7 ;
-      C_D= 0.26 ;
-           
-  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Truck then
-    m = 16000;
-    mu = 0.05;
-    A_front=8;
-    C_D=0.37;
-    
-  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Bus then
-    m = 13000;
-    mu = 0.01;
-    A_front=8.66;
-    C_D=0.6;
+    m = 1850;
+  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default then
+    m = 1980;
+  elseif VN == VirtualFCS.Vehicles.VehicleProfile.vehicle_name.UserDefined then
+    m = 40000;
   end if;
-
 // Redeclare variables
   V = vehicleVelocity;
 // Change of units (from km/h to m/s)
@@ -82,24 +62,18 @@ equation
 // Calculate position
   der(x) = v;
   der(v) = a;
-
   F_drag = 0.5 * C_D * rho_air * v ^ 2 * A_front;
   F_accel = m * a;
   F_roll = mu * m * 9.81;
-  F_T = F_drag + F_accel + F_roll;
-
+  F_T = F_drag + F_accel+ F_roll;
   P = F_T * v / 0.9;
-
   if P >= 0 then
     signalCurrent.i = -(P/0.9) / V_load;
    else
    signalCurrent.i = -(P*0.5) / V_load;
    end if;
-
-  //omega_engine = v * R_gear / (0.5 * D_tire);
-
-  //N_engine = 30 * omega_engine / Modelica.Constants.pi;
-
+  omega_engine = v * R_gear / (0.5 * D_tire);
+  N_engine = 30 * omega_engine / Modelica.Constants.pi;
 //der_v = if der(V) > 4.5 then 0 elseif der(V) < (-7) then 0 else der(v);
 // Calculate motor rpm
 //  omega = 60 * v * R_gear / (Modelica.Constants.pi * D_tire);

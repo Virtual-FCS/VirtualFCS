@@ -36,7 +36,7 @@ model PumpElectricDC
     Placement(visible = true, transformation(extent = {{-64, -16}, {-44, 4}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {80, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.0021333}, head_nominal = {13.05, 7.138}), N_nominal = 1200, V = 0.005, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nParallel = 1, p_a_start = 102502, use_N_in = true) annotation(
+  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.3}, head_nominal = {13.05, 7.138}), N_nominal = 1200, V = 0.005, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nParallel = 1, p_a_start = 102502, use_N_in = true) annotation(
     Placement(visible = true, transformation(origin = {20, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {21, -32}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));

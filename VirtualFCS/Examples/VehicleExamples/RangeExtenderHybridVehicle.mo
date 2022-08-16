@@ -1,14 +1,14 @@
 within VirtualFCS.Examples.VehicleExamples;
 
-model HybridVehicle
+model RangeExtenderHybridVehicle
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack = 4, I_rated_FC_stack = 470, N_FC_stack = 330, V_HV_Bus = 650, V_max_bat_pack = 350, V_min_bat_pack = 300, V_nom_bat_pack = 310.8, V_rated_FC_stack = 213, m_FC_stack = 60, m_bat_pack = 44.6) annotation(
+  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack = 200, I_rated_FC_stack = 353, N_FC_stack = 1000, SOC_init = 0.5, V_max_bat_pack = 400, V_min_bat_pack = 360, V_nom_bat_pack = 380, V_rated_FC_stack = 643, m_FC_stack = 250) annotation(
     Placement(visible = true, transformation(origin = {60, 3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai) annotation(
+  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(A_front = 8, C_D = 0.35, VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.UserDefined) annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  VirtualFCS.Vehicles.DriveCycle driveCycle(v = VirtualFCS.Vehicles.DriveCycle.speed_profile.EUDC) annotation(
+  VirtualFCS.Vehicles.DriveCycle driveCycle(v = VirtualFCS.Vehicles.DriveCycle.speed_profile.NEDC) annotation(
     Placement(visible = true, transformation(origin = {-60, 1}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
 equation
   connect(driveCycle.y, vehicleProfile.vehicleVelocity) annotation(
@@ -20,4 +20,4 @@ equation
 protected
   annotation(
     experiment(StartTime = 0, StopTime = 25000, Tolerance = 1e-06, Interval = 1));
-end HybridVehicle;
+end RangeExtenderHybridVehicle;

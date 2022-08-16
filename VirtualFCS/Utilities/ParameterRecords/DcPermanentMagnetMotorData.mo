@@ -3,11 +3,11 @@ within VirtualFCS.Utilities.ParameterRecords;
 record DcPermanentMagnetMotorData
   extends Modelica.Icons.Record;
   parameter Modelica.SIunits.Inertia Jr=0.15 "Rotor's moment of inertia";
-  parameter Modelica.SIunits.Inertia Js=Jr "Stator's moment of inertia";
+  parameter Modelica.SIunits.Inertia Js=0.29 "Stator's moment of inertia";
   parameter Modelica.SIunits.Voltage VaNominal=18
     "Nominal armature voltage"
     annotation (Dialog(tab="Nominal parameters"));
-  parameter Modelica.SIunits.Current IaNominal=10
+  parameter Modelica.SIunits.Current IaNominal=100
     "Nominal armature current (>0..Motor, <0..Generator)"
     annotation (Dialog(tab="Nominal parameters"));
   parameter Modelica.SIunits.AngularVelocity wNominal(displayUnit="rev/min")=
