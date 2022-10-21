@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
-model FuelCellStack 
-//*** DEFINE REPLACEABLE PACKAGES ***//
+model FuelCellStack
+  //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
@@ -14,7 +14,7 @@ model FuelCellStack
   parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack width";
   parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack height";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real I_rated_FC_stack(unit="A") = 450 "FC stack rated current";
+  parameter Real I_rated_FC_stack(unit = "A") = 450 "FC stack rated current";
   parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   parameter Real A_FC_surf(unit = "m2") = 2 * (L_FC_stack * W_FC_stack) + 2 * (L_FC_stack * H_FC_stack) + 2 * (W_FC_stack * H_FC_stack) "FC stack surface area";
@@ -23,9 +23,8 @@ model FuelCellStack
   parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
-  parameter Real R_0_FC_stack(unit = "Ohm") = 0.00022*N_FC_stack "FC stack cell ohmic resistance";
-
-// Thermal parameters
+  parameter Real R_0_FC_stack(unit = "Ohm") = 0.00022 * N_FC_stack "FC stack cell ohmic resistance";
+  // Thermal parameters
   parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 1100 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants

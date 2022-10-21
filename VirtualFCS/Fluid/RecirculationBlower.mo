@@ -19,7 +19,7 @@ model RecirculationBlower
     Placement(visible = true, transformation(extent = {{-90, -14}, {-70, 6}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
     Placement(visible = true, transformation(origin = {0, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain(k = 9.5493)  annotation(
+  Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {67, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {20, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
