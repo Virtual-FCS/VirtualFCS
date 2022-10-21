@@ -2,7 +2,6 @@ within VirtualFCS.Examples.SubsystemExamples;
 
 model TestAirSubsystem "Example to evaluate the performance of the air subsystem."
   extends Modelica.Icons.Example;
-  
   replaceable package Medium = Modelica.Media.Air.MoistAir;
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Medium, nPorts = 1, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {0, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
@@ -36,10 +35,10 @@ equation
   annotation(
     Diagram,
     Icon,
-  Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the air subsystem both for optimization and troubleshooting purposes.<div><br></div><div><b style=\"font-size: 12px;\"><br></b></div><div><b style=\"font-size: 12px;\">Description</b></div><div><div style=\"font-size: 12px;\"><p class=\"MsoNormal\">The model has three parts (1) Input (includes fuel cell current and its conversion to air mass flow rate), (2)&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">Air Sub System</a> (includes Air Tank, pressure regulator, <a href=\"modelica://VirtualFCS.Fluid.Compressor\">Compressor</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.ThrottleValve\" style=\"font-size: medium;\">Throttle Valve</a>&nbsp;and <a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAirControl\">Air SubSystem Control</a>), and (3) Power supply (<a href=\"modelica:///VirtualFCS.Electrochemical.Battery.BatterySystem\">Battery System</a>). The model simulates influence of fuel cell current on air flow rate.</p><p class=\"MsoNormal\"><br></p><p class=\"MsoNormal\"><b>References to base model/related packages</b></p><p class=\"MsoNormal\">&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">Air Sub System</a>&nbsp;and&nbsp;<a href=\"modelica:///VirtualFCS.Electrochemical.Battery.BatterySystem\">Battery System</a></p></div>
+    Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the air subsystem both for optimization and troubleshooting purposes.<div><br></div><div><b style=\"font-size: 12px;\"><br></b></div><div><b style=\"font-size: 12px;\">Description</b></div><div><div style=\"font-size: 12px;\"><p class=\"MsoNormal\">The model has three parts (1) Input (includes fuel cell current and its conversion to air mass flow rate), (2)&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">Air Sub System</a> (includes Air Tank, pressure regulator, <a href=\"modelica://VirtualFCS.Fluid.Compressor\">Compressor</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.ThrottleValve\" style=\"font-size: medium;\">Throttle Valve</a>&nbsp;and <a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAirControl\">Air SubSystem Control</a>), and (3) Power supply (<a href=\"modelica:///VirtualFCS.Electrochemical.Battery.BatterySystem\">Battery System</a>). The model simulates influence of fuel cell current on air flow rate.</p><p class=\"MsoNormal\"><br></p><p class=\"MsoNormal\"><b>References to base model/related packages</b></p><p class=\"MsoNormal\">&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">Air Sub System</a>&nbsp;and&nbsp;<a href=\"modelica:///VirtualFCS.Electrochemical.Battery.BatterySystem\">Battery System</a></p></div>
 
 <p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>
 
 <!--EndFragment--></div></body></html>"),
-  experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
+    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
 end TestAirSubsystem;

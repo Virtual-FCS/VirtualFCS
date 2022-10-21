@@ -2,16 +2,6 @@ within VirtualFCS.Electrochemical;
 
 package Battery "Models for battery cells and packs."
   extends Modelica.Icons.VariantsPackage;
-
-
-
-
-
-
-
-
-
-
   annotation(
     Documentation(info = "<html><head></head><body>This sub-package includes models for simulating the performance of lithium-ion cells and packs.<div><br><table border=\"0.9\"><tbody><tr><th>Name</th>
             <th>Description</th>

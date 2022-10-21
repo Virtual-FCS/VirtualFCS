@@ -67,10 +67,10 @@ equation
   F_T = F_drag + F_accel;
   P = F_T * v / 0.9;
   if P >= 0 then
-    signalCurrent.i = -(P/0.9) / V_load;
-   else
-   signalCurrent.i = -(P*0.5) / V_load;
-   end if;
+    signalCurrent.i = -(P / 0.9) / V_load;
+  else
+    signalCurrent.i = -(P * 0.5) / V_load;
+  end if;
   omega_engine = v * R_gear / (0.5 * D_tire);
   N_engine = 30 * omega_engine / Modelica.Constants.pi;
 //der_v = if der(V) > 4.5 then 0 elseif der(V) < (-7) then 0 else der(v);

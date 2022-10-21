@@ -4,8 +4,8 @@ model DCConverterSwitch "DC controlled single phase DC/AC converter"
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin1;
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin2;
   // extends .PhotoVoltaics.Icons.Converter;
-  parameter Modelica.SIunits.Voltage vDCref = 48 "Reference DC source voltage";
-  parameter Modelica.SIunits.Time Ti = 1E-6 "Internal integration time constant";
+  parameter Modelica.Units.SI.Voltage vDCref = 48 "Reference DC source voltage";
+  parameter Modelica.Units.SI.Time Ti = 1E-6 "Internal integration time constant";
   Modelica.Electrical.Analog.Sources.SignalVoltage signalVoltage annotation(
     Placement(visible = true, transformation(origin = {-90, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
@@ -28,13 +28,13 @@ model DCConverterSwitch "DC controlled single phase DC/AC converter"
     Placement(visible = true, transformation(origin = {80, 32}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Logical.Switch switch1 annotation(
     Placement(visible = true, transformation(origin = {36, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant const(k = 0)  annotation(
+  Modelica.Blocks.Sources.Constant const(k = 0) annotation(
     Placement(visible = true, transformation(origin = {-10, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.BooleanInput u annotation(
     Placement(visible = true, transformation(origin = {16, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 90), iconTransformation(origin = {16, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
   Modelica.Electrical.Analog.Ideal.IdealClosingSwitch switch annotation(
     Placement(visible = true, transformation(origin = {-90, -40}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
-  Modelica.Blocks.Sources.RealExpression realExpression(y = vDCref)  annotation(
+  Modelica.Blocks.Sources.RealExpression realExpression(y = vDCref) annotation(
     Placement(visible = true, transformation(origin = {-60, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
 equation
   connect(currentSensor.n, signalVoltage.p) annotation(

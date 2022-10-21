@@ -1,17 +1,13 @@
 within VirtualFCS.SubSystems;
 
 model FuelCellSubSystems
-
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-
-// H2 Subsystem Paramters
+  // H2 Subsystem Paramters
   parameter Real m_FC_subsystems(unit = "kg") = subSystemHydrogen.m_system_H2 + subSystemAir.m_system_air + subSystemCooling.m_system_coolant + batterySystem.m_bat_pack;
-  parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit="Pa") = 35000000 "H2 tank initial pressure";
-
-
+  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
+  parameter Real p_tank_H2(unit = "Pa") = 35000000 "H2 tank initial pressure";
   VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation(
     Placement(visible = true, transformation(origin = {-60, 0}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a H2_port_a(redeclare package Medium = Anode_Medium) annotation(
@@ -34,7 +30,7 @@ model FuelCellSubSystems
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 5, SOC_init = 0.9, m_bat_pack = 1)  annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 5, SOC_init = 0.9, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(subSystemHydrogen.port_H2ToStack, H2_port_a) annotation(

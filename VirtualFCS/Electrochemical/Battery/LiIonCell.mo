@@ -54,7 +54,7 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
     Placement(visible = true, transformation(origin = {20, 52}, extent = {{11, 11}, {-11, -11}}, rotation = 180)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatSource annotation(
     Placement(visible = true, transformation(origin = {-130, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = specificHeatCapacity * mass)  annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = specificHeatCapacity * mass) annotation(
     Placement(visible = true, transformation(origin = {-50, -28}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {-50, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

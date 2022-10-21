@@ -3,8 +3,8 @@ within VirtualFCS.Electrical;
 model DC_DC_Converter "DC controlled single phase DC/AC converter"
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin1;
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin2;
-  parameter Modelica.SIunits.Voltage VRef = 48 "Reference DC source voltage";
-  parameter Modelica.SIunits.Time Ti = 1E-6 "Internal integration time constant";
+  parameter Modelica.Units.SI.Voltage VRef = 48 "Reference DC source voltage";
+  parameter Modelica.Units.SI.Time Ti = 1E-6 "Internal integration time constant";
   Modelica.Blocks.Interfaces.RealInput vDCRef(final unit = "V") "DC voltage" annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {-60, -120}), iconTransformation(extent = {{-20, -20}, {20, 20}}, rotation = 90, origin = {-60, -120})));
   Modelica.Electrical.Analog.Sources.SignalVoltage signalVoltage annotation(
@@ -23,9 +23,9 @@ model DC_DC_Converter "DC controlled single phase DC/AC converter"
     Placement(visible = true, transformation(extent = {{-2, -50}, {18, -30}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(final k = -1) annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {0, 0})));
-  Modelica.Electrical.Analog.Basic.Resistor resistor(R = 0.001)  annotation(
+  Modelica.Electrical.Analog.Basic.Resistor resistor(R = 0.001) annotation(
     Placement(visible = true, transformation(origin = {-90, -32}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Electrical.Analog.Basic.Resistor resistor1(R = 0.001)  annotation(
+  Modelica.Electrical.Analog.Basic.Resistor resistor1(R = 0.001) annotation(
     Placement(visible = true, transformation(origin = {80, 36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
 equation
   connect(currentSensor.n, signalVoltage.p) annotation(

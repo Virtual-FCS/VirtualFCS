@@ -2,12 +2,10 @@ within VirtualFCS.Examples.SubsystemExamples;
 
 model TestCoolingSubsystem "Example to evaluate the performance of the cooling subsystem."
   extends Modelica.Icons.Example;
-  
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  
   VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant getTermperature(k = 273.15 +80)  annotation(
+  Modelica.Blocks.Sources.Constant getTermperature(k = 273.15 + 80) annotation(
     Placement(visible = true, transformation(origin = {-60, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipe1(redeclare package Medium = Medium, diameter = 0.01, length = 0.2, nParallel = 5, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {-12, 50}, extent = {{10, 10}, {-10, -10}}, rotation = 270)));
@@ -15,7 +13,7 @@ model TestCoolingSubsystem "Example to evaluate the performance of the cooling s
     Placement(visible = true, transformation(origin = {12, 50}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 10,SOC_init = 0.9,V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48, m_bat_pack = 1)  annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 10, SOC_init = 0.9, V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {-3.55271e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
   connect(getTermperature.y, subSystemCooling.controlInterface) annotation(
@@ -33,8 +31,8 @@ equation
   annotation(
     Diagram,
     Icon,
-  __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian,newInst aliasConflicts",
-  Documentation(info = "<html><head></head><body><font size=\"4\" face=\"Arial\">This example is intended as a means to evaluate the performance of the cooling subsystem both for optimization and troubleshooting purposes.</font><div><font size=\"4\" face=\"Arial\"><br></font></div><div>
+    __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian,newInst aliasConflicts",
+    Documentation(info = "<html><head></head><body><font size=\"4\" face=\"Arial\">This example is intended as a means to evaluate the performance of the cooling subsystem both for optimization and troubleshooting purposes.</font><div><font size=\"4\" face=\"Arial\"><br></font></div><div>
 
 
 
@@ -1388,5 +1386,5 @@ graph</span></font></p>
 <p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">&nbsp;</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">Future work</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">The selection of fan, blower, or pump depends on the required cooling rate, overcoming any pressure drop in the coolant channels, and meeting overall system electrical efficiency, weight, and volume requirements.&nbsp;</font></o:p></p>
 
 <!--EndFragment--></div></body></html>"),
-  experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
+    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
 end TestCoolingSubsystem;

@@ -12,7 +12,7 @@ model CycleBatteryPack_Composite "Example demonstrating constant-current constan
     Placement(visible = true, transformation(origin = {76, 10}, extent = {{14, -10}, {-14, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 298.15) annotation(
     Placement(visible = true, transformation(origin = {50, -50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite liIonBatteryPack_Composite(p = 3, s = 3)  annotation(
+  VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite liIonBatteryPack_Composite(p = 3, s = 3) annotation(
     Placement(visible = true, transformation(origin = {1.17517, -22.1168}, extent = {{-16.6752, -10.0051}, {16.6752, 11.1168}}, rotation = 0)));
 equation
   connect(BMS.chargeCapacity, getChargeCapacity.y) annotation(
