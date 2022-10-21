@@ -1,6 +1,6 @@
 within VirtualFCS.UsersGuide.ReleaseNotes;
 
-encapsulated class Version_2022_1_0
+class Version_2022_1_0
   extends Modelica.Icons.ReleaseNotes;
   annotation(
     Documentation(info = "<html><head></head><body><b>Release of VirtualFCS v2022.1.0</b><div><br></div><div><b>Version Control</b></div><div>Starting from this release, we have switched to calender versioning. This change was made due to the plans to release updates to the code in regular intervals. The version numbers adhere to the format YYYY.Major.Minor.</div><div><br></div><div><b>Notable Modifications</b><span style=\"font-family: 'MS Shell Dlg 2', sans-serif; font-size: 9pt; line-height: 107%;\">&nbsp;</span></div><div><span style=\"font-family: 'MS Shell Dlg 2', sans-serif; font-size: 9pt; line-height: 107%;\">This release includes improvements which are
