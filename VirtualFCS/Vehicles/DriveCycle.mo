@@ -2,7 +2,7 @@ within VirtualFCS.Vehicles;
 
 class DriveCycle
   import Modelica.Blocks.Tables.Internal;
- ////////////////////// Choose speed_profile  //////////////////////////////////////////////////////
+  ////////////////////// Choose speed_profile  //////////////////////////////////////////////////////
   type speed_profile = enumeration(NEDC "NEDC", WLTC "WLTC", custom "custom") annotation(
     Evaluate = true);
   parameter speed_profile v = VirtualFCS.Vehicles.DriveCycle.speed_profile.custom "Speed profile";
@@ -40,9 +40,9 @@ class DriveCycle
       name := table;
     end if;
   end speed_profile_name;
- 
-// *** INSTANTIATE COMPONENTS *** //
-  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic,fileName = filepath, smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative, table = fill(0.0, 0, 2), tableName = table_Name, tableOnFile = true) annotation(
+
+  // *** INSTANTIATE COMPONENTS *** //
+  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, fileName = filepath, smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative, table = fill(0.0, 0, 2), tableName = table_Name, tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-1, 0}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput y annotation(
     Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

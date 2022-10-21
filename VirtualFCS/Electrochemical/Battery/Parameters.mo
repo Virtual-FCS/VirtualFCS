@@ -9,7 +9,7 @@ package Parameters "Parameters for battery models"
     function getOCP_NMC
       extends Modelica.Icons.Function;
       input Real SOC "State of Charge";
-      output Modelica.SIunits.ElectricPotential OCP "Open-Circuit Potential";
+      output Modelica.Units.SI.ElectricPotential OCP "Open-Circuit Potential";
       // Coefficients for open-circuit voltage calculation
       // NMC
       Real A0 = 2.951;
