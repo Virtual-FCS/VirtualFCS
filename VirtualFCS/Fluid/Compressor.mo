@@ -1,6 +1,7 @@
 within VirtualFCS.Fluid;
 
 model Compressor
+  parameter Modelica.Units.NonSI.AngularVelocity_rpm Pump_N_nominal = 365 "Nominal speed of the pump";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Medium = Modelica.Media.Air.MoistAir;
@@ -19,7 +20,7 @@ model Compressor
     Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
     Placement(visible = true, transformation(origin = {24, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {15 * 10000, 10 * 10000}), N_nominal = 365, V(displayUnit = "l") = 1e-05, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nParallel = 1, p_a_start = 150000, use_N_in = true) annotation(
+  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, N_nominal = Pump_N_nominal, V(displayUnit = "l") = 1e-05, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {15*10000, 10*10000}), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nParallel = 1, p_a_start = 150000, use_N_in = true) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {8, -16}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

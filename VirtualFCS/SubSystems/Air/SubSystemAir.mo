@@ -1,6 +1,12 @@
 within VirtualFCS.SubSystems.Air;
 
 class SubSystemAir
+  parameter Real PumpSpeed_K = 1 "Gain for the pump speed controller"
+    annotation(Dialog(group = "Speed controller"));
+  parameter Real PumpSpeed_Td = 0.1 "Time constant for the pump speed controller"
+    annotation(Dialog(group = "Speed controller"));
+  parameter Modelica.Units.NonSI.AngularVelocity_rpm Pump_N_nominal = 365 "Nominal speed of the pump"
+    annotation(Dialog(group = "Pump"));
   // Other
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
@@ -18,7 +24,7 @@ class SubSystemAir
   Modelica.Fluid.Interfaces.FluidPort_b Output(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {88, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-60, 121}, extent = {{-20, -19}, {20, 19}}, rotation = 0)));
   // Machines
-  VirtualFCS.Fluid.Compressor compressor annotation(
+  VirtualFCS.Fluid.Compressor compressor(Pump_N_nominal = Pump_N_nominal)  annotation(
     Placement(visible = true, transformation(origin = {12, 18}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
   // Valves
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
@@ -39,7 +45,7 @@ class SubSystemAir
     Placement(visible = true, transformation(origin = {-38, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Fluid.ThrottleValve throttleValve(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {15, -35}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
-  VirtualFCS.SubSystems.Air.SubSystemAirControl subSystemAirControl annotation(
+  VirtualFCS.SubSystems.Air.SubSystemAirControl subSystemAirControl(PumpSpeed_K = PumpSpeed_K, PumpSpeed_Td = PumpSpeed_Td)  annotation(
     Placement(visible = true, transformation(origin = {-45, 79}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
 equation
 //*** DEFINE CONNECTIONS ***//
