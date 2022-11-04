@@ -17,6 +17,8 @@ model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {-3.55271e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  inner VirtualFCS.Utilities.SystemRecords.HydrogenDataPlantA hydrogenData annotation(
+    Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(setFuelCellCurrent.y, gain.u) annotation(
     Line(points = {{-63, 80}, {-44, 80}}, color = {0, 0, 127}));
