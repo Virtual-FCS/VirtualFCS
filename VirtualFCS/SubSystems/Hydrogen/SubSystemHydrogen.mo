@@ -70,6 +70,8 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-60, 116}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_tank_H2) annotation(
     Placement(visible = true, transformation(origin = {-140, 116}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+  inner replaceable VirtualFCS.Utilities.SystemRecords.HydrogenData hydrogenData annotation(choicesAllMatching = true,
+    Placement(visible = true, transformation(origin = {130, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(sensors, multiplex.y) annotation(

@@ -1,6 +1,6 @@
 within VirtualFCS.Utilities.SystemRecords;
 
-record HydrogenData
+record HydrogenData "Generic Plant Data"
   extends Modelica.Icons.Record;
    parameter Real PumpSpeed_k = 1 "Gain for the pump speed controller"
     annotation(Dialog(group = "Speed controller"));

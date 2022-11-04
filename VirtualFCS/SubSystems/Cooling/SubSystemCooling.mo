@@ -42,6 +42,8 @@ model SubSystemCooling
     Placement(visible = true, transformation(origin = {68, 16}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   VirtualFCS.Thermal.HeatSink heatSink(redeclare package Medium = Coolant_Medium) annotation(
     Placement(visible = true, transformation(origin = {-20, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  inner replaceable VirtualFCS.Utilities.SystemRecords.HydrogenData hydrogenData annotation(choicesAllMatching = true,
+    Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(tankCoolant.ports[1], teeJunctionTankCoolant.port_3) annotation(

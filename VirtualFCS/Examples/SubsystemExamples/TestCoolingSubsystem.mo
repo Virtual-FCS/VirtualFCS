@@ -3,7 +3,7 @@ within VirtualFCS.Examples.SubsystemExamples;
 model TestCoolingSubsystem "Example to evaluate the performance of the cooling subsystem."
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
+  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling(redeclare VirtualFCS.Utilities.SystemRecords.HydrogenDataPlantC hydrogenData)  annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant getTermperature(k = 273.15 + 80) annotation(
     Placement(visible = true, transformation(origin = {-60, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
