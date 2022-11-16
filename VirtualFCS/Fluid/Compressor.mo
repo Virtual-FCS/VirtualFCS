@@ -1,41 +1,26 @@
 within VirtualFCS.Fluid;
 
 model Compressor
-
-//*** DEFINE REPLACEABLE PACKAGES ***//
+  parameter Modelica.Units.NonSI.AngularVelocity_rpm Pump_N_nominal = 365 "Nominal speed of the pump";
+  //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Medium = Modelica.Media.Air.MoistAir;
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(fixed = true, start = 0.10472), wNominal = driveData.motorData.wNominal) annotation(
     Placement(visible = true, transformation(extent = {{-62, -26}, {-42, -6}}, rotation = 0)));
-  
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
     Placement(visible = true, transformation(origin = {-20, -16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  
   parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
     Placement(visible = true, transformation(extent = {{-90, -24}, {-70, -4}}, rotation = 0)));
-  
   Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-78, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  
   Modelica.Fluid.Interfaces.FluidPort_b Output(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {84, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
     Placement(visible = true, transformation(origin = {24, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Machines.PrescribedPump pump(
-    redeclare package Medium = Medium,
-    redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {15 * 10000, 10 * 10000}),
-    N_nominal = 365, 
-    V(displayUnit = "l") = 1e-05, 
-    checkValve = true, 
-    energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, 
-    massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, 
-    nParallel = 1, 
-    p_a_start = 150000, 
-    use_N_in = true) 
-    annotation(
+  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, N_nominal = Pump_N_nominal, V(displayUnit = "l") = 1e-05, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {15*10000, 10*10000}), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nParallel = 1, p_a_start = 150000, use_N_in = true) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {8, -16}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

@@ -1,11 +1,9 @@
 within VirtualFCS.Control;
 
-block PumpSpeedControl 
-
+block PumpSpeedControl
   parameter Real k = 1 "Control Gain";
   parameter Real Td = 0.1 "Time Constant of Derivative Block";
-
-  Modelica.Blocks.Continuous.LimPID limPID( Td = Td,initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = k, limitsAtInit = true, yMax = 1, yMin = 0, y_start = 0) annotation(
+  Modelica.Blocks.Continuous.LimPID limPID(Td = hydrogenData.PumpSpeed_Td, initType = Modelica.Blocks.Types.Init.InitialOutput, k = hydrogenData.PumpSpeed_k, yMax = 1, yMin = 0, y_start = 0) annotation(
     Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput setMassFlow annotation(
     Placement(visible = true, transformation(origin = {-100, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -13,6 +11,7 @@ block PumpSpeedControl
     Placement(visible = true, transformation(origin = {-100, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput setPumpSpeed annotation(
     Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  outer VirtualFCS.Utilities.SystemRecords.HydrogenData hydrogenData annotation(Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(setMassFlow, limPID.u_s) annotation(
     Line(points = {{-100, 40}, {-60, 40}, {-60, 30}, {-42, 30}, {-42, 30}}, color = {0, 0, 127}));

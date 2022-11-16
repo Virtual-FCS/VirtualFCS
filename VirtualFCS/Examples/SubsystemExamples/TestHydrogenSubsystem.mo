@@ -7,7 +7,7 @@ model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Anode_Medium, nPorts = 1, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {0, 72}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(redeclare VirtualFCS.Utilities.SystemRecords.HydrogenDataPlantD hydrogenData)  annotation(
     Placement(visible = true, transformation(origin = {-0.999964, -0.666637}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k = -0.00202 * 1 / (96485 * 2)) annotation(
     Placement(visible = true, transformation(origin = {-34, 80}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
@@ -17,6 +17,8 @@ model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {-3.55271e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  inner VirtualFCS.Utilities.SystemRecords.HydrogenDataPlantA hydrogenData annotation(
+    Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(setFuelCellCurrent.y, gain.u) annotation(
     Line(points = {{-63, 80}, {-44, 80}}, color = {0, 0, 127}));

@@ -1,14 +1,11 @@
 within VirtualFCS.Control;
 
 model BatteryManagementSystem "Implement algorithms for the control of battery systems."
-
   parameter Real N_s "Number of Cells in Series";
   parameter Real lowerVoltageLimit = N_s * 2;
   parameter Real upperVoltageLimit = N_s * 3.6;
-
   VirtualFCS.Control.ChargeCounter chargeCounter annotation(
     Placement(visible = true, transformation(origin = {25, -1}, extent = {{25, -25}, {-25, 25}}, rotation = 0)));
-  
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n_battery annotation(
     Placement(visible = true, transformation(origin = {-116, -96}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-50, -90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n_load annotation(
@@ -49,5 +46,5 @@ equation
   annotation(
     Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {2, 72}, lineColor = {255, 255, 255}, extent = {{-26, 22}, {26, -22}}, textString = "Load"), Text(origin = {0, -52}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {48, -36}}, textString = "Battery"), Text(origin = {104, 146}, lineColor = {0, 0, 255}, extent = {{-26, 22}, {84, -80}}, textString = "%name"), Text(origin = {62, 24}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {26, -24}}, textString = "SOC_init"), Text(origin = {106, -52}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {-8, 10}}, textString = "Q")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}})),
-  Documentation(info = "<html><head></head><body>The BatteryManagementSystem component is responsible for protecting the battery pack. It ensures that the pack is not overcharged or overdischarged to dangerous state-of-charge levels. It also limits the maximum charging and discharging current the battery pack can support.</body></html>"));
+    Documentation(info = "<html><head></head><body>The BatteryManagementSystem component is responsible for protecting the battery pack. It ensures that the pack is not overcharged or overdischarged to dangerous state-of-charge levels. It also limits the maximum charging and discharging current the battery pack can support.</body></html>"));
 end BatteryManagementSystem;
