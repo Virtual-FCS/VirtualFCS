@@ -13,11 +13,10 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   parameter Real V_max_bat_pack(unit = "V") = 54.75 "Battery pack maximum voltage";
   parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
-  parameter Real heatTransferCoefficient(unit="W/(m2.K)") = 7.8 * 10 ^ 0.78;
+  parameter Real heatTransferCoefficient(unit = "W/(m2.K)") = 7.8 * 10 ^ 0.78;
   parameter Real N_s = ceil(V_max_bat_pack / V_chem_max);
   Real vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
-
-// ADD dropdown menu for selecting chemistry type
+  // ADD dropdown menu for selecting chemistry type
   // Coefficients for open-circuit voltage calculation
   // LFP
   parameter Real V_chem_max = 3.65;
@@ -30,9 +29,6 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   Real g1 = -0.06;
   Real h1 = -0.02;
   Real i1 = -0.002;
-
-
-
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {146, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
@@ -73,7 +69,6 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
     Placement(visible = true, transformation(origin = {-70, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-
 protected
   parameter Real Rohm_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
   parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
@@ -81,7 +76,6 @@ protected
   parameter Real C1_0(unit = "F") = 5000 "First RC Capacitance";
   parameter Real C2_0(unit = "F") = 20000 "Second RC Capacitance";
   parameter Real A_cool_bat_pack = L_bat_pack * W_bat_pack;
-
 equation
 // ***DEFINE EQUATIONS ***//
 // Calculate the open-circuit voltage at given temperature and state of charge
@@ -134,10 +128,9 @@ equation
 protected
   annotation(
     Icon(graphics = {Rectangle(origin = {0, -15}, fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-130, 85}, {130, -75}}), Rectangle(origin = {0, 85}, fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-150, 15}, {150, -15}}), Text(origin = {68, 93}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {10, -19}}, textString = "+"), Text(origin = {-74, 105}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {52, -41}}, textString = "-"), Text(origin = {-34, -103}, lineColor = {0, 0, 255}, extent = {{-22, 15}, {86, -41}}, textString = "%name")}, coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
-    uses(Modelica(version = "3.2.3")),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-  Documentation(info = "<html><head></head><body><div><font face=\"Arial\">This model describes a lithium-ion battery pack as a lumped version of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. The primary difference is that the open-circuit voltage (OCV) is scaled by the number of cells in series in the stack, estimated as the battery pack maximum voltage divided by the maximum voltage of a single cell (</font><i style=\"font-size: 12px;\">V<sub>max,bat pack</sub></i><span style=\"font-size: 12px;\">/</span><i style=\"font-size: 12px;\">V<sub>chem,max</sub></i><span style=\"font-family: Arial;\">).</span></div><div><font face=\"Arial\"><br></font></div><div><font face=\"Arial\">The model includes a <a href=\"modelica://VirtualFCS.Control.ChargeCounter\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery.</font></div><div>
+    Documentation(info = "<html><head></head><body><div><font face=\"Arial\">This model describes a lithium-ion battery pack as a lumped version of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. The primary difference is that the open-circuit voltage (OCV) is scaled by the number of cells in series in the stack, estimated as the battery pack maximum voltage divided by the maximum voltage of a single cell (</font><i style=\"font-size: 12px;\">V<sub>max,bat pack</sub></i><span style=\"font-size: 12px;\">/</span><i style=\"font-size: 12px;\">V<sub>chem,max</sub></i><span style=\"font-family: Arial;\">).</span></div><div><font face=\"Arial\"><br></font></div><div><font face=\"Arial\">The model includes a <a href=\"modelica://VirtualFCS.Control.ChargeCounter\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery.</font></div><div>
 
 
 
@@ -206,5 +199,4 @@ The equation for open-circuit voltage as a function of temperature and state of 
             <td align=\"Right\"><font face=\"Arial\">V<br></font></td>
          </tr>
       </tbody></table><font face=\"Arial\"><br></font><table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><b><u><font face=\"Arial\">Default Equivalent Circuit Parameters</font></u></b></caption><tbody><tr><th><font face=\"Arial\">Parameter name</font></th><th><font face=\"Arial\">Value</font></th><th><font face=\"Arial\">Unit</font></th></tr><tr><td align=\"Left\"><font face=\"Arial\">R_0</font></td><td><font face=\"Arial\">=0.02</font></td><td align=\"Right\"><font face=\"Arial\">Ohm</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">R_1</font></td><td><font face=\"Arial\">=0.01</font></td><td align=\"Right\"><font face=\"Arial\">Ohm</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">R_2</font></td><td><font face=\"Arial\">=0.005</font></td><td align=\"Right\"><font face=\"Arial\">Ohm</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">C_1</font></td><td><font face=\"Arial\">=5000</font></td><td align=\"Right\"><font face=\"Arial\">F</font></td></tr><tr><td align=\"Left\"><font face=\"Arial\">C_2</font></td><td><font face=\"Arial\">=20000</font></td><td align=\"Right\"><font face=\"Arial\">F<br><br></font></td></tr></tbody></table><table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><b><u>Default Thermal Parameters</u></b></caption><tbody><tr><th>Parameter name</th><th>Value</th><th>Unit</th></tr><tr><td align=\"Left\"><span style=\"font-family: Arial;\">Cp</span></td><td>=1000</td><td align=\"Right\">J/(kg*K)</td></tr><tr><td align=\"Left\">A_cool_bat_pack<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span></td><td>=L_bat_pack*W_bat_pack</td><td align=\"Right\">m<sup>2<br></sup></td></tr><tr><td align=\"Left\">heatTransferCoefficient<span class=\"Apple-tab-span\" style=\"white-space:pre\">	</span></td><td>=7.8*10^0.78</td><td align=\"Right\">W/(m<sup>2</sup>*K)</td></tr></tbody></table><br><div style=\"font-size: 12px;\"><b><u>Equations</u></b></div><div style=\"font-size: 12px;\"><u><i>Open-Circuit Voltage</i></u></div><div style=\"font-size: 12px;\">OCV =&nbsp;[<i>A<sub>1</sub></i>&nbsp;+&nbsp;<i>B<sub>1</sub>*</i>(20&nbsp;<span style=\"color: rgb(51, 51, 51); font-family: monospace; orphans: 2; text-align: center; widows: 2; background-color: rgb(255, 255, 255);\">°</span>C&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; font-size: medium; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;<i>T &nbsp;</i><span style=\"color: rgb(51, 51, 51); font-family: monospace; orphans: 2; text-align: center; widows: 2; background-color: rgb(255, 255, 255);\">°</span>C)/<i>SOC</i>&nbsp;+&nbsp;<i>C<sub>1</sub></i>/sqrt(<i>SOC</i>) +&nbsp;<i>D<sub>1</sub></i>*<i>SOC</i>&nbsp;+&nbsp;<i>E<sub>1</sub></i>*ln(<i>SOC</i>) +&nbsp;<i>F<sub>1</sub></i>*ln(1.01&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; font-size: medium; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;<i>SOC</i>) +&nbsp;<i>G<sub>1</sub></i>*ln(1.001&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; font-size: medium; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;<i>SOC</i>) +&nbsp;<i>H<sub>1</sub></i>*exp(<i>I<sub>1</sub>*</i>(<i>T</i>&nbsp;<span style=\"color: rgb(51, 51, 51); font-family: monospace; orphans: 2; text-align: center; widows: 2; background-color: rgb(255, 255, 255);\">°</span>C))]*(<i>V<sub>max,bat pack</sub></i>/<i>V<sub>chem,max</sub></i>)</div><div style=\"font-size: 12px;\"><pre style=\"margin-top: 0px; margin-bottom: 0px;\"></pre></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">The coefficients for&nbsp;<i>A</i><sub><i>1</i></sub>&nbsp;through&nbsp;<i>I<sub>1</sub></i>&nbsp;are taken from [1] for LFP batteries.</div></div><div><br></div><div><i><u>Battery Temperature</u></i></div><div>m*C<sub>p</sub> dT/dt = Q<sub>flow</sub> +&nbsp;Q<sub>conv&nbsp;</sub>+&nbsp;Q<sub>rad</sub></div><div><br></div><div><i><u>Heat Generation</u></i></div><div>Q<sub>flow</sub> = (OCV&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;V<sub>pin,p</sub>)*I</div><div><br></div><div><i><u>Convective Heat Transfer</u></i></div><div>Q<sub>conv</sub> = hA<sub>cool</sub>(T&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;T<sub>0</sub>); h = 47 W m<sup><span style=\"color: rgb(32, 33, 34); font-family: sans-serif; font-size: 14px; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>2</sup> K<sup><span style=\"color: rgb(32, 33, 34); font-family: sans-serif; font-size: 14px; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>1</sup></div><div><br></div><div><div><i><u>Radiative Heat Transfer</u></i></div><div>Q<sub>rad</sub>&nbsp;= 0.95A<sub>cool</sub><span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(255, 255, 255);\">σ</span>(T<sup>4</sup>&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;(T<sub>0</sub>)<sup>4</sup>)</div></div><div><br></div><div><br></div><div><div><b><u><font face=\"Arial\">References</font></u></b></div><div><div class=\"csl-bib-body\" style=\"line-height: 2;\"><div class=\"csl-entry\" style=\"clear: left;\"><div class=\"csl-left-margin\" style=\"float: left; padding-right: 0.5em; text-align: right; width: 1em;\"><font face=\"Arial\">1.</font></div><div class=\"csl-right-inline\" style=\"margin: 0px 0.4em 0px 1.5em;\"><font face=\"Arial\">Vichard, L.&nbsp;<i>et al.</i>&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;<i>Energy</i>&nbsp;<b>225</b>, 120235 (2021).</font></div></div></div></div></div></body></html>"));
-
 end LiIonBatteryPack_Lumped;

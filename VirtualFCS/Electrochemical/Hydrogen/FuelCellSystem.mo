@@ -1,31 +1,27 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 model FuelCellSystem
-
   parameter Real m_FC_system(unit = "kg") = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
-
-// Fuel Cell Stack Paramters
+  // Fuel Cell Stack Paramters
   parameter Real m_FC_stack(unit = "kg") = 42 "FC stack mass";
   parameter Real L_FC_stack(unit = "m") = 0.420 "FC stack length";
   parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack width";
   parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack height";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   //  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage";
-  parameter Real I_rated_FC_stack(unit="A") = 450 "FC stack rated current";
+  parameter Real I_rated_FC_stack(unit = "A") = 450 "FC stack rated current";
   parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   // H2 Subsystem Paramters
-  parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit="Pa") = 35000000 "H2 tank initial pressure";
-  
-
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack( H_FC_stack = H_FC_stack, I_rated_FC_stack = I_rated_FC_stack, L_FC_stack = L_FC_stack, W_FC_stack = W_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack)  annotation(
+  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
+  parameter Real p_tank_H2(unit = "Pa") = 35000000 "H2 tank initial pressure";
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_rated_FC_stack, L_FC_stack = L_FC_stack, W_FC_stack = W_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-1, 10}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.SubSystems.FuelCellSubSystems fuelCellSubSystems(V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2)  annotation(
+  VirtualFCS.SubSystems.FuelCellSubSystems fuelCellSubSystems(V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2) annotation(
     Placement(visible = true, transformation(origin = {-1, -60}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
   Modelica.Blocks.Routing.Multiplex2 multiplex2 annotation(
     Placement(visible = true, transformation(origin = {-54, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -41,9 +37,9 @@ model FuelCellSystem
     Placement(visible = true, transformation(origin = {132, 42}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * fuelCellStack.A_FC_surf) annotation(
     Placement(visible = true, transformation(origin = {52, 42}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 293.15)  annotation(
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 293.15) annotation(
     Placement(visible = true, transformation(origin = {70, 86}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Blocks.Nonlinear.Limiter limiter(limitsAtInit = true, uMax = i_L_FC_stack, uMin = 0)  annotation(
+  Modelica.Blocks.Nonlinear.Limiter limiter(uMax = i_L_FC_stack, uMin = 0) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
   connect(pin_p, fuelCellStack.pin_p) annotation(

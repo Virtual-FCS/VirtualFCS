@@ -1,28 +1,23 @@
 within VirtualFCS.Powertrains;
 
 model BatteryPowerTrain
-
-  parameter Real m_powertrain(unit = "kg") = 100+ 50;
-  
-  parameter Real V_HV_Bus(unit="V") = 343 "Voltage of the HV Bus";
-
-// H2 Subsystem Paramters
-  parameter Real V_tank_H2(unit="m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit="Pa") = 3500000 "H2 tank initial pressure";
-
-// Fuel Cell Stack Paramters
+  parameter Real m_powertrain(unit = "kg") = 100 + 50;
+  parameter Real V_HV_Bus(unit = "V") = 343 "Voltage of the HV Bus";
+  // H2 Subsystem Paramters
+  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
+  parameter Real p_tank_H2(unit = "Pa") = 3500000 "H2 tank initial pressure";
+  // Fuel Cell Stack Paramters
   parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
   parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
   parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack length";
   parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack length";
   parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real V_rated_FC_stack(unit="V") = 57.9 "FC stack maximum operating voltage"; 
-  parameter Real I_rated_FC_stack(unit="A") = 300 "FC stack minimum operating voltage";
+  parameter Real V_rated_FC_stack(unit = "V") = 57.9 "FC stack maximum operating voltage";
+  parameter Real I_rated_FC_stack(unit = "A") = 300 "FC stack minimum operating voltage";
   parameter Real i_L_FC_stack(unit = "A") = 3 * I_rated_FC_stack "FC stack maximum limiting current";
   parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
-  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack/0.6433) "FC stack number of cells";
-
-// Battery Pack Parameters
+  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells";
+  // Battery Pack Parameters
   parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
   parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
   parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
@@ -41,9 +36,9 @@ model BatteryPowerTrain
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(visible = true, transformation(origin = {-68, 4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 200, SOC_init = 0.99,V_max_bat_pack = 300, V_min_bat_pack = 0)  annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 200, SOC_init = 0.99, V_max_bat_pack = 300, V_min_bat_pack = 0) annotation(
     Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrical.DCConverter converter(vDCref = V_HV_Bus)  annotation(
+  VirtualFCS.Electrical.DCConverter converter(vDCref = V_HV_Bus) annotation(
     Placement(visible = true, transformation(origin = {0, 8}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
   connect(pin_n, ground.p) annotation(

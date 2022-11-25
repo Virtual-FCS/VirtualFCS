@@ -86,7 +86,7 @@ protected
     uses(Modelica(version = "3.2.3")),
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Ellipse(origin = {-2, -15}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 3, extent = {{-78, 95}, {82, -65}}, endAngle = 360), Line(origin = {40, 40}, points = {{-40, 40}, {40, -40}, {40, -40}}, thickness = 3), Line(origin = {40, -40}, points = {{-40, -40}, {40, 40}, {40, 40}}, thickness = 3)}),
     Diagram,
-  Documentation(info = "<html><head></head><body>Models a DC pump<div><br></div><div>
+    Documentation(info = "<html><head></head><body>Models a DC pump<div><br></div><div>
 
 
 

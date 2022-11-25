@@ -1,51 +1,26 @@
 within VirtualFCS.Fluid;
+
 model ThrottleValve
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
   replaceable package Medium = Modelica.Media.Air.MoistAir;
-
-//*** INSTANTIATE COMPONENTS ***//
+  //*** INSTANTIATE COMPONENTS ***//
   // Interfaces
-  Modelica.Fluid.Interfaces.FluidPort_a port_a(
-    redeclare package Medium = Medium)  
-    annotation(
+  Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  
-  Modelica.Fluid.Interfaces.FluidPort_b port_b(
-    redeclare package Medium = Medium)  
-    annotation(
+  Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Valves
-  Modelica.Fluid.Valves.ValveCompressible valveDownstream(
-    redeclare package Medium = Medium, 
-    dp_nominal(displayUnit = "Pa") = 10000, 
-    m_flow_nominal = 0.01, opening(start = 0), 
-    p_nominal = 5 * 101325) 
-    annotation(
+  Modelica.Fluid.Valves.ValveCompressible valveDownstream(redeclare package Medium = Medium, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, opening(start = 0), p_nominal = 5 * 101325) annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
-    // Other
-  Modelica.Blocks.Sources.Constant constant3(
-    k = 1) 
-    annotation(
+  // Other
+  Modelica.Blocks.Sources.Constant constant3(k = 1) annotation(
     Placement(visible = true, transformation(origin = {49.5, 72.5}, extent = {{-7.5, -7.5}, {7.5, 7.5}}, rotation = 180)));
-  
-  Modelica.Blocks.Continuous.LimPID pid(
-    k = 1e-3, 
-    limitsAtInit = true, 
-    yMax = 1, 
-    yMin = 0, 
-    y_start = 0.99) 
-    annotation(
+  Modelica.Blocks.Continuous.LimPID pid(k = 1e-3, yMax = 1, yMin = 0, y_start = 0.99) annotation(
     Placement(visible = true, transformation(origin = {-30, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  
-  Modelica.Fluid.Sensors.Pressure pressureGageDownstream(
-    redeclare package Medium = Medium) 
-    annotation(
+  Modelica.Fluid.Sensors.Pressure pressureGageDownstream(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-24, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  
-  Modelica.Blocks.Math.Add add(
-    k1 = -1) 
-    annotation(
+  Modelica.Blocks.Math.Add add(k1 = -1) annotation(
     Placement(visible = true, transformation(origin = {0, 36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Blocks.Interfaces.RealInput FC_pAirOut_P annotation(
     Placement(visible = true, transformation(origin = {-81, 69}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {0, -14}, extent = {{-13, -13}, {13, 13}}, rotation = 90)));
@@ -72,5 +47,5 @@ equation
   annotation(
     uses(Modelica(version = "3.2.3")),
     Icon(graphics = {Polygon(origin = {-50, 0}, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}}), Polygon(origin = {50, 0}, rotation = 180, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body>The ThrottleValve model is designed to maintain a set higher pressure on the upstream side relative to a lower pressure on the downstream side.<div><br></div><div><b>Description</b></div><div><b><br></b></div><div>The model maintains a low pressure on&nbsp;downstream&nbsp;by regulating the opening in a <a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Compressible Fluid Valve</a>. Regulation of the valve opening is managed using a <a href=\"modelica://Modelica.Blocks.Continuous.LimPID\">PID controller</a>.</div></body></html>"));
+    Documentation(info = "<html><head></head><body>The ThrottleValve model is designed to maintain a set higher pressure on the upstream side relative to a lower pressure on the downstream side.<div><br></div><div><b>Description</b></div><div><b><br></b></div><div>The model maintains a low pressure on&nbsp;downstream&nbsp;by regulating the opening in a <a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Compressible Fluid Valve</a>. Regulation of the valve opening is managed using a <a href=\"modelica://Modelica.Blocks.Continuous.LimPID\">PID controller</a>.</div></body></html>"));
 end ThrottleValve;
