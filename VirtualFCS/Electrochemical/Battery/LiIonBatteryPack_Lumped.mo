@@ -41,7 +41,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
     Placement(visible = true, transformation(origin = {-50, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Capacitor C2(C = C2_0, v(fixed = true)) annotation(
     Placement(visible = true, transformation(origin = {-14, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_bat_pack * m_bat_pack) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_bat_pack*m_bat_pack, T(fixed = true)) annotation(
     Placement(visible = true, transformation(origin = {-70, 12}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor sensorCurrent annotation(
     Placement(visible = true, transformation(origin = {20, 52}, extent = {{11, 11}, {-11, -11}}, rotation = 180)));
@@ -53,7 +53,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
     Placement(visible = true, transformation(origin = {-14, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatSource annotation(
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R0(R = Rohm_0, T_ref = 300.15, useHeatPort = false) annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_O, T_ref = 300.15, useHeatPort = false) annotation(
     Placement(visible = true, transformation(origin = {-90, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getSOC_init(y = SOC_init) annotation(
     Placement(visible = true, transformation(origin = {42, -34}, extent = {{-16, -10}, {16, 10}}, rotation = 0)));
@@ -69,8 +69,8 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
     Placement(visible = true, transformation(origin = {-70, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-protected
-  parameter Real Rohm_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
+protected 
+  parameter Real R_O(unit = "Ohm") = 0.02 "Ohmic Resistance";
   parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
   parameter Real R2_0(unit = "Ohm") = 0.005 "Second RC Resistance";
   parameter Real C1_0(unit = "F") = 5000 "First RC Capacitance";
@@ -81,14 +81,10 @@ equation
 // Calculate the open-circuit voltage at given temperature and state of charge
   OCV.v = V_max_bat_pack * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15))) / V_chem_max;
 // Thermal equations
-  heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i + R0.R_actual * sensorCurrent.i ^ 2);
+  heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i + R_ohmic.R_actual * sensorCurrent.i ^ 2);
 // ***DEFINE CONNECTIONS ***//
   connect(pin_n, OCV.n) annotation(
     Line(points = {{-146, 52}, {-130, 52}, {-130, 52}, {-130, 52}}, color = {0, 0, 255}));
-  connect(OCV.p, R0.p) annotation(
-    Line(points = {{-110, 52}, {-100, 52}, {-100, 52}, {-100, 52}}, color = {0, 0, 255}));
-  connect(R0.n, R1.p) annotation(
-    Line(points = {{-80, 52}, {-60, 52}, {-60, 52}, {-60, 52}}, color = {0, 0, 255}));
   connect(R1.n, R2.p) annotation(
     Line(points = {{-40, 52}, {-24, 52}, {-24, 52}, {-24, 52}}, color = {0, 0, 255}));
   connect(C2.p, R2.p) annotation(
@@ -125,6 +121,10 @@ equation
     Line(points = {{-4, 52}, {10, 52}, {10, 52}, {10, 52}}, color = {0, 0, 255}));
   connect(sensorCurrent.n, pin_p) annotation(
     Line(points = {{32, 52}, {148, 52}, {148, 50}, {146, 50}}, color = {0, 0, 255}));
+  connect(OCV.p, R_ohmic.p) annotation(
+    Line(points = {{-110, 52}, {-100, 52}}, color = {0, 0, 255}));
+  connect(R_ohmic.n, R1.p) annotation(
+    Line(points = {{-80, 52}, {-60, 52}}, color = {0, 0, 255}));
 protected
   annotation(
     Icon(graphics = {Rectangle(origin = {0, -15}, fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-130, 85}, {130, -75}}), Rectangle(origin = {0, 85}, fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-150, 15}, {150, -15}}), Text(origin = {68, 93}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {10, -19}}, textString = "+"), Text(origin = {-74, 105}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {52, -41}}, textString = "-"), Text(origin = {-34, -103}, lineColor = {0, 0, 255}, extent = {{-22, 15}, {86, -41}}, textString = "%name")}, coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),

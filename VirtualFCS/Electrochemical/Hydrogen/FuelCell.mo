@@ -104,21 +104,21 @@ equation
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
   connect(pipeCoolant.port_b, port_b_Coolant) annotation(
-    Line(points = {{10, -42}, {130, -42}}, color = {0, 127, 255}, thickness = 1));
+    Line(points = {{10, -42}, {130, -42}}, color = {255, 0, 0}, thickness = 1));
   connect(pipeCoolant.port_a, port_a_Coolant) annotation(
-    Line(points = {{-10, -42}, {-134, -42}}, color = {0, 127, 255}, thickness = 1));
+    Line(points = {{-10, -42}, {-134, -42}}, color = {0, 0, 255}, thickness = 1));
   connect(port_a_H2, qH2.port_1) annotation(
-    Line(points = {{-148, 80}, {-118, 80}, {-118, 50}, {-118, 50}}));
+    Line(points = {{-148, 80}, {-118, 80}, {-118, 50}, {-118, 50}}, color = {0, 170, 0}, thickness = 1));
   connect(port_b_H2, qH2.port_2) annotation(
-    Line(points = {{-150, 0}, {-118, 0}, {-118, 30}, {-118, 30}}));
+    Line(points = {{-150, 0}, {-118, 0}, {-118, 30}, {-118, 30}}, color = {0, 170, 0}, thickness = 1));
   connect(port_a_Air, qAir.port_1) annotation(
-    Line(points = {{150, 80}, {120, 80}, {120, 50}, {120, 50}}));
+    Line(points = {{150, 80}, {120, 80}, {120, 50}, {120, 50}}, color = {0, 170, 255}, thickness = 1));
   connect(qAir.port_2, port_b_Air) annotation(
-    Line(points = {{120, 30}, {120, 30}, {120, -2}, {150, -2}, {150, -2}}));
+    Line(points = {{120, 30}, {120, 30}, {120, -2}, {150, -2}, {150, -2}}, color = {0, 170, 255}, thickness = 1));
   connect(O2_sink.ports[1], qAir.port_3) annotation(
-    Line(points = {{94, 40}, {110, 40}, {110, 40}, {110, 40}}, color = {0, 127, 255}));
+    Line(points = {{94, 40}, {110, 40}, {110, 40}, {110, 40}}, color = {0, 170, 255}, thickness = 1));
   connect(qH2.port_3, H2_sink.ports[1]) annotation(
-    Line(points = {{-108, 40}, {-90, 40}, {-90, 42}, {-90, 42}}, color = {0, 127, 255}));
+    Line(points = {{-108, 40}, {-90, 40}, {-90, 42}, {-90, 42}}, color = {0, 170, 0}, thickness = 1));
   connect(R_ohmic.n, pin_p) annotation(
     Line(points = {{60, 130}, {60, 150}}, color = {0, 0, 255}));
   connect(pin_n, potentialSource.n) annotation(

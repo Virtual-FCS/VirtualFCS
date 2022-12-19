@@ -1,6 +1,6 @@
 within VirtualFCS.Electrical;
 
-class DC_converter "An ideal DC-DC converter"
+model DC_converter "An ideal DC-DC converter"
   parameter Modelica.Units.SI.Time Td = 1e-2 "Dead time";
   parameter Modelica.Units.SI.Time Ti = 1e-6 "Time constant of integral power controller";
   Modelica.Electrical.Analog.Sources.SignalCurrent signalCurrent_FC annotation(
