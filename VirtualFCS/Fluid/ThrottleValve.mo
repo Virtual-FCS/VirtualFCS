@@ -3,7 +3,7 @@ within VirtualFCS.Fluid;
 model ThrottleValve
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
-  replaceable package Medium = Modelica.Media.Air.MoistAir;
+  replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) annotation(

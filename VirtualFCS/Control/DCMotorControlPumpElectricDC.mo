@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 
-model DCMotorControl "Control the speed of a DC motor"
+model DCMotorControlPumpElectricDC "Control the speed of a DC motor"
   //*** DEFINE REPLACEABLE PACKAGES ***//
   replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
     Placement(visible = true, transformation(extent = {{-248, 44}, {-228, 64}}, rotation = 0))) constrainedby Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM annotation(
@@ -10,9 +10,9 @@ model DCMotorControl "Control the speed of a DC motor"
     Placement(visible = true, transformation(extent = {{30, -10}, {50, 10}}, rotation = 0)));
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(Ti = driveData.TiI, constantLimits = false, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpI, useFF = true) annotation(
     Placement(visible = true, transformation(extent = {{-22, -10}, {-2, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain tau2i(k = 1 / driveData.kPhi) annotation(
+  Modelica.Blocks.Math.Gain tau2i(k = 1/driveData.kPhi) annotation(
     Placement(visible = true, transformation(origin = {-42, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpw, Ti = driveData.Tiw, constantLimits = true, yMax = driveData.tauMax) annotation(
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(Ti = driveData.Tiw, constantLimits = true, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpw, yMax = driveData.tauMax) annotation(
     Placement(visible = true, transformation(extent = {{-92, -10}, {-72, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.FirstOrder preFilter(k = 1, T = driveData.Tfw, initType = Modelica.Blocks.Types.Init.InitialOutput) annotation(
     Placement(visible = true, transformation(extent = {{-132, -10}, {-112, 10}}, rotation = 0)));
@@ -70,5 +70,5 @@ Further reading:
 </p><p>This model is adapted from the DC PM drive control model used in the Modelica Standard Library.</p>
 </body></html>"),
     Diagram(coordinateSystem(extent = {{-200, -100}, {100, 100}})),
-    Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-87, 9}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {27, -21}}, textString = "s"), Text(origin = {-3, 73}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {27, -17}}, textString = "pwr"), Text(origin = {73, 9}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {35, -23}}, textString = "m"), Text(origin = {-5, -57}, lineColor = {255, 255, 255}, extent = {{-19, 11}, {27, -19}}, textString = "out"), Text(origin = {161, 84}, lineColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}));
-end DCMotorControl;
+    Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-87, 9}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -21}}, textString = "s"), Text(origin = {-3, 73}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -17}}, textString = "pwr"), Text(origin = {73, 9}, textColor = {255, 255, 255}, extent = {{-19, 11}, {35, -23}}, textString = "m"), Text(origin = {-5, -57}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -19}}, textString = "out"), Text(origin = {161, 84}, textColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}));
+end DCMotorControlPumpElectricDC;

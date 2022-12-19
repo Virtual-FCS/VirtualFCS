@@ -1,8 +1,8 @@
 within VirtualFCS.SubSystems.Air;
 
 block SubSystemAirControl
-  parameter Real pressure_Air_set(unit = "Pa") = 150000 "Set H2 Pressure";
-  parameter Real massFlow_Air_set(unit = "kg/s") = 4e-3 "Set H2 Recirculation Mass Flow";
+  parameter Real pressure_Air_set(unit = "Pa") = 150000 "Set air Pressure";
+  parameter Real massFlow_Air_set(unit = "kg/s") = 4e-3 "Set air Recirculation Mass Flow";
   VirtualFCS.Control.PumpSpeedControl pumpSpeedControl annotation(
     Placement(visible = true, transformation(origin = {0, -7.10543e-15}, extent = {{-58, -58}, {58, 58}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setAirPressure(k = pressure_Air_set) annotation(

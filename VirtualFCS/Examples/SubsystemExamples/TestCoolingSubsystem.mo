@@ -3,31 +3,45 @@ within VirtualFCS.Examples.SubsystemExamples;
 model TestCoolingSubsystem "Example to evaluate the performance of the cooling subsystem."
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
-    Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant getTermperature(k = 273.15 + 80) annotation(
-    Placement(visible = true, transformation(origin = {-60, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Pipes.DynamicPipe pipe1(redeclare package Medium = Medium, diameter = 0.01, length = 0.2, nParallel = 5, p_a_start = 102502, use_HeatTransfer = true) annotation(
-    Placement(visible = true, transformation(origin = {-12, 50}, extent = {{10, 10}, {-10, -10}}, rotation = 270)));
-  Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.01, length = 0.2, nParallel = 5, p_a_start = 102502, use_HeatTransfer = true) annotation(
-    Placement(visible = true, transformation(origin = {12, 50}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
   inner Modelica.Fluid.System system annotation(
-    Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 10, SOC_init = 0.9, V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48, m_bat_pack = 1) annotation(
-    Placement(visible = true, transformation(origin = {-3.55271e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-3.55271e-15, -72}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
+    Placement(visible = true, transformation(origin = {-30, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.RealExpression realExpression(y = 1000) annotation(
+    Placement(visible = true, transformation(origin = {-62, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation(
+    Placement(visible = true, transformation(origin = {0, 62}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
+    Placement(visible = true, transformation(origin = {-56, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*11, T(fixed = true, start = 293.15)) annotation(
+    Placement(visible = true, transformation(origin = {0, 102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, nNodes = 2, nParallel = 500, use_HeatTransfer = true, use_T_start = true) annotation(
+    Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
+    Placement(visible = true, transformation(origin = {0, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
-  connect(getTermperature.y, subSystemCooling.controlInterface) annotation(
-    Line(points = {{-49, 10}, {-22, 10}}, color = {0, 0, 127}));
-  connect(pipe1.port_a, subSystemCooling.Output) annotation(
-    Line(points = {{-12, 40}, {-12, 24}}, color = {0, 127, 255}));
-  connect(subSystemCooling.Input, pipe2.port_b) annotation(
-    Line(points = {{12, 24}, {12, 40}}, color = {0, 127, 255}));
-  connect(pipe2.port_a, pipe1.port_b) annotation(
-    Line(points = {{12, 60}, {12, 76}, {-12, 76}, {-12, 60}}, color = {0, 127, 255}));
-  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
-    Line(points = {{-10, -18}, {-10, -27}, {-8, -27}, {-8, -40}}, color = {0, 0, 255}));
+  connect(heatCapacitor.port, thermalConductor.port_a) annotation(
+    Line(points = {{0, 92}, {0, 72}}, color = {191, 0, 0}));
+  connect(prescribedHeatFlow.port, thermalConductor.port_a) annotation(
+    Line(points = {{-20, 72}, {0, 72}}, color = {191, 0, 0}));
+  connect(realExpression.y, prescribedHeatFlow.Q_flow) annotation(
+    Line(points = {{-50, 72}, {-40, 72}}, color = {0, 0, 127}));
+  connect(heatCapacitor.port, temperatureSensor.port) annotation(
+    Line(points = {{0, 92}, {-88, 92}, {-88, -2}, {-66, -2}}, color = {191, 0, 0}));
+  connect(pipe2.heatPorts[1], thermalConductor.port_b) annotation(
+    Line(points = {{0, 34}, {0, 52}}, color = {191, 0, 0}));
   connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation(
-    Line(points = {{10, -18}, {10, -29}, {8, -29}, {8, -40}}, color = {0, 0, 255}));
+    Line(points = {{10, -38}, {10, -45}, {8, -45}, {8, -52}}, color = {0, 0, 255}));
+  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
+    Line(points = {{-10, -38}, {-10, -45}, {-8, -45}, {-8, -52}}, color = {0, 0, 255}));
+  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
+    Line(points = {{-44, -2}, {-38, -2}, {-38, -10}, {-22, -10}}, color = {0, 0, 127}));
+  connect(subSystemCooling.port_b, pipe2.port_a) annotation(
+    Line(points = {{-12, 4}, {-12, 30}, {-10, 30}}, color = {0, 0, 255}, thickness = 1.5));
+  connect(subSystemCooling.port_a, pipe2.port_b) annotation(
+    Line(points = {{12, 4}, {12, 30}, {10, 30}}, color = {255, 0, 0}, thickness = 1.5));
   annotation(
     Diagram,
     Icon,
@@ -1386,5 +1400,5 @@ graph</span></font></p>
 <p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">&nbsp;</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">Future work</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">The selection of fan, blower, or pump depends on the required cooling rate, overcoming any pressure drop in the coolant channels, and meeting overall system electrical efficiency, weight, and volume requirements.&nbsp;</font></o:p></p>
 
 <!--EndFragment--></div></body></html>"),
-    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
+    experiment(StartTime = 0, StopTime = 2000, Tolerance = 1e-6, Interval = 1));
 end TestCoolingSubsystem;

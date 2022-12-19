@@ -1,6 +1,6 @@
 within VirtualFCS.Vehicles;
 
-class VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
+model VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
   import Modelica.Blocks.Tables.Internal;
   type vehicle_name = enumeration(Default "Default", Mirai "Mirai", UserDefined "User Defined") annotation(
     Evaluate = true);
