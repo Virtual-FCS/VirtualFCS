@@ -1,6 +1,6 @@
 within VirtualFCS.Examples.SubsystemExamples;
 
-model TestCoolingSubsystem "Example to evaluate the performance of the cooling subsystem."
+model TestCoolingSubsystem_old "Example to evaluate the performance of the cooling subsystem."
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   inner Modelica.Fluid.System system annotation(
@@ -15,16 +15,16 @@ model TestCoolingSubsystem "Example to evaluate the performance of the cooling s
     Placement(visible = true, transformation(origin = {0, 102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, nNodes = 2, nParallel = 500, use_HeatTransfer = true, use_T_start = true) annotation(
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 1050, falling = 50, period = 500, rising = 50, startTime = 100, width = 300) annotation(
+  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
+    Placement(visible = true, transformation(origin = {0, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 1050, falling = 20, period = 350, rising = 20, startTime = 100, width = 300) annotation(
     Placement(visible = true, transformation(origin = {-116, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 10, SOC_init = 0.9, V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {-1.9984e-15, -78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp ramp(duration = 200, height = 1000, startTime = 100) annotation(
+  Modelica.Blocks.Sources.Ramp ramp(duration = 200, height = 1000, startTime = 100)  annotation(
     Placement(visible = true, transformation(origin = {-116, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain gain(k = 50) annotation(
+  Modelica.Blocks.Math.Gain gain(k = 10)  annotation(
     Placement(visible = true, transformation(origin = {-68, 72}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
-    Placement(visible = true, transformation(origin = {1.77636e-15, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
   connect(heatCapacitor.port, thermalConductor.port_a) annotation(
     Line(points = {{0, 92}, {0, 72}}, color = {191, 0, 0}));
@@ -34,20 +34,20 @@ equation
     Line(points = {{0, 92}, {-88, 92}, {-88, -2}, {-66, -2}}, color = {191, 0, 0}));
   connect(pipe2.heatPorts[1], thermalConductor.port_b) annotation(
     Line(points = {{0, 34}, {0, 52}}, color = {191, 0, 0}));
+  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
+    Line(points = {{-44, -2}, {-38, -2}, {-38, -10}, {-22, -10}}, color = {0, 0, 127}));
+  connect(subSystemCooling.port_b, pipe2.port_a) annotation(
+    Line(points = {{-12, 4}, {-12, 30}, {-10, 30}}, color = {0, 0, 255}, thickness = 1.5));
+  connect(subSystemCooling.port_a, pipe2.port_b) annotation(
+    Line(points = {{12, 4}, {12, 30}, {10, 30}}, color = {255, 0, 0}, thickness = 1.5));
+  connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{10, -38}, {10, -48}, {8, -48}, {8, -58}}, color = {0, 0, 255}));
+  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
+    Line(points = {{-10, -38}, {-10, -48}, {-8, -48}, {-8, -58}}, color = {0, 0, 255}));
   connect(gain.y, prescribedHeatFlow.Q_flow) annotation(
     Line(points = {{-60, 72}, {-40, 72}}, color = {0, 0, 127}));
-  connect(trapezoid.y, gain.u) annotation(
-    Line(points = {{-104, 72}, {-78, 72}}, color = {0, 0, 127}));
-  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
-    Line(points = {{-44, -2}, {-22, -2}}, color = {0, 0, 127}));
-  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
-    Line(points = {{-10, -30}, {-8, -30}, {-8, -58}}, color = {0, 0, 255}));
-  connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation(
-    Line(points = {{10, -30}, {10, -44}, {8, -44}, {8, -58}}, color = {0, 0, 255}));
-  connect(subSystemCooling.port_b, pipe2.port_a) annotation(
-    Line(points = {{-12, 12}, {-12, 30}, {-10, 30}}, color = {0, 0, 255}, thickness = 1.5));
-  connect(subSystemCooling.port_a, pipe2.port_b) annotation(
-    Line(points = {{12, 12}, {12, 30}, {10, 30}}, color = {255, 0, 0}, thickness = 1.5));
+  connect(ramp.y, gain.u) annotation(
+    Line(points = {{-104, 38}, {-84, 38}, {-84, 72}, {-78, 72}}, color = {0, 0, 127}));
   annotation(
     Diagram,
     Icon,
@@ -1406,5 +1406,5 @@ graph</span></font></p>
 <p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">&nbsp;</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">Future work</font></o:p></p><p class=\"MsoNormal\"><o:p><font size=\"4\" face=\"Arial\">The selection of fan, blower, or pump depends on the required cooling rate, overcoming any pressure drop in the coolant channels, and meeting overall system electrical efficiency, weight, and volume requirements.&nbsp;</font></o:p></p>
 
 <!--EndFragment--></div></body></html>"),
-    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 0.5));
-end TestCoolingSubsystem;
+    experiment(StartTime = 0, StopTime = 2000, Tolerance = 1e-6, Interval = 1));
+end TestCoolingSubsystem_old;

@@ -15,8 +15,6 @@ model SubSystemCoolingTEST_validTempMaintain_2
   Modelica.Fluid.Vessels.OpenTank tankCoolant(redeclare package Medium = Medium, crossArea = 0.0314, height = 0.16, level_start = 0.12, nPorts = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, use_HeatTransfer = true, portsData = {Modelica.Fluid.Vessels.BaseClasses.VesselPortsData(diameter = 0.1)}, T_start = Modelica.Units.Conversions.from_degC(20)) annotation(
     Placement(visible = true, transformation(origin = {-77, 17}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
   // Machines
-  VirtualFCS.Fluid.PumpElectricDC pumpElectricDC(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {34, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Heaters and Coolers
   // Other
   Modelica.Fluid.Pipes.DynamicPipe pipeReturn(use_T_start = true, length = 0.2, diameter = 0.01, nParallel = 5, nNodes = 2, redeclare package Medium = Medium, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, use_HeatTransfer = true) annotation(
@@ -43,7 +41,7 @@ model SubSystemCoolingTEST_validTempMaintain_2
     Placement(visible = true, transformation(origin = {-44, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation(
     Placement(visible = true, transformation(origin = {132, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*11, T(fixed = true, start = 293.15))  annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*110, T(fixed = true, start = 293.15))  annotation(
     Placement(visible = true, transformation(origin = {164, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
     Placement(visible = true, transformation(origin = {142, 36}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -54,16 +52,14 @@ model SubSystemCoolingTEST_validTempMaintain_2
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {90, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {90, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {82, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {82, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  equation
+    Placement(visible = true, transformation(origin = {82, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {82, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Sine sine(amplitude = 250, f = 0.1, offset = 1000, startTime = 25)  annotation(
+    Placement(visible = true, transformation(origin = {100, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Ramp ramp(duration = 500, height = 7500, startTime = 100)  annotation(
+    Placement(visible = true, transformation(origin = {168, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+  VirtualFCS.Fluid.PumpElectricDC pumpElectricDC annotation(
+    Placement(visible = true, transformation(origin = {34, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  equation
 //*** DEFINE CONNECTIONS ***//
-  connect(setPumpSpeed.y, pumpElectricDC.contol_input) annotation(
-    Line(points = {{20, -4}, {30, -4}, {30, 8}, {31, 8}}, color = {0, 0, 127}));
-  connect(pumpElectricDC.Output, pipeSend.port_a) annotation(
-    Line(points = {{44, 16}, {58, 16}, {58, 16}, {58, 16}}, color = {0, 127, 255}));
-  connect(batterySystem.pin_n, pumpElectricDC.pin_n) annotation(
-    Line(points = {{30, 46}, {30, 35}, {32, 35}, {32, 24}}, color = {0, 0, 255}));
-  connect(batterySystem.pin_p, pumpElectricDC.pin_p) annotation(
-    Line(points = {{38, 46}, {38, 24}}, color = {0, 0, 255}));
   connect(pipeReturn.port_b, heatSink.port_a) annotation(
     Line(points = {{24, -32}, {-10, -32}}, color = {0, 127, 255}));
   connect(temperature.port, heatSink.port_b) annotation(
@@ -76,8 +72,6 @@ model SubSystemCoolingTEST_validTempMaintain_2
     Line(points = {{-30, -32}, {-44, -32}, {-44, -22}}, color = {0, 127, 255}));
   connect(tankCoolant.ports[1], teeJunctionVolume.port_3) annotation(
     Line(points = {{-76, 6}, {-76, -12}, {-54, -12}}, color = {0, 127, 255}));
-  connect(teeJunctionVolume.port_2, pumpElectricDC.Input) annotation(
-    Line(points = {{-44, -2}, {-44, 16}, {26, 16}}, color = {0, 127, 255}));
   connect(pipe2.heatPorts[1], thermalConductor.port_b) annotation(
     Line(points = {{100.4, -2.1}, {122, -2.1}, {122, -2}}, color = {191, 0, 0}));
   connect(thermalConductor.port_a, heatCapacitor.port) annotation(
@@ -88,8 +82,6 @@ model SubSystemCoolingTEST_validTempMaintain_2
     Line(points = {{174, -2}, {188, -2}, {188, 100}, {74, 100}}, color = {191, 0, 0}));
   connect(temperatureSensor.T, subSystemCoolingControl.sensorInterface) annotation(
     Line(points = {{54, 100}, {-86, 100}, {-86, 64}, {-66, 64}}, color = {0, 0, 127}));
-  connect(realExpression.y, prescribedHeatFlow.Q_flow) annotation(
-    Line(points = {{114, 56}, {142, 56}, {142, 46}}, color = {0, 0, 127}));
   connect(pipe2.port_b, port_a) annotation(
     Line(points = {{96, -12}, {96, -32}, {82, -32}}, color = {0, 127, 255}));
   connect(pipeReturn.port_a, port_a) annotation(
@@ -98,6 +90,18 @@ model SubSystemCoolingTEST_validTempMaintain_2
     Line(points = {{78, 16}, {84, 16}, {84, 28}, {90, 28}}, color = {0, 127, 255}));
   connect(pipe2.port_a, port_b) annotation(
     Line(points = {{96, 8}, {90, 8}, {90, 28}}, color = {0, 127, 255}));
+  connect(sine.y, prescribedHeatFlow.Q_flow) annotation(
+    Line(points = {{112, 80}, {142, 80}, {142, 46}}, color = {0, 0, 127}));
+  connect(teeJunctionVolume.port_2, pumpElectricDC.Input) annotation(
+    Line(points = {{-44, -2}, {-44, 16}, {26, 16}}, color = {0, 127, 255}));
+  connect(setPumpSpeed.y, pumpElectricDC.contol_input) annotation(
+    Line(points = {{20, -4}, {32, -4}, {32, 8}}, color = {0, 0, 127}));
+  connect(batterySystem.pin_n, pumpElectricDC.pin_n) annotation(
+    Line(points = {{30, 46}, {32, 46}, {32, 24}}, color = {0, 0, 255}));
+  connect(batterySystem.pin_p, pumpElectricDC.pin_p) annotation(
+    Line(points = {{38, 46}, {38, 24}}, color = {0, 0, 255}));
+  connect(pumpElectricDC.Output, pipeSend.port_a) annotation(
+    Line(points = {{44, 16}, {58, 16}}, color = {0, 127, 255}));
   annotation(
     experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
 end SubSystemCoolingTEST_validTempMaintain_2;

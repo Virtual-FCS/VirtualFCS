@@ -12,7 +12,7 @@ model DCMotorControlCompressor "Control the speed of a DC motor"
     Placement(visible = true, transformation(extent = {{-22, -10}, {-2, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain tau2i(k = 1/driveData.kPhi) annotation(
     Placement(visible = true, transformation(origin = {-42, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(Ti = driveData.Tiw, constantLimits = true, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpw, yMax = driveData.tauMax + 1000) annotation(
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(Ti = driveData.Tiw, constantLimits = true, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpw, yMax = driveData.tauMax + 100) annotation(
     Placement(visible = true, transformation(extent = {{-92, -10}, {-72, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.FirstOrder preFilter(k = 1, T = driveData.Tfw, initType = Modelica.Blocks.Types.Init.InitialOutput) annotation(
     Placement(visible = true, transformation(extent = {{-132, -10}, {-112, 10}}, rotation = 0)));

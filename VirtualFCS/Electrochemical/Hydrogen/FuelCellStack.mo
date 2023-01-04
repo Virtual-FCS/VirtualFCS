@@ -7,7 +7,7 @@ model FuelCellStack
   // Medium models
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
-  replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
+  replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
@@ -27,7 +27,7 @@ model FuelCellStack
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
   parameter Real R_0_FC_stack(unit = "Ohm") = 0.00022*N_FC_stack "FC stack cell ohmic resistance";
   // Thermal parameters
-  parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 1100 "FC stack specific heat capacity";
+  parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 110.0 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
   Real R = 8.314;
@@ -80,7 +80,7 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {-26, 59}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
   Modelica.Blocks.Math.Gain O2_mflow(k = 0.032/(96485*4)*N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 1777) annotation(
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation(
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

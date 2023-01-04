@@ -18,6 +18,5 @@ equation
   connect(vehicleProfile.pin_n, rangeExtenderPowerTrain.pin_n) annotation(
     Line(points = {{18, -10}, {42, -10}, {42, -10}, {42, -10}}, color = {0, 0, 255}));
 protected
-  annotation(
-    experiment(StartTime = 0, StopTime = 25000, Tolerance = 1e-06, Interval = 1));
+  annotation(experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-04, Interval = 1));
 end RangeExtenderHybridVehicle;

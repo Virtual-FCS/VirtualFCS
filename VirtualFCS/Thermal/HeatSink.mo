@@ -3,7 +3,7 @@ within VirtualFCS.Thermal;
 model HeatSink
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium models
-  replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
+  replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

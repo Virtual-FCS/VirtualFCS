@@ -2,6 +2,8 @@ within VirtualFCS.Fluid;
 
 model ThrottleValve
   //*** DEFINE REPLACEABLE PACKAGES ***//
+  outer Modelica.Fluid.System system annotation(
+    Placement(visible = true, transformation(origin = {-80, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Medium models
   replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   //*** INSTANTIATE COMPONENTS ***//
@@ -24,8 +26,7 @@ model ThrottleValve
     Placement(visible = true, transformation(origin = {0, 36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Blocks.Interfaces.RealInput FC_pAirOut_P annotation(
     Placement(visible = true, transformation(origin = {-81, 69}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {0, -14}, extent = {{-13, -13}, {13, 13}}, rotation = 90)));
-  outer Modelica.Fluid.System system annotation(
-    Placement(visible = true, transformation(origin = {-80, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(add.y, valveDownstream.opening) annotation(
