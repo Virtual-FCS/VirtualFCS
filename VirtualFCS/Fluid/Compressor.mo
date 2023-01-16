@@ -4,7 +4,7 @@ model Compressor
   // System
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
-  // Medium models
+  // Medium declaration
   replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
@@ -42,9 +42,11 @@ model Compressor
   // Other
   Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  
+  // Power & Efficiencies
+  Real Power_Compressor(unit = "W") "The power consumed by the Compressor";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
+  Power_Compressor = pin_p.i*pin_p.v;
   connect(dcpm.flange, inertia.flange_a) annotation(
     Line(points = {{-42, -16}, {-30, -16}}));
   connect(speedSensor.w, gain.u) annotation(

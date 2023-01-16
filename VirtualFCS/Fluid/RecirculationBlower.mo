@@ -4,7 +4,7 @@ model RecirculationBlower
   // System
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
-  // Medium models
+  // Medium declaration
   replaceable package Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
@@ -42,8 +42,11 @@ model RecirculationBlower
     Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   VirtualFCS.Control.DCMotorControlRecirculationBlower dCMotorControlRecirculationBlower annotation(
     Placement(visible = true, transformation(origin = {-50, 42}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  // Power & Efficiencies
+  Real Power_RecirculationBlower(unit = "W") "The power consumed by the RecirculationBlower";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
+  Power_RecirculationBlower = pin_p.i * pin_p.v;
   connect(dcpm.flange, inertia.flange_a) annotation(
     Line(points = {{-40, -16}, {-30, -16}}));
   connect(speedSensor.w, gain.u) annotation(

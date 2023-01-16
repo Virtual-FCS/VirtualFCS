@@ -1,6 +1,6 @@
 within VirtualFCS.ComponentTesting;
 
-model PreHeaterTest
+model PreHeaterTest "Simple model to test the PreHeater model"
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   inner Modelica.Fluid.System system annotation(
@@ -11,7 +11,7 @@ model PreHeaterTest
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary fixedBoundary(replaceable package Medium = Medium, nPorts = 1, p = 101325*4.7) annotation(
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {0, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   Modelica.Fluid.Sensors.Temperature temperature(replaceable package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-30, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
@@ -19,17 +19,17 @@ model PreHeaterTest
     Placement(visible = true, transformation(origin = {30, -30}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
 equation
   connect(boundary.ports[1], preHeater.port_a) annotation(
-    Line(points = {{-60, 0}, {-20, 0}}, color = {0, 127, 255}));
+    Line(points = {{-60, 0}, {-20, 0}}, color = {0, 0, 255}, thickness = 1));
   connect(preHeater.port_b, fixedBoundary.ports[1]) annotation(
-    Line(points = {{20, 0}, {60, 0}}, color = {0, 127, 255}));
+    Line(points = {{20, 0}, {60, 0}}, color = {255, 0, 0}, thickness = 1));
   connect(batterySystem.pin_p, preHeater.pin_p) annotation(
     Line(points = {{-4, 52}, {-4, 30}, {-10, 30}, {-10, 20}}, color = {0, 0, 255}));
   connect(batterySystem.pin_n, preHeater.pin_n) annotation(
     Line(points = {{4, 52}, {4, 30}, {10, 30}, {10, 20}}, color = {0, 0, 255}));
   connect(temperature.port, preHeater.port_a) annotation(
-    Line(points = {{-30, -20}, {-20, -20}, {-20, 0}}, color = {0, 127, 255}));
+    Line(points = {{-30, -20}, {-20, -20}, {-20, 0}}));
   connect(temperature1.port, preHeater.port_b) annotation(
-    Line(points = {{30, -20}, {20, -20}, {20, 0}}, color = {0, 127, 255}));
-
-annotation(experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
+    Line(points = {{30, -20}, {20, -20}, {20, 0}}));
+annotation(
+  experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
 end PreHeaterTest;

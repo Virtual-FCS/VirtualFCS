@@ -11,13 +11,13 @@ model TestCoolingSubsystem "Example to evaluate the performance of the cooling s
     Placement(visible = true, transformation(origin = {0, 62}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
     Placement(visible = true, transformation(origin = {-56, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*110, T(fixed = true, start = 293.15), der_T(fixed = false)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*110, T(fixed = true, start = system.T_start), der_T(fixed = false)) annotation(
     Placement(visible = true, transformation(origin = {0, 102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, nNodes = 2, nParallel = 500, use_HeatTransfer = true, use_T_start = true) annotation(
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 1050, falling = 50, period = 500, rising = 50, startTime = 100, width = 300) annotation(
     Placement(visible = true, transformation(origin = {-116, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 10, SOC_init = 0.9, V_max_bat_pack = 54, V_min_bat_pack = 42, V_nom_bat_pack = 48, m_bat_pack = 1) annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {-1.9984e-15, -78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Ramp ramp(duration = 200, height = 1000, startTime = 100) annotation(
     Placement(visible = true, transformation(origin = {-116, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

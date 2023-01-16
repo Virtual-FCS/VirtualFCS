@@ -13,7 +13,7 @@ model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {0, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium = Anode_Medium) annotation(
     Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(V_max_bat_pack = 54, V_min_bat_pack = 40, V_nom_bat_pack = 48) annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {1.9984e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200)  annotation(
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -21,11 +21,11 @@ equation
   connect(gain.y, boundary.m_flow_in) annotation(
     Line(points = {{-26, 80}, {-18, 80}, {-18, 92}, {-8, 92}, {-8, 80}}, color = {0, 0, 127}));
   connect(subSystemHydrogen.port_H2ToStack, teeJunctionIdeal.port_1) annotation(
-    Line(points = {{-12, 24}, {-12, 40}, {-10, 40}}, color = {0, 127, 255}));
+    Line(points = {{-12, 24}, {-12, 40}, {-10, 40}}, color = {0, 170, 0}, thickness = 1));
   connect(subSystemHydrogen.port_StackToH2, teeJunctionIdeal.port_2) annotation(
-    Line(points = {{10, 24}, {12, 24}, {12, 40}, {10, 40}}, color = {0, 127, 255}));
+    Line(points = {{10, 24}, {12, 24}, {12, 40}, {10, 40}}, color = {0, 170, 0}, thickness = 1));
   connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation(
-    Line(points = {{0, 60}, {0, 50}}, color = {0, 127, 255}));
+    Line(points = {{0, 60}, {0, 50}}, color = {0, 170, 0}, thickness = 1));
   connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation(
     Line(points = {{8, -40}, {10, -40}, {10, -18}}, color = {0, 0, 255}));
   connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation(

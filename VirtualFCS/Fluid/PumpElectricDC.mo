@@ -4,7 +4,7 @@ model PumpElectricDC
   // System
   inner Modelica.Fluid.System system "System wide properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
-  // Medium models
+  // Medium declaration
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
@@ -46,8 +46,13 @@ model PumpElectricDC
     Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k = 9.5493)  annotation(
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
+  // Power & Efficiency
+  Real eta_PumpElectricDC(unit = "100") "The efficiency of the PumpElectricDC calculated by eta = P_water/P_shaft";
+  Real Power_PumpElectricDC(unit = "W") "The power consumed by the PumpElectricDC";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
+  eta_PumpElectricDC = (((Output.p - (Input.p))*volumeFlowRate.V_flow)/(max(dcpm.pin_ap.v*dcpm.pin_ap.i, 1e-10))) * 100;
+  Power_PumpElectricDC = pin_p.i * pin_p.v;
 //*** DEFINE CONNECTIONS ***//
   connect(multiplex2.y, sensors) annotation(
     Line(points = {{91, 90}, {110, 90}}, color = {0, 0, 127}));

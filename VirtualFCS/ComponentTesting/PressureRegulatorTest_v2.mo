@@ -1,12 +1,12 @@
 within VirtualFCS.ComponentTesting;
 
-model PressureRegulatorTest_v2 "Model to test the recirculation blower component"
+model PressureRegulatorTest_v2 "Second simple model to test the PressureRegulator model"
   extends Modelica.Icons.Example;
-  replaceable package Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = 293.15), AbsolutePressure(start = 101325));
-  VirtualFCS.Fluid.PressureRegulator pressureRegulator annotation(
-    Placement(visible = true, transformation(origin = {2.66454e-15, -2.66454e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  replaceable package Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  VirtualFCS.Fluid.PressureRegulator pressureRegulator annotation(
+    Placement(visible = true, transformation(origin = {2.66454e-15, -2.66454e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Fluid.Vessels.ClosedVolume volume(redeclare package Medium = Medium, V = 0.13, nPorts = 1, p_start = 70000000, use_HeatTransfer = true, use_T_start = true, use_portsData = false) annotation(
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   Modelica.Blocks.Sources.RealExpression realExpression(y = 101325*2) annotation(

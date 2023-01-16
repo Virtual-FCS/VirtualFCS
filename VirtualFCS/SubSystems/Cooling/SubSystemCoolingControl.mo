@@ -9,56 +9,30 @@ model SubSystemCoolingControl
   Modelica.Blocks.Interfaces.RealOutput controlInterface annotation(
     Placement(visible = true, transformation(origin = {210, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {210, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Control.PumpSpeedControlCooling pumpSpeedControlCooling(Td = 0.1,Ti = 1, k = 1)  annotation(
-    Placement(visible = true, transformation(origin = {0, 114}, extent = {{-52, -52}, {52, 52}}, rotation = 0)));
-  Modelica.Blocks.Logical.Switch switch1 annotation(
-    Placement(visible = true, transformation(origin = {-106, 74}, extent = {{-14, 14}, {14, -14}}, rotation = 0)));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = true, uHigh = temperature_Cooling_set - 5, uLow = temperature_Cooling_set - 15)  annotation(
-    Placement(visible = true, transformation(origin = {-154, 74}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {0, 0}, extent = {{-52, -52}, {52, 52}}, rotation = 0)));
   Modelica.Blocks.Math.Max max annotation(
-    Placement(visible = true, transformation(origin = {150, 98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {150, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Add add(k2 = -1)  annotation(
-    Placement(visible = true, transformation(origin = {110, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {110, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression realExpression(y = 1)  annotation(
-    Placement(visible = true, transformation(origin = {74, 160}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {74, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression realExpression1(y = 0.075) annotation(
-    Placement(visible = true, transformation(origin = {108, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Logical.Switch switch annotation(
-    Placement(visible = true, transformation(origin = {152, 0}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
-  Modelica.Blocks.Logical.Hysteresis hysteresis1(pre_y_start = true, uHigh = temperature_Cooling_set - 5, uLow = temperature_Cooling_set - 15) annotation(
-    Placement(visible = true, transformation(origin = {104, 0}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression realExpression2(y = 0.01) annotation(
-    Placement(visible = true, transformation(origin = {104, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {108, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(setCoolingTemperature.y, pumpSpeedControlCooling.setMassFlow) annotation(
-    Line(points = {{-158, 140}, {-58, 140}}, color = {0, 0, 127}));
-  connect(hysteresis.y, switch1.u2) annotation(
-    Line(points = {{-138, 74}, {-123, 74}}, color = {255, 0, 255}));
-  connect(hysteresis.u, sensorInterface) annotation(
-    Line(points = {{-170, 74}, {-188, 74}, {-188, 0}, {-220, 0}}, color = {0, 0, 127}));
-  connect(switch1.y, pumpSpeedControlCooling.getMassFlow) annotation(
-    Line(points = {{-91, 74}, {-76, 74}, {-76, 88}, {-58, 88}}, color = {0, 0, 127}));
-  connect(sensorInterface, switch1.u1) annotation(
-    Line(points = {{-220, 0}, {-132, 0}, {-132, 62}, {-122, 62}}, color = {0, 0, 127}));
-  connect(setCoolingTemperature.y, switch1.u3) annotation(
-    Line(points = {{-158, 140}, {-132, 140}, {-132, 86}, {-122, 86}}, color = {0, 0, 127}));
+    Line(points = {{-158, 140}, {-108, 140}, {-108, 26}, {-57, 26}}, color = {0, 0, 127}));
   connect(realExpression.y, add.u1) annotation(
-    Line(points = {{85, 160}, {90, 160}, {90, 126}, {98, 126}}, color = {0, 0, 127}));
+    Line(points = {{85, 46}, {90, 46}, {90, 12}, {98, 12}}, color = {0, 0, 127}));
   connect(pumpSpeedControlCooling.setPumpSpeed, add.u2) annotation(
-    Line(points = {{58, 114}, {98, 114}}, color = {0, 0, 127}));
+    Line(points = {{57.2, 0}, {97.2, 0}}, color = {0, 0, 127}));
   connect(add.y, max.u1) annotation(
-    Line(points = {{121, 120}, {127, 120}, {127, 104}, {137, 104}}, color = {0, 0, 127}));
+    Line(points = {{121, 6}, {138, 6}}, color = {0, 0, 127}));
   connect(realExpression1.y, max.u2) annotation(
-    Line(points = {{119, 84}, {127, 84}, {127, 92}, {137, 92}}, color = {0, 0, 127}));
-  connect(hysteresis1.y, switch.u2) annotation(
-    Line(points = {{119.4, 0}, {134.4, 0}}, color = {255, 0, 255}));
-  connect(sensorInterface, hysteresis1.u) annotation(
-    Line(points = {{-220, 0}, {87, 0}}, color = {0, 0, 127}));
-  connect(max.y, switch.u1) annotation(
-    Line(points = {{161, 98}, {173, 98}, {173, 40}, {125, 40}, {125, 12}, {135, 12}}, color = {0, 0, 127}));
-  connect(realExpression2.y, switch.u3) annotation(
-    Line(points = {{115, -48}, {125, -48}, {125, -12}, {135, -12}}, color = {0, 0, 127}));
-  connect(switch.y, controlInterface) annotation(
-    Line(points = {{168, 0}, {210, 0}}, color = {0, 0, 127}));
+    Line(points = {{119, -30}, {127, -30}, {127, -6}, {138, -6}}, color = {0, 0, 127}));
+  connect(sensorInterface, pumpSpeedControlCooling.getMassFlow) annotation(
+    Line(points = {{-220, 0}, {-108, 0}, {-108, -26}, {-58, -26}}, color = {0, 0, 127}));
+  connect(max.y, controlInterface) annotation(
+    Line(points = {{162, 0}, {210, 0}}, color = {0, 0, 127}));
   annotation(
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin = {-7, 242}, textColor = {0, 0, 255}, extent = {{-103, 34}, {103, -34}}, textString = "%name")}),

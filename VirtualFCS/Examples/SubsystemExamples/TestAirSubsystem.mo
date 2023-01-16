@@ -7,14 +7,13 @@ model TestAirSubsystem "Example to evaluate the performance of the air subsystem
   replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Medium, nPorts = 1, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {0, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain(k = -0.032 * 1 / (96485 * 2)) annotation(
+  Modelica.Blocks.Math.Gain gain(k = -0.032*1/(96485*2)) annotation(
     Placement(visible = true, transformation(origin = {-35, 81}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {1, 49}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
   VirtualFCS.SubSystems.Air.SubSystemAir subSystemAir annotation(
     Placement(visible = true, transformation(origin = {-1.77636e-15, -1.77636e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {-3.55271e-15, -70}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200) annotation(
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -22,9 +21,9 @@ equation
   connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation(
     Line(points = {{0, 66}, {2, 66}, {2, 58}, {2, 58}}, color = {0, 127, 255}));
   connect(teeJunctionIdeal.port_1, subSystemAir.Output) annotation(
-    Line(points = {{-8, 50}, {-14, 50}, {-14, 24}, {-12, 24}}, color = {0, 127, 255}));
+    Line(points = {{-8, 50}, {-14, 50}, {-14, 24}, {-12, 24}}, color = {0, 170, 255}, thickness = 1));
   connect(teeJunctionIdeal.port_2, subSystemAir.Input) annotation(
-    Line(points = {{10, 50}, {12, 50}, {12, 24}, {12, 24}}, color = {0, 127, 255}));
+    Line(points = {{10, 50}, {12, 50}, {12, 24}, {12, 24}}, color = {0, 170, 255}, thickness = 1));
   connect(gain.y, boundary.m_flow_in) annotation(
     Line(points = {{-28, 82}, {-22, 82}, {-22, 92}, {-8, 92}, {-8, 86}, {-8, 86}}, color = {0, 0, 127}));
   connect(subSystemAir.pin_n, batterySystem.pin_n) annotation(
@@ -33,6 +32,8 @@ equation
     Line(points = {{10, -18}, {8, -18}, {8, -50}, {8, -50}}, color = {0, 0, 255}));
   connect(trapezoid.y, gain.u) annotation(
     Line(points = {{-64, 80}, {-44, 80}, {-44, 82}}, color = {0, 0, 127}));
+  connect(trapezoid.y, subSystemAir.control) annotation(
+    Line(points = {{-64, 80}, {-54, 80}, {-54, 10}, {-22, 10}}, color = {0, 0, 127}));
   annotation(
     Diagram,
     Icon,

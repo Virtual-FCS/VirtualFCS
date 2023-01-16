@@ -1,11 +1,6 @@
 UsersGuide
-PressureRegulator
-ThrottleValve
 Compressor
-PressureRegulator_testNew
-PressureRegulator_old
-PressureRegulator_newOld
-RecirculationBlower_workingOld
-RecirculationBlower_OLD
-RecirculationBlower
+PressureRegulator
 PumpElectricDC
+RecirculationBlower
+ThrottleValve

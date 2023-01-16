@@ -1,6 +1,6 @@
 within VirtualFCS.ComponentTesting;
 
-model SubSystemHydrogenControlTest
+model SubSystemHydrogenControlTest "Simple model to test the SubSystemHydrogenControl model"
   extends Modelica.Icons.Example;
   SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
@@ -23,6 +23,5 @@ equation
     Line(points = {{-38, -30}, {-32, -30}, {-32, -12}, {-22, -12}}, color = {0, 0, 127}, thickness = 0.5));
   connect(sine.y, subSystemHydrogenControl.signalInterface_FC) annotation(
     Line(points = {{-58, 30}, {-42, 30}, {-42, 12}, {-22, 12}}, color = {0, 0, 127}));
-
 annotation (experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
 end SubSystemHydrogenControlTest;

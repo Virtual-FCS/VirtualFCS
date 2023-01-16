@@ -1,6 +1,6 @@
 within VirtualFCS.ComponentTesting;
 
-model HeatSinkTest
+model HeatSinkTest "Simple model to test the HeatSink model"
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   VirtualFCS.Fluid.PumpElectricDC pumpElectricDC annotation(
@@ -11,7 +11,7 @@ model HeatSinkTest
     Placement(visible = true, transformation(origin = {-90, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary fixedBoundary(redeclare package Medium = Medium, nPorts = 1)  annotation(
     Placement(visible = true, transformation(origin = {90, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {-36, 40}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
   Modelica.Blocks.Sources.Sine sine(amplitude = 0.14, f = 0.01, offset = 0.15, startTime = 10)  annotation(
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -29,19 +29,19 @@ equation
   connect(batterySystem.pin_p, pumpElectricDC.pin_p) annotation(
     Line(points = {{-32, 30}, {-32, 11}}, color = {0, 0, 255}));
   connect(boundary.ports[1], pumpElectricDC.Input) annotation(
-    Line(points = {{-80, 0}, {-49, 0}}, color = {0, 127, 255}));
+    Line(points = {{-80, 0}, {-49, 0}}, color = {255, 0, 0}, thickness = 1));
   connect(sine.y, pumpElectricDC.contol_input) annotation(
     Line(points = {{-79, -50}, {-40, -50}, {-40, -11}}, color = {0, 0, 127}));
   connect(pumpElectricDC.Output, heatSink.port_a) annotation(
-    Line(points = {{-24, 0}, {0, 0}}, color = {0, 127, 255}));
+    Line(points = {{-24, 0}, {0, 0}}, color = {255, 0, 0}, thickness = 1));
   connect(heatSink.port_b, fixedBoundary.ports[1]) annotation(
-    Line(points = {{40, 0}, {80, 0}}, color = {0, 127, 255}));
+    Line(points = {{40, 0}, {80, 0}}, color = {0, 0, 255}, thickness = 1));
   connect(temperature.port, pumpElectricDC.Input) annotation(
-    Line(points = {{-60, -14}, {-60, 0}, {-48, 0}}, color = {0, 127, 255}));
+    Line(points = {{-60, -14}, {-60, 0}, {-48, 0}}));
   connect(temperature1.port, heatSink.port_a) annotation(
-    Line(points = {{-12, -14}, {-12, 0}, {0, 0}}, color = {0, 127, 255}));
+    Line(points = {{-12, -14}, {-12, 0}, {0, 0}}));
   connect(temperature2.port, heatSink.port_b) annotation(
-    Line(points = {{62, -14}, {62, 0}, {40, 0}}, color = {0, 127, 255}));
-
-annotation (experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
+    Line(points = {{62, -14}, {62, 0}, {40, 0}}));
+annotation (
+  experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
 end HeatSinkTest;

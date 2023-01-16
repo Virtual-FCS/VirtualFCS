@@ -22,7 +22,7 @@ model SubSystemHydrogenControl
     Placement(visible = true, transformation(origin = {-154, -120}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput signalInterface_FC annotation(
     Placement(visible = true, transformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setH2MassFlow(y = max(1.1*(signalInterface_FC*(0.00202/(96485*2)*N_FC_stack)), 0.0001))  annotation(
+  Modelica.Blocks.Sources.RealExpression setH2MassFlow(y = max(1.1*(signalInterface_FC*(0.00202/(96485*2)*N_FC_stack)), 1.22e-06))  annotation(
     Placement(visible = true, transformation(origin = {-81, -28}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(pumpSpeedControl.setPumpSpeed, multiplexSignalsH2Subsystem.u3[1]) annotation(
