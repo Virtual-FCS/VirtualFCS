@@ -69,7 +69,7 @@ model FuelCell "Model for a single PEM fuel cell"
     Placement(visible = true, transformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_0)  annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_0) annotation(
     Placement(visible = true, transformation(origin = {60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sources.SignalVoltage potentialSource annotation(
     Placement(visible = true, transformation(origin = {-60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
@@ -106,21 +106,21 @@ equation
   prescribedHeatFlow.Q_flow = P_th;
 //*** DEFINE CONNECTIONS ***//
   connect(pipeCoolant.port_b, port_b_Coolant) annotation(
-    Line(points = {{10, -42}, {130, -42}}, color = {0, 127, 255}, thickness = 1));
+    Line(points = {{10, -42}, {130, -42}}, color = {255, 0, 0}, thickness = 1));
   connect(pipeCoolant.port_a, port_a_Coolant) annotation(
-    Line(points = {{-10, -42}, {-134, -42}}, color = {0, 127, 255}, thickness = 1));
+    Line(points = {{-10, -42}, {-134, -42}}, color = {0, 0, 255}, thickness = 1));
   connect(port_a_H2, qH2.port_1) annotation(
-    Line(points = {{-148, 80}, {-118, 80}, {-118, 50}, {-118, 50}}));
+    Line(points = {{-148, 80}, {-118, 80}, {-118, 50}, {-118, 50}}, color = {0, 170, 0}, thickness = 1));
   connect(port_b_H2, qH2.port_2) annotation(
-    Line(points = {{-150, 0}, {-118, 0}, {-118, 30}, {-118, 30}}));
+    Line(points = {{-150, 0}, {-118, 0}, {-118, 30}, {-118, 30}}, color = {0, 170, 0}, thickness = 1));
   connect(port_a_Air, qAir.port_1) annotation(
-    Line(points = {{150, 80}, {120, 80}, {120, 50}, {120, 50}}));
+    Line(points = {{150, 80}, {120, 80}, {120, 50}, {120, 50}}, color = {0, 170, 255}, thickness = 1));
   connect(qAir.port_2, port_b_Air) annotation(
-    Line(points = {{120, 30}, {120, 30}, {120, -2}, {150, -2}, {150, -2}}));
+    Line(points = {{120, 30}, {120, 30}, {120, -2}, {150, -2}, {150, -2}}, color = {0, 170, 255}, thickness = 1));
   connect(O2_sink.ports[1], qAir.port_3) annotation(
-    Line(points = {{94, 40}, {110, 40}, {110, 40}, {110, 40}}, color = {0, 127, 255}));
+    Line(points = {{94, 40}, {110, 40}, {110, 40}, {110, 40}}, color = {0, 170, 255}, thickness = 1));
   connect(qH2.port_3, H2_sink.ports[1]) annotation(
-    Line(points = {{-108, 40}, {-90, 40}, {-90, 42}, {-90, 42}}, color = {0, 127, 255}));
+    Line(points = {{-108, 40}, {-90, 40}, {-90, 42}, {-90, 42}}, color = {0, 170, 0}, thickness = 1));
   connect(R_ohmic.n, pin_p) annotation(
     Line(points = {{60, 130}, {60, 150}}, color = {0, 0, 255}));
   connect(pin_n, potentialSource.n) annotation(
@@ -152,8 +152,6 @@ equation
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, lineColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
-    version = "",
-    uses(Modelica(version = "3.2.3")),
     Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC). The model includes components describing the electrical, fluidic, and thermal properties of the cell.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style=\"font-family: 'Courier New';\">potentialSource.v</span><span style=\"font-family: 'Courier New'; font-size: 12pt;\">,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the cell using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.</div><div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using the&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.FuelCellSubSystems\">FuelCellSubSystems</a>&nbsp;block, or individual&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>,&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, and&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>&nbsp;blocks.<br> 
 <br> 
 

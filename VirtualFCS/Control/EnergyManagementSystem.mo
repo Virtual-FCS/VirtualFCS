@@ -1,7 +1,6 @@
 within VirtualFCS.Control;
 
 block EnergyManagementSystem "Implement algorithms to control the energy and power distribution in a hybrid system."
-
   parameter Real I_nom_FC_stack(unit = "A") = 100 "FC stack nominal operating current";
   parameter Real ramp_up(unit = "1/s") = 20 "FC stack current ramp up rate";
   Modelica.Blocks.Sources.Constant shut_down(k = 0) annotation(

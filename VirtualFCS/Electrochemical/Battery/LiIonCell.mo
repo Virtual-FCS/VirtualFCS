@@ -10,7 +10,7 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   // Pack design parameters
   parameter Real SOC_init(unit = "1") = 0.5 "Initial State of Charge";
   parameter Real chargeCapacity(unit = "Ah") = 2.2 "Battery Cell Capacity";
-  parameter Real Rohm_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
+  parameter Real R_O(unit = "Ohm") = 0.02 "Ohmic Resistance";
   parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
   parameter Real R2_0(unit = "Ohm") = 0.005 "Second RC Resistance";
   parameter Real C1_0(unit = "F") = 5000 "First RC Capacitance";
@@ -40,7 +40,7 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
     Placement(visible = true, transformation(origin = {-50, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Capacitor C2(C = C2_0, v(fixed = true)) annotation(
     Placement(visible = true, transformation(origin = {-14, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R0(R = Rohm_0, T_ref = 300.15, useHeatPort = false) annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_O, T_ref = 300.15, useHeatPort = false) annotation(
     Placement(visible = true, transformation(origin = {-88, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Capacitor C1(C = C1_0, v(fixed = true)) annotation(
     Placement(visible = true, transformation(origin = {-50, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -54,7 +54,7 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
     Placement(visible = true, transformation(origin = {20, 52}, extent = {{11, 11}, {-11, -11}}, rotation = 180)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatSource annotation(
     Placement(visible = true, transformation(origin = {-130, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = specificHeatCapacity * mass)  annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = specificHeatCapacity * mass) annotation(
     Placement(visible = true, transformation(origin = {-50, -28}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {-50, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -70,14 +70,10 @@ equation
     Line(points = {{-40, 52}, {-24, 52}}, color = {0, 0, 255}));
   connect(R2.p, C2.p) annotation(
     Line(points = {{-24, 52}, {-24, 76}}, color = {0, 0, 255}));
-  connect(R0.n, R1.p) annotation(
-    Line(points = {{-78, 52}, {-60, 52}}, color = {0, 0, 255}));
   connect(C1.n, R1.n) annotation(
     Line(points = {{-40, 76}, {-40, 52}}, color = {0, 0, 255}));
   connect(C1.p, R1.p) annotation(
     Line(points = {{-60, 76}, {-60, 52}}, color = {0, 0, 255}));
-  connect(OCV.p, R0.p) annotation(
-    Line(points = {{-110, 52}, {-98, 52}}, color = {0, 0, 255}));
   connect(OCV.n, pin_n) annotation(
     Line(points = {{-130, 52}, {-154, 52}}, color = {0, 0, 255}));
   connect(getSOC_init.y, chargeCounter.SOC_init) annotation(
@@ -94,6 +90,10 @@ equation
     Line(points = {{-120, -40}, {-50, -40}, {-50, -40}, {-50, -40}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, heatPort) annotation(
     Line(points = {{-50, -40}, {-50, -40}, {-50, -94}, {-50, -94}}, color = {191, 0, 0}));
+  connect(OCV.p, R_ohmic.p) annotation(
+    Line(points = {{-110, 52}, {-98, 52}}, color = {0, 0, 255}));
+  connect(R_ohmic.n, R1.p) annotation(
+    Line(points = {{-78, 52}, {-60, 52}}, color = {0, 0, 255}));
   annotation(
     Icon(graphics = {Rectangle(origin = {4, -9}, fillColor = {85, 170, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-104, 49}, {96, -31}}), Rectangle(origin = {104, 4}, fillColor = {200, 200, 200}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-4, 20}, {10, -28}}), Text(origin = {-19, 70}, lineColor = {0, 0, 255}, extent = {{-37, 18}, {57, -32}}, textString = "%name"), Text(origin = {-79, 10}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {57, -32}}, textString = "-"), Text(origin = {87, 2}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {31, -16}}, textString = "+")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),

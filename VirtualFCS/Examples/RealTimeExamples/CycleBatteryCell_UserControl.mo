@@ -24,7 +24,7 @@ model CycleBatteryCell_UserControl "Example demonstrating real time user control
     Placement(visible = true, transformation(origin = {0, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.XInTheLoop.UserInTheLoop.ThrottleKeys throttleKeys annotation(
     Placement(visible = true, transformation(origin = {-78, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Nonlinear.Limiter limiter(limitsAtInit = true, uMax = 4.4, uMin = -4.4)  annotation(
+  Modelica.Blocks.Nonlinear.Limiter limiter(uMax = 4.4, uMin = -4.4) annotation(
     Placement(visible = true, transformation(origin = {-38, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(getSOC_init.y, BMS.SOC_init) annotation(
