@@ -17,9 +17,9 @@ model DriveCycle
     output String file;
   algorithm
     if v == VirtualFCS.Vehicles.DriveCycle.speed_profile.NEDC then
-      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/NEDC.mat");
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Resources.DataDriveCycles/NEDC.mat"); 
     elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.WLTC then
-      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Vehicles.DriveCycles/WLTC.mat");
+      file := Modelica.Utilities.Files.loadResource("modelica://VirtualFCS.Resources.DataDriveCycles/WLTC.mat");
     elseif v == VirtualFCS.Vehicles.DriveCycle.speed_profile.custom then
       file := path;
     end if;
