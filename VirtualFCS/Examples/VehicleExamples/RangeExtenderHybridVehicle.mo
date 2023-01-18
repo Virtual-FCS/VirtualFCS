@@ -18,7 +18,7 @@ equation
     hydrogen_mass_init = rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m;
   end when;
   when terminal() then
-    fuel_consumption = (hydrogen_mass_init - rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m)/(vehicleProfile.x * 0.00001);
+    fuel_consumption = (hydrogen_mass_init - rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m)/max((vehicleProfile.x * 0.00001), 0.01);
   end when;
   if vehicleProfile.useRegenerativeBreaking then
     if vehicleProfile.P > 0 then
