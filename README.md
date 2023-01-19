@@ -29,7 +29,7 @@ Development and conventions
 ------------------------
 
 ### Workflow
-The VirtualFCS library is currently in development by members of the Virtual-FCS project. The project started in 2020 and will continue through 2022. Minor releases are planned every 3 months of the project. Development should always take place on a side branch. Never pull to main. Contributions submitted as [Pull Requests](https://github.com/Virtual-FCS/VirtualFCS/pulls) are welcome.
+The VirtualFCS library is currently in development by members of the Virtual-FCS project. The project started in 2020 and will continue through 2022. Minor releases are planned every 3 months of the project. Development should always take place on a side branch. Never pull to main. Contributions submitted as [Pull Requests](https://github.com/Virtual-FCS/VirtualFCS/pulls) are welcome. Recommended git comment method for contributors can be found here: [How to Write a Git Commit Message](https://cbea.ms/git-commit/). 
 
 Issues can be reported using the [«Issues](https://github.com/Virtual-FCS/VirtualFCS/issues) button. 
 
@@ -51,6 +51,7 @@ Attributions and credits
 
 ### Contributors (in alphabetical order)
 Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
+Benjamin Synnevåg, 		SINTEF Industry, Trondheim, Norway<br/>
 Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
 Dr. Mike Gerhardt, 	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
