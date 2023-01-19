@@ -3,7 +3,7 @@ package VirtualFCS "VirtualFCS - VIRTUAL & physical platform for Fuel Cell Syste
   // import Annex60;
   annotation(
     preferredView="info",
-    version="2.0.0",
+    version="2.1.0-dev",
     versionDate="2023-01-19",
     uses(Modelica(version = "4.0.0"), Modelica_DeviceDrivers(version= "2.1.1")),
     Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Bitmap(origin = {-1, 0}, extent = {{-99, -100}, {99, 100}}, fileName = "modelica://VirtualFCS/Resources/images/virtual-fcs-logo-emblem.png")}),
