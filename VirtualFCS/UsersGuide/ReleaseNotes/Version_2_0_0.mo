@@ -1,3 +1,5 @@
+within VirtualFCS.UsersGuide.ReleaseNotes;
+
 class Version_2_0_0
   extends VirtualFCS.UsersGuide.ReleaseNotes;
   
