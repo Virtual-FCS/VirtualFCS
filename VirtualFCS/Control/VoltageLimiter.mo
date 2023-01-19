@@ -1,19 +1,17 @@
 within VirtualFCS.Control;
 
 model VoltageLimiter "Enforce voltage limits on battery cells."
-
   parameter Real upperVoltageLimit(unit = "V") = 3.6 "Upper Voltage Limit";
   parameter Real lowerVoltageLimit(unit = "V") = 2.0 "Lower Voltage Limit";
-
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p_battery annotation(
     Placement(visible = true, transformation(origin = {196, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {110, 190}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n_battery annotation(
     Placement(visible = true, transformation(origin = {-196, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-128, 190}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Sensors.VoltageSensor voltageSensor annotation(
     Placement(visible = true, transformation(origin = {0, 80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold = lowerVoltageLimit)  annotation(
+  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold = lowerVoltageLimit) annotation(
     Placement(visible = true, transformation(origin = {20, 28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Blocks.Logical.LessThreshold lessThreshold(threshold = upperVoltageLimit)  annotation(
+  Modelica.Blocks.Logical.LessThreshold lessThreshold(threshold = upperVoltageLimit) annotation(
     Placement(visible = true, transformation(origin = {56, 28}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Logical.And and1 annotation(
     Placement(visible = true, transformation(origin = {42, -8}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -21,13 +19,13 @@ model VoltageLimiter "Enforce voltage limits on battery cells."
     Placement(visible = true, transformation(origin = {-78, -140}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-130, -190}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p_load annotation(
     Placement(visible = true, transformation(origin = {80, -140}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {130, -190}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Ideal.IdealCommutingSwitch switchVotageSource annotation(
+  Modelica.Electrical.Analog.Ideal.IdealTwoWaySwitch switchVotageSource annotation(
     Placement(visible = true, transformation(origin = {114, -54}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.ConstantVoltage upperVoltageSource(V = upperVoltageLimit) annotation(
     Placement(visible = true, transformation(origin = {-140, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.ConstantVoltage constantVoltage(V = lowerVoltageLimit) annotation(
     Placement(visible = true, transformation(origin = {-142, -80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Ideal.IdealCommutingSwitch idealCommutingSwitch annotation(
+  Modelica.Electrical.Analog.Ideal.IdealTwoWaySwitch idealCommutingSwitch annotation(
     Placement(visible = true, transformation(origin = {-50, -50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Logical.LessThreshold lessThreshold1(threshold = lowerVoltageLimit) annotation(
     Placement(visible = true, transformation(origin = {-50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -69,5 +67,5 @@ equation
   annotation(
     Icon(graphics = {Rectangle(origin = {-100, 100}, fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {300, -300}}), Text(origin = {2, 137}, lineColor = {255, 255, 255}, extent = {{-74, 31}, {74, -31}}, textString = "Battery"), Text(origin = {-4, -101}, lineColor = {255, 255, 255}, extent = {{-74, 31}, {74, -31}}, textString = "Load"), Text(origin = {-7, 253}, lineColor = {0, 0, 255}, extent = {{-181, 45}, {181, -45}}, textString = "%name")}, coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
-  Documentation(info = "<html><head></head><body>The voltage limiter block enforces user-defined upper and lower voltage limits for battery cells and packs.&nbsp;</body></html>"));
+    Documentation(info = "<html><head></head><body>The voltage limiter block enforces user-defined upper and lower voltage limits for battery cells and packs.&nbsp;</body></html>"));
 end VoltageLimiter;
