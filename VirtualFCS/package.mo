@@ -2,10 +2,10 @@ package VirtualFCS "VirtualFCS - VIRTUAL & physical platform for Fuel Cell Syste
   extends Modelica.Icons.Package;
   // import Annex60;
   annotation(
-    preferredView="info",
-    version="2.1.0-dev",
-    versionDate="2023-01-19",
-    uses(Modelica(version = "4.0.0"), Modelica_DeviceDrivers(version= "2.1.1")),
+    preferredView = "info",
+    version = "2.1.0-dev",
+    versionDate = "2023-01-19",
+    uses(Modelica(version = "4.0.0"), Modelica_DeviceDrivers(version = "2.1.1")),
     Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Bitmap(origin = {-1, 0}, extent = {{-99, -100}, {99, 100}}, fileName = "modelica://VirtualFCS/Resources/images/virtual-fcs-logo-emblem.png")}),
     Documentation(info = "<html><head></head><body>
     <div><b>Overview</b></div><div>VirtualFCS is a Modelica library to model hybrid proton exchange membrane fuel cell (PEMFC) &amp; battery electric vehicles. The library provides classes describing:</div><div><ul style=\"font-size: 12px;\"><li>Electrochemical power sources including PEM fuel cells, PEM fuel cell stacks, Li-ion battery cells, and Li-ion battery packs.</li><li>Fuel cell sub-systems including hydrogen, air, and cooling</li><li>Balance of plant (BoP) components</li><li>Control algorithms for energy, fuel cell, and battery management, as well as BoP control.</li><li>Standard vehicle drive cycles including the New European Drive Cycle (NEDC) and Worldwide Harmonized Light-duty Vehicles Test Cycles (WLTC)</li></ul></div><div><div>The VirtualFCS library is composed of 8 main sub-packages: Control, Electrical, Electrochemical, Examples, Fluid, Thermal, Vehicles, and XInTheLoop.</div><div><br></div><b></b></div><div><br></div><div><img src=\"modelica://VirtualFCS/Resources/images/imgHydrogenVehicle.jpg\" style=\"width:15cm\"></div><div><br></div><div><br></div>
