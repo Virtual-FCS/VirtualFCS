@@ -3,7 +3,6 @@ within VirtualFCS.UsersGuide;
 package ReleaseNotes
   extends Modelica.Icons.ReleaseNotes;
   annotation(
-    DocumentationClass = true,
     Documentation(info = "<html><head></head><body>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"2\">
 <tr><td><a href=\"modelica://VirtualFCS.UsersGuide.ReleaseNotes.Version_2_0_0\">Version 2.0.0</a></td><td>2023-01-19</td></tr>
