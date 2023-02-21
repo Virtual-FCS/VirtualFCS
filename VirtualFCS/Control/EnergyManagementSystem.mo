@@ -3,9 +3,11 @@ within VirtualFCS.Control;
 block EnergyManagementSystem "Implement algorithms to control the energy and power distribution in a hybrid system."
   parameter Real I_nom_FC_stack(unit = "A") = 100 "FC stack nominal operating current";
   parameter Real ramp_up(unit = "1/s") = 20 "FC stack current ramp up rate";
+  parameter Real SOC_ll "Battery SOC lower limit";
+  parameter Real SOC_ul "Battery SOC upper limit";
   Modelica.Blocks.Sources.Constant shut_down(k = 0) annotation(
     Placement(visible = true, transformation(origin = {-70, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = true, uHigh = 0.8, uLow = 0.2) annotation(
+  Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = true, uHigh = SOC_ul, uLow = SOC_ll) annotation(
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setFuelCellCurrent(k = -I_nom_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-70, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
