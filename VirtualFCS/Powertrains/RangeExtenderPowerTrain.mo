@@ -3,34 +3,37 @@ within VirtualFCS.Powertrains;
 model RangeExtenderPowerTrain
   // System
   outer Modelica.Fluid.System system "System properties";
-  // Powertraom parameters
-  parameter Real m_powertrain(unit = "kg") = fuelCellSystem.m_FC_system + batterySystem.m_bat_pack;
+  // Powertrain parameters
+  parameter Real m_powertrain(unit = "kg") = fuelCellSystem.m_FC_system + batterySystem.m_bat_pack; 
   parameter Real V_HV_Bus(unit = "V") = 343 "Voltage of the HV Bus";
   // H2 Subsystem Paramters
-  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit = "Pa") = 35000000 "H2 tank initial pressure";
-  // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
-  parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack width";
-  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack height";
-  parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real V_rated_FC_stack(unit = "V") = 57.9 "FC stack maximum operating voltage";
-  parameter Real I_rated_FC_stack(unit = "A") = 300 "FC stack minimum operating current";
-  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack limiting current (max)";
-  parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack nominal current";
-  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells";
+  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume" annotation(Dialog(group = "Hydrogen Storage Parameters"));
+  parameter Real p_tank_H2(unit = "Pa") = 35000000 "H2 tank initial pressure"annotation(Dialog(group = "Hydrogen Storage Parameters"));
+  // Fuel Cell Stack Parameters
+  parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack width"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack height"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real V_rated_FC_stack(unit = "V") = 57.9 "FC stack maximum operating voltage"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real I_rated_FC_stack(unit = "A") = 300 "FC stack minimum operating current"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real i_L_FC_stack(unit = "A") = 1.7 * I_rated_FC_stack "FC stack limiting current (max)"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack nominal current"annotation(Dialog(group = "FuelCell Stack Parameters"));
+  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells"annotation(Dialog(group = "FuelCell Stack Parameters"));
   // Battery Pack Parameters
-  parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
-  parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
-  parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
-  parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height";
-  parameter Real Cp_bat_pack(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
-  parameter Real V_min_bat_pack(unit = "V") = 240 "Battery pack minimum voltage";
-  parameter Real V_nom_bat_pack(unit = "V") = 336 "Battery pack nominal voltage";
-  parameter Real V_max_bat_pack(unit = "V") = 403.2 "Battery pack maximum voltage";
-  parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity";
-  parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
+  parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real Cp_bat_pack(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real V_min_bat_pack(unit = "V") = 240 "Battery pack minimum voltage"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real V_nom_bat_pack(unit = "V") = 336 "Battery pack nominal voltage"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real V_max_bat_pack(unit = "V") = 403.2 "Battery pack maximum voltage"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real SOC_init = 0.5 "Battery pack initial state of charge"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real SOC_ll "Battery SOC lower limit"annotation(Dialog(group = "Battery Pack Parameters"));
+  parameter Real SOC_ul "Battery SOC upper limit"annotation(Dialog(group = "Battery Pack Parameters"));
+
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
@@ -45,7 +48,7 @@ model RangeExtenderPowerTrain
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   VirtualFCS.Electrical.DC_converter dC_converter annotation(
     Placement(visible = true, transformation(origin = {22, -44}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  VirtualFCS.Control.EnergyManagementSystem energyManagementSystem annotation(
+  VirtualFCS.Control.EnergyManagementSystem energyManagementSystem(SOC_ll = SOC_ll, SOC_ul = SOC_ul)  annotation(
     Placement(visible = true, transformation(origin = {-66, -72}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   // Power & Efficiencies
   Real Power_del_DC_DC(unit = "W") "Power delivered from the DC/DC converter";
