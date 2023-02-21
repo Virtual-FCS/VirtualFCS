@@ -1,7 +1,7 @@
 within VirtualFCS.SubSystems.Cooling;
 
 model SubSystemCoolingControl
-  parameter Real temperature_Cooling_set(unit = "K") = 80 + 273.15 "Set Fuel cell Temperature";
+  parameter Modelica.Units.SI.Temperature temperature_Cooling_set = 80 + 273.15 "Set Fuel cell Temperature";
   Modelica.Blocks.Interfaces.RealInput sensorInterface annotation(
     Placement(visible = true, transformation(origin = {-220, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setCoolingTemperature(k = temperature_Cooling_set) annotation(

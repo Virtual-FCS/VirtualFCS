@@ -7,7 +7,8 @@ model SubSystemAir
   // Medium declaration
   replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   // Parameter definition
-  parameter Real m_system_air(unit = "kg") = 61 "Air system mass";
+  parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
+  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 2) annotation(
@@ -31,7 +32,7 @@ model SubSystemAir
     Placement(visible = true, transformation(origin = {-36, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression setCompressorSpeed(y = deMultiplexControl.y2[1]) annotation(
     Placement(visible = true, transformation(origin = {-38, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.SubSystems.Air.SubSystemAirControl subSystemAirControl annotation(
+  VirtualFCS.SubSystems.Air.SubSystemAirControl subSystemAirControl(N_FC_stack = N_FC_stack)  annotation(
     Placement(visible = true, transformation(origin = {-45, 79}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   // Machines
   VirtualFCS.Fluid.Compressor compressor annotation(

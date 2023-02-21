@@ -2,8 +2,8 @@ within VirtualFCS.Control;
 
 model BatteryManagementSystem "Implement algorithms for the control of battery systems."
   parameter Real N_s "Number of Cells in Series";
-  parameter Real lowerVoltageLimit = N_s * 2;
-  parameter Real upperVoltageLimit = N_s * 3.6;
+  parameter Modelica.Units.SI.Voltage lowerVoltageLimit = N_s * 2;
+  parameter Modelica.Units.SI.Voltage upperVoltageLimit = N_s * 3.6;
   VirtualFCS.Control.ChargeCounter chargeCounter annotation(
     Placement(visible = true, transformation(origin = {25, -1}, extent = {{25, -25}, {-25, 25}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n_battery annotation(

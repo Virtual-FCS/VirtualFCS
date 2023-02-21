@@ -43,7 +43,7 @@ model RecirculationBlower
   VirtualFCS.Control.DCMotorControlRecirculationBlower dCMotorControlRecirculationBlower annotation(
     Placement(visible = true, transformation(origin = {-50, 42}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   // Power & Efficiencies
-  Real Power_RecirculationBlower(unit = "W") "The power consumed by the RecirculationBlower";
+  Modelica.Units.SI.Power Power_RecirculationBlower "The power consumed by the RecirculationBlower";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
   Power_RecirculationBlower = pin_p.i * pin_p.v;

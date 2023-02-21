@@ -3,18 +3,17 @@ within VirtualFCS.Electrochemical.Battery;
 model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   // DECLARE PARAMETERS //
   // Physical parameters
-  parameter Real mass(unit = "kg") = 0.045 "Mass of the pack";
-  parameter Real coolingArea(unit = "m2") = 0.003675 "Surface area for cooling";
-  //  parameter Real vol(unit = "L") = 0.016 "Volume of the pack";
-  parameter Real specificHeatCapacity(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
+  parameter Modelica.Units.SI.Mass mass = 0.045 "Mass of the cell";
+  parameter Modelica.Units.SI.Area coolingArea = 0.003675 "Surface area for cooling";
+  parameter Modelica.Units.SI.SpecificHeatCapacity specificHeatCapacity = 1000 "Specific Heat Capacity";
   // Pack design parameters
   parameter Real SOC_init(unit = "1") = 0.5 "Initial State of Charge";
-  parameter Real chargeCapacity(unit = "Ah") = 2.2 "Battery Cell Capacity";
-  parameter Real R_O(unit = "Ohm") = 0.02 "Ohmic Resistance";
-  parameter Real R1_0(unit = "Ohm") = 0.01 "First RC Resistance";
-  parameter Real R2_0(unit = "Ohm") = 0.005 "Second RC Resistance";
-  parameter Real C1_0(unit = "F") = 5000 "First RC Capacitance";
-  parameter Real C2_0(unit = "F") = 20000 "Second RC Capacitance";
+  parameter Modelica.Units.NonSI.ElectricCharge_Ah chargeCapacity = 2.2 "Battery Cell Capacity";
+  parameter Modelica.Units.SI.Resistance R_O = 0.02 "Ohmic Resistance";
+  parameter Modelica.Units.SI.Resistance R1_0 = 0.01 "First RC Resistance";
+  parameter Modelica.Units.SI.Resistance R2_0 = 0.005 "Second RC Resistance";
+  parameter Modelica.Units.SI.Capacitance C1_0 = 5000 "First RC Capacitance";
+  parameter Modelica.Units.SI.Capacitance C2_0 = 20000 "Second RC Capacitance";
   // DECLARE VARIABLES //
   // Coefficients for open-circuit voltage calculation
   // LFP

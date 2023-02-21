@@ -11,36 +11,36 @@ model FuelCellStack
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 42 "FC stack mass";
-  parameter Real L_FC_stack(unit = "m") = 0.420 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack width";
-  parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack height";
-  parameter Real vol_FC_stack(unit = "m3") = L_FC_stack*W_FC_stack*H_FC_stack "FC stack volume";
-  parameter Real I_rated_FC_stack(unit = "A") = 450 "FC stack rated current";
-  parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
+  parameter Modelica.Units.SI.Mass m_FC_stack = 42 "FC stack mass";
+  parameter Modelica.Units.SI.Length L_FC_stack = 0.420 "FC stack length";
+  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.582 "FC stack width";
+  parameter Modelica.Units.SI.Height H_FC_stack = 0.156 "FC stack height";
+  parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack*W_FC_stack*H_FC_stack "FC stack volume";
+  parameter Modelica.Units.SI.Current I_rated_FC_stack = 450 "FC stack rated current";
+  parameter Modelica.Units.SI.Current i_L_FC_stack = 760 "FC stack cell maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
-  parameter Real A_FC_surf(unit = "m2") = 2*(L_FC_stack*W_FC_stack) + 2*(L_FC_stack*H_FC_stack) + 2*(W_FC_stack*H_FC_stack) "FC stack surface area";
+  parameter Modelica.Units.SI.Area A_FC_surf = 2*(L_FC_stack*W_FC_stack) + 2*(L_FC_stack*H_FC_stack) + 2*(W_FC_stack*H_FC_stack) "FC stack surface area";
   // Electrochemical parameters
-  parameter Real i_0_FC_stack(unit = "A") = 0.0091 "FC stack cell exchange current";
-  parameter Real i_x_FC_stack(unit = "A") = 0.001 "FC stack cell cross-over current";
+  parameter Modelica.Units.SI.Current i_0_FC_stack = 0.0091 "FC stack cell exchange current";
+  parameter Modelica.Units.SI.Current i_x_FC_stack = 0.001 "FC stack cell cross-over current";
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
-  parameter Real R_O_FC_stack(unit = "Ohm") = 0.00022*N_FC_stack "FC stack cell ohmic resistance";
+  parameter Modelica.Units.SI.Resistance R_O_FC_stack = 0.00022*N_FC_stack "FC stack cell ohmic resistance";
   // Thermal parameters
-  parameter Real Cp_FC_stack(unit = "J/(kg.K)") = 110.0 "FC stack specific heat capacity";
+  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
-  Real R = 8.314;
-  Real F = 96485;
+  Modelica.Units.SI.MolarHeatCapacity R = 8.314;
+  Modelica.Units.SI.FaradayConstant F = 96485;
   // Fuel cell variables
-  Real V_cell;
-  Real P_th;
-  Real p_H2(min = 0);
-  Real p_O2(min = 0);
-  Real p_0 = 100000;
+  Modelica.Units.SI.Voltage V_cell;
+  Modelica.Units.SI.Power P_th;
+  Modelica.Units.SI.Pressure p_H2(min = 0);
+  Modelica.Units.SI.Pressure p_O2(min = 0);
+  Modelica.Units.SI.Pressure p_0 = 100000;
   //*** INSTANTIATE COMPONENTS ***//
   // Efficiencies
-  Real eta_FC_LHV(unit = "100") "Lower heating value efficiency of fuel cell stack";
+  Modelica.Units.SI.Efficiency eta_FC_LHV "Lower heating value efficiency of fuel cell stack";
   // Electrical Components
   // Fluid Components
   Modelica.Fluid.Fittings.TeeJunctionIdeal qH2(redeclare package Medium = Anode_Medium) annotation(
@@ -108,7 +108,7 @@ equation
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 // Efficiencies
-  eta_FC_LHV = (V_cell / 1.254) * 100;
+  eta_FC_LHV = V_cell / 1.254;
 //*** DEFINE CONNECTIONS ***//
   connect(pipeCoolant.port_b, port_b_Coolant) annotation(
     Line(points = {{10, -40}, {130, -40}}, color = {255, 0, 0}, thickness = 1));

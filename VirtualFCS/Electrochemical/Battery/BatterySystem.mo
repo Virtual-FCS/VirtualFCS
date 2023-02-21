@@ -4,19 +4,19 @@ model BatterySystem
   // System
   outer Modelica.Fluid.System system "System properties";
   // Battery Pack Parameters
-  parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
-  parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
-  parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
-  parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height";
-  parameter Real Cp_bat_pack(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
-  parameter Real V_min_bat_pack(unit = "V") = 240 "Battery pack minimum voltage";
-  parameter Real V_nom_bat_pack(unit = "V") = 336 "Battery pack nominal voltage";
-  parameter Real V_max_bat_pack(unit = "V") = 403.2 "Battery pack maximum voltage";
-  parameter Real C_bat_pack(unit = "A.h") = 200 "Battery pack nominal capacity";
+  parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
+  parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
+  parameter Modelica.Units.SI.Breadth W_bat_pack = 0.45 "Battery pack width";
+  parameter Modelica.Units.SI.Height H_bat_pack = 0.1 "Battery pack height";
+  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
+  parameter Modelica.Units.SI.Voltage V_min_bat_pack = 240 "Battery pack minimum voltage";
+  parameter Modelica.Units.SI.Voltage V_nom_bat_pack = 336 "Battery pack nominal voltage";
+  parameter Modelica.Units.SI.Voltage V_max_bat_pack = 403.2 "Battery pack maximum voltage";
+  parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
   // Power & efficiencies
-  Real Power(unit = "W") "Battery delivered power";
-  Real eta_batt(unit = "100") "Battery efficiency, calculated by assuming loss in terms of heat";
+  Modelica.Units.SI.Power Power "Battery delivered power";
+  Modelica.Units.SI.Efficiency eta_batt "Battery efficiency, calculated by assuming loss in terms of heat";
   VirtualFCS.Control.BatteryManagementSystem batteryManagementSystem(N_s = batteryPack.N_s) annotation(
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
@@ -35,7 +35,7 @@ model BatterySystem
     Placement(visible = true, transformation(origin = {0.369106, -30.5794}, extent = {{-24.8691, -14.9215}, {24.8691, 16.5794}}, rotation = 0)));
 equation
   Power = pin_n.i*pin_p.v;
-  eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)) * 100, 90);
+  eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)), 0.9);
   connect(pin_n, batteryManagementSystem.pin_n_load) annotation(
     Line(points = {{-44, 96}, {-44, 96}, {-44, 80}, {-10, 80}, {-10, 48}, {-10, 48}}, color = {0, 0, 255}));
   connect(pin_p, batteryManagementSystem.pin_p_load) annotation(

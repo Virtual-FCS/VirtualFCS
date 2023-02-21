@@ -8,33 +8,33 @@ model FuelCell "Model for a single PEM fuel cell"
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
-  parameter Real mass(unit = "kg") = 1 "Mass of the cell";
-  parameter Real volume(unit = "m3") = 0.001 "Volume of the cell";
+  parameter Modelica.Units.SI.Mass mass = 1 "Mass of the cell";
+  parameter Modelica.Units.SI.Volume volume = 0.001 "Volume of the cell";
   // Thermal parameters
-  parameter Real heatCapacity(unit = "J/(kg.K)") = 800 "Specific Heat Capacity";
+  parameter Modelica.Units.SI.SpecificHeatCapacity heatCapacity = 800 "Specific Heat Capacity";
   // Stack design parameters
   parameter Real N_cell(unit = "1") = 1 "Number of Cells";
-  parameter Real A_cell(unit = "m2") = 0.0237 "Active Area of the Cell";
+  parameter Modelica.Units.SI.Area A_cell = 0.0237 "Active Area of the Cell";
   // Electrochemical parameters
-  parameter Real i_0(unit = "A") = 0.0002 "Exchange Current";
-  parameter Real i_L(unit = "A") = 520 "Maximum Current Limit";
-  parameter Real i_x(unit = "A") = 0.001 "Cross-over Current";
+  parameter Modelica.Units.SI.Current i_0 = 0.0002 "Exchange Current";
+  parameter Modelica.Units.SI.Current i_L = 520 "Maximum Current Limit";
+  parameter Modelica.Units.SI.Current i_x = 0.001 "Cross-over Current";
   parameter Real b_1(unit = "V/dec") = 0.025 "Tafel Slope";
   parameter Real b_2(unit = "V/dec") = 0.25 "Transport Limitation Factor";
-  parameter Real R_0(unit = "Ohm") = 0.02 "Ohmic Resistance";
-  parameter Real R_1(unit = "Ohm") = 0.01 "Charge Transfer Resistance";
-  parameter Real C_1(unit = "F") = 3e-3 "Double Layer Capacitance";
+  parameter Modelica.Units.SI.Resistance R_0 = 0.02 "Ohmic Resistance";
+  parameter Modelica.Units.SI.Resistance R_1 = 0.01 "Charge Transfer Resistance";
+  parameter Modelica.Units.SI.Capacitance C_1 = 3e-3 "Double Layer Capacitance";
   //*** DECLARE VARIABLES ***//
   // Physical constants
-  Real R = 8.314;
-  Real F = 96485;
+  Modelica.Units.SI.MolarHeatCapacity R = 8.314 "J/(mol.K)";
+  Modelica.Units.SI.FaradayConstant F = 96485 "C/mol";
   // Fuel cell variables
-  Real V_cell;
-  Real j;
-  Real P_th;
-  Real p_H2(min = 0);
-  Real p_O2(min = 0);
-  Real p_0 = 100000;
+  Modelica.Units.SI.Voltage V_cell;
+  Modelica.Units.SI.CurrentDensity j;
+  Modelica.Units.SI.Power P_th;
+  Modelica.Units.SI.Pressure p_H2(min = 0);
+  Modelica.Units.SI.Pressure p_O2(min = 0);
+  Modelica.Units.SI.Pressure p_0 = 100000;
   //*** INSTANTIATE COMPONENTS ***//
   //System
   inner Modelica.Fluid.System system(energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(

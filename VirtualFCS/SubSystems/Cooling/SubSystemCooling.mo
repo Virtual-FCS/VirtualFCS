@@ -8,7 +8,7 @@ model SubSystemCooling
   // Medium declaration
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   // Parameter definition
-  parameter Real m_system_coolant(unit = "kg") = 44 "Coolant system mass";
+  parameter Modelica.Units.SI.Mass m_system_coolant = 44 "Coolant system mass";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium = Coolant_Medium) annotation(

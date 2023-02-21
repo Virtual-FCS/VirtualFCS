@@ -6,9 +6,9 @@ model LiIonBatteryPack_Composite "A Li-ion battery pack comprised of individual 
   parameter Real SOC_init(unit = "1") = 0.5 "Initial State of Charge";
   parameter Integer p = 5 "Number of Cells in Parallel";
   parameter Integer s = 10 "Number of Cells in Series";
-  parameter Real coolingArea = p * s * liIonCell[1].coolingArea "Cooling Area";
-  parameter Real heatTransferCoefficient(unit = "W/(m2.K)") = 7.8 * 10 ^ 0.78;
-  Real chargeCapacity;
+  parameter Modelica.Units.SI.Area coolingArea = p * s * liIonCell[1].coolingArea "Cooling Area";
+  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 7.8 * 10 ^ 0.78 "HeatTransferCoefficient (W/(m2.K))";
+  Modelica.Units.NonSI.ElectricCharge_Ah chargeCapacity;
   VirtualFCS.Electrochemical.Battery.LiIonCell liIonCell[s * p](each SOC_init = SOC_init) annotation(
     Placement(visible = true, transformation(origin = {0, 50.3333}, extent = {{-37, -24.6667}, {37, 24.6667}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(

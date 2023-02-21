@@ -43,7 +43,7 @@ model Compressor
   Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   // Power & Efficiencies
-  Real Power_Compressor(unit = "W") "The power consumed by the Compressor";
+  Modelica.Units.SI.Power Power_Compressor "The power consumed by the Compressor";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
   Power_Compressor = pin_p.i*pin_p.v;

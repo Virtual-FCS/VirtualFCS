@@ -2,9 +2,7 @@ within VirtualFCS.Control;
 
 block PumpSpeedControl
   parameter Real k = 1 "Control Gain";
-  parameter Real Td = 0.1 "Time Constant of Derivative Block";
-  //parameter Real k = 1 "Control Gain";
-  //parameter Real Td = 1 "Time Constant of Derivative Block";
+  parameter Modelica.Units.SI.Time Td = 0.1 "Time Constant of Derivative Block";
   Modelica.Blocks.Continuous.LimPID limPID(Td = Td, initType = Modelica.Blocks.Types.Init.InitialOutput, k = k, yMax = 1, yMin = 0) annotation(
     Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput setMassFlow annotation(

@@ -1,32 +1,32 @@
 within VirtualFCS.Powertrains;
 
 model ParallelHybridPowerTrain
-  parameter Real m_powertrain(unit = "kg") = 100 + 50;
-  parameter Real V_HV_Bus(unit = "V") = 343 "Voltage of the HV Bus";
+  parameter Modelica.Units.SI.Mass m_powertrain = m_FC_stack + m_bat_pack;
+  parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus";
   // H2 Subsystem Paramters
-  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit = "Pa") = 3500000 "H2 tank initial pressure";
+  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
+  parameter Modelica.Units.SI.Pressure p_tank_H2 = 3500000 "H2 tank initial pressure";
   // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 14.3 "FC stack mass";
-  parameter Real L_FC_stack(unit = "m") = 0.255 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.760 "FC stack length";
-  parameter Real H_FC_stack(unit = "m") = 0.060 "FC stack length";
-  parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Real V_rated_FC_stack(unit = "V") = 57.9 "FC stack maximum operating voltage";
-  parameter Real I_rated_FC_stack(unit = "A") = 300 "FC stack minimum operating voltage";
-  parameter Real i_L_FC_stack(unit = "A") = 3 * I_rated_FC_stack "FC stack maximum limiting current";
-  parameter Real I_nom_FC_stack(unit = "A") = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
+  parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass";
+  parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length";
+  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.760 "FC stack breadth";
+  parameter Modelica.Units.SI.Height H_FC_stack = 0.060 "FC stack height";
+  parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
+  parameter Modelica.Units.SI.Voltage V_rated_FC_stack = 57.9 "FC stack maximum operating voltage";
+  parameter Modelica.Units.SI.Current I_rated_FC_stack = 300 "FC stack minimum operating voltage";
+  parameter Modelica.Units.SI.Current i_L_FC_stack = 1.7 * I_rated_FC_stack "FC stack maximum limiting current";
+  parameter Modelica.Units.SI.Current I_nom_FC_stack = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells";
   // Battery Pack Parameters
-  parameter Real m_bat_pack(unit = "kg") = 100 "Mass of the pack";
-  parameter Real L_bat_pack(unit = "m") = 0.6 "Battery pack length";
-  parameter Real W_bat_pack(unit = "m") = 0.45 "Battery pack width";
-  parameter Real H_bat_pack(unit = "m") = 0.1 "Battery pack height";
-  parameter Real Cp_bat_pack(unit = "J/(kg.K)") = 1000 "Specific Heat Capacity";
-  parameter Real V_min_bat_pack(unit = "V") = 37.5 "Battery pack minimum voltage";
-  parameter Real V_nom_bat_pack(unit = "V") = 48 "Battery pack nominal voltage";
-  parameter Real V_max_bat_pack(unit = "V") = 54.75 "Battery pack maximum voltage";
-  parameter Real C_bat_pack(unit = "A.h") = 2700 "Battery pack nominal capacity";
+  parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
+  parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
+  parameter Modelica.Units.SI.Breadth W_bat_pack = 0.45 "Battery pack width";
+  parameter Modelica.Units.SI.Height H_bat_pack = 0.1 "Battery pack height";
+  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
+  parameter Modelica.Units.SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
+  parameter Modelica.Units.SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
+  parameter Modelica.Units.SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
+  parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 2700 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
