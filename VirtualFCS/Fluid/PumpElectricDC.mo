@@ -32,7 +32,7 @@ model PumpElectricDC
     Placement(visible = true, transformation(origin = {-20, -6}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
     Placement(visible = true, transformation(origin = {50, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
+  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataCpump driveData annotation(
     Placement(visible = true, transformation(extent = {{-64, -16}, {-44, 4}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {80, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

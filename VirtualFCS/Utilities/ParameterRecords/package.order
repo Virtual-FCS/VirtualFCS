@@ -6,3 +6,6 @@ EVDriveData
 DCPMMCompressor
 DCPMMCoolingPump
 DCPMMRecirculationBlower
+DriveDataComp
+DriveDataRBlower
+DriveDataCpump

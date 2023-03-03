@@ -30,7 +30,7 @@ model Compressor
     Placement(visible = true, transformation(extent = {{-62, -26}, {-42, -6}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
     Placement(visible = true, transformation(origin = {-20, -16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
+  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataComp driveData annotation(
     Placement(visible = true, transformation(extent = {{-90, -24}, {-70, -4}}, rotation = 0)));
   Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, N_nominal = 365, T_start = 323.15, V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, use_N_in = true, use_T_start = true) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
