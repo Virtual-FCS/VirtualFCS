@@ -100,7 +100,7 @@ equation
   p_O2 = 0.2*O2_sink.ports[1].p;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the stack voltage
-  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2/p_0*(p_O2/p_0)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
+  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
 // Calculate the voltage of the cell
   V_cell = pin_p.v/N_FC_stack;
 // THERMAL EQUATIONS //
