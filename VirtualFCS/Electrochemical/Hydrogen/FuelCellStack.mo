@@ -57,7 +57,7 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {0, -40}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Fluid.Fittings.TeeJunctionIdeal qAir(redeclare package Medium = Cathode_Medium) annotation(
     Placement(visible = true, transformation(origin = {120, 40}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
-  Modelica.Fluid.Sources.MassFlowSource_T O2_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T O2_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {84, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Thermal Components
   // Other Components
@@ -73,9 +73,9 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {-60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain H2_mflow(k = 0.00202/(96485*2)*N_FC_stack) annotation(
+  Modelica.Blocks.Math.Gain H2_mflow(k = 0.002016/(96485*2)*N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-33, 60}, extent = {{9, -9}, {-9, 9}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain O2_mflow(k = 0.032/(96485*4)*N_FC_stack) annotation(
+  Modelica.Blocks.Math.Gain O2_mflow(k = 0.02897/(96485*4)*N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation(
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
