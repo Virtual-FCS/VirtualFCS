@@ -37,7 +37,7 @@ model FuelCellStack
   Modelica.Units.SI.Power P_th;
   Modelica.Units.SI.Pressure p_H2(min = 0);
   Modelica.Units.SI.Pressure p_O2(min = 0);
-  Modelica.Units.SI.Pressure p_0 = 100000;
+  Modelica.Units.SI.Pressure p_0 = 101325;
   //*** INSTANTIATE COMPONENTS ***//
   // Efficiencies
   Modelica.Units.SI.Efficiency eta_FC_LHV "Lower heating value efficiency of fuel cell stack";
@@ -75,7 +75,7 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain H2_mflow(k = 0.002016/(96485*2)*N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-33, 60}, extent = {{9, -9}, {-9, 9}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain O2_mflow(k = 0.02897/(96485*4)*N_FC_stack) annotation(
+  Modelica.Blocks.Math.Gain O2_mflow(k = 0.02897/(96485*4*0.21)*N_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation(
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
@@ -100,7 +100,7 @@ equation
   p_O2 = 0.2*O2_sink.ports[1].p;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the stack voltage
-  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
+  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/((p_H2/p_0)*(p_O2/p_0)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
 // Calculate the voltage of the cell
   V_cell = pin_p.v/N_FC_stack;
 // THERMAL EQUATIONS //
