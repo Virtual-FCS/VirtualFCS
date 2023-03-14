@@ -2,7 +2,7 @@ within VirtualFCS.SubSystems.Hydrogen;
 
 model SubSystemHydrogenControl
   parameter Modelica.Units.SI.Pressure pressure_H2_set = 200000 "Set H2 Pressure";
-  parameter Modelica.Units.SI.MassFlowRate massFlow_H2_set = 1e-2 "Set H2 Recirculation Mass Flow";
+  //parameter Modelica.Units.SI.MassFlowRate massFlow_H2_set = 1e-2 "Set H2 Recirculation Mass Flow";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   Modelica.Blocks.Routing.Multiplex3 multiplexSignalsH2Subsystem annotation(
     Placement(visible = true, transformation(origin = {124, 40}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
@@ -22,7 +22,7 @@ model SubSystemHydrogenControl
     Placement(visible = true, transformation(origin = {-154, -120}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput signalInterface_FC annotation(
     Placement(visible = true, transformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setH2MassFlow(y = max(1.1*(signalInterface_FC*(0.00202/(96485*2)*N_FC_stack)), 1.22e-06))  annotation(
+  Modelica.Blocks.Sources.RealExpression setH2MassFlow(y = max(signalInterface_FC*(0.002016*1.3/(96485*2)*N_FC_stack), 1.22e-05))  annotation(
     Placement(visible = true, transformation(origin = {-81, -28}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(pumpSpeedControl.setPumpSpeed, multiplexSignalsH2Subsystem.u3[1]) annotation(
