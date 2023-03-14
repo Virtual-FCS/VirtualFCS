@@ -32,7 +32,7 @@ model FuelCellSubSystems
     Placement(visible = true, transformation(origin = {60, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 400,SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
+  Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 400,SOC_init = 0.9, V_max_bat_pack = 50, V_min_bat_pack = 46, V_nom_bat_pack = 48, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(contolInput[1], subSystemHydrogen.control) annotation(
