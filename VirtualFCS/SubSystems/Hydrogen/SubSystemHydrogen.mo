@@ -1,15 +1,16 @@
 within VirtualFCS.SubSystems.Hydrogen;
 
 model SubSystemHydrogen
+  import SI = Modelica.Units.SI;
   // System
   outer Modelica.Fluid.System system "System properties";
   // Medium declaration
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start)) constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
   // Parameter definition
-  parameter Modelica.Units.SI.Mass m_system_H2 = 61 "H2 system mass";
-  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
-  parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
-  parameter Modelica.Units.SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
+  parameter SI.Mass m_system_H2 = 61 "H2 system mass";
+  parameter SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
+  parameter SI.Area A_tank_H2 = 2 "H2 tank surface area";
+  parameter SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries

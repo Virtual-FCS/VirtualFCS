@@ -2,40 +2,42 @@ within VirtualFCS.Vehicles;
 
 model VehicleProfile "Calculates the driving power for a vehicle that corresponds to a given speed profile."
   import Modelica.Blocks.Tables.Internal;
+  import SI = Modelica.Units.SI;
+  import NonSI = Modelica.Units.NonSI;
   type vehicle_name = enumeration(Default "Default", Mirai "Mirai", UserDefined "User Defined") annotation(
     Evaluate = true);
   parameter vehicle_name VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Default "Vehicle name";
   //parameter
-  Modelica.Units.SI.Mass m "mass of the vehicle";
+  SI.Mass m "mass of the vehicle";
   ////////////////////////////////////////////////////////////////////////////////////////////////////
   // *** DECLARE PARAMETERS *** //
   // Parameters of the vehicle and the air
   //parameter Real m(unit = "kg") = 1850 "Mass of the vehicle";
-  parameter Modelica.Units.SI.Density rho_air = 1.2 "Volumic mass of the air";
-  parameter Modelica.Units.SI.Area A_front = 2.7 "Front area of the vehicle";
+  parameter SI.Density rho_air = 1.2 "Volumic mass of the air";
+  parameter SI.Area A_front = 2.7 "Front area of the vehicle";
   parameter Real C_D(unit = "1") = 0.26 "Drag coefficient";
-  parameter Modelica.Units.SI.Diameter D_tire = 0.4318 "Tire Diameter";
+  parameter SI.Diameter D_tire = 0.4318 "Tire Diameter";
   parameter Real R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
-  parameter Modelica.Units.SI.Voltage V_load = 343 "Load Voltage";
+  parameter SI.Voltage V_load = 343 "Load Voltage";
   parameter Boolean useRegenerativeBreaking = true annotation(
     choices(checkBox = true));
   // Efficiency coefficients
-  parameter Modelica.Units.SI.Efficiency eff_drivetrain = 0.9 "Efficiency of the drivetrain";
-  parameter Modelica.Units.SI.Efficiency eff_brake = 0.5 "Efficiency of the regenerative breaking";
+  parameter SI.Efficiency eff_drivetrain = 0.9 "Efficiency of the drivetrain";
+  parameter SI.Efficiency eff_brake = 0.5 "Efficiency of the regenerative breaking";
   // --- Class Outputs --- //
   // Derived Quantities
-  Modelica.Units.NonSI.Velocity_kmh V "Vehicle Speed";
-  Modelica.Units.SI.Velocity v "Speed of the vehicle in m/s";
-  Modelica.Units.SI.Acceleration a "Vehicle acceleration";
-  Modelica.Units.SI.Force F_accel "Vehicle acceleration force";
-  Modelica.Units.SI.Force F_drag "Vehicle drag force";
-  Modelica.Units.SI.Force F_roll "Vehicle rolling force";
-  Modelica.Units.SI.Force F_T "Vehicle total force";
-  Modelica.Units.SI.AngularVelocity omega_engine "Motor Rotation, rad/s";
-  Modelica.Units.NonSI.AngularVelocity_rpm N_engine "Motor Rotation, rpm";
+  NonSI.Velocity_kmh V "Vehicle Speed";
+  SI.Velocity v "Speed of the vehicle in m/s";
+  SI.Acceleration a "Vehicle acceleration";
+  SI.Force F_accel "Vehicle acceleration force";
+  SI.Force F_drag "Vehicle drag force";
+  SI.Force F_roll "Vehicle rolling force";
+  SI.Force F_T "Vehicle total force";
+  SI.AngularVelocity omega_engine "Motor Rotation, rad/s";
+  NonSI.AngularVelocity_rpm N_engine "Motor Rotation, rpm";
   //  Real tau(unit = "N.m") "Motor Torque";
-  Modelica.Units.SI.Position x(fixed = true) "Position";
-  Modelica.Units.SI.Power P;
+  SI.Position x(fixed = true) "Position";
+  SI.Power P;
   // *** INSTANTIATE COMPONENTS *** //
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {72, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{80, -60}, {100, -40}}, rotation = 0)));

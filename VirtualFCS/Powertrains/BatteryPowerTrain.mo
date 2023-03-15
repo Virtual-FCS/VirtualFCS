@@ -1,18 +1,19 @@
 within VirtualFCS.Powertrains;
 
 model BatteryPowerTrain
+  import SI = Modelica.Units.SI;
   outer Modelica.Fluid.System system "System properties";
-  parameter Modelica.Units.SI.Mass m_powertrain = m_bat_pack + 50;
-  parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus";
+  parameter SI.Mass m_powertrain = m_bat_pack + 50;
+  parameter SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus";
   // Battery Pack Parameters
-  parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
-  parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
-  parameter Modelica.Units.SI.Breadth W_bat_pack = 0.45 "Battery pack width";
-  parameter Modelica.Units.SI.Height H_bat_pack = 0.1 "Battery pack height";
-  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
-  parameter Modelica.Units.SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
-  parameter Modelica.Units.SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
-  parameter Modelica.Units.SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
+  parameter SI.Mass m_bat_pack = 100 "Mass of the pack";
+  parameter SI.Length L_bat_pack = 0.6 "Battery pack length";
+  parameter SI.Breadth W_bat_pack = 0.45 "Battery pack width";
+  parameter SI.Height H_bat_pack = 0.1 "Battery pack height";
+  parameter SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
+  parameter SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
+  parameter SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
+  parameter SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
   parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 2700 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
@@ -25,10 +26,10 @@ model BatteryPowerTrain
     Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrical.DCConverter converter(vDCref = V_HV_Bus) annotation(
     Placement(visible = true, transformation(origin = {0, 8}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Units.SI.Power Power_batt "Power delivered from the batt system";
-  Modelica.Units.SI.Power Power_del_DC_DC "Power delivered from the DC/DC converter";
-  Modelica.Units.SI.Efficiency eta_drivetrain "Efficiency of the drivetrain";
-  Modelica.Units.SI.Efficiency eta_DC_DC = 1 "Efficiency of the DC/DC converter";
+  SI.Power Power_batt "Power delivered from the batt system";
+  SI.Power Power_del_DC_DC "Power delivered from the DC/DC converter";
+  SI.Efficiency eta_drivetrain "Efficiency of the drivetrain";
+  SI.Efficiency eta_DC_DC = 1 "Efficiency of the DC/DC converter";
 equation
   Power_batt = batterySystem.pin_n.i * batterySystem.pin_p.v;
   Power_del_DC_DC = converter.dc_p1.i * converter.dc_p1.v;

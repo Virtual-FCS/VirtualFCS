@@ -1,28 +1,29 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 model FuelCellSystem
+  import SI = Modelica.Units.SI;
   // System
   outer Modelica.Fluid.System system "System properties";
-  parameter Modelica.Units.SI.Mass m_FC_system = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
+  parameter SI.Mass m_FC_system = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
   // Fuel Cell Stack Paramters
-  parameter Modelica.Units.SI.Mass m_FC_stack = 42 "FC stack mass";
-  parameter Modelica.Units.SI.Length L_FC_stack = 0.420 "FC stack length";
-  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.582 "FC stack width";
-  parameter Modelica.Units.SI.Height H_FC_stack = 0.156 "FC stack height";
-  parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
+  parameter SI.Mass m_FC_stack = 42 "FC stack mass";
+  parameter SI.Length L_FC_stack = 0.420 "FC stack length";
+  parameter SI.Breadth W_FC_stack = 0.582 "FC stack width";
+  parameter SI.Height H_FC_stack = 0.156 "FC stack height";
+  parameter SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   //  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage";
-  parameter Modelica.Units.SI.Current I_nom_FC_stack = 300 "FC stack nominal current";
-  parameter Modelica.Units.SI.Current I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current";
+  parameter SI.Current I_nom_FC_stack = 300 "FC stack nominal current";
+  parameter SI.Current I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   // H2 Subsystem Paramters
-  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
-  parameter Modelica.Units.SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 12 "HeatTransferCoefficient (W/(m2.K))";
+  parameter SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
+  parameter SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
+  parameter SI.CoefficientOfHeatTransfer heatTransferCoefficient = 12 "HeatTransferCoefficient (W/(m2.K))";
   // Power and efficiency calculations
-  Modelica.Units.SI.Power Power_system "Power delivered from the FC system (Stack - BOP)";
-  Modelica.Units.SI.Power Power_stack "Power delivered from the FC stack";
-  Modelica.Units.SI.Power Power_BOP "Power consumed by the BOP components";
-  Modelica.Units.SI.Efficiency eta_FC_sys "Fuel cell system efficiency";
+  SI.Power Power_system "Power delivered from the FC system (Stack - BOP)";
+  SI.Power Power_stack "Power delivered from the FC stack";
+  SI.Power Power_BOP "Power consumed by the BOP components";
+  SI.Efficiency eta_FC_sys "Fuel cell system efficiency";
   VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_nom_FC_stack, L_FC_stack = L_FC_stack, N_FC_stack = N_FC_stack, W_FC_stack = W_FC_stack, i_L_FC_stack = I_rated_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-1, 10}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(

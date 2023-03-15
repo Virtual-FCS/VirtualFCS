@@ -1,31 +1,32 @@
 within VirtualFCS.Powertrains;
 
 model ParallelHybridPowerTrain
-  parameter Modelica.Units.SI.Mass m_powertrain = m_FC_stack + m_bat_pack;
-  parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus";
+  import SI = Modelica.Units.SI;
+  parameter SI.Mass m_powertrain = m_FC_stack + m_bat_pack;
+  parameter SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus";
   // H2 Subsystem Paramters
-  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
-  parameter Modelica.Units.SI.Pressure p_tank_H2 = 3500000 "H2 tank initial pressure";
+  parameter SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
+  parameter SI.Pressure p_tank_H2 = 3500000 "H2 tank initial pressure";
   // Fuel Cell Stack Paramters
-  parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass";
-  parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length";
-  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.760 "FC stack breadth";
-  parameter Modelica.Units.SI.Height H_FC_stack = 0.060 "FC stack height";
-  parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
-  parameter Modelica.Units.SI.Voltage V_rated_FC_stack = 57.9 "FC stack maximum operating voltage";
-  parameter Modelica.Units.SI.Current I_rated_FC_stack = 300 "FC stack minimum operating voltage";
-  parameter Modelica.Units.SI.Current i_L_FC_stack = 1.7 * I_rated_FC_stack "FC stack maximum limiting current";
-  parameter Modelica.Units.SI.Current I_nom_FC_stack = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
+  parameter SI.Mass m_FC_stack = 14.3 "FC stack mass";
+  parameter SI.Length L_FC_stack = 0.255 "FC stack length";
+  parameter SI.Breadth W_FC_stack = 0.760 "FC stack breadth";
+  parameter SI.Height H_FC_stack = 0.060 "FC stack height";
+  parameter SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
+  parameter SI.Voltage V_rated_FC_stack = 57.9 "FC stack maximum operating voltage";
+  parameter SI.Current I_rated_FC_stack = 300 "FC stack minimum operating voltage";
+  parameter SI.Current i_L_FC_stack = 1.7 * I_rated_FC_stack "FC stack maximum limiting current";
+  parameter SI.Current I_nom_FC_stack = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
   parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells";
   // Battery Pack Parameters
-  parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
-  parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
-  parameter Modelica.Units.SI.Breadth W_bat_pack = 0.45 "Battery pack width";
-  parameter Modelica.Units.SI.Height H_bat_pack = 0.1 "Battery pack height";
-  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
-  parameter Modelica.Units.SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
-  parameter Modelica.Units.SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
-  parameter Modelica.Units.SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
+  parameter SI.Mass m_bat_pack = 100 "Mass of the pack";
+  parameter SI.Length L_bat_pack = 0.6 "Battery pack length";
+  parameter SI.Breadth W_bat_pack = 0.45 "Battery pack width";
+  parameter SI.Height H_bat_pack = 0.1 "Battery pack height";
+  parameter SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
+  parameter SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
+  parameter SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
+  parameter SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
   parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 2700 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(

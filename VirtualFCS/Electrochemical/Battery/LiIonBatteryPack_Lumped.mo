@@ -1,21 +1,22 @@
 within VirtualFCS.Electrochemical.Battery;
 
 model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single lumped battery model."
+  import SI = Modelica.Units.SI;
   // DECLARE PARAMETERS //
   // Pack-level parameters
-  parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
-  parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
-  parameter Modelica.Units.SI.Breadth W_bat_pack = 0.45 "Battery pack width";
-  parameter Modelica.Units.SI.Height H_bat_pack = 0.1 "Battery pack height";
-  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
-  parameter Modelica.Units.SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
-  parameter Modelica.Units.SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
-  parameter Modelica.Units.SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
+  parameter SI.Mass m_bat_pack = 100 "Mass of the pack";
+  parameter SI.Length L_bat_pack = 0.6 "Battery pack length";
+  parameter SI.Breadth W_bat_pack = 0.45 "Battery pack width";
+  parameter SI.Height H_bat_pack = 0.1 "Battery pack height";
+  parameter SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
+  parameter SI.Voltage V_min_bat_pack = 37.5 "Battery pack minimum voltage";
+  parameter SI.Voltage V_nom_bat_pack = 48 "Battery pack nominal voltage";
+  parameter SI.Voltage V_max_bat_pack = 54.75 "Battery pack maximum voltage";
   parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
-  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 7.8 * 10 ^ 0.78 "HeatTransferCoefficient (W/(m2.K))";
+  parameter SI.CoefficientOfHeatTransfer heatTransferCoefficient = 7.8 * 10 ^ 0.78 "HeatTransferCoefficient (W/(m2.K))";
   parameter Real N_s = ceil(V_max_bat_pack / V_chem_max);
-  Modelica.Units.SI.Volume vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
+  SI.Volume vol_bat_pack = L_bat_pack * W_bat_pack * H_bat_pack;
   // ADD dropdown menu for selecting chemistry type
   // Coefficients for open-circuit voltage calculation
   // LFP
@@ -70,12 +71,12 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 protected 
-  parameter Modelica.Units.SI.Resistance R_O = 0.02 "Ohmic Resistance";
-  parameter Modelica.Units.SI.Resistance R1_0 = 0.01 "First RC Resistance";
-  parameter Modelica.Units.SI.Resistance R2_0 = 0.005 "Second RC Resistance";
-  parameter Modelica.Units.SI.Capacitance C1_0 = 5000 "First RC Capacitance";
-  parameter Modelica.Units.SI.Capacitance C2_0 = 20000 "Second RC Capacitance";
-  parameter Modelica.Units.SI.Area A_cool_bat_pack = L_bat_pack * W_bat_pack;
+  parameter SI.Resistance R_O = 0.02 "Ohmic Resistance";
+  parameter SI.Resistance R1_0 = 0.01 "First RC Resistance";
+  parameter SI.Resistance R2_0 = 0.005 "Second RC Resistance";
+  parameter SI.Capacitance C1_0 = 5000 "First RC Capacitance";
+  parameter SI.Capacitance C2_0 = 20000 "Second RC Capacitance";
+  parameter SI.Area A_cool_bat_pack = L_bat_pack * W_bat_pack;
 equation
 // ***DEFINE EQUATIONS ***//
 // Calculate the open-circuit voltage at given temperature and state of charge

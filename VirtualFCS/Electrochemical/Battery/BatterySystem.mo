@@ -1,22 +1,23 @@
 within VirtualFCS.Electrochemical.Battery;
 
 model BatterySystem
+  import SI = Modelica.Units.SI;
   // System
   outer Modelica.Fluid.System system "System properties";
   // Battery Pack Parameters
-  parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
-  parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
-  parameter Modelica.Units.SI.Breadth W_bat_pack = 0.45 "Battery pack width";
-  parameter Modelica.Units.SI.Height H_bat_pack = 0.1 "Battery pack height";
-  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
-  parameter Modelica.Units.SI.Voltage V_min_bat_pack = 240 "Battery pack minimum voltage";
-  parameter Modelica.Units.SI.Voltage V_nom_bat_pack = 336 "Battery pack nominal voltage";
-  parameter Modelica.Units.SI.Voltage V_max_bat_pack = 403.2 "Battery pack maximum voltage";
+  parameter SI.Mass m_bat_pack = 100 "Mass of the pack";
+  parameter SI.Length L_bat_pack = 0.6 "Battery pack length";
+  parameter SI.Breadth W_bat_pack = 0.45 "Battery pack width";
+  parameter SI.Height H_bat_pack = 0.1 "Battery pack height";
+  parameter SI.SpecificHeatCapacity Cp_bat_pack = 1000 "Specific Heat Capacity";
+  parameter SI.Voltage V_min_bat_pack = 240 "Battery pack minimum voltage";
+  parameter SI.Voltage V_nom_bat_pack = 336 "Battery pack nominal voltage";
+  parameter SI.Voltage V_max_bat_pack = 403.2 "Battery pack maximum voltage";
   parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
   // Power & efficiencies
-  Modelica.Units.SI.Power Power "Battery delivered power";
-  Modelica.Units.SI.Efficiency eta_batt "Battery efficiency, calculated by assuming loss in terms of heat";
+  SI.Power Power "Battery delivered power";
+  SI.Efficiency eta_batt "Battery efficiency, calculated by assuming loss in terms of heat";
   VirtualFCS.Control.BatteryManagementSystem batteryManagementSystem(N_s = batteryPack.N_s) annotation(
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
