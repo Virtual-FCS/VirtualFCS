@@ -1,6 +1,26 @@
 # VirtualFCS Library
 VirtualFCS is a Modelica library for fuel cell system modelling developed through the EU H2020 research project Virtual-FCS.
 
+[![2023: v2.0.0](https://img.shields.io/badge/Release-2023%3A%20v2.0.0-blue)![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220)
+[![OpenModelica v1.20 win64](https://img.shields.io/badge/OpenModelica-v1.20%20win64-blue)](https://openmodelica.org/)
+
+Note that this library might also work with other platforms that win64, but that is not tested during development.
+
+<details>
+<summary><b>Citing other library versions</b></summary>
+
+Note that library versions older than v2.0.0 requires OpenModelica v1.14.
+
+|  Released  | Version       | DOI |
+|------------|---------------|-----|
+| 2023-01-19 | v2.0.0        | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220) |
+| 2022-02-16 | v2022.1.0-beta| [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6104901.svg)](https://doi.org/10.5281/zenodo.6104901) |
+| 2021-12-15 | v0.2.1-beta   | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7566040.svg)](https://doi.org/10.5281/zenodo.7566040) |
+| 2021-09-22 | v0.2.0-beta   | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7566037.svg)](https://doi.org/10.5281/zenodo.7566037) |
+| 2021-07-01 | v0.1.0-beta   |     |
+
+</details>
+
 ## Library Description
 
 The objective of the complete hybrid system model is to reproduce and simulate the dynamic behavior of all the components according to the desired architecture. Depending on the possibilities, degradation mechanisms of the components will be considered in order to predict the performance losses of the entire system.
