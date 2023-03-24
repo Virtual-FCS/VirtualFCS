@@ -3,8 +3,8 @@ within VirtualFCS.Vehicles;
 model JoystickDriveInput
   parameter Real R_accel = 6;
   parameter Real R_decel = -4.5;
-  parameter Real maxVelocity = 200;
-  parameter Real minVelocity = 0;
+  parameter Modelica.Units.SI.Velocity maxVelocity = 200;
+  parameter Modelica.Units.SI.Velocity minVelocity = 0;
   VirtualFCS.XInTheLoop.UserInTheLoop.JoystickRoadElectricVehicleControl joystickRoadElectricVehicleControl annotation(
     Placement(visible = true, transformation(origin = {-80, -9}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k = R_decel) annotation(
