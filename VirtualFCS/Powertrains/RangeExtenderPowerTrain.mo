@@ -10,9 +10,9 @@ model RangeExtenderPowerTrain
     Dialog(group = "Powertrain Parameters"));
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume" annotation(
-    Dialog(group = "Subsystem Parameters"));
+    Dialog(group = "Hydrogen storage Parameters"));
   parameter Modelica.Units.SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure" annotation(
-    Dialog(group = "Subsystem Parameters"));
+    Dialog(group = "Hydrogen storage Parameters"));
   // Fuel Cell Stack Paramters
   parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass" annotation(
     Dialog(group = "Fuel Cell Stack Parameters"));
@@ -24,15 +24,13 @@ model RangeExtenderPowerTrain
     Dialog(group = "Fuel Cell Stack Parameters"));
   parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume" annotation(
     Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Voltage V_rated_FC_stack = 57.9 "FC stack maximum operating voltage" annotation(
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.ElectricCurrent I_min_FC_stack = 0.25 * I_nom_FC_stack "FC stack minimum current" annotation(
-    Dialog(group = "Fuel Cell Stack Parameters"));
+  //parameter Modelica.Units.SI.Voltage V_rated_FC_stack = 57.9 "FC stack maximum operating voltage" annotation(Dialog(group = "Fuel Cell Stack Parameters"));
+  //parameter Modelica.Units.SI.ElectricCurrent I_min_FC_stack = 0.25 * I_nom_FC_stack "FC stack minimum current" annotation(Dialog(group = "Fuel Cell Stack Parameters"));
   parameter Modelica.Units.SI.ElectricCurrent I_nom_FC_stack = 300 "FC stack nominal current" annotation(
     Dialog(group = "Fuel Cell Stack Parameters"));
   parameter Modelica.Units.SI.ElectricCurrent I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current" annotation(
     Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells" annotation(
+  parameter Real N_FC_stack(unit = "1") = 280 "FC stack number of cells" annotation(
     Dialog(group = "Fuel Cell Stack Parameters"));
   // Battery Pack Parameters
   parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack" annotation(
@@ -56,7 +54,7 @@ model RangeExtenderPowerTrain
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge" annotation(
     Dialog(group = "Battery Pack Parameters"));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(visible = true, transformation(origin = {40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {42, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
@@ -94,20 +92,20 @@ equation
     Line(points = {{6, 20}, {6, -36}, {-24, -36}, {-24, -62}}, color = {0, 0, 255}));
   connect(converter.dc_n1, pin_n) annotation(
     Line(points = {{-6, 40}, {-38, 40}, {-38, 96}, {-40, 96}}, color = {0, 0, 255}));
-  connect(converter.dc_p1, pin_p) annotation(
-    Line(points = {{6, 40}, {6, 80}, {40, 80}, {40, 96}}, color = {0, 0, 255}));
   connect(energyManagementSystem.sensorInterface, batterySystem.sensorOutput) annotation(
     Line(points = {{-54, -72}, {-40, -72}, {-40, -72}, {-38, -72}}, color = {0, 0, 127}));
   connect(energyManagementSystem.controlInterface, dC_converter.I_Ref) annotation(
     Line(points = {{-78, -72}, {-92, -72}, {-92, -16}, {24, -16}, {24, -32.5}, {22, -32.5}}, color = {0, 0, 127}));
   connect(dC_converter.pin_pBus, fuelCellSystem.pin_p) annotation(
-    Line(points = {{32, -34}, {78, -34}, {78, -62}, {78, -62}}, color = {0, 0, 255}));
+    Line(points = {{32, -34}, {78, -34}, {78, -62}}, color = {0, 0, 255}));
   connect(dC_converter.pin_nBus, fuelCellSystem.pin_n) annotation(
-    Line(points = {{32, -54}, {68, -54}, {68, -62}, {68, -62}}, color = {0, 0, 255}));
+    Line(points = {{32, -54}, {68, -54}, {68, -62}}, color = {0, 0, 255}));
   connect(dC_converter.pin_nFC, batterySystem.pin_n) annotation(
-    Line(points = {{12, -54}, {-32, -54}, {-32, -62}, {-32, -62}}, color = {0, 0, 255}));
+    Line(points = {{12, -54}, {-32, -54}, {-32, -62}}, color = {0, 0, 255}));
   connect(dC_converter.pin_pFC, batterySystem.pin_p) annotation(
-    Line(points = {{12, -34}, {-24, -34}, {-24, -62}, {-24, -62}}, color = {0, 0, 255}));
+    Line(points = {{12, -34}, {-24, -34}, {-24, -62}}, color = {0, 0, 255}));
+  connect(converter.dc_p1, pin_p) annotation(
+    Line(points = {{6, 40}, {42, 40}, {42, 96}}, color = {0, 0, 255}));
 protected
   annotation(
     Icon(graphics = {Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)));
