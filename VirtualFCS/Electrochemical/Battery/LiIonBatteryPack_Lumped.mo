@@ -70,11 +70,11 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation(
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 protected 
-  parameter Modelica.Units.SI.Resistance R_O = 0.02 "Ohmic Resistance";
-  parameter Modelica.Units.SI.Resistance R1_0 = 0.01 "First RC Resistance";
-  parameter Modelica.Units.SI.Resistance R2_0 = 0.005 "Second RC Resistance";
-  parameter Modelica.Units.SI.Capacitance C1_0 = 5000 "First RC Capacitance";
-  parameter Modelica.Units.SI.Capacitance C2_0 = 20000 "Second RC Capacitance";
+  parameter Modelica.Units.SI.Resistance R_O = 0.024 "Ohmic Resistance";
+  parameter Modelica.Units.SI.Resistance R1_0 = 0.0006 "First RC Resistance";
+  parameter Modelica.Units.SI.Resistance R2_0 = 0.008 "Second RC Resistance";
+  parameter Modelica.Units.SI.Capacitance C1_0 = 5700 "First RC Capacitance";
+  parameter Modelica.Units.SI.Capacitance C2_0 = 54300 "Second RC Capacitance";
   parameter Modelica.Units.SI.Area A_cool_bat_pack = L_bat_pack * W_bat_pack;
 equation
 // ***DEFINE EQUATIONS ***//

@@ -16,16 +16,17 @@ model FuelCellStack
   parameter Modelica.Units.SI.Breadth W_FC_stack = 0.582 "FC stack width";
   parameter Modelica.Units.SI.Height H_FC_stack = 0.156 "FC stack height";
   parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack*W_FC_stack*H_FC_stack "FC stack volume";
-  parameter Modelica.Units.SI.Current I_rated_FC_stack = 450 "FC stack rated current";
-  parameter Modelica.Units.SI.Current i_L_FC_stack = 760 "FC stack cell maximum limiting current";
-  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
-  parameter Modelica.Units.SI.Area A_FC_surf = 2*(L_FC_stack*W_FC_stack) + 2*(L_FC_stack*H_FC_stack) + 2*(W_FC_stack*H_FC_stack) "FC stack surface area";
+  parameter Modelica.Units.SI.Current I_rated_FC_stack = 280 "FC stack rated current";
+  parameter Modelica.Units.SI.Current i_L_FC_stack = 1.12 "FC stack cell maximum limiting current A/cm2";
+  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
+  parameter Modelica.Units.SI.Area A_FC_surf = 285 "FC stack surface area";
+  //parameter Modelica.Units.SI.Area A_FC_surf = 2*(L_FC_stack*W_FC_stack) + 2*(L_FC_stack*H_FC_stack) + 2*(W_FC_stack*H_FC_stack) "FC stack surface area";
   // Electrochemical parameters
-  parameter Modelica.Units.SI.Current i_0_FC_stack = 0.0091 "FC stack cell exchange current";
+  parameter Modelica.Units.SI.Current i_0_FC_stack = 0.0000193 "FC stack cell exchange current";
   parameter Modelica.Units.SI.Current i_x_FC_stack = 0.001 "FC stack cell cross-over current";
   parameter Real b_1_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell Tafel slope";
   parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
-  parameter Modelica.Units.SI.Resistance R_O_FC_stack = 0.00022*N_FC_stack "FC stack cell ohmic resistance";
+  parameter Modelica.Units.SI.Resistance R_O_FC_stack = 0.0923 "FC stack cell ohmic resistance";
   // Thermal parameters
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
@@ -37,14 +38,12 @@ model FuelCellStack
   Modelica.Units.SI.Power P_th;
   Modelica.Units.SI.Pressure p_H2(min = 0);
   Modelica.Units.SI.Pressure p_O2(min = 0);
-  Modelica.Units.SI.Pressure p_0 = 101325;
+  Modelica.Units.SI.Pressure p_0 = 100000;
   //*** INSTANTIATE COMPONENTS ***//
   // Efficiencies
   Modelica.Units.SI.Efficiency eta_FC_LHV "Lower heating value efficiency of fuel cell stack";
   // Electrical Components
   // Fluid Components
-  Modelica.Fluid.Fittings.TeeJunctionIdeal qH2(redeclare package Medium = Anode_Medium) annotation(
-    Placement(visible = true, transformation(origin = {-120, 40}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPort_b port_b_H2(redeclare package Medium = Anode_Medium) annotation(
     Placement(visible = true, transformation(origin = {-150, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a_H2(redeclare package Medium = Anode_Medium) annotation(
@@ -55,8 +54,6 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {130, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipeCoolant(redeclare package Medium = Coolant_Medium, T_start = 293.15, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = 500, p_a_start = 102502, use_HeatTransfer = true) annotation(
     Placement(visible = true, transformation(origin = {0, -40}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
-  Modelica.Fluid.Fittings.TeeJunctionIdeal qAir(redeclare package Medium = Cathode_Medium) annotation(
-    Placement(visible = true, transformation(origin = {120, 40}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   Modelica.Fluid.Sources.MassFlowSource_T O2_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {84, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Thermal Components
@@ -64,11 +61,9 @@ model FuelCellStack
   Modelica.Fluid.Sources.MassFlowSource_T H2_sink(redeclare package Medium = Anode_Medium, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-80, 41}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(visible = true, transformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {80, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
-    Placement(visible = true, transformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_O_FC_stack) annotation(
-    Placement(visible = true, transformation(origin = {60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+    Placement(visible = true, transformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-80, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.SignalVoltage potentialSource annotation(
     Placement(visible = true, transformation(origin = {-60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
@@ -93,37 +88,36 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {150, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_b_Air(redeclare package Medium = Cathode_Medium) annotation(
     Placement(visible = true, transformation(origin = {150, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume(redeclare package Medium = Cathode_Medium, V = 0.01) annotation(
+    Placement(visible = true, transformation(origin = {120, 38}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
+  Modelica.Fluid.Fittings.SimpleGenericOrifice orifice(redeclare package Medium = Cathode_Medium, diameter = 0.01, zeta = 0.7)  annotation(
+    Placement(visible = true, transformation(origin = {92, 4}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume1(redeclare package Medium = Anode_Medium,V = 0.01) annotation(
+    Placement(visible = true, transformation(origin = {-126, 44}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
+  Modelica.Fluid.Fittings.SimpleGenericOrifice simpleGenericOrifice(redeclare package Medium = Anode_Medium,diameter = 0.003, zeta = 0.7) annotation(
+    Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
-  p_H2 = H2_sink.ports[1].p;
-  p_O2 = 0.2*O2_sink.ports[1].p;
+  p_H2 = H2_sink.ports[1].p*0.00001;
+  p_O2 = 0.2*O2_sink.ports[1].p*0.00001;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the stack voltage
-  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/((p_H2/p_0)*(p_O2/p_0)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
+//  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
+  potentialSource.v = N_FC_stack*(1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)));
 // Calculate the voltage of the cell
   V_cell = pin_p.v/N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = (1.481 - V_cell) * abs(currentSensor.i) * N_FC_stack;
+  P_th = (1.481 - V_cell)*abs(currentSensor.i)*N_FC_stack;
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 // Efficiencies
-  eta_FC_LHV = V_cell / 1.254;
+  eta_FC_LHV = V_cell/1.254;
 //*** DEFINE CONNECTIONS ***//
   connect(pipeCoolant.port_b, port_b_Coolant) annotation(
     Line(points = {{10, -40}, {130, -40}}, color = {255, 0, 0}, thickness = 1));
   connect(pipeCoolant.port_a, port_a_Coolant) annotation(
     Line(points = {{-10, -40}, {-134, -40}}, color = {0, 0, 255}, thickness = 1));
-  connect(port_a_H2, qH2.port_1) annotation(
-    Line(points = {{-150, 80}, {-120, 80}, {-120, 50}}, color = {0, 170, 0}, thickness = 1));
-  connect(port_b_H2, qH2.port_2) annotation(
-    Line(points = {{-150, 0}, {-120, 0}, {-120, 30}}, color = {0, 170, 0}, thickness = 1));
-  connect(O2_sink.ports[1], qAir.port_3) annotation(
-    Line(points = {{94, 40}, {110, 40}, {110, 40}, {110, 40}}, color = {0, 170, 255}, thickness = 1));
-  connect(qH2.port_3, H2_sink.ports[1]) annotation(
-    Line(points = {{-110, 40}, {-90, 40}, {-90, 42}}, color = {0, 170, 0}, thickness = 1));
-  connect(R_ohmic.n, pin_p) annotation(
-    Line(points = {{60, 130}, {60, 150}}, color = {0, 0, 255}));
   connect(pin_n, potentialSource.n) annotation(
     Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
   connect(O2_mflow.y, O2_sink.m_flow_in) annotation(
@@ -144,18 +138,30 @@ equation
     Line(points = {{-50, -102}, {-50, -102}, {-50, -114}, {2, -114}, {2, -114}, {0, -114}}, color = {191, 0, 0}));
   connect(temperatureSensor.T, H2_sink.T_in) annotation(
     Line(points = {{-50, -82}, {-50, -82}, {-50, 44}, {-68, 44}, {-68, 46}}, color = {0, 0, 127}));
-  connect(currentSensor.p, R_ohmic.p) annotation(
-    Line(points = {{10, 100}, {60, 100}, {60, 110}, {60, 110}}, color = {0, 0, 255}));
   connect(currentSensor.n, potentialSource.p) annotation(
     Line(points = {{-10, 100}, {-60, 100}, {-60, 110}, {-60, 110}}, color = {0, 0, 255}));
   connect(currentSensor.i, H2_mflow.u) annotation(
     Line(points = {{0, 90}, {-8, 90}, {-8, 60}, {-22, 60}}, color = {0, 0, 127}));
   connect(currentSensor.i, O2_mflow.u) annotation(
     Line(points = {{0, 90}, {10, 90}, {10, 60}, {24, 60}, {24, 60}}, color = {0, 0, 127}));
-  connect(port_a_Air, qAir.port_1) annotation(
-    Line(points = {{150, 80}, {120, 80}, {120, 50}}, color = {0, 170, 255}, thickness = 1));
-  connect(qAir.port_2, port_b_Air) annotation(
-    Line(points = {{120, 30}, {120, 0}, {150, 0}}, color = {0, 170, 255}, thickness = 1));
+  connect(currentSensor.p, pin_p) annotation(
+    Line(points = {{10, 100}, {60, 100}, {60, 150}}, color = {0, 0, 255}));
+  connect(teeJunctionVolume.port_1, port_a_Air) annotation(
+    Line(points = {{120, 48}, {122, 48}, {122, 80}, {150, 80}}, color = {0, 127, 255}));
+  connect(teeJunctionVolume.port_3, O2_sink.ports[1]) annotation(
+    Line(points = {{110, 38}, {94, 38}, {94, 40}}, color = {0, 127, 255}));
+  connect(teeJunctionVolume.port_2, orifice.port_a) annotation(
+    Line(points = {{120, 28}, {98, 28}, {98, 14}, {92, 14}}, color = {0, 127, 255}));
+  connect(orifice.port_b, port_b_Air) annotation(
+    Line(points = {{92, -6}, {114, -6}, {114, -2}, {150, -2}, {150, 0}}, color = {0, 127, 255}));
+  connect(teeJunctionVolume1.port_3, H2_sink.ports[1]) annotation(
+    Line(points = {{-116, 44}, {-106, 44}, {-106, 42}, {-90, 42}}, color = {0, 127, 255}));
+  connect(teeJunctionVolume1.port_1, port_a_H2) annotation(
+    Line(points = {{-126, 54}, {-126, 80}, {-150, 80}}, color = {0, 127, 255}));
+  connect(teeJunctionVolume1.port_2, simpleGenericOrifice.port_a) annotation(
+    Line(points = {{-126, 34}, {-126, 30}, {-104, 30}, {-104, 24}}, color = {0, 127, 255}));
+  connect(simpleGenericOrifice.port_b, port_b_H2) annotation(
+    Line(points = {{-104, 4}, {-104, -14}, {-138, -14}, {-138, 0}, {-150, 0}}, color = {0, 127, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
