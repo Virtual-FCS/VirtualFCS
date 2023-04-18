@@ -10,7 +10,7 @@ model SubSystemHydrogen
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
   parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
   parameter Modelica.Units.SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
+  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation(

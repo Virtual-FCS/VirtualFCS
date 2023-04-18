@@ -8,8 +8,12 @@ model SubSystemAir
   replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   // Parameter definition
   parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
-  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
-  //*** INSTANTIATE COMPONENTS ***//
+  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells"; 
+  Real Power_Compressor_mez(unit = "W") "The power consumed by the Compressor"; 
+  Real Power_Compressor_electrical (unit = "W") "The power consumed by the Compressor"; 
+  Real Rendement_compressor  "Compressor efficiency"; 
+  Real t  "parameter to cimpute efficiency"; 
+//*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 2) annotation(
     Placement(visible = true, transformation(origin = {-80.5, -50.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = -90)));
@@ -46,8 +50,21 @@ model SubSystemAir
     Placement(visible = true, transformation(origin = {55, 35}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   // Valves
   VirtualFCS.Fluid.ThrottleValve throttleValve(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {15, -35}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {21, -35}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium = Medium) annotation(
+    Placement(visible = true, transformation(origin = {74, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
 equation
+Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
+//Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(0.9*0.7))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
+ Power_Compressor_electrical = pin_p.i*pin_p.v;
+  if Power_Compressor_electrical > 1 then
+    t = Power_Compressor_electrical;
+    else 
+   t = 1; 
+   end if;
+  
+  
+  Rendement_compressor = (sen_Air_mflow.m_flow*298.15*1004/(0.9*t))*(((Output.p*0.00001)^0.28)-1);
 //*** DEFINE CONNECTIONS ***//
   connect(pin_p, compressor.pin_p) annotation(
     Line(points = {{30, 48}, {15, 48}, {15, 28}}, color = {0, 0, 255}));
@@ -62,11 +79,11 @@ equation
   connect(setCompressorSpeed.y, compressor.controlInterface) annotation(
     Line(points = {{-27, 46}, {-20, 46}, {-20, 28}, {-6, 28}}, color = {0, 0, 127}));
   connect(throttleValve.port_a, Input) annotation(
-    Line(points = {{30, -35}, {88, -35}}, color = {0, 170, 255}, thickness = 1));
+    Line(points = {{36, -35}, {88, -35}}, color = {0, 170, 255}, thickness = 1));
   connect(throttleValve.port_b, airSink.ports[2]) annotation(
-    Line(points = {{0, -35}, {-82, -35}, {-82, -42}, {-80.5, -42}}, color = {0, 170, 255}, thickness = 1));
+    Line(points = {{6, -35}, {-82, -35}, {-82, -42}, {-80.5, -42}}, color = {0, 170, 255}, thickness = 1));
   connect(setAirPressure.y, throttleValve.FC_pAirOut_P) annotation(
-    Line(points = {{-25, -94}, {15, -94}, {15, -37}}, color = {0, 0, 127}));
+    Line(points = {{-25, -94}, {21, -94}, {21, -37}}, color = {0, 0, 127}));
   connect(subSystemAirControl.controlInterface, deMultiplexControl.u) annotation(
     Line(points = {{-30, 80}, {-20, 80}, {-20, 78}, {-18, 78}}, color = {0, 0, 127}, thickness = 0.5));
   connect(pin_n, compressor.pin_n) annotation(
@@ -81,6 +98,12 @@ equation
     Line(points = {{-116, 86}, {-62, 86}}, color = {0, 0, 127}));
   connect(compressorOutletSensor.port, compressor.Output) annotation(
     Line(points = {{56, 28}, {56, 18}, {30, 18}}));
+  connect(compressor.Output, Inlet_air_pressure.port) annotation(
+    Line(points = {{30, 18}, {40, 18}, {40, 48}, {74, 48}, {74, 60}}, color = {0, 127, 255}));
+  connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation(
+    Line(points = {{64, 70}, {44, 70}, {44, -30}, {26, -30}}, color = {0, 0, 127}));
+  connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation(
+    Line(points = {{64, 70}, {44, 70}, {44, -26}, {38, -26}}, color = {0, 0, 127}));
 protected
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),

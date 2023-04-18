@@ -3,11 +3,11 @@ within VirtualFCS.SubSystems.Hydrogen;
 model SubSystemHydrogenControl
   parameter Modelica.Units.SI.Pressure pressure_H2_set = 200000 "Set H2 Pressure";
   //parameter Modelica.Units.SI.MassFlowRate massFlow_H2_set = 1e-2 "Set H2 Recirculation Mass Flow";
-  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
+  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
   Modelica.Blocks.Routing.Multiplex3 multiplexSignalsH2Subsystem annotation(
     Placement(visible = true, transformation(origin = {124, 40}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getH2MassFlow(y = deMultiplexH2Sensors.y1[1]) annotation(
-    Placement(visible = true, transformation(origin = {-81, -62}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-81, -60}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
   VirtualFCS.Control.PurgeValveControl purgeValveControl annotation(
     Placement(visible = true, transformation(origin = {-1, 40}, extent = {{-31, -31}, {31, 31}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setH2Pressure(k = pressure_H2_set) annotation(
@@ -30,7 +30,7 @@ equation
   connect(purgeValveControl.purgeValveControl, multiplexSignalsH2Subsystem.u2[1]) annotation(
     Line(points = {{33, 40}, {105, 40}}, color = {0, 0, 127}));
   connect(getH2MassFlow.y, pumpSpeedControl.getMassFlow) annotation(
-    Line(points = {{-56, -62}, {-37, -62}, {-37, -59.5}}, color = {0, 0, 127}));
+    Line(points = {{-56, -60}, {-37, -60}, {-37, -59.5}}, color = {0, 0, 127}));
   connect(setH2Pressure.y, multiplexSignalsH2Subsystem.u1[1]) annotation(
     Line(points = {{15.5, 113}, {52, 113}, {52, 55}, {59.5, 55}, {59.5, 51}, {105, 51}}, color = {0, 0, 127}));
   connect(multiplexSignalsH2Subsystem.y, controlInterface) annotation(
