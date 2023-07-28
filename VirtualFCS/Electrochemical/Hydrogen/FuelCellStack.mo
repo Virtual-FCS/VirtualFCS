@@ -45,7 +45,7 @@ model FuelCellStack
   // Electrical Components
   // Fluid Components
   Modelica.Fluid.Interfaces.FluidPort_b port_b_H2(redeclare package Medium = Anode_Medium) annotation(
-    Placement(visible = true, transformation(origin = {-150, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-150, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a_H2(redeclare package Medium = Anode_Medium) annotation(
     Placement(visible = true, transformation(origin = {-150, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a_Coolant(redeclare package Medium = Coolant_Medium) annotation(
@@ -87,11 +87,11 @@ model FuelCellStack
   Modelica.Fluid.Interfaces.FluidPort_a port_a_Air(redeclare package Medium = Cathode_Medium) annotation(
     Placement(visible = true, transformation(origin = {150, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_b_Air(redeclare package Medium = Cathode_Medium) annotation(
-    Placement(visible = true, transformation(origin = {150, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {150, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume(redeclare package Medium = Cathode_Medium, V = 0.01) annotation(
     Placement(visible = true, transformation(origin = {120, 38}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice orifice(redeclare package Medium = Cathode_Medium, diameter = 0.01, zeta = 0.7)  annotation(
-    Placement(visible = true, transformation(origin = {92, 4}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {96, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume1(redeclare package Medium = Anode_Medium,V = 0.01) annotation(
     Placement(visible = true, transformation(origin = {-126, 44}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice simpleGenericOrifice(redeclare package Medium = Anode_Medium,diameter = 0.003, zeta = 0.7) annotation(
@@ -151,9 +151,9 @@ equation
   connect(teeJunctionVolume.port_3, O2_sink.ports[1]) annotation(
     Line(points = {{110, 38}, {94, 38}, {94, 40}}, color = {0, 127, 255}));
   connect(teeJunctionVolume.port_2, orifice.port_a) annotation(
-    Line(points = {{120, 28}, {98, 28}, {98, 14}, {92, 14}}, color = {0, 127, 255}));
+    Line(points = {{120, 28}, {96, 28}, {96, 20}}, color = {0, 127, 255}));
   connect(orifice.port_b, port_b_Air) annotation(
-    Line(points = {{92, -6}, {114, -6}, {114, -2}, {150, -2}, {150, 0}}, color = {0, 127, 255}));
+    Line(points = {{96, 0}, {97, 0}, {97, -8}, {150, -8}}, color = {0, 127, 255}));
   connect(teeJunctionVolume1.port_3, H2_sink.ports[1]) annotation(
     Line(points = {{-116, 44}, {-106, 44}, {-106, 42}, {-90, 42}}, color = {0, 127, 255}));
   connect(teeJunctionVolume1.port_1, port_a_H2) annotation(
@@ -161,7 +161,7 @@ equation
   connect(teeJunctionVolume1.port_2, simpleGenericOrifice.port_a) annotation(
     Line(points = {{-126, 34}, {-126, 30}, {-104, 30}, {-104, 24}}, color = {0, 127, 255}));
   connect(simpleGenericOrifice.port_b, port_b_H2) annotation(
-    Line(points = {{-104, 4}, {-104, -14}, {-138, -14}, {-138, 0}, {-150, 0}}, color = {0, 127, 255}));
+    Line(points = {{-104, 4}, {-104, -4}, {-150, -4}}, color = {0, 127, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
