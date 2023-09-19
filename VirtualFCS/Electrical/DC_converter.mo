@@ -13,7 +13,7 @@ model DC_converter "An ideal DC-DC converter"
     Placement(visible = true, transformation(extent = {{-70, -10}, {-50, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Feedback feedback annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {50, 0})));
-  Modelica.Blocks.Continuous.Integrator powerController(initType = Modelica.Blocks.Types.Init.InitialOutput, k = 1 / Ti, y_start = 0) annotation(
+  Modelica.Blocks.Continuous.Integrator powerController(initType = Modelica.Blocks.Types.Init.InitialOutput, k = 1/Ti, y_start = 0) annotation(
     Placement(transformation(extent = {{30, 10}, {10, 30}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_nFC annotation(
     Placement(visible = true, transformation(origin = {-80, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -61,7 +61,7 @@ equation
   connect(signalCurrent_DCbus.n, pin_nBus) annotation(
     Line(points = {{-20, -50}, {-80, -50}, {-80, -72}, {-80, -72}}, color = {0, 0, 255}));
   annotation(
-    Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{100, 100}, {20, 20}}, color = {0, 0, 255}), Line(points = {{-20, -20}, {-100, -100}}, color = {0, 0, 255}), Text(origin = {-2, -142}, lineColor = {128, 128, 128}, extent = {{-40, 80}, {40, 60}}, textString = "DC bus"), Text(lineColor = {0, 0, 255}, extent = {{-100, 20}, {100, -20}}, textString = "%name"), Text(origin = {0, 146}, lineColor = {128, 128, 128}, extent = {{-40, -60}, {40, -80}}, textString = "Fuel cell")}),
+    Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{100, 100}, {20, 20}}, color = {0, 0, 255}), Line(points = {{-20, -20}, {-100, -100}}, color = {0, 0, 255}), Text(origin = {-2, -142}, textColor = {128, 128, 128}, extent = {{-40, 80}, {40, 60}}, textString = "DC bus"), Text(textColor = {0, 0, 255}, extent = {{-100, 20}, {100, -20}}, textString = "%name"), Text(origin = {0, 146}, textColor = {128, 128, 128}, extent = {{-40, -60}, {40, -80}}, textString = "Fuel cell")}),
     Diagram(coordinateSystem(preserveAspectRatio = false)),
     Documentation(info = "<html>
 <p>This is a model of an ideal DC-DC inverter based on a power balance achieved by an integral controller.</p>

@@ -1,38 +1,38 @@
 within VirtualFCS.SubSystems.Air;
 
 block SubSystemAirControl
-  parameter Real pressure_Air_set(unit = "Pa") = 150000 "Set air Pressure";
-  parameter Real massFlow_Air_set(unit = "kg/s") = 4e-3 "Set air Recirculation Mass Flow";
+  parameter Modelica.Units.SI.Pressure pressure_Air_set = 150000 "Set air Pressure";
+ // parameter Modelica.Units.SI.MassFlowRate massFlow_Air_set = 4e-3 "Set air Recirculation Mass Flow";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   VirtualFCS.Control.PumpSpeedControl pumpSpeedControl annotation(
     Placement(visible = true, transformation(origin = {0, -7.10543e-15}, extent = {{-58, -58}, {58, 58}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setAirPressure(k = pressure_Air_set) annotation(
     Placement(visible = true, transformation(origin = {1, 145}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   Modelica.Blocks.Routing.Multiplex2 multiplex2 annotation(
-    Placement(visible = true, transformation(origin = {140, 0}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {116, 10}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput controlInterface[2] annotation(
-    Placement(visible = true, transformation(origin = {210, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {210, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {210, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {212, -2}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput sensorInterface[2] annotation(
     Placement(visible = true, transformation(origin = {-220, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Routing.DeMultiplex2 deMultiplexAirSensors annotation(
     Placement(visible = true, transformation(origin = {-138, -120}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getAirMassFlow(y = deMultiplexAirSensors.y1[1]) annotation(
-    Placement(visible = true, transformation(origin = {-121, -32}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-119, -30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput signalInterfaceFC annotation(
     Placement(visible = true, transformation(origin = {-220, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setAirMassFlow(y = max(0.85*(signalInterfaceFC*(0.032/(96485*4)*N_FC_stack)), 4e-3)) annotation(
+  Modelica.Blocks.Sources.RealExpression setAirMassFlow(y = max(signalInterfaceFC*(0.02897*2/(96485*4*0.21)*N_FC_stack), 1e-3)) annotation(
     Placement(visible = true, transformation(origin = {-119, 30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(setAirPressure.y, multiplex2.u1[1]) annotation(
-    Line(points = {{18, 146}, {96, 146}, {96, 11}, {118, 11}}, color = {0, 0, 127}));
+    Line(points = {{18, 146}, {94, 146}, {94, 21}}, color = {0, 0, 127}));
   connect(pumpSpeedControl.setPumpSpeed, multiplex2.u2[1]) annotation(
-    Line(points = {{64, 0}, {92, 0}, {92, -11}, {118, -11}}, color = {0, 0, 127}));
+    Line(points = {{64, 0}, {92, 0}, {92, -1}, {94, -1}}, color = {0, 0, 127}));
   connect(multiplex2.y, controlInterface) annotation(
-    Line(points = {{160, 0}, {204, 0}, {204, 0}, {210, 0}}, color = {0, 0, 127}));
+    Line(points = {{136, 10}, {210, 10}}, color = {0, 0, 127}));
   connect(sensorInterface, deMultiplexAirSensors.u) annotation(
     Line(points = {{-220, -120}, {-164, -120}}, color = {0, 0, 127}));
   connect(getAirMassFlow.y, pumpSpeedControl.getMassFlow) annotation(
-    Line(points = {{-96, -32}, {-66, -32}, {-66, -30}, {-64, -30}}, color = {0, 0, 127}));
+    Line(points = {{-94, -30}, {-64, -30}}, color = {0, 0, 127}));
   connect(setAirMassFlow.y, pumpSpeedControl.setMassFlow) annotation(
     Line(points = {{-94, 30}, {-64, 30}, {-64, 28}}, color = {0, 0, 127}));
   annotation(

@@ -6,10 +6,11 @@ model SubSystemHydrogen
   // Medium declaration
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start)) constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
   // Parameter definition
-  parameter Real m_system_H2(unit = "kg") = 61 "H2 system mass";
-  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
-  parameter Real A_tank_H2(unit = "m2") = 2 "H2 tank surface area";
-  parameter Real p_tank_H2(unit = "Pa") = 35000000 "H2 tank initial pressure";
+  parameter Modelica.Units.SI.Mass m_system_H2 = 61 "H2 system mass";
+  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
+  parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
+  parameter Modelica.Units.SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
+  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation(
@@ -42,7 +43,7 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-62, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression setBlowerSpeed(y = controlSignals.y3[1]) annotation(
     Placement(visible = true, transformation(origin = {72, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(pressure_H2_set = 200000) annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_FC_stack = N_FC_stack, pressure_H2_set = 200000) annotation(
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Routing.DeMultiplex3 controlSignals annotation(
     Placement(visible = true, transformation(origin = {-56, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

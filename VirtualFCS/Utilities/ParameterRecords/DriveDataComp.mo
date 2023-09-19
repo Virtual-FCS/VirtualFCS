@@ -1,10 +1,10 @@
 within VirtualFCS.Utilities.ParameterRecords;
 
-record DriveDataDcPm
+record DriveDataComp
   extends Modelica.Icons.Record;
   import Modelica.Electrical.Machines.Thermal.convertResistance;
   //Motor
-  parameter VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor motorData "Motor data" annotation(
+  parameter VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor motorData( Js = 0.15, VaNominal = 24)  "Motor data" annotation(
     Dialog(group = "Motor"),
     Placement(transformation(extent = {{-10, -10}, {10, 10}})));
   parameter Modelica.Units.SI.Resistance Ra = convertResistance(motorData.Ra, motorData.TaRef, motorData.alpha20a, motorData.TaNominal) "Armature resistance at nominal temperature" annotation(
@@ -70,4 +70,4 @@ Calculates controller parameters of a DC permanent magnet drive:
 Current controller according to absolute optimum, speed controller according to symmetric optimum.
 </p>
 </html>"));
-end DriveDataDcPm;
+end DriveDataComp;

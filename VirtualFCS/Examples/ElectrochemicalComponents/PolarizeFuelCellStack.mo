@@ -5,17 +5,17 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  inner Modelica.Fluid.System system annotation(
+  inner Modelica.Fluid.System system(p_ambient(displayUnit = "Pa"))  annotation(
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Sources.RampCurrent rampCurrent(I = 750, duration = 500, startTime = 100) annotation(
+  Modelica.Electrical.Analog.Sources.RampCurrent rampCurrent(I = 300, duration = 500, offset = 1, startTime = 1) annotation(
     Placement(visible = true, transformation(origin = {0, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellSystem fuelCellSystem annotation(
+  Electrochemical.Hydrogen.FuelCellSystem fuelCellSystem annotation(
     Placement(visible = true, transformation(origin = {0, -2}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
 equation
-  connect(rampCurrent.n, fuelCellSystem.pin_n) annotation(
-    Line(points = {{-10, 60}, {-12, 60}, {-12, 18}, {-10, 18}}, color = {0, 0, 255}));
   connect(rampCurrent.p, fuelCellSystem.pin_p) annotation(
     Line(points = {{10, 60}, {12, 60}, {12, 18}, {12, 18}}, color = {0, 0, 255}));
+  connect(rampCurrent.n, fuelCellSystem.pin_n) annotation(
+    Line(points = {{-10, 60}, {-12, 60}, {-12, 18}, {-10, 18}}, color = {0, 0, 255}));
   annotation(
     Diagram,
     Icon,

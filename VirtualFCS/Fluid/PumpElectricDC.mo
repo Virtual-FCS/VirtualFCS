@@ -26,13 +26,13 @@ model PumpElectricDC
   VirtualFCS.Control.DCMotorControlPumpElectricDC dCMotorControlPumpElectricDC annotation(
     Placement(visible = true, transformation(origin = {-20, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   // Machines
-  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, N_nominal = 1200, V = 0.005, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.0021333}, head_nominal = {13.05, 7.138}), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, p_a_start = 102502, use_N_in = true) annotation(
+  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.71333}, head_nominal = {130.05, 70.138}),redeclare function efficiencyCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency(eta_nominal =0.1), N_nominal = 900, V = 0.005, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, p_a_start = 102502, use_N_in = true) annotation(
     Placement(visible = true, transformation(origin = {20, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(fixed = true, start = 0.10472), wNominal = driveData.motorData.wNominal) annotation(
     Placement(visible = true, transformation(origin = {-20, -6}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
     Placement(visible = true, transformation(origin = {50, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
+  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataCpump driveData annotation(
     Placement(visible = true, transformation(extent = {{-64, -16}, {-44, 4}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {80, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -42,17 +42,15 @@ model PumpElectricDC
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
     Placement(visible = true, transformation(origin = {60, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 270)));
   // Other
-  Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal/9.5493)  annotation(
+  Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal/9.5493) annotation(
     Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain gain(k = 9.5493)  annotation(
+  Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
   // Power & Efficiency
-  Real eta_PumpElectricDC(unit = "100") "The efficiency of the PumpElectricDC calculated by eta = P_water/P_shaft";
-  Real Power_PumpElectricDC(unit = "W") "The power consumed by the PumpElectricDC";
+  Modelica.Units.SI.Power Power_PumpElectricDC "The power consumed by the PumpElectricDC";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
-  eta_PumpElectricDC = (((Output.p - (Input.p))*volumeFlowRate.V_flow)/(max(dcpm.pin_ap.v*dcpm.pin_ap.i, 1e-10))) * 100;
-  Power_PumpElectricDC = pin_p.i * pin_p.v;
+  Power_PumpElectricDC = pin_p.i*pin_p.v;
 //*** DEFINE CONNECTIONS ***//
   connect(multiplex2.y, sensors) annotation(
     Line(points = {{91, 90}, {110, 90}}, color = {0, 0, 127}));

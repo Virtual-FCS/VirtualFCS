@@ -25,12 +25,12 @@ model RecirculationBlower
     Placement(visible = true, transformation(origin = {-87, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   // Machines
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(fixed = true, start = 0.10472), wNominal = driveData.motorData.wNominal) annotation(
-    Placement(visible = true, transformation(origin = {2, 0},extent = {{-62, -26}, {-42, -6}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {2, 0}, extent = {{-62, -26}, {-42, -6}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
     Placement(visible = true, transformation(origin = {-20, -16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
+  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower driveData annotation(
     Placement(visible = true, transformation(extent = {{-90, -24}, {-70, -4}}, rotation = 0)));
-  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, N_nominal = 365, T_start = 323.15, V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, use_N_in = true, use_T_start = true) annotation(
+  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), N_nominal = 200, T_start = 323.15, V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, use_N_in = true, use_T_start = true) annotation(
     Placement(visible = true, transformation(origin = {0, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(visible = true, transformation(origin = {8, -16}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -43,10 +43,10 @@ model RecirculationBlower
   VirtualFCS.Control.DCMotorControlRecirculationBlower dCMotorControlRecirculationBlower annotation(
     Placement(visible = true, transformation(origin = {-50, 42}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   // Power & Efficiencies
-  Real Power_RecirculationBlower(unit = "W") "The power consumed by the RecirculationBlower";
+  Modelica.Units.SI.Power Power_RecirculationBlower "The power consumed by the RecirculationBlower";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
-  Power_RecirculationBlower = pin_p.i * pin_p.v;
+  Power_RecirculationBlower = pin_p.i*pin_p.v;
   connect(dcpm.flange, inertia.flange_a) annotation(
     Line(points = {{-40, -16}, {-30, -16}}));
   connect(speedSensor.w, gain.u) annotation(
