@@ -1,8 +1,7 @@
 within VirtualFCS.UsersGuide;
-
 package ReleaseNotes
   extends Modelica.Icons.ReleaseNotes;
-  annotation(
+  annotation (
     Documentation(
     DocumentationClass=true,
     info = "<html><head></head><body>

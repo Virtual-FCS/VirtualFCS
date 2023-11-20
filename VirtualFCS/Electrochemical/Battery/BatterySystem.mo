@@ -1,5 +1,4 @@
 within VirtualFCS.Electrochemical.Battery;
-
 model BatterySystem
   // System
   outer Modelica.Fluid.System system "System properties";
@@ -17,42 +16,42 @@ model BatterySystem
   // Power & efficiencies
   Modelica.Units.SI.Power Power "Battery delivered power";
   Modelica.Units.SI.Efficiency eta_batt "Battery efficiency, calculated by assuming loss in terms of heat";
-  VirtualFCS.Control.BatteryManagementSystem batteryManagementSystem(N_s = batteryPack.N_s) annotation(
+  VirtualFCS.Control.BatteryManagementSystem batteryManagementSystem(N_s = batteryPack.N_s) annotation (
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
-  Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
+  Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {44, 96}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {44, 96}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
+  Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-44, 96}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-44, 96}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression getSOC_init(y = batteryPack.SOC_init) annotation(
+  Modelica.Blocks.Sources.RealExpression getSOC_init(y = batteryPack.SOC_init) annotation (
     Placement(visible = true, transformation(origin = {61, 40}, extent = {{19, -16}, {-19, 16}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression getChargeCapacity(y = batteryPack.C_bat_pack*3600) annotation(
+  Modelica.Blocks.Sources.RealExpression getChargeCapacity(y = batteryPack.C_bat_pack*3600) annotation (
     Placement(visible = true, transformation(origin = {60, 6}, extent = {{18, -16}, {-18, 16}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 298.15) annotation(
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 298.15) annotation (
     Placement(visible = true, transformation(origin = {70, -70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput sensorOutput annotation(
+  Modelica.Blocks.Interfaces.RealOutput sensorOutput annotation (
     Placement(visible = true, transformation(origin = {-110, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  LiIonBatteryPack_Lumped batteryPack(C_bat_pack = C_bat_pack, Cp_bat_pack = Cp_bat_pack, H_bat_pack = H_bat_pack, L_bat_pack = L_bat_pack, SOC_init = SOC_init, V_max_bat_pack = V_max_bat_pack, V_min_bat_pack = V_min_bat_pack, V_nom_bat_pack = V_nom_bat_pack, W_bat_pack = W_bat_pack, m_bat_pack = m_bat_pack) annotation(
+  LiIonBatteryPack_Lumped batteryPack(C_bat_pack = C_bat_pack, Cp_bat_pack = Cp_bat_pack, H_bat_pack = H_bat_pack, L_bat_pack = L_bat_pack, SOC_init = SOC_init, V_max_bat_pack = V_max_bat_pack, V_min_bat_pack = V_min_bat_pack, V_nom_bat_pack = V_nom_bat_pack, W_bat_pack = W_bat_pack, m_bat_pack = m_bat_pack) annotation (
     Placement(visible = true, transformation(origin = {0.369106, -30.5794}, extent = {{-24.8691, -14.9215}, {24.8691, 16.5794}}, rotation = 0)));
 equation
   Power = pin_n.i*pin_p.v;
   eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)), 0.9);
-  connect(pin_n, batteryManagementSystem.pin_n_load) annotation(
+  connect(pin_n, batteryManagementSystem.pin_n_load) annotation (
     Line(points = {{-44, 96}, {-44, 96}, {-44, 80}, {-10, 80}, {-10, 48}, {-10, 48}}, color = {0, 0, 255}));
-  connect(pin_p, batteryManagementSystem.pin_p_load) annotation(
+  connect(pin_p, batteryManagementSystem.pin_p_load) annotation (
     Line(points = {{44, 96}, {44, 96}, {44, 80}, {10, 80}, {10, 48}, {10, 48}}, color = {0, 0, 255}));
-  connect(batteryManagementSystem.chargeCapacity, getChargeCapacity.y) annotation(
+  connect(batteryManagementSystem.chargeCapacity, getChargeCapacity.y) annotation (
     Line(points = {{22, 24}, {31, 24}, {31, 6}, {40, 6}}, color = {0, 0, 127}));
-  connect(getSOC_init.y, batteryManagementSystem.SOC_init) annotation(
+  connect(getSOC_init.y, batteryManagementSystem.SOC_init) annotation (
     Line(points = {{40, 40}, {32, 40}, {32, 36}, {22, 36}, {22, 36}}, color = {0, 0, 127}));
-  connect(batteryManagementSystem.sensorInterface, sensorOutput) annotation(
+  connect(batteryManagementSystem.sensorInterface, sensorOutput) annotation (
     Line(points = {{-22, 30}, {-60, 30}, {-60, 0}, {-110, 0}, {-110, 0}}, color = {0, 0, 127}));
-  connect(batteryPack.heatBoundary, fixedTemperature.port) annotation(
+  connect(batteryPack.heatBoundary, fixedTemperature.port) annotation (
     Line(points = {{8, -44}, {8, -44}, {8, -70}, {60, -70}, {60, -70}}, color = {191, 0, 0}));
-  connect(batteryManagementSystem.pin_p_battery, batteryPack.pin_p) annotation(
+  connect(batteryManagementSystem.pin_p_battery, batteryPack.pin_p) annotation (
     Line(points = {{10, 12}, {10, 12}, {10, 0}, {16, 0}, {16, -16}, {16, -16}}, color = {0, 0, 255}));
-  connect(batteryManagementSystem.pin_n_battery, batteryPack.pin_n) annotation(
+  connect(batteryManagementSystem.pin_n_battery, batteryPack.pin_n) annotation (
     Line(points = {{-10, 12}, {-10, 12}, {-10, 0}, {-14, 0}, {-14, -16}, {-14, -16}}, color = {0, 0, 255}));
-  annotation(
+  annotation (
     Icon(graphics = { Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(origin = {-33, -2}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{29, 38}, {29, 28}, {-19, 28}, {-19, -28}, {25, -28}, {29, -38}, {-21, -38}, {-29, -30}, {-29, 28}, {-21, 38}, {-5, 38}, {29, 38}}), Ellipse(origin = {-53, 27}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, -9}, {9, 9}}, startAngle = 30, endAngle = 200, closure = EllipseClosure.Chord), Ellipse(origin = {-53, -31}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, -9}, {9, 9}}, startAngle = 160, endAngle = 330, closure = EllipseClosure.Chord), Polygon(origin = {3, 0}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{0, 50}, {24, -3.5}, {3.5, -3.5}, {3.5, -50}, {-22, 12.5}, {0, 12.5}, {0, 50}, {0, 50}}), Polygon(origin = {44, -2}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-28, 38}, {12, 38}, {20, 32}, {20, 14.5}, {26, 14.5}, {32.5, 8}, {32.5, -8}, {26, -14}, {20, -14}, {20, -32}, {14, -37.5}, {-31.5, -37.5}, {-31.5, -28}, {10.5, -28}, {10.5, 28}, {-24, 28}, {-28, 38}, {-28, 38}}), Ellipse(origin = {57, 29}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = -10, endAngle = 170, closure = EllipseClosure.Chord), Ellipse(origin = {69.5, 5.5}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = -10, endAngle = 170, closure = EllipseClosure.Chord), Ellipse(origin = {69.5, -9}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = 180, endAngle = 370, closure = EllipseClosure.Chord), Ellipse(origin = {57, -32.5}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = 180, endAngle = 370, closure = EllipseClosure.Chord)}),
     Documentation(info = "<html><head></head><body>
 

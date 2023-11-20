@@ -1,5 +1,4 @@
-within VirtualFCS.Electrochemical.Battery;
-
+﻿within VirtualFCS.Electrochemical.Battery;
 model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single lumped battery model."
   // DECLARE PARAMETERS //
   // Pack-level parameters
@@ -29,47 +28,47 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   Real g1 = -0.06;
   Real h1 = -0.02;
   Real i1 = -0.002;
-  Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
+  Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {146, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
+  Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-146, 52}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation (
     Placement(visible = true, transformation(origin = {-70, -22}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+  Modelica.Electrical.Analog.Basic.Ground ground annotation (
     Placement(visible = true, transformation(origin = {-146, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R1(R = R1_0, useHeatPort = false) annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R1(R = R1_0, useHeatPort = false) annotation (
     Placement(visible = true, transformation(origin = {-50, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Capacitor C2(C = C2_0, v(fixed = true)) annotation(
+  Modelica.Electrical.Analog.Basic.Capacitor C2(C = C2_0, v(fixed = true)) annotation (
     Placement(visible = true, transformation(origin = {-14, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_bat_pack*m_bat_pack, T(fixed = true)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_bat_pack*m_bat_pack, T(fixed = true)) annotation (
     Placement(visible = true, transformation(origin = {-70, 12}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
-  Modelica.Electrical.Analog.Sensors.CurrentSensor sensorCurrent annotation(
+  Modelica.Electrical.Analog.Sensors.CurrentSensor sensorCurrent annotation (
     Placement(visible = true, transformation(origin = {20, 52}, extent = {{11, 11}, {-11, -11}}, rotation = 180)));
-  Modelica.Electrical.Analog.Sources.SignalVoltage OCV annotation(
+  Modelica.Electrical.Analog.Sources.SignalVoltage OCV annotation (
     Placement(visible = true, transformation(origin = {-120, 52}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Capacitor C1(C = C1_0, v(fixed = true)) annotation(
+  Modelica.Electrical.Analog.Basic.Capacitor C1(C = C1_0, v(fixed = true)) annotation (
     Placement(visible = true, transformation(origin = {-50, 76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R2(R = R2_0, useHeatPort = false) annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R2(R = R2_0, useHeatPort = false) annotation (
     Placement(visible = true, transformation(origin = {-14, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatSource annotation(
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heatSource annotation (
     Placement(visible = true, transformation(origin = {-120, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_O, T_ref = 300.15, useHeatPort = false) annotation(
+  Modelica.Electrical.Analog.Basic.Resistor R_ohmic(R = R_O, T_ref = 300.15, useHeatPort = false) annotation (
     Placement(visible = true, transformation(origin = {-90, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression getSOC_init(y = SOC_init) annotation(
+  Modelica.Blocks.Sources.RealExpression getSOC_init(y = SOC_init) annotation (
     Placement(visible = true, transformation(origin = {42, -34}, extent = {{-16, -10}, {16, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression getChargeCapacity(y = C_bat_pack * 3600) annotation(
+  Modelica.Blocks.Sources.RealExpression getChargeCapacity(y = C_bat_pack * 3600) annotation (
     Placement(visible = true, transformation(origin = {39, -82}, extent = {{-19, -10}, {19, 10}}, rotation = 0)));
-  VirtualFCS.Control.ChargeCounter chargeCounter annotation(
+  VirtualFCS.Control.ChargeCounter chargeCounter annotation (
     Placement(visible = true, transformation(origin = {108, -58}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = heatTransferCoefficient * A_cool_bat_pack) annotation(
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = heatTransferCoefficient * A_cool_bat_pack) annotation (
     Placement(visible = true, transformation(origin = {-10, -50}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.Convection convection annotation(
+  Modelica.Thermal.HeatTransfer.Components.Convection convection annotation (
     Placement(visible = true, transformation(origin = {-50, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heatBoundary annotation(
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heatBoundary annotation (
     Placement(visible = true, transformation(origin = {-70, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation(
+  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95 * A_cool_bat_pack) annotation (
     Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-protected 
+protected
   parameter Modelica.Units.SI.Resistance R_O = 0.024 "Ohmic Resistance";
   parameter Modelica.Units.SI.Resistance R1_0 = 0.0006 "First RC Resistance";
   parameter Modelica.Units.SI.Resistance R2_0 = 0.008 "Second RC Resistance";
@@ -83,50 +82,49 @@ equation
 // Thermal equations
   heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i);
 // ***DEFINE CONNECTIONS ***//
-  connect(pin_n, OCV.n) annotation(
+  connect(pin_n, OCV.n) annotation (
     Line(points = {{-146, 52}, {-130, 52}, {-130, 52}, {-130, 52}}, color = {0, 0, 255}));
-  connect(R1.n, R2.p) annotation(
+  connect(R1.n, R2.p) annotation (
     Line(points = {{-40, 52}, {-24, 52}, {-24, 52}, {-24, 52}}, color = {0, 0, 255}));
-  connect(C2.p, R2.p) annotation(
+  connect(C2.p, R2.p) annotation (
     Line(points = {{-24, 76}, {-24, 76}, {-24, 52}, {-24, 52}}, color = {0, 0, 255}));
-  connect(C2.n, R2.n) annotation(
+  connect(C2.n, R2.n) annotation (
     Line(points = {{-4, 76}, {-4, 76}, {-4, 52}, {-4, 52}}, color = {0, 0, 255}));
-  connect(C1.n, R1.n) annotation(
+  connect(C1.n, R1.n) annotation (
     Line(points = {{-40, 76}, {-40, 76}, {-40, 52}, {-40, 52}}, color = {0, 0, 255}));
-  connect(C1.p, R1.p) annotation(
+  connect(C1.p, R1.p) annotation (
     Line(points = {{-60, 76}, {-60, 76}, {-60, 52}, {-60, 52}}, color = {0, 0, 255}));
-  connect(sensorCurrent.i, chargeCounter.electricCurrent) annotation(
+  connect(sensorCurrent.i, chargeCounter.electricCurrent) annotation (
     Line(points = {{20, 40}, {20, 40}, {20, -58}, {72, -58}, {72, -58}}, color = {0, 0, 127}));
-  connect(getSOC_init.y, chargeCounter.SOC_init) annotation(
+  connect(getSOC_init.y, chargeCounter.SOC_init) annotation (
     Line(points = {{60, -34}, {68, -34}, {68, -34}, {72, -34}}, color = {0, 0, 127}));
-  connect(getChargeCapacity.y, chargeCounter.chargeCapacity) annotation(
+  connect(getChargeCapacity.y, chargeCounter.chargeCapacity) annotation (
     Line(points = {{60, -82}, {70, -82}, {70, -82}, {72, -82}}, color = {0, 0, 127}));
-  connect(heatCapacitor.port, heatPort) annotation(
+  connect(heatCapacitor.port, heatPort) annotation (
     Line(points = {{-70, 0}, {-70, -22}}, color = {191, 0, 0}));
-  connect(heatSource.port, heatCapacitor.port) annotation(
+  connect(heatSource.port, heatCapacitor.port) annotation (
     Line(points = {{-110, 0}, {-70, 0}}, color = {191, 0, 0}));
-  connect(pin_n, ground.p) annotation(
+  connect(pin_n, ground.p) annotation (
     Line(points = {{-146, 52}, {-146, 40}}, color = {0, 0, 255}));
-  connect(convection.Gc, setConvectiveCoefficient.y) annotation(
+  connect(convection.Gc, setConvectiveCoefficient.y) annotation (
     Line(points = {{-40, -50}, {-26, -50}, {-26, -50}, {-26, -50}}, color = {0, 0, 127}));
-  connect(heatPort, convection.solid) annotation(
+  connect(heatPort, convection.solid) annotation (
     Line(points = {{-70, -22}, {-70, -22}, {-70, -34}, {-50, -34}, {-50, -40}, {-50, -40}}, color = {191, 0, 0}));
-  connect(heatPort, bodyRadiation.port_a) annotation(
+  connect(heatPort, bodyRadiation.port_a) annotation (
     Line(points = {{-70, -22}, {-70, -22}, {-70, -34}, {-90, -34}, {-90, -40}, {-90, -40}}, color = {191, 0, 0}));
-  connect(bodyRadiation.port_b, heatBoundary) annotation(
+  connect(bodyRadiation.port_b, heatBoundary) annotation (
     Line(points = {{-90, -60}, {-90, -60}, {-90, -66}, {-70, -66}, {-70, -80}, {-70, -80}}, color = {191, 0, 0}));
-  connect(convection.fluid, heatBoundary) annotation(
+  connect(convection.fluid, heatBoundary) annotation (
     Line(points = {{-50, -60}, {-50, -60}, {-50, -66}, {-70, -66}, {-70, -80}, {-70, -80}}, color = {191, 0, 0}));
-  connect(R2.n, sensorCurrent.p) annotation(
+  connect(R2.n, sensorCurrent.p) annotation (
     Line(points = {{-4, 52}, {10, 52}, {10, 52}, {10, 52}}, color = {0, 0, 255}));
-  connect(sensorCurrent.n, pin_p) annotation(
+  connect(sensorCurrent.n, pin_p) annotation (
     Line(points = {{32, 52}, {148, 52}, {148, 50}, {146, 50}}, color = {0, 0, 255}));
-  connect(OCV.p, R_ohmic.p) annotation(
+  connect(OCV.p, R_ohmic.p) annotation (
     Line(points = {{-110, 52}, {-100, 52}}, color = {0, 0, 255}));
-  connect(R_ohmic.n, R1.p) annotation(
+  connect(R_ohmic.n, R1.p) annotation (
     Line(points = {{-80, 52}, {-60, 52}}, color = {0, 0, 255}));
-protected
-  annotation(
+  annotation (
     Icon(graphics = {Rectangle(origin = {0, -15}, fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-130, 85}, {130, -75}}), Rectangle(origin = {0, 85}, fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-150, 15}, {150, -15}}), Text(origin = {68, 93}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {10, -19}}, textString = "+"), Text(origin = {-74, 105}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {52, -41}}, textString = "-"), Text(origin = {-34, -103}, lineColor = {0, 0, 255}, extent = {{-22, 15}, {86, -41}}, textString = "%name")}, coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",

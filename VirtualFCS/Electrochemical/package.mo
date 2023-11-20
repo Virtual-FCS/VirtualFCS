@@ -1,7 +1,6 @@
 within VirtualFCS;
-
 package Electrochemical "Electrochemical energy storage and conversion devices."
   extends Modelica.Icons.Package;
-  annotation(
+  annotation (
     Documentation);
 end Electrochemical;

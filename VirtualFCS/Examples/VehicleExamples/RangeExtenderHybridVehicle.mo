@@ -1,14 +1,13 @@
 within VirtualFCS.Examples.VehicleExamples;
-
 model RangeExtenderHybridVehicle
   extends Modelica.Icons.Example;
-  inner Modelica.Fluid.System system annotation(
+  inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack = 50, SOC_init = 0.21, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation(
+  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack = 50, SOC_init = 0.21, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation (
     Placement(visible = true, transformation(origin = {60, 3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai, useRegenerativeBreaking = true) annotation(
+  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai, useRegenerativeBreaking = true) annotation (
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  VirtualFCS.Vehicles.DriveCycle driveCycle(v = VirtualFCS.Vehicles.DriveCycle.speed_profile.NEDC) annotation(
+  VirtualFCS.Vehicles.DriveCycle driveCycle(v = VirtualFCS.Vehicles.DriveCycle.speed_profile.NEDC) annotation (
     Placement(visible = true, transformation(origin = {-60, -6.66134e-16}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   Real fuel_consumption(unit = "kg/100km", start = 0) "The total fuel consumption at the end of simulation";
   Modelica.Units.SI.Mass hydrogen_mass_init(start = 0) "Initial value of hydrogen mass in tank";
@@ -33,12 +32,11 @@ equation
       eta_vehicle = 0;
     end if;
   end if;
-  connect(driveCycle.y, vehicleProfile.vehicleVelocity) annotation(
+  connect(driveCycle.y, vehicleProfile.vehicleVelocity) annotation (
     Line(points = {{-37, 0}, {-26, 0}}, color = {0, 0, 127}));
-  connect(vehicleProfile.pin_p, rangeExtenderPowerTrain.pin_p) annotation(
+  connect(vehicleProfile.pin_p, rangeExtenderPowerTrain.pin_p) annotation (
     Line(points = {{18, 10}, {42, 10}, {42, 10}, {42, 10}}, color = {0, 0, 255}));
-  connect(vehicleProfile.pin_n, rangeExtenderPowerTrain.pin_n) annotation(
+  connect(vehicleProfile.pin_n, rangeExtenderPowerTrain.pin_n) annotation (
     Line(points = {{18, -10}, {42, -10}, {42, -10}, {42, -10}}, color = {0, 0, 255}));
-protected
   annotation(experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-04, Interval = 1));
 end RangeExtenderHybridVehicle;
