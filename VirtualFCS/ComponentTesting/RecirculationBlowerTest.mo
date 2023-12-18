@@ -3,7 +3,7 @@ model RecirculationBlowerTest "Simple model to test the recirculation blower mod
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable package Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start * 3));
+  replaceable package Medium = Modelica.Media.IdealGases.SingleGases.H2;
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation (
     Placement(visible = true, transformation(origin = {0, 70}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary boundary(redeclare package Medium = Medium, nPorts = 1, p = 200000)  annotation (
@@ -22,11 +22,11 @@ equation
   connect(fixedBoundary.ports[1], recirculationBlower.Output) annotation (
     Line(points = {{60, 0}, {18, 0}}, color = {0, 170, 0}, thickness = 1));
   connect(sine.y, recirculationBlower.controlInterface) annotation (
-    Line(points = {{-38, -50}, {-6, -50}, {-6, -14}}, color = {0, 0, 127}));
+    Line(points={{-39,-50},{-6,-50},{-6,-14}},        color = {0, 0, 127}));
   connect(batterySystem.pin_n, recirculationBlower.pin_n) annotation (
-    Line(points = {{-4, 60}, {-4, 40}, {-10, 40}, {-10, 14}}, color = {0, 0, 255}));
+    Line(points={{-4.4,60.4},{-4.4,40},{-10,40},{-10,14}},    color = {0, 0, 255}));
   connect(batterySystem.pin_p, recirculationBlower.pin_p) annotation (
-    Line(points = {{4, 60}, {4, 40}, {10, 40}, {10, 14}}, color = {0, 0, 255}));
+    Line(points={{4.4,60.4},{4.4,40},{10,40},{10,14}},    color = {0, 0, 255}));
   annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
 end RecirculationBlowerTest;

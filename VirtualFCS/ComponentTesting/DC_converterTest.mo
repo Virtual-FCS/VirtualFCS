@@ -13,15 +13,16 @@ model DC_converterTest "Simple model to test the DC_converter"
     Placement(visible = true, transformation(origin = {42, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
 equation
   connect(batterySystem.pin_n, dC_converter.pin_nFC) annotation (
-    Line(points = {{-4, 40}, {-10, 40}, {-10, 10}}, color = {0, 0, 255}));
+    Line(points={{-4.4,40.4},{-10,40.4},{-10,10}},  color = {0, 0, 255}));
   connect(batterySystem.pin_p, dC_converter.pin_pFC) annotation (
-    Line(points = {{4, 40}, {10, 40}, {10, 10}}, color = {0, 0, 255}));
+    Line(points={{4.4,40.4},{10,40.4},{10,10}},  color = {0, 0, 255}));
   connect(batterySystem1.pin_n, dC_converter.pin_nBus) annotation (
-    Line(points = {{-4, -40}, {-10, -40}, {-10, -10}}, color = {0, 0, 255}));
+    Line(points={{-4.4,-40.4},{-10,-40.4},{-10,-10}},  color = {0, 0, 255}));
   connect(batterySystem1.pin_p, dC_converter.pin_pBus) annotation (
-    Line(points = {{4, -40}, {10, -40}, {10, -10}}, color = {0, 0, 255}));
+    Line(points={{4.4,-40.4},{10,-40.4},{10,-10}},  color = {0, 0, 255}));
   connect(realExpression.y, dC_converter.I_Ref) annotation (
-    Line(points = {{32, 0}, {12, 0}}, color = {0, 0, 127}));
+    Line(points={{31,0},{22,0},{22,0.1},{11.5,0.1}},
+                                      color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
 end DC_converterTest;

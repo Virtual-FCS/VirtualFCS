@@ -3,7 +3,11 @@ model ThrottleValve
   //*** DEFINE REPLACEABLE PACKAGES ***//
   outer Modelica.Fluid.System system "System properties";
   // Medium declaration
-  replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  //replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  //replaceable package Medium = Modelica.Media.Air.MoistAir;
+  replaceable package Medium = Buildings.Media.Air(reference_X={0.01,0.99});
+  //replaceable package Medium = Buildings.Media.Air;
+  //replaceable package Medium = Buildings.Media.Air;
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) annotation (
@@ -29,11 +33,11 @@ model ThrottleValve
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(add.y, valveDownstream.opening) annotation (
-    Line(points = {{0, 26}, {0, 26}, {0, 8}, {0, 8}}, color = {0, 0, 127}));
+    Line(points={{0,25},{0,25},{0,8},{0,8}},          color = {0, 0, 127}));
   connect(pid.y, add.u1) annotation (
-    Line(points = {{-18, 70}, {-6, 70}, {-6, 48}, {-6, 48}}, color = {0, 0, 127}));
+    Line(points={{-19,70},{-6,70},{-6,48},{-6,48}},          color = {0, 0, 127}));
   connect(constant3.y, add.u2) annotation (
-    Line(points = {{41, 72.5}, {6, 72.5}, {6, 48}}, color = {0, 0, 127}));
+    Line(points={{41.25,72.5},{6,72.5},{6,48}},     color = {0, 0, 127}));
   connect(pressureGageDownstream.port, valveDownstream.port_a) annotation (
     Line(points = {{-24, 10}, {-10, 10}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
   connect(port_a, valveDownstream.port_a) annotation (
@@ -45,6 +49,22 @@ equation
   connect(pid.u_m, Measured_inlet_Air_pressure) annotation (
     Line(points = {{-30, 58}, {-46, 58}, {-46, 44}, {-114, 44}}, color = {0, 0, 127}));
   annotation (
-    Icon(graphics = {Polygon(origin = {-50, 0}, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}}), Polygon(origin = {50, 0}, rotation = 180, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}})}, coordinateSystem(initialScale = 0.1)),
+    Icon(graphics={  Polygon(origin = {-50, 0}, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}}), Polygon(origin = {50, 0}, rotation = 180, fillColor = {211, 211, 211}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-50, 60}, {-50, -60}, {50, 0}, {-50, 60}, {-50, 60}}),
+        Line(
+          points={{-100,60},{-100,-60}},
+          color={0,0,0},
+          thickness=0.5),
+        Line(
+          points={{-100,60},{100,-60}},
+          color={0,0,0},
+          thickness=0.5),
+        Line(
+          points={{-100,-60},{100,60}},
+          color={0,0,0},
+          thickness=0.5),
+        Line(
+          points={{100,60},{100,-60}},
+          color={0,0,0},
+          thickness=0.5)},                                                                                                                                                                                                        coordinateSystem(initialScale = 0.1)),
     Documentation(info = "<html><head></head><body>The ThrottleValve model is designed to maintain a set higher pressure on the upstream side relative to a lower pressure on the downstream side.<div><br></div><div><b>Description</b></div><div><b><br></b></div><div>The model maintains a low pressure on&nbsp;downstream&nbsp;by regulating the opening in a <a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Compressible Fluid Valve</a>. Regulation of the valve opening is managed using a <a href=\"modelica://Modelica.Blocks.Continuous.LimPID\">PID controller</a>.</div></body></html>"));
 end ThrottleValve;

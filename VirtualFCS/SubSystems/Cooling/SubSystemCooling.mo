@@ -84,7 +84,7 @@ equation
   connect(subSystemCoolingControl.Setpoint_Temperature, heatSink.Set_Point) annotation (
     Line(points = {{18, 88}, {25, 88}, {25, 104}, {-82, 104}, {-82, -34}, {18, -34}}, color = {0, 0, 127}));
   annotation (
-    Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
+    Icon(graphics={  Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
     experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),
     Diagram(graphics = {Text(origin = {55, 58}, extent = {{-19, 4}, {15, -2}}, textString = "Pump")}, coordinateSystem(extent = {{-100, 120}, {120, -100}})));
 end SubSystemCooling;

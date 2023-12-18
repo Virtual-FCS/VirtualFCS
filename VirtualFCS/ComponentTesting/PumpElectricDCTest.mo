@@ -20,17 +20,17 @@ model PumpElectricDCTest "Simple model to test the PumpElectricDC model"
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
   connect(sine1.y, abs1.u) annotation (
-    Line(points = {{-58, -70}, {-42, -70}}, color = {0, 0, 127}));
+    Line(points={{-59,-70},{-42,-70}},      color = {0, 0, 127}));
   connect(boundary.ports[1], pumpElectricDC.Input) annotation (
     Line(points = {{-60, 0}, {-18, 0}}, color = {0, 0, 255}, thickness = 1.5));
   connect(pumpElectricDC.Output, fixedBoundary.ports[1]) annotation (
     Line(points = {{18, 0}, {60, 0}}, color = {0, 0, 255}, thickness = 1.5));
   connect(batterySystem.pin_n, pumpElectricDC.pin_n) annotation (
-    Line(points = {{-4, 50}, {-6, 50}, {-6, 16}}, color = {0, 0, 255}));
+    Line(points={{-4.4,50.4},{-6,50.4},{-6,16}},  color = {0, 0, 255}));
   connect(batterySystem.pin_p, pumpElectricDC.pin_p) annotation (
-    Line(points = {{4, 50}, {6, 50}, {6, 16}}, color = {0, 0, 255}));
+    Line(points={{4.4,50.4},{6,50.4},{6,16}},  color = {0, 0, 255}));
   connect(sine.y, pumpElectricDC.contol_input) annotation (
-    Line(points = {{-34, -38}, {-6, -38}, {-6, -16}}, color = {0, 0, 127}));
+    Line(points={{-35,-38},{-6,-38},{-6,-16}},        color = {0, 0, 127}));
 annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
 end PumpElectricDCTest;

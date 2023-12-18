@@ -3,7 +3,8 @@ model TestAirSubsystem "Example to evaluate the performance of the air subsystem
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  //replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  replaceable package Medium = Buildings.Media.Air;
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Medium, nPorts = 1, use_m_flow_in = true) annotation (
     Placement(visible = true, transformation(origin = {0, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Blocks.Math.Gain gain(k = -0.032*1/(96485*2)) annotation (
@@ -18,21 +19,21 @@ model TestAirSubsystem "Example to evaluate the performance of the air subsystem
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation (
-    Line(points = {{0, 66}, {2, 66}, {2, 58}, {2, 58}}, color = {0, 127, 255}));
+    Line(points={{0,66},{2,66},{2,58},{1,58}},          color = {0, 127, 255}));
   connect(teeJunctionIdeal.port_1, subSystemAir.Output) annotation (
-    Line(points = {{-8, 50}, {-14, 50}, {-14, 24}, {-12, 24}}, color = {0, 170, 255}, thickness = 1));
+    Line(points={{-8,49},{-14,49},{-14,24.2},{-12,24.2}},      color = {0, 170, 255}, thickness = 1));
   connect(teeJunctionIdeal.port_2, subSystemAir.Input) annotation (
-    Line(points = {{10, 50}, {12, 50}, {12, 24}, {12, 24}}, color = {0, 170, 255}, thickness = 1));
+    Line(points={{10,49},{12,49},{12,24},{12.4,24}},        color = {0, 170, 255}, thickness = 1));
   connect(gain.y, boundary.m_flow_in) annotation (
-    Line(points = {{-28, 82}, {-22, 82}, {-22, 92}, {-8, 92}, {-8, 86}, {-8, 86}}, color = {0, 0, 127}));
+    Line(points={{-27.3,81},{-22,81},{-22,92},{-8,92},{-8,86},{-8,86}},            color = {0, 0, 127}));
   connect(subSystemAir.pin_n, batterySystem.pin_n) annotation (
-    Line(points = {{-10, -18}, {-10, -18}, {-10, -50}, {-8, -50}}, color = {0, 0, 255}));
+    Line(points={{-10,-18},{-10,-18},{-10,-50.8},{-8.8,-50.8}},    color = {0, 0, 255}));
   connect(subSystemAir.pin_p, batterySystem.pin_p) annotation (
-    Line(points = {{10, -18}, {8, -18}, {8, -50}, {8, -50}}, color = {0, 0, 255}));
+    Line(points={{10,-18},{8,-18},{8,-50.8},{8.8,-50.8}},    color = {0, 0, 255}));
   connect(trapezoid.y, gain.u) annotation (
-    Line(points = {{-64, 80}, {-44, 80}, {-44, 82}}, color = {0, 0, 127}));
+    Line(points={{-65,80},{-43.4,80},{-43.4,81}},    color = {0, 0, 127}));
   connect(trapezoid.y, subSystemAir.control) annotation (
-    Line(points = {{-64, 80}, {-54, 80}, {-54, 10}, {-22, 10}}, color = {0, 0, 127}));
+    Line(points={{-65,80},{-54,80},{-54,10},{-22,10}},          color = {0, 0, 127}));
   annotation (
     Diagram,
     Icon,
@@ -41,5 +42,9 @@ equation
 <p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>
 
 <!--EndFragment--></div></body></html>"),
-    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
+    experiment(
+      StopTime=6000,
+      Interval=1,
+      Tolerance=1e-06,
+      __Dymola_Algorithm="Dassl"));
 end TestAirSubsystem;
