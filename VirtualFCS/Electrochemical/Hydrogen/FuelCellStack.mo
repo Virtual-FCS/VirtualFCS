@@ -4,8 +4,9 @@ model FuelCellStack
   // System
   outer Modelica.Fluid.System system "System properties";
   // Medium models
-  replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
+  //replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
+  replaceable package Cathode_Medium = Buildings.Media.Air;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;// constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
   replaceable package Coolant_Medium =
       Modelica.Media.Water.ConstantPropertyLiquidWater                                  constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** DECLARE PARAMETERS ***//
@@ -24,8 +25,8 @@ model FuelCellStack
   // Electrochemical parameters
   parameter Modelica.Units.SI.Current i_0_FC_stack = 0.0000193 "FC stack cell exchange current";
   parameter Modelica.Units.SI.Current i_x_FC_stack = 0.001 "FC stack cell cross-over current";
-  parameter Real b_1_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell Tafel slope";
-  parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
+  //parameter Real b_1_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell Tafel slope";
+  //parameter Real b_2_FC_stack(unit = "V/dec") = 0.0985 "FC stack cell trasport limitation factor";
   parameter Modelica.Units.SI.Resistance R_O_FC_stack = 0.0923 "FC stack cell ohmic resistance";
   // Thermal parameters
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
@@ -102,7 +103,8 @@ model FuelCellStack
         Cathode_Medium,                                                                                  V = 0.01) annotation (
     Placement(visible = true, transformation(origin = {120, 38}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice orifice(redeclare package Medium =
-        Cathode_Medium,                                                                           diameter = 0.01, zeta = 0.7)  annotation (
+        Cathode_Medium,
+    diameter=0.01,                                                                                                 zeta = 0.7)  annotation (
     Placement(visible = true, transformation(origin = {96, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume1(redeclare
       package                                                                    Medium =
@@ -137,11 +139,12 @@ equation
   connect(pin_n, potentialSource.n) annotation (
     Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
   connect(O2_mflow.y, O2_sink.m_flow_in) annotation (
-    Line(points = {{43, 60}, {74, 60}, {74, 48}}, color = {0, 0, 127}));
+    Line(points={{42.8,60},{74,60},{74,48}},      color = {0, 0, 127}));
   connect(H2_mflow.y, H2_sink.m_flow_in) annotation (
-    Line(points = {{-43, 60}, {-68, 60}, {-68, 50}, {-70, 50}}, color = {0, 0, 127}));
+    Line(points={{-42.9,60},{-68,60},{-68,49},{-70,49}},        color = {0, 0, 127}));
   connect(thermalConductor.port_b, pipeCoolant.heatPorts[1]) annotation (
-    Line(points = {{0, -56}, {0, -44}}, color = {191, 0, 0}));
+    Line(points={{0,-56},{0,-50},{0,-44.4},{0.1,-44.4}},
+                                        color = {191, 0, 0}));
   connect(thermalConductor.port_a, heatCapacitor.port) annotation (
     Line(points = {{0, -76}, {0, -76}, {0, -114}, {0, -114}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, heatPort) annotation (
@@ -153,13 +156,13 @@ equation
   connect(temperatureSensor.port, heatCapacitor.port) annotation (
     Line(points = {{-50, -102}, {-50, -102}, {-50, -114}, {2, -114}, {2, -114}, {0, -114}}, color = {191, 0, 0}));
   connect(temperatureSensor.T, H2_sink.T_in) annotation (
-    Line(points = {{-50, -82}, {-50, -82}, {-50, 44}, {-68, 44}, {-68, 46}}, color = {0, 0, 127}));
+    Line(points={{-50,-81},{-50,-81},{-50,44},{-68,44},{-68,45}},            color = {0, 0, 127}));
   connect(currentSensor.n, potentialSource.p) annotation (
     Line(points = {{-10, 100}, {-60, 100}, {-60, 110}, {-60, 110}}, color = {0, 0, 255}));
   connect(currentSensor.i, H2_mflow.u) annotation (
-    Line(points = {{0, 90}, {-8, 90}, {-8, 60}, {-22, 60}}, color = {0, 0, 127}));
+    Line(points={{0,89},{-8,89},{-8,60},{-22.2,60}},        color = {0, 0, 127}));
   connect(currentSensor.i, O2_mflow.u) annotation (
-    Line(points = {{0, 90}, {10, 90}, {10, 60}, {24, 60}, {24, 60}}, color = {0, 0, 127}));
+    Line(points={{0,89},{10,89},{10,60},{24.4,60},{24.4,60}},        color = {0, 0, 127}));
   connect(currentSensor.p, pin_p) annotation (
     Line(points = {{10, 100}, {60, 100}, {60, 150}}, color = {0, 0, 255}));
   connect(teeJunctionVolume.port_1, port_a_Air) annotation (
@@ -171,7 +174,7 @@ equation
   connect(orifice.port_b, port_b_Air) annotation (
     Line(points = {{96, 0}, {97, 0}, {97, -8}, {150, -8}}, color = {0, 127, 255}));
   connect(teeJunctionVolume1.port_3, H2_sink.ports[1]) annotation (
-    Line(points = {{-116, 44}, {-106, 44}, {-106, 42}, {-90, 42}}, color = {0, 127, 255}));
+    Line(points={{-116,44},{-106,44},{-106,41},{-90,41}},          color = {0, 127, 255}));
   connect(teeJunctionVolume1.port_1, port_a_H2) annotation (
     Line(points = {{-126, 54}, {-126, 80}, {-150, 80}}, color = {0, 127, 255}));
   connect(teeJunctionVolume1.port_2, simpleGenericOrifice.port_a) annotation (

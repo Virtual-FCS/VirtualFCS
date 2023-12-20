@@ -3,7 +3,7 @@ model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   Modelica.Blocks.Math.Gain gain(k = -0.00202 * 1 / (96485 * 2)) annotation (
     Placement(visible = true, transformation(origin = {-34, 80}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation (

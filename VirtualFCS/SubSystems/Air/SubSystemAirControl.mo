@@ -1,6 +1,6 @@
 within VirtualFCS.SubSystems.Air;
 block SubSystemAirControl
-  parameter Modelica.Units.SI.Pressure pressure_Air_set = 150000 "Set air Pressure";
+  parameter Modelica.Units.SI.Pressure pressure_Air_set = 1.5 "Set air Pressure";
  // parameter Modelica.Units.SI.MassFlowRate massFlow_Air_set = 4e-3 "Set air Recirculation Mass Flow";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   VirtualFCS.Control.PumpSpeedControl pumpSpeedControl annotation (
@@ -23,17 +23,18 @@ block SubSystemAirControl
     Placement(visible = true, transformation(origin = {-119, 30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(setAirPressure.y, multiplex2.u1[1]) annotation (
-    Line(points = {{18, 146}, {94, 146}, {94, 21}}, color = {0, 0, 127}));
+    Line(points={{17.5,145},{94.4,145},{94.4,20.8}},color = {0, 0, 127}));
   connect(pumpSpeedControl.setPumpSpeed, multiplex2.u2[1]) annotation (
-    Line(points = {{64, 0}, {92, 0}, {92, -1}, {94, -1}}, color = {0, 0, 127}));
+    Line(points={{63.8,0},{92,0},{92,-0.8},{94.4,-0.8}},  color = {0, 0, 127}));
   connect(multiplex2.y, controlInterface) annotation (
-    Line(points = {{136, 10}, {210, 10}}, color = {0, 0, 127}));
+    Line(points={{135.8,10},{210,10}},    color = {0, 0, 127}));
   connect(sensorInterface, deMultiplexAirSensors.u) annotation (
-    Line(points = {{-220, -120}, {-164, -120}}, color = {0, 0, 127}));
+    Line(points={{-220,-120},{-164.4,-120}},    color = {0, 0, 127}));
   connect(getAirMassFlow.y, pumpSpeedControl.getMassFlow) annotation (
-    Line(points = {{-94, -30}, {-64, -30}}, color = {0, 0, 127}));
+    Line(points={{-93.7,-30},{-78,-30},{-78,-29},{-63.8,-29}},
+                                            color = {0, 0, 127}));
   connect(setAirMassFlow.y, pumpSpeedControl.setMassFlow) annotation (
-    Line(points = {{-94, 30}, {-64, 30}, {-64, 28}}, color = {0, 0, 127}));
+    Line(points={{-93.7,30},{-63.8,30},{-63.8,29}},  color = {0, 0, 127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={  Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin = {-25, 244}, textColor = {0, 0, 255}, extent = {{-53, 28}, {91, -54}}, textString = "%name")}),

@@ -8,8 +8,7 @@ model ThrottleValveTest "Simple model to test the ThrottleValve model"
   replaceable package Medium = Buildings.Media.Air(reference_X={0.01,0.99});
   VirtualFCS.Fluid.ThrottleValve throttleValve annotation (
     Placement(visible = true, transformation(origin = {1.77636e-15, -1.77636e-15}, extent = {{-20, 20}, {20, -20}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary fixedBoundary(redeclare package Medium
-      =                                                                         Medium, nPorts = 1) annotation (
+  Modelica.Fluid.Sources.FixedBoundary fixedBoundary(redeclare package Medium = Medium, nPorts = 1) annotation (
     Placement(visible = true, transformation(origin = {50, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   Modelica.Blocks.Sources.RealExpression realExpression(y = 101325*3)  annotation (
     Placement(visible = true, transformation(origin = {36, 34}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
