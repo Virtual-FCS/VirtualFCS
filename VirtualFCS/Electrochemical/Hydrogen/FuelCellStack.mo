@@ -19,8 +19,9 @@ model FuelCellStack
   parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack*W_FC_stack*H_FC_stack "FC stack volume";
   parameter Modelica.Units.SI.Current I_rated_FC_stack = 280 "FC stack rated current";
   parameter Modelica.Units.SI.Current i_L_FC_stack = 1.12 "FC stack cell maximum limiting current A/cm2";
-  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
-  parameter Modelica.Units.SI.Area A_FC_surf = 285 "FC stack surface area";
+  parameter Real N_FC_stack = 180 "FC stack number of cells";
+  //parameter Modelica.Units.SI.Area A_FC_surf = 285 "FC stack surface area";
+  parameter Real A_FC_surf(unit = "cm2") = 285 "FC stack surface area";
   //parameter Modelica.Units.SI.Area A_FC_surf = 2*(L_FC_stack*W_FC_stack) + 2*(L_FC_stack*H_FC_stack) + 2*(W_FC_stack*H_FC_stack) "FC stack surface area";
   // Electrochemical parameters
   parameter Modelica.Units.SI.Current i_0_FC_stack = 0.0000193 "FC stack cell exchange current";
@@ -32,8 +33,8 @@ model FuelCellStack
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
-  Modelica.Units.SI.MolarHeatCapacity R = 8.314;
-  Modelica.Units.SI.FaradayConstant F = 96485;
+  constant Real R(unit="J/(mol.K)") = Modelica.Constants.R;
+  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
   // Fuel cell variables
   Modelica.Units.SI.Voltage V_cell;
   Modelica.Units.SI.Power P_th;

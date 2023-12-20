@@ -11,7 +11,9 @@ model RangeExtenderHybridVehicle
     Placement(visible = true, transformation(origin={-2,0},   extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   VirtualFCS.Vehicles.DriveCycle driveCycle(v="NEDC")                                              annotation (
     Placement(visible = true, transformation(origin = {-60, -6.66134e-16}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  Real fuel_consumption(unit = "kg/100km", start = 0) "The total fuel consumption at the end of simulation";
+
+
+  Real fuel_consumption(start = 0) "The total fuel consumption at the end of simulation";
   Modelica.Units.SI.Mass hydrogen_mass_init(start = 0) "Initial value of hydrogen mass in tank";
   Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
 equation

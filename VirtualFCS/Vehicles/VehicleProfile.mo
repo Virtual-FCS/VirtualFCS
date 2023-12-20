@@ -30,7 +30,7 @@ model VehicleProfile "Calculates the driving power for a vehicle that correspond
   Modelica.Units.SI.AngularVelocity omega_engine "Motor Rotation, rad/s";
   Modelica.Units.NonSI.AngularVelocity_rpm N_engine "Motor Rotation, rpm";
   //  Real tau(unit = "N.m") "Motor Torque";
-  Modelica.Units.SI.Position x(fixed = true) "Position";
+  Modelica.Units.SI.Position x "Position";
   Modelica.Units.SI.Power P;
   Real current "load current based on V_load";
   // *** INSTANTIATE COMPONENTS *** //
