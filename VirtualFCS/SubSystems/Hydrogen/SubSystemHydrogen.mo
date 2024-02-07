@@ -4,7 +4,7 @@ model SubSystemHydrogen
   // System
   outer Modelica.Fluid.System system "System properties";
   // Medium declaration
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start)) constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start)) constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
   // Parameter definition
   parameter Real m_system_H2(unit = "kg") = 61 "H2 system mass";
   parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
