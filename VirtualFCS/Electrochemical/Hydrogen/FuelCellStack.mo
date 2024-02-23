@@ -6,9 +6,11 @@ model FuelCellStack
   // Medium models
   //replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Cathode_Medium = Buildings.Media.Air;
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;// constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
+
+
   replaceable package Coolant_Medium =
-      Modelica.Media.Water.ConstantPropertyLiquidWater                                  constrainedby Modelica.Media.Interfaces.PartialMedium;
+      Modelica.Media.Water.ConstantPropertyLiquidWater                                                                    constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters

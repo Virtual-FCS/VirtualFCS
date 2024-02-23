@@ -3,9 +3,8 @@ model FuelCellSubSystems
   // System
   outer Modelica.Fluid.System system "System properties";
   // Medium decleration
-  //replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Cathode_Medium = Buildings.Media.Air;
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2; //constrainedby Modelica.Media.Interfaces.PartialSimpleIdealGasMedium;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
   replaceable package Coolant_Medium =
       Modelica.Media.Water.ConstantPropertyLiquidWater;                                                                    //constrainedby Modelica.Media.Interfaces.PartialMedium;
   // H2 Subsystem Paramters
