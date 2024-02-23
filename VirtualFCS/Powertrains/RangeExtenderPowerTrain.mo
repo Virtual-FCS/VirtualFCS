@@ -10,7 +10,7 @@ model RangeExtenderPowerTrain
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
-  parameter Modelica.Units.SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure" annotation (
+  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
   // Fuel Cell Stack Paramters
   parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass" annotation (
@@ -23,13 +23,11 @@ model RangeExtenderPowerTrain
     Dialog(group = "Fuel Cell Stack Parameters"));
   parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume" annotation (
     Dialog(group = "Fuel Cell Stack Parameters"));
-  //parameter Modelica.Units.SI.Voltage V_rated_FC_stack = 57.9 "FC stack maximum operating voltage" annotation(Dialog(group = "Fuel Cell Stack Parameters"));
-  //parameter Modelica.Units.SI.ElectricCurrent I_min_FC_stack = 0.25 * I_nom_FC_stack "FC stack minimum current" annotation(Dialog(group = "Fuel Cell Stack Parameters"));
   parameter Modelica.Units.SI.ElectricCurrent I_nom_FC_stack = 300 "FC stack nominal current" annotation (
     Dialog(group = "Fuel Cell Stack Parameters"));
   parameter Modelica.Units.SI.ElectricCurrent I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current" annotation (
     Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Real N_FC_stack(unit = "1") = 280 "FC stack number of cells" annotation (
+  parameter Integer N_FC_stack = 280 "FC stack number of cells" annotation (
     Dialog(group = "Fuel Cell Stack Parameters"));
   // Battery Pack Parameters
   parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack" annotation (
@@ -86,23 +84,23 @@ equation
   connect(pin_n, ground.p) annotation (
     Line(points = {{-40, 96}, {-68, 96}, {-68, 14}}, color = {0, 0, 255}));
   connect(converter.dc_n2, batterySystem.pin_n) annotation (
-    Line(points = {{-6, 20}, {-6, -22}, {-32, -22}, {-32, -62}}, color = {0, 0, 255}));
+    Line(points={{-6,20},{-6,-22},{-32.4,-22},{-32.4,-62.4}},    color = {0, 0, 255}));
   connect(converter.dc_p2, batterySystem.pin_p) annotation (
-    Line(points = {{6, 20}, {6, -36}, {-24, -36}, {-24, -62}}, color = {0, 0, 255}));
+    Line(points={{6,20},{6,-36},{-23.6,-36},{-23.6,-62.4}},    color = {0, 0, 255}));
   connect(converter.dc_n1, pin_n) annotation (
     Line(points = {{-6, 40}, {-38, 40}, {-38, 96}, {-40, 96}}, color = {0, 0, 255}));
   connect(energyManagementSystem.sensorInterface, batterySystem.sensorOutput) annotation (
-    Line(points = {{-54, -72}, {-40, -72}, {-40, -72}, {-38, -72}}, color = {0, 0, 127}));
+    Line(points={{-53.9,-72.1},{-40,-72.1},{-40,-72},{-39,-72}},    color = {0, 0, 127}));
   connect(energyManagementSystem.controlInterface, dC_converter.I_Ref) annotation (
-    Line(points = {{-78, -72}, {-92, -72}, {-92, -16}, {24, -16}, {24, -32.5}, {22, -32.5}}, color = {0, 0, 127}));
+    Line(points={{-77,-72},{-92,-72},{-92,-16},{24,-16},{24,-32.5},{21.9,-32.5}},            color = {0, 0, 127}));
   connect(dC_converter.pin_pBus, fuelCellSystem.pin_p) annotation (
-    Line(points = {{32, -34}, {78, -34}, {78, -62}}, color = {0, 0, 255}));
+    Line(points={{32,-34},{77,-34},{77,-63}},        color = {0, 0, 255}));
   connect(dC_converter.pin_nBus, fuelCellSystem.pin_n) annotation (
-    Line(points = {{32, -54}, {68, -54}, {68, -62}}, color = {0, 0, 255}));
+    Line(points={{32,-54},{67,-54},{67,-63}},        color = {0, 0, 255}));
   connect(dC_converter.pin_nFC, batterySystem.pin_n) annotation (
-    Line(points = {{12, -54}, {-32, -54}, {-32, -62}}, color = {0, 0, 255}));
+    Line(points={{12,-54},{-32.4,-54},{-32.4,-62.4}},  color = {0, 0, 255}));
   connect(dC_converter.pin_pFC, batterySystem.pin_p) annotation (
-    Line(points = {{12, -34}, {-24, -34}, {-24, -62}}, color = {0, 0, 255}));
+    Line(points={{12,-34},{-23.6,-34},{-23.6,-62.4}},  color = {0, 0, 255}));
   connect(converter.dc_p1, pin_p) annotation (
     Line(points = {{6, 40}, {42, 40}, {42, 96}}, color = {0, 0, 255}));
   annotation (

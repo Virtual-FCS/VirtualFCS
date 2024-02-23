@@ -7,10 +7,8 @@ model FuelCellStack
   //replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Cathode_Medium = Buildings.Media.Air;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
-
-
   replaceable package Coolant_Medium =
-      Modelica.Media.Water.ConstantPropertyLiquidWater                                                                    constrainedby Modelica.Media.Interfaces.PartialMedium;
+      Modelica.Media.Water.ConstantPropertyLiquidWater                                  constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
@@ -21,10 +19,8 @@ model FuelCellStack
   parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack*W_FC_stack*H_FC_stack "FC stack volume";
   parameter Modelica.Units.SI.Current I_rated_FC_stack = 280 "FC stack rated current";
   parameter Modelica.Units.SI.Current i_L_FC_stack = 1.12 "FC stack cell maximum limiting current A/cm2";
-  parameter Real N_FC_stack = 180 "FC stack number of cells";
-  //parameter Modelica.Units.SI.Area A_FC_surf = 285 "FC stack surface area";
-  parameter Real A_FC_surf(unit = "cm2") = 285 "FC stack surface area";
-  //parameter Modelica.Units.SI.Area A_FC_surf = 2*(L_FC_stack*W_FC_stack) + 2*(L_FC_stack*H_FC_stack) + 2*(W_FC_stack*H_FC_stack) "FC stack surface area";
+  parameter Integer N_FC_stack = 180 "FC stack number of cells";
+  parameter Modelica.Units.NonSI.Area_cm A_FC_surf = 285 "FC stack surface area";
   // Electrochemical parameters
   parameter Modelica.Units.SI.Current i_0_FC_stack = 0.0000193 "FC stack cell exchange current";
   parameter Modelica.Units.SI.Current i_x_FC_stack = 0.001 "FC stack cell cross-over current";
@@ -35,14 +31,14 @@ model FuelCellStack
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
   //*** DECLARE VARIABLES ***//
   // Physical constants
-  constant Real R(unit="J/(mol.K)") = Modelica.Constants.R;
+  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
   // Fuel cell variables
   Modelica.Units.SI.Voltage V_cell;
   Modelica.Units.SI.Power P_th;
-  Modelica.Units.SI.Pressure p_H2(min = 0);
-  Modelica.Units.SI.Pressure p_O2(min = 0);
-  Modelica.Units.SI.Pressure p_0 = 100000;
+  Modelica.Units.SI.AbsolutePressure p_H2(min = 0);
+  Modelica.Units.SI.AbsolutePressure p_O2(min = 0);
+  Modelica.Units.SI.AbsolutePressure p_0 = 100000 "Aprox. atmospheric pressure";
   //*** INSTANTIATE COMPONENTS ***//
   // Efficiencies
   Modelica.Units.SI.Efficiency eta_FC_LHV "Lower heating value efficiency of fuel cell stack";
@@ -79,7 +75,7 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {-60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation (
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain H2_mflow(k = 0.002016/(96485*2)*N_FC_stack) annotation (
+  Modelica.Blocks.Math.Gain H2_mflow(k = 0.002016/(96485*2)* N_FC_stack) annotation (
     Placement(visible = true, transformation(origin = {-33, 60}, extent = {{9, -9}, {-9, 9}}, rotation = 0)));
   Modelica.Blocks.Math.Gain O2_mflow(k = 0.02897/(96485*4*0.21)*N_FC_stack) annotation (
     Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));

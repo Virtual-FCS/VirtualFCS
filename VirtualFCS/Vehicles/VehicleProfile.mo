@@ -9,9 +9,9 @@ model VehicleProfile "Calculates the driving power for a vehicle that correspond
   Modelica.Units.SI.Mass m "mass of the vehicle";
   parameter Modelica.Units.SI.Density rho_air = 1.2 "Volumic mass of the air";
   parameter Modelica.Units.SI.Area A_front = 2.7 "Front area of the vehicle";
-  parameter Real C_D(unit = "1") = 0.26 "Drag coefficient";
+  parameter Modelica.Units.SI.CoefficientOfFriction C_D = 0.26 "Drag coefficient";
   parameter Modelica.Units.SI.Diameter D_tire = 0.4318 "Tire Diameter";
-  parameter Real R_gear(unit = "1") = 3.478 "Reduction Gear Ratio";
+  parameter Modelica.Units.SI.DimensionlessRatio R_gear = 3.478 "Reduction Gear Ratio";
   parameter Modelica.Units.SI.Voltage V_load = 343 "Load Voltage";
   parameter Boolean useRegenerativeBreaking = true annotation (
     choices(checkBox = true));
@@ -32,7 +32,8 @@ model VehicleProfile "Calculates the driving power for a vehicle that correspond
   //  Real tau(unit = "N.m") "Motor Torque";
   Modelica.Units.SI.Position x "Position";
   Modelica.Units.SI.Power P;
-  Real current "load current based on V_load";
+  //Real current "load current based on V_load";
+  Modelica.Units.SI.Current current "Load current based on V_load";
   // *** INSTANTIATE COMPONENTS *** //
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {72, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(extent = {{80, -60}, {100, -40}}, rotation = 0)));

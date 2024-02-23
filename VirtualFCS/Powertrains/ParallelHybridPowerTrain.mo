@@ -4,7 +4,7 @@ model ParallelHybridPowerTrain
   parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus";
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
-  parameter Modelica.Units.SI.Pressure p_tank_H2 = 3500000 "H2 tank initial pressure";
+  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 3500000 "H2 tank initial pressure";
   // Fuel Cell Stack Paramters
   parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass";
   parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length";
@@ -15,7 +15,7 @@ model ParallelHybridPowerTrain
   parameter Modelica.Units.SI.Current I_rated_FC_stack = 300 "FC stack minimum operating voltage";
   parameter Modelica.Units.SI.Current i_L_FC_stack = 1.7 * I_rated_FC_stack "FC stack maximum limiting current";
   parameter Modelica.Units.SI.Current I_nom_FC_stack = 0.25 * I_rated_FC_stack "FC stack maximum limiting current";
-  parameter Real N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells";
+  parameter Integer N_FC_stack(unit = "1") = floor(V_rated_FC_stack / 0.6433) "FC stack number of cells";
   // Battery Pack Parameters
   parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack";
   parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length";
@@ -53,35 +53,35 @@ equation
   connect(pin_n, ground.p) annotation (
     Line(points = {{-40, 96}, {-68, 96}, {-68, 14}}, color = {0, 0, 255}));
   connect(converter.dc_n2, batterySystem.pin_n) annotation (
-    Line(points = {{-34, 18}, {-34, -22}, {-32, -22}, {-32, -62}}, color = {0, 0, 255}));
+    Line(points={{-34,18},{-34,-22},{-32.4,-22},{-32.4,-62.4}},    color = {0, 0, 255}));
   connect(converter.dc_p2, batterySystem.pin_p) annotation (
-    Line(points = {{-22, 18}, {-22, -36}, {-24, -36}, {-24, -62}}, color = {0, 0, 255}));
+    Line(points={{-22,18},{-22,-36},{-23.6,-36},{-23.6,-62.4}},    color = {0, 0, 255}));
   connect(converter.dc_n1, pin_n) annotation (
     Line(points = {{-34, 38}, {-38, 38}, {-38, 96}, {-40, 96}}, color = {0, 0, 255}));
   connect(converter.dc_p1, pin_p) annotation (
     Line(points = {{-22, 38}, {-22, 80}, {40, 80}, {40, 96}}, color = {0, 0, 255}));
   connect(converter1.dc_n2, fuelCellSystem.pin_n) annotation (
-    Line(points = {{66, 24}, {68, 24}, {68, -62}, {68, -62}}, color = {0, 0, 255}));
+    Line(points={{66,24},{68,24},{68,-63},{67,-63}},          color = {0, 0, 255}));
   connect(converter1.dc_p2, fuelCellSystem.pin_p) annotation (
-    Line(points = {{78, 24}, {78, 24}, {78, -62}, {78, -62}}, color = {0, 0, 255}));
+    Line(points={{78,24},{78,24},{78,-63},{77,-63}},          color = {0, 0, 255}));
   connect(converter1.dc_n1, pin_n) annotation (
     Line(points = {{66, 44}, {64, 44}, {64, 64}, {-38, 64}, {-38, 96}, {-40, 96}}, color = {0, 0, 255}));
   connect(pin_p, converter1.dc_p1) annotation (
     Line(points = {{40, 96}, {78, 96}, {78, 44}, {78, 44}}, color = {0, 0, 255}));
   connect(energyManagementSystem.sensorInterface, batterySystem.sensorOutput) annotation (
-    Line(points = {{-56, -72}, {-38, -72}, {-38, -72}, {-38, -72}}, color = {0, 0, 127}));
+    Line(points={{-55.9,-72.1},{-38,-72.1},{-38,-72},{-39,-72}},    color = {0, 0, 127}));
   connect(energyManagementSystem.controlInterface, dC_converter.I_Ref) annotation (
-    Line(points = {{-80, -72}, {-90, -72}, {-90, -18}, {22, -18}, {22, -32.5}}, color = {0, 0, 127}));
+    Line(points={{-79,-72},{-90,-72},{-90,-18},{21.9,-18},{21.9,-32.5}},        color = {0, 0, 127}));
   connect(booleanConstant.y, converter1.u) annotation (
-    Line(points = {{48, 32}, {58, 32}, {58, 32}, {60, 32}}, color = {255, 0, 255}));
+    Line(points={{47,32},{58,32},{58,32.4},{60,32.4}},      color = {255, 0, 255}));
   connect(dC_converter.pin_nBus, fuelCellSystem.pin_n) annotation (
-    Line(points = {{32, -54}, {68, -54}, {68, -62}, {68, -62}}, color = {0, 0, 255}));
+    Line(points={{32,-54},{68,-54},{68,-63},{67,-63}},          color = {0, 0, 255}));
   connect(dC_converter.pin_pBus, fuelCellSystem.pin_p) annotation (
-    Line(points = {{32, -34}, {78, -34}, {78, -62}, {78, -62}}, color = {0, 0, 255}));
+    Line(points={{32,-34},{78,-34},{78,-63},{77,-63}},          color = {0, 0, 255}));
   connect(dC_converter.pin_nFC, batterySystem.pin_n) annotation (
-    Line(points = {{12, -54}, {-32, -54}, {-32, -62}, {-32, -62}}, color = {0, 0, 255}));
+    Line(points={{12,-54},{-32,-54},{-32,-62.4},{-32.4,-62.4}},    color = {0, 0, 255}));
   connect(dC_converter.pin_pFC, batterySystem.pin_p) annotation (
-    Line(points = {{12, -34}, {-24, -34}, {-24, -62}, {-24, -62}}, color = {0, 0, 255}));
+    Line(points={{12,-34},{-24,-34},{-24,-62.4},{-23.6,-62.4}},    color = {0, 0, 255}));
   annotation (
     Icon(graphics={  Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)));
 end ParallelHybridPowerTrain;

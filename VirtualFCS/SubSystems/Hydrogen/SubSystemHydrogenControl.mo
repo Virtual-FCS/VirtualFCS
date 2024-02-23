@@ -1,8 +1,7 @@
 within VirtualFCS.SubSystems.Hydrogen;
 model SubSystemHydrogenControl
-  parameter Modelica.Units.SI.Pressure pressure_H2_set = 200000 "Set H2 Pressure";
-  //parameter Modelica.Units.SI.MassFlowRate massFlow_H2_set = 1e-2 "Set H2 Recirculation Mass Flow";
-  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
+  parameter Modelica.Units.SI.AbsolutePressure pressure_H2_set = 200000 "Set H2 Pressure";
+  parameter Integer N_FC_stack = 180 "FC stack number of cells";
   Modelica.Blocks.Routing.Multiplex3 multiplexSignalsH2Subsystem annotation (
     Placement(visible = true, transformation(origin = {124, 40}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression getH2MassFlow(y = deMultiplexH2Sensors.y1[1]) annotation (
@@ -25,21 +24,22 @@ model SubSystemHydrogenControl
     Placement(visible = true, transformation(origin = {-81, -28}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(pumpSpeedControl.setPumpSpeed, multiplexSignalsH2Subsystem.u3[1]) annotation (
-    Line(points = {{31, -44}, {52, -44}, {52, 32}, {66, 32}, {66, 29}, {105, 29}}, color = {0, 0, 127}));
+    Line(points={{31.1,-44},{52,-44},{52,32},{66,32},{66,28.8},{104.8,28.8}},      color = {0, 0, 127}));
   connect(purgeValveControl.purgeValveControl, multiplexSignalsH2Subsystem.u2[1]) annotation (
-    Line(points = {{33, 40}, {105, 40}}, color = {0, 0, 127}));
+    Line(points={{33.1,40},{104.8,40}},  color = {0, 0, 127}));
   connect(getH2MassFlow.y, pumpSpeedControl.getMassFlow) annotation (
-    Line(points = {{-56, -60}, {-37, -60}, {-37, -59.5}}, color = {0, 0, 127}));
+    Line(points={{-55.7,-60},{-37.1,-60},{-37.1,-59.5}},  color = {0, 0, 127}));
   connect(setH2Pressure.y, multiplexSignalsH2Subsystem.u1[1]) annotation (
-    Line(points = {{15.5, 113}, {52, 113}, {52, 55}, {59.5, 55}, {59.5, 51}, {105, 51}}, color = {0, 0, 127}));
+    Line(points={{15.5,113},{52,113},{52,55},{59.5,55},{59.5,51.2},{104.8,51.2}},        color = {0, 0, 127}));
   connect(multiplexSignalsH2Subsystem.y, controlInterface) annotation (
-    Line(points = {{142, 40}, {204, 40}, {204, 40}, {210, 40}}, color = {0, 0, 127}));
+    Line(points={{141.6,40},{204,40},{204,40},{210,40}},        color = {0, 0, 127}));
   connect(signalInterface_H2, deMultiplexH2Sensors.u) annotation (
-    Line(points = {{-218, -120}, {-176, -120}}, color = {0, 0, 127}, thickness = 0.5));
+    Line(points={{-218,-120},{-175.6,-120}},    color = {0, 0, 127}, thickness = 0.5));
   connect(signalInterface_FC, purgeValveControl.fuelCellCurrent) annotation (
-    Line(points = {{-220, 120}, {-102, 120}, {-102, 40}, {-36, 40}, {-36, 40}}, color = {0, 0, 127}));
+    Line(points={{-220,120},{-102,120},{-102,40},{-35.1,40},{-35.1,40}},        color = {0, 0, 127}));
   connect(setH2MassFlow.y, pumpSpeedControl.setMassFlow) annotation (
-    Line(points = {{-56, -28}, {-38, -28}}, color = {0, 0, 127}));
+    Line(points={{-55.7,-28},{-46,-28},{-46,-28.5},{-37.1,-28.5}},
+                                            color = {0, 0, 127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={  Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin = {-9, 240}, textColor = {0, 0, 255}, extent = {{-137, 34}, {137, -34}}, textString = "%name")}),

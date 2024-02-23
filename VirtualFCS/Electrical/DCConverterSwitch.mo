@@ -2,7 +2,6 @@ within VirtualFCS.Electrical;
 model DCConverterSwitch "DC controlled single phase DC/AC converter"
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin1;
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin2;
-  // extends .PhotoVoltaics.Icons.Converter;
   parameter Modelica.Units.SI.Voltage vDCref = 48 "Reference DC source voltage";
   parameter Modelica.Units.SI.Time Ti = 1E-6 "Internal integration time constant";
   Modelica.Electrical.Analog.Sources.SignalVoltage signalVoltage annotation (
@@ -45,7 +44,8 @@ equation
   connect(gain.y, feedback.u2) annotation (
     Line(points = {{-11, 1.33227e-15}, {-21, 1.33227e-15}, {-21, 0}, {-10, 0}, {-22, 0}}, color = {0, 0, 127}));
   connect(gain.u, powerSensor.power) annotation (
-    Line(points = {{12, -1.33227e-15}, {12, 0}, {40, 0}, {60, 0}, {60, -2}, {69, -2}}, color = {0, 0, 127}));
+    Line(points={{12,-1.33227e-15},{12,0},{40,0},{60,0},{60,1.77636e-15},{69,1.77636e-15}},
+                                                                                       color = {0, 0, 127}));
   connect(powerSensor.pv, powerSensor.pc) annotation (
     Line(points = {{90, -10}, {90, -10}, {90, 0}, {80, 0}}, color = {0, 0, 255}));
   connect(currentSensor.p, dc_p1) annotation (
@@ -59,13 +59,13 @@ equation
   connect(resistor.n, powerSensor.pc) annotation (
     Line(points = {{80, 22}, {80, 22}, {80, 0}, {80, 0}}, color = {0, 0, 255}));
   connect(feedback.y, integrator.u) annotation (
-    Line(points = {{-30, -8}, {-30, -40}, {-20, -40}}, color = {0, 0, 127}));
+    Line(points={{-30,-9},{-30,-40},{-20,-40}},        color = {0, 0, 127}));
   connect(integrator.y, switch1.u1) annotation (
-    Line(points = {{4, -40}, {22, -40}, {22, -40}, {24, -40}}, color = {0, 0, 127}));
+    Line(points={{3,-40},{22,-40},{22,-40},{24,-40}},          color = {0, 0, 127}));
   connect(switch1.y, variableCurrentSource.i) annotation (
-    Line(points = {{48, -48}, {52, -48}, {52, -40}, {68, -40}}, color = {0, 0, 127}));
+    Line(points={{47,-48},{52,-48},{52,-40},{68,-40}},          color = {0, 0, 127}));
   connect(switch1.u3, const.y) annotation (
-    Line(points = {{24, -56}, {8, -56}, {8, -72}, {2, -72}, {2, -72}}, color = {0, 0, 127}));
+    Line(points={{24,-56},{8,-56},{8,-72},{1,-72},{1,-72}},            color = {0, 0, 127}));
   connect(switch1.u2, u) annotation (
     Line(points = {{24, -48}, {16, -48}, {16, -120}, {16, -120}}, color = {255, 0, 255}));
   connect(resistor2.n, switch.p) annotation (
@@ -75,9 +75,9 @@ equation
   connect(switch.control, u) annotation (
     Line(points = {{-78, -40}, {16, -40}, {16, -120}, {16, -120}}, color = {255, 0, 255}));
   connect(signalVoltage.v, realExpression.y) annotation (
-    Line(points = {{-78, 14}, {-60, 14}, {-60, -68}, {-60, -68}}, color = {0, 0, 127}));
+    Line(points={{-78,14},{-60,14},{-60,-69},{-60,-69}},          color = {0, 0, 127}));
   connect(product.u2, realExpression.y) annotation (
-    Line(points = {{-62, 24}, {-68, 24}, {-68, 14}, {-60, 14}, {-60, -68}, {-60, -68}}, color = {0, 0, 127}));
+    Line(points={{-62,24},{-68,24},{-68,14},{-60,14},{-60,-69},{-60,-69}},              color = {0, 0, 127}));
   connect(powerSensor.nc, variableCurrentSource.p) annotation (
     Line(points = {{80, -20}, {80, -20}, {80, -30}, {80, -30}}, color = {0, 0, 255}));
   connect(variableCurrentSource.n, dc_n2) annotation (

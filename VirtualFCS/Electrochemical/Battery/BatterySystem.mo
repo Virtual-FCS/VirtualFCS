@@ -40,17 +40,20 @@ equation
   connect(pin_p, batteryManagementSystem.pin_p_load) annotation (
     Line(points = {{44, 96}, {44, 96}, {44, 80}, {10, 80}, {10, 48}, {10, 48}}, color = {0, 0, 255}));
   connect(batteryManagementSystem.chargeCapacity, getChargeCapacity.y) annotation (
-    Line(points = {{22, 24}, {31, 24}, {31, 6}, {40, 6}}, color = {0, 0, 127}));
+    Line(points={{22,24},{31,24},{31,6},{40.2,6}},        color = {0, 0, 127}));
   connect(getSOC_init.y, batteryManagementSystem.SOC_init) annotation (
-    Line(points = {{40, 40}, {32, 40}, {32, 36}, {22, 36}, {22, 36}}, color = {0, 0, 127}));
+    Line(points={{40.1,40},{32,40},{32,36},{22,36},{22,36}},          color = {0, 0, 127}));
   connect(batteryManagementSystem.sensorInterface, sensorOutput) annotation (
     Line(points = {{-22, 30}, {-60, 30}, {-60, 0}, {-110, 0}, {-110, 0}}, color = {0, 0, 127}));
   connect(batteryPack.heatBoundary, fixedTemperature.port) annotation (
-    Line(points = {{8, -44}, {8, -44}, {8, -70}, {60, -70}, {60, -70}}, color = {191, 0, 0}));
+    Line(points={{8.65881,-43.843},{8.65881,-43.843},{8.65881,-70},{60,-70},{60,
+          -70}},                                                        color = {191, 0, 0}));
   connect(batteryManagementSystem.pin_p_battery, batteryPack.pin_p) annotation (
-    Line(points = {{10, 12}, {10, 12}, {10, 0}, {16, 0}, {16, -16}, {16, -16}}, color = {0, 0, 255}));
+    Line(points={{10,12},{10,12},{10,0},{16,0},{16,-15.6579},{15.2906,-15.6579}},
+                                                                                color = {0, 0, 255}));
   connect(batteryManagementSystem.pin_n_battery, batteryPack.pin_n) annotation (
-    Line(points = {{-10, 12}, {-10, 12}, {-10, 0}, {-14, 0}, {-14, -16}, {-14, -16}}, color = {0, 0, 255}));
+    Line(points={{-10,12},{-10,12},{-10,0},{-14,0},{-14,-15.6579},{-14.5524,
+          -15.6579}},                                                                 color = {0, 0, 255}));
   annotation (
     Icon(graphics={   Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(origin = {-33, -2}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{29, 38}, {29, 28}, {-19, 28}, {-19, -28}, {25, -28}, {29, -38}, {-21, -38}, {-29, -30}, {-29, 28}, {-21, 38}, {-5, 38}, {29, 38}}), Ellipse(origin = {-53, 27}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, -9}, {9, 9}}, startAngle = 30, endAngle = 200, closure = EllipseClosure.Chord), Ellipse(origin = {-53, -31}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, -9}, {9, 9}}, startAngle = 160, endAngle = 330, closure = EllipseClosure.Chord), Polygon(origin = {3, 0}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{0, 50}, {24, -3.5}, {3.5, -3.5}, {3.5, -50}, {-22, 12.5}, {0, 12.5}, {0, 50}, {0, 50}}), Polygon(origin = {44, -2}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-28, 38}, {12, 38}, {20, 32}, {20, 14.5}, {26, 14.5}, {32.5, 8}, {32.5, -8}, {26, -14}, {20, -14}, {20, -32}, {14, -37.5}, {-31.5, -37.5}, {-31.5, -28}, {10.5, -28}, {10.5, 28}, {-24, 28}, {-28, 38}, {-28, 38}}), Ellipse(origin = {57, 29}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = -10, endAngle = 170, closure = EllipseClosure.Chord), Ellipse(origin = {69.5, 5.5}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = -10, endAngle = 170, closure = EllipseClosure.Chord), Ellipse(origin = {69.5, -9}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = 180, endAngle = 370, closure = EllipseClosure.Chord), Ellipse(origin = {57, -32.5}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = 180, endAngle = 370, closure = EllipseClosure.Chord)}),
     Documentation(info = "<html><head></head><body>

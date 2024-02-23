@@ -4,14 +4,13 @@ model SubSystemAir
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
-  //replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   replaceable package Medium = Buildings.Media.Air;
   // Parameter definition
   parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
-  parameter Real N_FC_stack(unit = "1") = 180 "FC stack number of cells";
-  Real Power_Compressor_mez(unit = "W") "The power consumed by the Compressor";
-  Real Power_Compressor_electrical( unit = "W") "The power consumed by the Compressor";
-  Real Rendement_compressor  "Compressor efficiency";
+  parameter Integer N_FC_stack = 180 "FC stack number of cells";
+  Modelica.Units.SI.Power Power_Compressor_mez "The power consumed by the Compressor";
+  Modelica.Units.SI.Power Power_Compressor_electrical "The power consumed by the Compressor";
+  Modelica.Units.SI.Efficiency Rendement_compressor  "Compressor efficiency";
   Real t  "parameter to cimpute efficiency";
 //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries

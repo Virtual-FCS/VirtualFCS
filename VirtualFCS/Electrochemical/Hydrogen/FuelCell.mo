@@ -13,28 +13,28 @@ model FuelCell "Model for a single PEM fuel cell"
   // Thermal parameters
   parameter Modelica.Units.SI.SpecificHeatCapacity heatCapacity = 800 "Specific Heat Capacity";
   // Stack design parameters
-  parameter Real N_cell(unit = "1") = 1 "Number of Cells";
+  parameter Integer N_cell(unit = "1", min = 0) = 1 "Number of Cells";
   parameter Modelica.Units.SI.Area A_cell = 0.0237 "Active Area of the Cell";
   // Electrochemical parameters
   parameter Modelica.Units.SI.Current i_0 = 0.0002 "Exchange Current";
   parameter Modelica.Units.SI.Current i_L = 520 "Maximum Current Limit";
   parameter Modelica.Units.SI.Current i_x = 0.001 "Cross-over Current";
-  parameter Real b_1(unit = "V/dec") = 0.025 "Tafel Slope";
-  parameter Real b_2(unit = "V/dec") = 0.25 "Transport Limitation Factor";
+  parameter Real b_1(unit = "V/dec") = 0.025 "Tafel Slope"; // No good conversion or units
+  parameter Real b_2(unit = "V/dec") = 0.25 "Transport Limitation Factor"; //No good conversion or units
   parameter Modelica.Units.SI.Resistance R_0 = 0.02 "Ohmic Resistance";
   parameter Modelica.Units.SI.Resistance R_1 = 0.01 "Charge Transfer Resistance";
   parameter Modelica.Units.SI.Capacitance C_1 = 3e-3 "Double Layer Capacitance";
   //*** DECLARE VARIABLES ***//
   // Physical constants
-  Modelica.Units.SI.MolarHeatCapacity R = 8.314 "J/(mol.K)";
-  Modelica.Units.SI.FaradayConstant F = 96485 "C/mol";
+  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
+  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
   // Fuel cell variables
   Modelica.Units.SI.Voltage V_cell;
   Modelica.Units.SI.CurrentDensity j;
   Modelica.Units.SI.Power P_th;
-  Modelica.Units.SI.Pressure p_H2(min = 0);
-  Modelica.Units.SI.Pressure p_O2(min = 0);
-  Modelica.Units.SI.Pressure p_0 = 100000;
+  Modelica.Units.SI.AbsolutePressure p_H2(min = 0);
+  Modelica.Units.SI.AbsolutePressure p_O2(min = 0);
+  Modelica.Units.SI.AbsolutePressure p_0 = 100000;
   //*** INSTANTIATE COMPONENTS ***//
   //System
   inner Modelica.Fluid.System system(energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation (
@@ -131,31 +131,31 @@ equation
   connect(O2_sink.ports[1], qAir.port_3) annotation (
     Line(points = {{94, 40}, {110, 40}, {110, 40}, {110, 40}}, color = {0, 170, 255}, thickness = 1));
   connect(qH2.port_3, H2_sink.ports[1]) annotation (
-    Line(points = {{-108, 40}, {-90, 40}, {-90, 42}, {-90, 42}}, color = {0, 170, 0}, thickness = 1));
+    Line(points={{-108,40},{-90,40},{-90,41},{-90,41}},          color = {0, 170, 0}, thickness = 1));
   connect(R_ohmic.n, pin_p) annotation (
     Line(points = {{60, 130}, {60, 150}}, color = {0, 0, 255}));
   connect(pin_n, potentialSource.n) annotation (
     Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
   connect(O2_mflow.y, O2_sink.m_flow_in) annotation (
-    Line(points = {{40, 50}, {74, 50}, {74, 48}, {74, 48}}, color = {0, 0, 127}));
+    Line(points={{40.8,50},{74,50},{74,48},{74,48}},        color = {0, 0, 127}));
   connect(H2_mflow.y, H2_sink.m_flow_in) annotation (
-    Line(points = {{-36, 52}, {-68, 52}, {-68, 50}, {-70, 50}}, color = {0, 0, 127}));
+    Line(points={{-36.8,51},{-68,51},{-68,49},{-70,49}},        color = {0, 0, 127}));
   connect(potentialSource.p, currentSensor.p) annotation (
     Line(points = {{-60, 110}, {-60, 110}, {-60, 100}, {-10, 100}, {-10, 100}}, color = {0, 0, 255}));
   connect(currentSensor.n, R_ohmic.p) annotation (
     Line(points = {{10, 100}, {60, 100}, {60, 110}, {60, 110}}, color = {0, 0, 255}));
   connect(currentSensor.i, H2_mflow.u) annotation (
-    Line(points = {{0, 88}, {0, 88}, {0, 52}, {-18, 52}, {-18, 52}}, color = {0, 0, 127}));
+    Line(points={{0,89},{0,89},{0,52},{-18.4,52},{-18.4,51}},        color = {0, 0, 127}));
   connect(currentSensor.i, O2_mflow.u) annotation (
-    Line(points = {{0, 88}, {0, 88}, {0, 50}, {22, 50}, {22, 50}}, color = {0, 0, 127}));
+    Line(points={{0,89},{0,89},{0,50},{22.4,50},{22.4,50}},        color = {0, 0, 127}));
   connect(thermalConductor.port_b, pipeCoolant.heatPorts[1]) annotation (
-    Line(points = {{0, -56}, {0, -56}, {0, -46}, {0, -46}}, color = {191, 0, 0}));
+    Line(points={{0,-56},{0,-56},{0,-46.4},{0.1,-46.4}},    color = {191, 0, 0}));
   connect(thermalConductor.port_a, heatCapacitor.port) annotation (
     Line(points = {{0, -76}, {0, -76}, {0, -114}, {0, -114}}, color = {191, 0, 0}));
     connect(temperatureSensor.port, heatCapacitor.port) annotation (
     Line(points = {{-50, -102}, {-50, -102}, {-50, -114}, {2, -114}, {2, -114}, {0, -114}}, color = {191, 0, 0}));
   connect(temperatureSensor.T, H2_sink.T_in) annotation (
-    Line(points = {{-50, -82}, {-50, -82}, {-50, 44}, {-68, 44}, {-68, 46}}, color = {0, 0, 127}));
+    Line(points={{-50,-81},{-50,-81},{-50,44},{-68,44},{-68,45}},            color = {0, 0, 127}));
   connect(heatCapacitor.port, heatPort) annotation (
     Line(points = {{0, -114}, {0, -114}, {0, -144}, {0, -144}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, prescribedHeatFlow.port) annotation (
@@ -186,14 +186,14 @@ equation
          <tr>
             <td align=\"Left\">volume</td>
             <td>=0.001</td>
-	      <td align=\"Right\">m3</td>
+              <td align=\"Right\">m3</td>
          </tr>
          <tr>
             <td align=\"Left\">Cp</td>
             <td>=800</td>
             <td align=\"Left\">J/(kg.K)</td>
          </tr>
-	   <tr>
+           <tr>
             <td align=\"Left\">N_cell </td>
             <td>=1</td>
             <td align=\"Right\">-</td>
@@ -202,14 +202,14 @@ equation
          <tr>
             <td align=\"Left\">A_cell </td>
             <td>=0.0237</td>
-	      <td align=\"Right\">m2</td>
+              <td align=\"Right\">m2</td>
          </tr>
          <tr>
             <td align=\"Left\">i_0</td>
             <td>=0.0002</td>
             <td align=\"Right\">A</td>
          </tr>
-	   <tr>
+           <tr>
             <td align=\"Left\">i_L</td>
             <td>=520</td>
             <td align=\"Right\">A</td>
@@ -217,14 +217,14 @@ equation
          <tr>
             <td align=\"Left\">i_x</td>
             <td>=0.001</td>
-	      <td align=\"Right\"> A </td>
+              <td align=\"Right\"> A </td>
          </tr>
          <tr>
             <td align=\"Left\">b_1</td>
             <td>=0.025</td>
             <td align=\"Right\"> V/dec </td>
          </tr>
-	   <tr>
+           <tr>
             <td align=\"Left\">b_2</td>
             <td>=0.25</td>
             <td align=\"Right\">V/dec</td>
@@ -233,14 +233,14 @@ equation
          <tr>
             <td align=\"Left\">R_0</td>
             <td>=0.02</td>
-	      <td align=\"Right\">Ohm</td>
+              <td align=\"Right\">Ohm</td>
          </tr>
          <tr>
             <td align=\"Left\">R_1</td>
             <td>=0.01</td>
             <td align=\"Right\">Ohm</td>
          </tr>
-	   <tr>
+           <tr>
             <td align=\"Left\">C_1</td>
             <td>=0.003</td>
             <td align=\"Right\">F</td>

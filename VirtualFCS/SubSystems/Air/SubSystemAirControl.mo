@@ -1,8 +1,8 @@
 within VirtualFCS.SubSystems.Air;
 block SubSystemAirControl
-  parameter Modelica.Units.SI.Pressure pressure_Air_set = 1.5 "Set air Pressure";
+  parameter Modelica.Units.SI.AbsolutePressure pressure_Air_set = 1.5 "Set air Pressure";
  // parameter Modelica.Units.SI.MassFlowRate massFlow_Air_set = 4e-3 "Set air Recirculation Mass Flow";
-  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
+  parameter Integer N_FC_stack = 455 "FC stack number of cells";
   VirtualFCS.Control.PumpSpeedControl pumpSpeedControl annotation (
     Placement(visible = true, transformation(origin = {0, -7.10543e-15}, extent = {{-58, -58}, {58, 58}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setAirPressure(k = pressure_Air_set) annotation (

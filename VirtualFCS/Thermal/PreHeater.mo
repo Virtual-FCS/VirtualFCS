@@ -7,7 +7,7 @@ model PreHeater
   parameter Modelica.Units.SI.Resistance R_eq = 1.75 "Equivalent Resistance";
   parameter Modelica.Units.SI.Diameter D_pipe = 0.015 "Pipe Diameter";
   parameter Modelica.Units.SI.Length L_pipe = 1 "Pipe Length";
-  parameter Real N_pipe(unit = "1") = 10 "Number of Parallel Pipes";
+  parameter Integer N_pipe(unit = "1") = 10 "Number of Parallel Pipes";
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Fluid.Pipes.DynamicPipe pipe(redeclare package Medium = Medium, diameter = D_pipe, length = L_pipe, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = N_pipe, p_a_start = 102502, use_HeatTransfer = true) annotation (
     Placement(visible = true, transformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -34,7 +34,7 @@ equation
   connect(pipe.port_b, port_b) annotation (
     Line(points = {{10, -80}, {91, -80}, {91, 0}, {100, 0}}, color = {255, 0, 0}, thickness = 1));
   connect(thermalConductor.port_b, pipe.heatPorts[1]) annotation (
-    Line(points = {{0, -60}, {0, -60}, {0, -76}, {0, -76}}, color = {191, 0, 0}));
+    Line(points={{0,-60},{0,-60},{0,-75.6},{0.1,-75.6}},    color = {191, 0, 0}));
   connect(heatCapacitor.port, thermalConductor.port_a) annotation (
     Line(points = {{0, -22}, {0, -22}, {0, -40}, {0, -40}}, color = {191, 0, 0}));
   connect(pin_p, R1.p) annotation (

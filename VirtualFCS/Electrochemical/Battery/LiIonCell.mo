@@ -16,15 +16,17 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   // DECLARE VARIABLES //
   // Coefficients for open-circuit voltage calculation
   // LFP
-  Real a1 = 3.25;
-  Real b1 = -1e-4;
-  Real c1 = -0.08;
-  Real d1 = 0.07;
-  Real e1 = -0.02;
-  Real f1 = -0.01;
-  Real g1 = -0.06;
-  Real h1 = -0.02;
-  Real i1 = -0.002;
+  Modelica.Units.SI.Voltage a1 = 3.25;
+  Real b1 = -1e-4; // Should be V/degC
+  Modelica.Units.SI.Voltage c1 = -0.08;
+  Modelica.Units.SI.Voltage d1 = 0.07;
+  Modelica.Units.SI.Voltage e1 = -0.02;
+  Modelica.Units.SI.Voltage f1 = -0.01;
+  Modelica.Units.SI.Voltage g1 = -0.06;
+  Modelica.Units.SI.Voltage h1 = -0.02;
+  Modelica.Units.SI.LinearTemperatureCoefficient i1 = -0.002;
+
+
   // INSTANTIATE COMPONENTS //
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {154, 52}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {107, 1}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
@@ -75,15 +77,15 @@ equation
   connect(OCV.n, pin_n) annotation (
     Line(points = {{-130, 52}, {-154, 52}}, color = {0, 0, 255}));
   connect(getSOC_init.y, chargeCounter.SOC_init) annotation (
-    Line(points = {{60, -34}, {72, -34}}, color = {0, 0, 127}));
+    Line(points={{59.6,-34},{72,-34}},    color = {0, 0, 127}));
   connect(getChargeCapacity.y, chargeCounter.chargeCapacity) annotation (
-    Line(points = {{60, -82}, {72, -82}}, color = {0, 0, 127}));
+    Line(points={{59.9,-82},{72,-82}},    color = {0, 0, 127}));
   connect(R2.n, sensorCurrent.p) annotation (
-    Line(points = {{-4, 52}, {10, 52}, {10, 52}, {10, 52}}, color = {0, 0, 255}));
+    Line(points={{-4,52},{10,52},{10,52},{9,52}},           color = {0, 0, 255}));
   connect(sensorCurrent.n, pin_p) annotation (
-    Line(points = {{32, 52}, {154, 52}, {154, 52}, {154, 52}}, color = {0, 0, 255}));
+    Line(points={{31,52},{154,52},{154,52},{154,52}},          color = {0, 0, 255}));
   connect(sensorCurrent.i, chargeCounter.electricCurrent) annotation (
-    Line(points = {{20, 40}, {20, 40}, {20, -58}, {72, -58}, {72, -58}}, color = {0, 0, 127}));
+    Line(points={{20,39.9},{20,39.9},{20,-58},{72,-58},{72,-58}},        color = {0, 0, 127}));
   connect(heatSource.port, heatCapacitor.port) annotation (
     Line(points = {{-120, -40}, {-50, -40}, {-50, -40}, {-50, -40}}, color = {191, 0, 0}));
   connect(heatCapacitor.port, heatPort) annotation (
@@ -124,7 +126,7 @@ equation
             <td>=0.045</td>
             <td> kg </td>
          </tr>
-	   <tr>
+           <tr>
             <td align=\"Left\">Charge capacity </td>
             <td>=2.2</td>
             <td> Ah </td>
@@ -142,7 +144,7 @@ equation
          </tr><tr>
             <td align=\"Left\">R_0</td>
             <td>=0.02</td>
-	      <td align=\"Right\">Ohm</td>
+              <td align=\"Right\">Ohm</td>
          </tr>
          <tr>
             <td align=\"Left\">R_1</td>
@@ -154,7 +156,7 @@ equation
             <td>=0.005</td>
             <td align=\"Right\">Ohm</td>
          </tr>
-	   <tr>
+           <tr>
             <td align=\"Left\">C_1</td>
             <td>=5000</td>
             <td align=\"Right\">F</td>
@@ -176,7 +178,7 @@ equation
          </tr><tr>
             <td align=\"Left\">specificHeatCapacity</td>
             <td>=1000</td>
-	      <td align=\"Right\">J/(kg*K)</td>
+              <td align=\"Right\">J/(kg*K)</td>
          </tr>
          <tr>
             <td align=\"Left\">coolingArea</td>

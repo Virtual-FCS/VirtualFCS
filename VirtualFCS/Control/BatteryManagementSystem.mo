@@ -25,21 +25,22 @@ model BatteryManagementSystem "Implement algorithms for the control of battery s
     Placement(visible = true, transformation(origin = {-30, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
 equation
   connect(SOC_init, chargeCounter.SOC_init) annotation (
-    Line(points = {{150, 20}, {56, 20}, {56, 20}, {56, 20}}, color = {0, 0, 127}));
+    Line(points={{150,20},{56,20},{56,19},{55,19}},          color = {0, 0, 127}));
   connect(chargeCapacity, chargeCounter.chargeCapacity) annotation (
-    Line(points = {{150, -20}, {58, -20}, {58, -20}, {56, -20}}, color = {0, 0, 127}));
+    Line(points={{150,-20},{58,-20},{58,-21},{55,-21}},          color = {0, 0, 127}));
   connect(currentSensor.i, chargeCounter.electricCurrent) annotation (
-    Line(points = {{-52, -64}, {80, -64}, {80, -2}, {56, -2}, {56, 0}}, color = {0, 0, 127}));
+    Line(points={{-53,-64},{80,-64},{80,-2},{55,-2},{55,-1}},           color = {0, 0, 127}));
   connect(pin_n_battery, voltageLimiter.pin_n_battery) annotation (
-    Line(points = {{-116, -96}, {-94, -96}, {-94, -26}, {-94, -26}}, color = {0, 0, 255}));
+    Line(points={{-116,-96},{-94,-96},{-94,-26.7},{-94.64,-26.7}},   color = {0, 0, 255}));
   connect(pin_n_load, voltageLimiter.pin_n_load) annotation (
-    Line(points = {{-116, 96}, {-94, 96}, {-94, 22}, {-94, 22}}, color = {0, 0, 255}));
+    Line(points={{-116,96},{-94,96},{-94,22.7},{-94.9,22.7}},    color = {0, 0, 255}));
   connect(pin_p_load, voltageLimiter.pin_p_load) annotation (
-    Line(points = {{-44, 96}, {-62, 96}, {-62, 22}, {-62, 22}}, color = {0, 0, 255}));
+    Line(points={{-44,96},{-62,96},{-62,22.7},{-61.1,22.7}},    color = {0, 0, 255}));
   connect(sensorInterface, chargeCounter.SOC) annotation (
-    Line(points = {{-30, 0}, {-2, 0}, {-2, 0}, {-2, 0}}, color = {0, 0, 127}));
+    Line(points={{-30,0},{-2,0},{-2,-1},{-2.5,-1}},      color = {0, 0, 127}));
   connect(voltageLimiter.pin_p_battery, currentSensor.n) annotation (
-    Line(points = {{-64, -26}, {-64, -54}}, color = {0, 0, 255}));
+    Line(points={{-63.7,-26.7},{-63.7,-40},{-64,-40},{-64,-54}},
+                                            color = {0, 0, 255}));
   connect(currentSensor.p, pin_p_battery) annotation (
     Line(points = {{-64, -74}, {-64, -96}, {-44, -96}}, color = {0, 0, 255}));
   annotation (
