@@ -30,7 +30,7 @@ model RecirculationBlower
   parameter VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower driveData annotation (
     Placement(visible = true, transformation(extent = {{-90, -24}, {-70, -4}}, rotation = 0)));
   Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare
-      function                                                                                      flowCharacteristic =
+      function flowCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                                V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), N_nominal = 200,
     T_start=323.15,                                                                                                                                                                                                        V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
@@ -42,7 +42,7 @@ model RecirculationBlower
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
     Placement(visible = true, transformation(origin = {24, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Other
-  Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation (
+  Modelica.Blocks.Math.Gain gain(k=4.5)      annotation (
     Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   VirtualFCS.Control.DCMotorControlRecirculationBlower dCMotorControlRecirculationBlower annotation (
     Placement(visible = true, transformation(origin = {-50, 42}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));

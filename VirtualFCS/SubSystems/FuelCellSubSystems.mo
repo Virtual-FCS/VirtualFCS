@@ -4,7 +4,8 @@ model FuelCellSubSystems
   outer Modelica.Fluid.System system "System properties";
   // Medium decleration
   replaceable package Cathode_Medium = Buildings.Media.Air;
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby
+    Modelica.Media.Interfaces.PartialPureSubstance;
   replaceable package Coolant_Medium =
       Modelica.Media.Water.ConstantPropertyLiquidWater;                                                                    //constrainedby Modelica.Media.Interfaces.PartialMedium;
   // H2 Subsystem Paramters
@@ -38,7 +39,12 @@ model FuelCellSubSystems
     Placement(visible = true, transformation(origin = {60, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Cooling.SubSystemCooling subSystemCooling annotation (
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = 400,SOC_init = 0.9, V_max_bat_pack = 50, V_min_bat_pack = 46, V_nom_bat_pack = 48, m_bat_pack = 1) annotation (
+  Electrochemical.Battery.BatterySystem batterySystem(
+    V_min_bat_pack=400,
+    V_nom_bat_pack=480,
+    V_max_bat_pack=520,
+    C_bat_pack=2000,
+    SOC_init=0.99,                                                                                                                                    m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(contolInput[1], subSystemHydrogen.control) annotation (
@@ -52,7 +58,8 @@ equation
   connect(subSystemAir.Input, air_port_a) annotation (
     Line(points={{66.2,12},{66.2,30},{62,30},{62,38},{52,38},{52,60}},          color = {0, 127, 255}));
   connect(contolInput[2], subSystemCooling.controlInterface) annotation (
-    Line(points={{-120,5},{-40,5},{-40,5},{-11,5}},          color = {0, 0, 127}));
+    Line(points={{-120,5},{-120,-16},{-20,-16},{-20,6},{-12,6},{-12,5},{-11,5}},
+                                                             color = {0, 0, 127}));
   connect(subSystemCooling.port_b, coolant_port_b) annotation (
     Line(points = {{-6, 12}, {-6, 36}, {6, 36}, {6, 60}}, color = {0, 127, 255}));
   connect(subSystemCooling.port_a, coolant_port_a) annotation (
@@ -71,7 +78,8 @@ equation
   connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation (
     Line(points={{-55,-9},{-55,-44},{4.4,-44},{4.4,-60.4}},    color = {0, 0, 255}));
   connect(contolInput[1], subSystemAir.control) annotation (
-    Line(points={{-120,-5},{20,-5},{20,5},{49,5}},        color = {0, 0, 127}));
+    Line(points={{-120,-5},{-110,-5},{-110,-6},{-100,-6},{-100,-22},{44,-22},{
+          44,5},{49,5}},                                  color = {0, 0, 127}));
   annotation (
     Icon(graphics={  Text(origin = {-31, -100}, lineColor = {0, 0, 255}, extent = {{-105, 8}, {167, -40}}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-82, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "H2"), Text(origin = {-2, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Cool"), Text(origin = {80, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Air")}, coordinateSystem(initialScale = 0.1)));
 end FuelCellSubSystems;

@@ -17,7 +17,7 @@ equation
   connect(getMassFlow, limPID.u_m) annotation (
     Line(points = {{-100, -20}, {-30, -20}, {-30, 18}}, color = {0, 0, 127}));
   connect(limPID.y, setPumpSpeed) annotation (
-    Line(points = {{-18, 30}, {20, 30}, {20, 0}, {84, 0}}, color = {0, 0, 127}));
+    Line(points={{-19,30},{20,30},{20,0},{84,0}},          color = {0, 0, 127}));
   annotation (
     Icon(graphics={  Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-3, 126}, textColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}, coordinateSystem(initialScale = 0.1)),
     Documentation(info = "<html><head></head><body><div>Control the speed of a <a href=\"modelica://VirtualFCS.Fluid.PumpElectricDC\">Electric Pump DC</a>&nbsp;or <a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a></div><div><br></div><div><b>Description</b></div><div><br></div>This block uses a simple <a href=\"modelica://Modelica.Blocks.Continuous.LimPID\">PID</a> control to set pump speed as a function of mass flow.&nbsp;<div><br></div><div>The block requires that a sensor be placed to measure the mass flow through the pump in question. The measured value for the mass flow is taken in the getMassFlow interface, while the desired mass flow is set in the setMassFlowInterface. Properties of the&nbsp;<a href=\"modelica://Modelica.Blocks.Continuous.LimPID\">PID</a>&nbsp;control can be adjusted in the limPID block, and the resulting control signal is sent to the setPumpSpeed interface.&nbsp;</div></body></html>"));

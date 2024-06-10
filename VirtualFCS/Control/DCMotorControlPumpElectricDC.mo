@@ -2,11 +2,14 @@ within VirtualFCS.Control;
 model DCMotorControlPumpElectricDC "Control the speed of a DC motor"
   //*** DEFINE REPLACEABLE PACKAGES ***//
   replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataCpump driveData          constrainedby Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM annotation (
-     Placement(transformation(extent = {{20, -80}, {40, -60}})));
+     Placement(transformation(extent={{-52,-78},{-32,-58}})));
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf, VMax = driveData.VaMax) annotation (
     Placement(visible = true, transformation(extent = {{30, -10}, {50, 10}}, rotation = 0)));
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(Ti = driveData.TiI, constantLimits = false, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpI, useFF = true) annotation (
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(Ti = driveData.TiI,
+    constantLimits=true,
+    symmetricLimits=false,
+    yMin=0,                                                                                                                                  initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpI, useFF = true) annotation (
     Placement(visible = true, transformation(extent = {{-22, -10}, {-2, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain tau2i(k = 1/driveData.kPhi) annotation (
     Placement(visible = true, transformation(origin = {-42, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));

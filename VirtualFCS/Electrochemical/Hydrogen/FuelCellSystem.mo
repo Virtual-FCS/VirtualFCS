@@ -23,6 +23,10 @@ model FuelCellSystem
   Modelica.Units.SI.Power Power_stack "Power delivered from the FC stack";
   Modelica.Units.SI.Power Power_BOP "Power consumed by the BOP components";
   Modelica.Units.SI.Efficiency eta_FC_sys "Fuel cell system efficiency";
+  Modelica.Units.SI.Efficiency eta_fu "Fuel cell utilisation";
+  Modelica.Units.SI.Efficiency eta_au "Fuel cell utilisation";
+
+
   VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_nom_FC_stack, L_FC_stack = L_FC_stack, N_FC_stack = N_FC_stack, W_FC_stack = W_FC_stack, i_L_FC_stack = I_rated_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack) annotation (
     Placement(visible = true, transformation(origin = {-1, 10}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
@@ -44,6 +48,8 @@ equation
   Power_BOP = fuelCellSubSystems.batterySystem.pin_n.i*fuelCellSubSystems.batterySystem.pin_p.v;
   Power_system = Power_stack - Power_BOP;
   eta_FC_sys = max((Power_system)/(286000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321))), 0.001);
+  eta_fu= (fuelCellStack.H2_sink.ports[1].m_flow)/max(((fuelCellStack.H2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemHydrogen.valveH2Purge.m_flow)),0.00001);
+  eta_au= (fuelCellStack.O2_sink.ports[1].m_flow)/max(((fuelCellStack.O2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemAir.throttleValve.port_a.m_flow)),0.00001);
   connect(fuelCellStack.port_b_Air, fuelCellSubSystems.air_port_a) annotation (
     Line(points={{18.0667,-2.13333},{18.0667,-37.5},{16.5,-37.5}},
                                                           color = {0, 127, 255}));
@@ -61,11 +67,11 @@ equation
   connect(temperatureSensor.T, multiplex2.u2[1]) annotation (
     Line(points={{-87,-66},{-66,-66}},      color = {0, 0, 127}));
   connect(fuelCellStack.port_a_Coolant, fuelCellSubSystems.coolant_port_b) annotation (
-    Line(points={{-6.2,-5.6},{-6.2,6},{-3.5,6},{-3.5,-37.5}},    color = {0, 127, 255}));
+    Line(points={{-6.2,-5.6},{-6.2,-6},{-3.5,-6},{-3.5,-37.5}},  color = {0, 127, 255}));
   connect(fuelCellStack.port_b_Coolant, fuelCellSubSystems.coolant_port_a) annotation (
     Line(points={{4.2,-5.6},{1.5,-5.6},{1.5,-37.5}},  color = {0, 127, 255}));
   connect(temperatureSensor.port, fuelCellStack.heatPort) annotation (
-    Line(points={{-108,-66},{-132,-66},{-132,76},{-2,76},{-2,22.1333},{-1,
+    Line(points={{-108,-66},{-132,-66},{-132,76},{-2,76},{-2,22.1333},{-6.54667,
           22.1333}},                                                                    color = {191, 0, 0}));
   connect(currentSensor.i, limiter.u) annotation (
     Line(points={{-69,46},{-80,46},{-80,12},{-80,12}},          color = {0, 0, 127}));

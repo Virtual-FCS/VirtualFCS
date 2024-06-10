@@ -13,9 +13,9 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
     Placement(visible = true, transformation(origin = {0, -2}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
 equation
   connect(rampCurrent.p, fuelCellSystem.pin_p) annotation (
-    Line(points = {{10, 60}, {12, 60}, {12, 18}, {12, 18}}, color = {0, 0, 255}));
+    Line(points={{10,60},{12,60},{12,17.8},{11,17.8}},      color = {0, 0, 255}));
   connect(rampCurrent.n, fuelCellSystem.pin_n) annotation (
-    Line(points = {{-10, 60}, {-12, 60}, {-12, 18}, {-10, 18}}, color = {0, 0, 255}));
+    Line(points={{-10,60},{-12,60},{-12,17.8},{-11,17.8}},      color = {0, 0, 255}));
   annotation (
     Diagram,
     Icon,

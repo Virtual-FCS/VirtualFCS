@@ -6,9 +6,11 @@ model FuelCellStack
   // Medium models
   //replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Cathode_Medium = Buildings.Media.Air;
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby
+    Modelica.Media.Interfaces.PartialPureSubstance;
   replaceable package Coolant_Medium =
-      Modelica.Media.Water.ConstantPropertyLiquidWater                                  constrainedby Modelica.Media.Interfaces.PartialMedium;
+      Modelica.Media.Water.ConstantPropertyLiquidWater                                  constrainedby
+    Modelica.Media.Interfaces.PartialMedium;
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
@@ -29,6 +31,9 @@ model FuelCellStack
   parameter Modelica.Units.SI.Resistance R_O_FC_stack = 0.0923 "FC stack cell ohmic resistance";
   // Thermal parameters
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
+  parameter Modelica.Units.SI.Area A_cool_FCStack = L_FC_stack * W_FC_stack;//;
+  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 7.8 * 10 ^ 0.78 "HeatTransferCoefficient (W/(m2.K))";
+
   //*** DECLARE VARIABLES ***//
   // Physical constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
@@ -82,7 +87,7 @@ model FuelCellStack
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation (
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation (
-    Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin={-32,70},  extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = Cp_FC_stack*m_FC_stack, T(fixed = true, start = 293.15), der_T(fixed = false)) annotation (
     Placement(visible = true, transformation(origin = {0, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation (
@@ -98,7 +103,7 @@ model FuelCellStack
         Cathode_Medium)                                                                       annotation (
     Placement(visible = true, transformation(origin = {150, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume(redeclare package
-                                                                                Medium =
+      Medium =
         Cathode_Medium,                                                                                  V = 0.01) annotation (
     Placement(visible = true, transformation(origin = {120, 38}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice orifice(redeclare package Medium =
@@ -106,13 +111,25 @@ model FuelCellStack
     diameter=0.01,                                                                                                 zeta = 0.7)  annotation (
     Placement(visible = true, transformation(origin = {96, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume1(redeclare
-      package                                                                    Medium =
+      package Medium =
         Anode_Medium,                                                                                  V = 0.01) annotation (
     Placement(visible = true, transformation(origin = {-126, 44}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice simpleGenericOrifice(redeclare
-      package                                                                         Medium =
+      package Medium =
         Anode_Medium,                                                                                       diameter = 0.003, zeta = 0.7) annotation (
     Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+
+  Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y=
+        heatTransferCoefficient*A_cool_FCStack)                                                                  annotation (
+    Placement(visible = true, transformation(origin={62,-166},    extent = {{15, -10}, {-15, 10}}, rotation = 0)));
+  Modelica.Thermal.HeatTransfer.Components.Convection convection annotation (
+    Placement(visible = true, transformation(origin={22,-166},    extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr=0.95*
+        A_cool_FCStack)                                                                             annotation (
+    Placement(visible = true, transformation(origin={-18,-166},   extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heatBoundary annotation (
+    Placement(visible = true, transformation(origin={2,-196},     extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin={34,70},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+
 equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
@@ -180,6 +197,16 @@ equation
     Line(points = {{-126, 34}, {-126, 30}, {-104, 30}, {-104, 24}}, color = {0, 127, 255}));
   connect(simpleGenericOrifice.port_b, port_b_H2) annotation (
     Line(points = {{-104, 4}, {-104, -4}, {-150, -4}}, color = {0, 127, 255}));
+  connect(convection.Gc,setConvectiveCoefficient. y) annotation (
+    Line(points={{32,-166},{45.5,-166}},                            color = {0, 0, 127}));
+  connect(bodyRadiation.port_b,heatBoundary)  annotation (
+    Line(points={{-18,-176},{-18,-178},{2,-178},{2,-196}},                                  color = {191, 0, 0}));
+  connect(convection.fluid,heatBoundary)  annotation (
+    Line(points={{22,-176},{22,-178},{2,-178},{2,-196}},                                    color = {191, 0, 0}));
+  connect(bodyRadiation.port_a, heatPort) annotation (Line(points={{-18,-156},{-18,
+          -144},{0,-144}}, color={191,0,0}));
+  connect(convection.solid, heatPort)
+    annotation (Line(points={{22,-156},{22,-144},{0,-144}}, color={191,0,0}));
   annotation (
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics={  Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),

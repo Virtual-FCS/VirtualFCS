@@ -2,8 +2,8 @@ within VirtualFCS.Utilities.ParameterRecords;
 record DCPMMCompressor
   extends Modelica.Icons.Record;
   parameter Modelica.Units.SI.Inertia Jr = 0.15 "Rotor's moment of inertia";
-  parameter Modelica.Units.SI.Inertia Js = 0.28 "Stator's moment of inertia";
-  parameter Modelica.Units.SI.Voltage VaNominal = 24 "Nominal armature voltage" annotation (
+  parameter Modelica.Units.SI.Inertia Js = 0.29 "Stator's moment of inertia";
+  parameter Modelica.Units.SI.Voltage VaNominal = 100 "Nominal armature voltage" annotation (
     Dialog(tab = "Nominal parameters"));
   parameter Modelica.Units.SI.Current IaNominal = 100 "Nominal armature current (>0..Motor, <0..Generator)" annotation (
     Dialog(tab = "Nominal parameters"));

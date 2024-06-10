@@ -33,7 +33,9 @@ model PumpElectricDC
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
         (                                                                                                                                                                                                        eta_nominal =0.1), N_nominal = 900, V = 0.005, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, p_a_start = 102502, use_N_in = true) annotation (
     Placement(visible = true, transformation(origin = {20, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(fixed = true, start = 0.10472), wNominal = driveData.motorData.wNominal) annotation (
+  Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal,
+    alpha20a=driveData.motorData.alpha20a,                                                                                                                                                                                                        brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters,
+    wMechanical(fixed=true, start=0.10472),                                                                                                                                                                                                        wNominal = driveData.motorData.wNominal) annotation (
     Placement(visible = true, transformation(origin = {-20, -6}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation (
     Placement(visible = true, transformation(origin = {50, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -49,22 +51,22 @@ model PumpElectricDC
   // Other
   Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal/9.5493) annotation (
     Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation (
+  Modelica.Blocks.Math.Gain gain(k=6)        annotation (
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
   // Power & Efficiency
   Modelica.Units.SI.Power Power_PumpElectricDC "The power consumed by the PumpElectricDC";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
-  Power_PumpElectricDC = pin_p.i*pin_p.v;
+  Power_PumpElectricDC =pin_p.i*pin_p.v;
 //*** DEFINE CONNECTIONS ***//
   connect(multiplex2.y, sensors) annotation (
-    Line(points = {{91, 90}, {110, 90}}, color = {0, 0, 127}));
+    Line(points={{90.8,90},{110,90}},    color = {0, 0, 127}));
   connect(volumeFlowRate.port_a, Input) annotation (
     Line(points = {{-90, -60}, {-99, -60}}, color = {0, 0, 255}, thickness = 1.5));
   connect(volumeFlowRate.V_flow, multiplex2.u1[1]) annotation (
-    Line(points = {{-79, -48}, {-80, -48}, {-80, 94}, {72, 94}}, color = {0, 0, 127}));
+    Line(points={{-79,-47.9},{-80,-47.9},{-80,94.8},{72.4,94.8}},color = {0, 0, 127}));
   connect(multiplex2.u2[1], speedSensor.w) annotation (
-    Line(points = {{72, 85}, {60, 85}, {60, 33}}, color = {0, 0, 127}));
+    Line(points={{72.4,85.2},{60,85.2},{60,33}},  color = {0, 0, 127}));
   connect(dcpm.flange, inertia.flange_a) annotation (
     Line(points = {{-6, -6}, {40, -6}}));
   connect(inertia.flange_b, torque.flange) annotation (
@@ -74,25 +76,25 @@ equation
   connect(inertia.flange_b, speedSensor.flange) annotation (
     Line(points = {{60, -6}, {60, 12}}));
   connect(gain1.y, dCMotorControlPumpElectricDC.setSpeedInput) annotation (
-    Line(points = {{-54, 42}, {-44, 42}, {-44, 40}}, color = {0, 0, 127}));
+    Line(points={{-54.5,41},{-44,41},{-44,40}},      color = {0, 0, 127}));
   connect(pin_n, dCMotorControlPumpElectricDC.pwr_pin_n) annotation (
     Line(points = {{-30, 80}, {-30, 68}, {-26, 68}, {-26, 58}}, color = {0, 0, 255}));
   connect(pin_p, dCMotorControlPumpElectricDC.pwr_pin_p) annotation (
     Line(points = {{-10, 80}, {-10, 68}, {-14, 68}, {-14, 58}}, color = {0, 0, 255}));
   connect(dCMotorControlPumpElectricDC.pin_n, dcpm.pin_an) annotation (
-    Line(points = {{-26, 22}, {-26, 14}, {-28, 14}, {-28, 8}}, color = {0, 0, 255}));
+    Line(points={{-26,22},{-26,14},{-28.4,14},{-28.4,8}},      color = {0, 0, 255}));
   connect(dCMotorControlPumpElectricDC.pin_p, dcpm.pin_ap) annotation (
-    Line(points = {{-14, 22}, {-14, 14}, {-12, 14}, {-12, 8}}, color = {0, 0, 255}));
+    Line(points={{-14,22},{-14,14},{-11.6,14},{-11.6,8}},      color = {0, 0, 255}));
   connect(volumeFlowRate.port_b, pump.port_a) annotation (
     Line(points = {{-68, -60}, {10, -60}}, color = {0, 0, 255}, thickness = 1.5));
   connect(pump.port_b, Output) annotation (
-    Line(points = {{30, -60}, {100, -60}}, color = {0, 0, 255}, thickness = 1.5));
+    Line(points={{30,-60},{99,-60}},       color = {0, 0, 255}, thickness = 1.5));
   connect(speedSensor.w, dCMotorControlPumpElectricDC.measuredSpeedInput) annotation (
-    Line(points = {{60, 34}, {60, 40}, {4, 40}}, color = {0, 0, 127}));
+    Line(points={{60,33},{60,40},{4,40}},        color = {0, 0, 127}));
   connect(speedSensor.w, gain.u) annotation (
-    Line(points = {{60, 34}, {60, 40}, {20, 40}, {20, -18}}, color = {0, 0, 127}));
+    Line(points={{60,33},{60,40},{20,40},{20,-18.4}},        color = {0, 0, 127}));
   connect(gain.y, pump.N_in) annotation (
-    Line(points = {{20, -36}, {20, -50}}, color = {0, 0, 127}));
+    Line(points={{20,-36.8},{20,-50}},    color = {0, 0, 127}));
   annotation (
     Icon(coordinateSystem(initialScale = 0.1), graphics={  Ellipse(origin = {-2, -15}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 3, extent = {{-78, 95}, {82, -65}}), Line(origin = {40, 40}, points = {{-40, 40}, {40, -40}, {40, -40}}, thickness = 3), Line(origin = {40, -40}, points = {{-40, -40}, {40, 40}, {40, 40}}, thickness = 3)}),
     Diagram,
@@ -732,29 +734,29 @@ equation
 <style>
  /* Style Definitions */
  table.MsoNormalTable
-	{mso-style-name:\"Table Normal\";
-	mso-tstyle-rowband-size:0;
-	mso-tstyle-colband-size:0;
-	mso-style-noshow:yes;
-	mso-style-priority:99;
-	mso-style-parent:\"\";
-	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
-	mso-para-margin-top:0cm;
-	mso-para-margin-right:0cm;
-	mso-para-margin-bottom:8.0pt;
-	mso-para-margin-left:0cm;
-	line-height:107%;
-	mso-pagination:widow-orphan;
-	font-size:11.0pt;
-	font-family:\"Calibri\",sans-serif;
-	mso-ascii-font-family:Calibri;
-	mso-ascii-theme-font:minor-latin;
-	mso-hansi-font-family:Calibri;
-	mso-hansi-theme-font:minor-latin;
-	mso-bidi-font-family:Arial;
-	mso-bidi-theme-font:minor-bidi;
-	mso-ansi-language:NO-BOK;
-	mso-fareast-language:EN-US;}
+        {mso-style-name:\"Table Normal\";
+        mso-tstyle-rowband-size:0;
+        mso-tstyle-colband-size:0;
+        mso-style-noshow:yes;
+        mso-style-priority:99;
+        mso-style-parent:\"\";
+        mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+        mso-para-margin-top:0cm;
+        mso-para-margin-right:0cm;
+        mso-para-margin-bottom:8.0pt;
+        mso-para-margin-left:0cm;
+        line-height:107%;
+        mso-pagination:widow-orphan;
+        font-size:11.0pt;
+        font-family:\"Calibri\",sans-serif;
+        mso-ascii-font-family:Calibri;
+        mso-ascii-theme-font:minor-latin;
+        mso-hansi-font-family:Calibri;
+        mso-hansi-theme-font:minor-latin;
+        mso-bidi-font-family:Arial;
+        mso-bidi-theme-font:minor-bidi;
+        mso-ansi-language:NO-BOK;
+        mso-fareast-language:EN-US;}
 </style>
 <![endif]-->
 

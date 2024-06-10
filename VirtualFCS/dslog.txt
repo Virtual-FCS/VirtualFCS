@@ -1,40 +1,20 @@
 Log-file of program ./dymosim
-(generated: Thu Nov 23 16:17:08 2023)
+(generated: Tue May 21 18:03:48 2024)
 
 dymosim started
-... "VirtualFCS.Examples.SubsystemExamples.TestAirSubsystem" simulating
+... "VirtualFCS.Examples.ElectrochemicalComponents.CycleBatteryCell" simulating
 ... "dsin.txt" loading (dymosim input file)
-... "TestAirSubsystem.mat" creating (simulation result file)
+... loading "R0" from "C:/Users/yashr/Downloads/VirtualFCS-Ben-upgrade-to-Dymola/Bat_SOC-R0.mat"
+Error: The following error was detected at time: 0
+Table matrix "R0(9,1)" does not have appropriate dimensions for 1D-interpolation.
 
-Integration started at T = 0 using integration method DASSL
-(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dassault Systemes))
+The stack of functions is:
+Modelica.Blocks.Types.ExternalCombiTable1D
+Modelica.Blocks.Types.ExternalCombiTable1D((if liIonCell.R0Input.tableOnFile then liIonCell.R0Input.tableName else "NoName"), (if liIonCell.R0Input.tableOnFile and liIonCell.R0Input.fileName <> "NoName" and  not Modelica.Utilities.Strings.isEmpty(liIonCell.R0Input.fileName) then liIonCell.R0Input.fileName else "NoName"), liIonCell.R0Input.table, liIonCell.R0Input.columns, liIonCell.R0Input.smoo...
 
-... Warning message from dymosim
-At time T = 4.298923e+02 in current integration interval
-T_interval = 4.290000e+02 ... 4.300000e+02
-a large amount of work has been expended
-(about 500 steps) in the integrator. Probably the communication
-interval is too large or the system is stiff.
+Error: Integrator failed to start model.
 
+... Error message from dymosim
 
-Integration terminated successfully at T = 6000
-   CPU-time for integration                : 2.19 seconds
-   CPU-time for one grid interval          : 0.366 milliseconds
-   CPU-time for initialization             : 0.001 seconds
-   Number of result points                 : 6726
-   Number of grid points                   : 6001
-   Number of accepted steps                : 48606
-   Number of f-evaluations (dynamics)      : 109842
-   Number of crossing function evaluations : 57129
-   Number of Jacobian-evaluations          : 17924
-   Number of model time events             : 37
-   Number of input time events             : 0
-   Number of state events                  : 333
-   Number of step events                   : 0
-   Minimum integration stepsize            : 2.68e-13
-   Maximum integration stepsize            : 27.5
-   Maximum integration order               : 5
-Calling terminal section
-... "dsfinal.txt" creating (final states)
+ERROR: The simulation of VirtualFCS.Examples.ElectrochemicalComponents.CycleBatteryCell FAILED
 
-SUCCESSFUL simulation of VirtualFCS.Examples.SubsystemExamples.TestAirSubsystem
