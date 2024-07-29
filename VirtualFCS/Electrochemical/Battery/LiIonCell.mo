@@ -62,7 +62,7 @@ equation
 // DEFINE EQUATIONS //
   OCV.v = a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15));
 // Thermal equations
-  heatSource.Q_flow = abs((OCV.v - pin_p.v) * abs(sensorCurrent.i));
+  heatSource.Q_flow = abs((pin_n.v + OCV.v - pin_p.v) * abs(sensorCurrent.i));
 // DEFINE CONNECTIONS //
   connect(C2.n, R2.n) annotation(
     Line(points = {{-4, 76}, {-4, 52}}, color = {0, 0, 255}));
