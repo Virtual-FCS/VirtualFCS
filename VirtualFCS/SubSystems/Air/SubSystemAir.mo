@@ -56,11 +56,15 @@ equation
 Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
 //Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(0.9*0.7))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
  Power_Compressor_electrical = pin_p.i*pin_p.v;
-  if Power_Compressor_electrical > 1 then
-    t = Power_Compressor_electrical;
-    else
-   t = 1;
-   end if;
+
+  // This introduces chattering and slows down simulation. Discuss with Yash.
+  //if Power_Compressor_electrical > 1 then
+  //  t = Power_Compressor_electrical;
+  //else
+  //   t = 1;
+  //end if;
+
+  t = max(Power_Compressor_electrical, 1);
 
 
   Rendement_compressor = (sen_Air_mflow.m_flow*298.15*1004/(0.9*t))*(((Output.p*0.00001)^0.28)-1);

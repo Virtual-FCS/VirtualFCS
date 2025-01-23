@@ -48,8 +48,8 @@ model SubSystemCooling
       package Medium =
         Coolant_Medium,                                                                                       V = 0.00001) annotation (
     Placement(visible = true, transformation(origin = {-39, 23}, extent = {{-5, -5}, {5, 5}}, rotation = 90)));
-  Modelica.Fluid.Sensors.Temperature Inlet_Temperature(redeclare package Medium
-      = Coolant_Medium)                                                                           annotation (
+  Modelica.Fluid.Sensors.Temperature Inlet_Temperature(redeclare package Medium =
+        Coolant_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {63, -9}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Outlet_temperature(redeclare package
       Medium =
