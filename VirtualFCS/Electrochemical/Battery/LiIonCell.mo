@@ -62,7 +62,8 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   Modelica.Blocks.Tables.CombiTable1Ds InputR0(
     tableOnFile=true,
     tableName="SOCR0",
-    fileName="C:/Users/yashr/Downloads/VirtualFCS-Ben-upgrade-to-Dymola/LFP_SOCR0.mat",
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://VirtualFCS/Resources/LFPBatParameters/LFP_SOCR0.mat"),
     verboseRead=false,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative)
     annotation (Placement(transformation(extent={{-116,22},{-96,42}})));
@@ -70,7 +71,8 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   CombiTable1Ds InputR1(
     tableOnFile=true,
     tableName="SOCR1",
-    fileName="C:/Users/yashr/Downloads/VirtualFCS-Ben-upgrade-to-Dymola/LFP_SOCR1.mat",
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://VirtualFCS/Resources/LFPBatParameters/LFP_SOCR1.mat"),
     verboseRead=false,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative)
     annotation (Placement(transformation(extent={{-72,22},{-52,42}})));
@@ -78,7 +80,8 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   CombiTable1Ds InputR2(
     tableOnFile=true,
     tableName="SOCR2",
-    fileName="C:/Users/yashr/Downloads/VirtualFCS-Ben-upgrade-to-Dymola/LFP_SOCR2.mat",
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://VirtualFCS/Resources/LFPBatParameters/LFP_SOCR2.mat"),
     verboseRead=false,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative)
     annotation (Placement(transformation(extent={{-38,22},{-18,42}})));
@@ -86,7 +89,8 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   CombiTable1Ds InputC1(
     tableOnFile=true,
     tableName="SOCC1",
-    fileName="C:/Users/yashr/Downloads/VirtualFCS-Ben-upgrade-to-Dymola/LFP_SOCC1.mat",
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://VirtualFCS/Resources/LFPBatParameters/LFP_SOCC1.mat"),
     verboseRead=false,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative)
     annotation (Placement(transformation(extent={{-88,78},{-68,98}})));
@@ -94,7 +98,8 @@ model LiIonCell "An equivalent circuit model for a Li-ion battery cell."
   CombiTable1Ds InputC2(
     tableOnFile=true,
     tableName="SOCC2",
-    fileName="C:/Users/yashr/Downloads/VirtualFCS-Ben-upgrade-to-Dymola/LFP_SOCC2.mat",
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://VirtualFCS/Resources/LFPBatParameters/LFP_SOCC2.mat"),
     verboseRead=false,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative)
     annotation (Placement(transformation(extent={{20,80},{0,100}})));
