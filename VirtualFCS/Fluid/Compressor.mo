@@ -38,7 +38,7 @@ model Compressor
 
 Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare
       function flowCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                              V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), redeclare
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                              V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 10000}), redeclare
       function efficiencyCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
         (                                                                                                                                                                                                        eta_nominal =0.62),N_nominal = 1400,
