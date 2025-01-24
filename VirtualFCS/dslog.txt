@@ -1,71 +1,38 @@
 Log-file of program ./dymosim
-(generated: Mon Jun 10 13:59:56 2024)
+(generated: Thu Jan 23 14:44:05 2025)
 
 dymosim started
-... "VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack" simulating
+... "VirtualFCS.Examples.ElectrochemicalComponents.CycleBatteryCell" simulating
 ... "dsin.txt" loading (dymosim input file)
-Error: The following error was detected at time: 0
-
-Model error - sqrt (Modelica.Media.IdealGases.SingleGases.H2.density_Unique38(
-Modelica.Media.IdealGases.Common.SingleGasNasa.ThermodynamicState(
-p = fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.valveH2Purge.state_a.p, 
-T = fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.valveH2Purge.state_a.T
-))) = sqrt (-0.0220866)
-
-The stack of functions is:
-Modelica.Media.IdealGases.SingleGases.H2.density_Unique38(
-Modelica.Media.IdealGases.Common.SingleGasNasa.ThermodynamicState(
-p = fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.valveH2Purge.state_a.p, 
-T = fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.valveH2Purge.state_a.T
-))
-
-Non-linear solver will silently attempt to handle this problem.
-Non-linear solver gave up after attempt: 1
-
-Trying to solve non-linear system using global homotopy-method.
-Error: The following error was detected at time: 0
-
-Model error - Modelica.Math.log (T) = Modelica.Math.log (-0.0466308)
-
-The stack of functions is:
-Modelica.Media.IdealGases.Common.Functions.h_T
-Modelica.Media.IdealGases.Common.Functions.h_T(
-Modelica.Media.IdealGases.Common.DataRecord(
-name = "H2", 
-MM = 0.00201588, 
-Hf = 0, 
-H0 = 4200697.462150524, 
-Tlimit = 1000, 
-alow = {40783.2321, -800.918604, 8.21470201, -0.01269714457, 1.753605076E-05, -1.20286027E-08, 3.36809349E-12}, 
-blow = {2682.484665, -30.43788844}, 
-ahigh = {560812.801, -837.150474, 2.975364532, 0.001252249124, -3.740716...
-
-Non-linear solver will silently attempt to handle this problem.
-Non-linear solver gave up after attempt: 1
-
-... "PolarizeFuelCellStack.mat" creating (simulation result file)
+... "CycleBatteryCell.mat" creating (simulation result file)
 
 Integration started at T = 0 using integration method DASSL
 (DAE multi-step solver (dassl/dasslrt of Petzold modified by Dassault Systemes))
+Error: The following error was detected at time: 7200.0000000072
 
-Integration terminated successfully at T = 600
-   CPU-time for integration                : 8.22 seconds
-   CPU-time for one grid interval          : 13.7 milliseconds
-   CPU-time for initialization             : 0.007 seconds
-   Number of result points                 : 1341
-   Number of grid points                   : 601
-   Number of accepted steps                : 28220
-   Number of f-evaluations (dynamics)      : 55218
-   Number of crossing function evaluations : 31536
-   Number of Jacobian-evaluations          : 4891
-   Number of model time events             : 47
+Model error - Modelica.Math.log (liIonCell.chargeCounter.SOC) = Modelica.Math.log (-0.000189211)
+
+Solver will attempt to handle this problem.
+
+
+Integration terminated successfully at T = 7200
+   CPU-time for integration                : 0.018 seconds
+   CPU-time for one grid interval          : 0.0025 milliseconds
+   CPU-time for initialization             : 0.036 seconds
+   Number of result points                 : 7215
+   Number of grid points                   : 7201
+   Number of accepted steps                : 993
+   Number of f-evaluations (dynamics)      : 2082
+   Number of crossing function evaluations : 8248
+   Number of Jacobian-evaluations          : 261
+   Number of model time events             : 1
    Number of input time events             : 0
-   Number of state events                  : 324
+   Number of state events                  : 6
    Number of step events                   : 0
-   Minimum integration stepsize            : 2.41e-14
-   Maximum integration stepsize            : 6.16
+   Minimum integration stepsize            : 2.74e-07
+   Maximum integration stepsize            : 47.8
    Maximum integration order               : 5
 Calling terminal section
 ... "dsfinal.txt" creating (final states)
 
-SUCCESSFUL simulation of VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack
+SUCCESSFUL simulation of VirtualFCS.Examples.ElectrochemicalComponents.CycleBatteryCell

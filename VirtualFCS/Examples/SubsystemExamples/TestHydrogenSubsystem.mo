@@ -16,7 +16,8 @@ model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin = {1.9984e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200)  annotation (
+  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50,
+    startTime=0,                                                                                                         width = 200)  annotation (
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(gain.y, boundary.m_flow_in) annotation (

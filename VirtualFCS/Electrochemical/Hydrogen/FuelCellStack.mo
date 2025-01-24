@@ -33,14 +33,14 @@ model FuelCellStack
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
   parameter Modelica.Units.SI.Area A_cool_FCStack = L_FC_stack * W_FC_stack;//;
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 7.8 * 10 ^ 0.78 "HeatTransferCoefficient (W/(m2.K))";
-
-  //*** DECLARE VARIABLES ***//
+   //*** DECLARE VARIABLES ***//
   // Physical constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
   // Fuel cell variables
   Modelica.Units.SI.Voltage V_cell;
   Modelica.Units.SI.Power P_th;
+  Modelica.Units.SI.Power P_cool;
   Modelica.Units.SI.AbsolutePressure p_H2(min = 0);
   Modelica.Units.SI.AbsolutePressure p_O2(min = 0);
   Modelica.Units.SI.AbsolutePressure p_0 = 100000 "Aprox. atmospheric pressure";
@@ -93,7 +93,7 @@ model FuelCellStack
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation (
     Placement(visible = true, transformation(origin = {48, -114}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation (
-    Placement(visible = true, transformation(origin = {-100, 128}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin={-218,140},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(visible = true, transformation(origin = {-50, -92}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPort_a port_a_Air(redeclare package Medium =
@@ -130,19 +130,30 @@ model FuelCellStack
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heatBoundary annotation (
     Placement(visible = true, transformation(origin={2,-196},     extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin={34,70},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
+  Modelica.Blocks.Interfaces.RealOutput FCStack_V annotation (Placement(
+        transformation(extent={{-120,104},{-140,124}}), iconTransformation(
+          extent={{-120,104},{-140,124}})));
+  Modelica.Electrical.Analog.Sensors.VoltageSensor voltageSensor annotation (
+      Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=-90,
+        origin={-102,114})));
+  Modelica.Blocks.Interfaces.RealInput FCDeg_new
+    annotation (Placement(transformation(extent={{-190,-138},{-150,-98}})));
 equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
   p_H2 = H2_sink.ports[1].p*0.00001;
-  p_O2 = 0.2*O2_sink.ports[1].p*0.00001;
+  p_O2 = 0.2*O2_sink.ports[1].p;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the stack voltage
 //  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
-  potentialSource.v = N_FC_stack*(1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)));
+  potentialSource.v = (N_FC_stack*((1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)))))-FCDeg_new;
 // Calculate the voltage of the cell
-  V_cell = pin_p.v/N_FC_stack;
+  V_cell = if potentialSource.v/N_FC_stack >1 then 0.9 else potentialSource.v/N_FC_stack;
 // THERMAL EQUATIONS //
-  P_th = (1.481 - V_cell)*abs(currentSensor.i)*N_FC_stack;
+  P_th = (1.481 - V_cell)*abs(currentSensor.i)*N_FC_stack; //Heat generated in the FC stack
+  P_cool= (1.253- V_cell)*abs(currentSensor.i)*N_FC_stack; // Heat removed by the cooling system
 // Assign the thermal power value to the heat flow component
   prescribedHeatFlow.Q_flow = P_th;
 // Efficiencies
@@ -168,7 +179,8 @@ equation
   connect(heatCapacitor.port, prescribedHeatFlow.port) annotation (
     Line(points = {{0, -114}, {38, -114}, {38, -114}, {38, -114}}, color = {191, 0, 0}));
   connect(pin_n, ground.p) annotation (
-    Line(points = {{-60, 150}, {-100, 150}, {-100, 138}, {-100, 138}}, color = {0, 0, 255}));
+    Line(points={{-60,150},{-60,138},{-82,138},{-82,156},{-218,156},{-218,150}},
+                                                                       color = {0, 0, 255}));
   connect(temperatureSensor.port, heatCapacitor.port) annotation (
     Line(points = {{-50, -102}, {-50, -102}, {-50, -114}, {2, -114}, {2, -114}, {0, -114}}, color = {191, 0, 0}));
   connect(temperatureSensor.T, H2_sink.T_in) annotation (
@@ -207,6 +219,14 @@ equation
           -144},{0,-144}}, color={191,0,0}));
   connect(convection.solid, heatPort)
     annotation (Line(points={{22,-156},{22,-144},{0,-144}}, color={191,0,0}));
+  connect(potentialSource.n, voltageSensor.n) annotation (Line(points={{-60,130},
+          {-60,132},{-102,132},{-102,124}}, color={0,0,255}));
+  connect(potentialSource.p, voltageSensor.p) annotation (Line(points={{-60,110},
+          {-60,98},{-102,98},{-102,104}}, color={0,0,255}));
+  connect(voltageSensor.v, FCStack_V)
+    annotation (Line(points={{-113,114},{-130,114}}, color={0,0,127}));
+  connect(FCStack_V, FCStack_V)
+    annotation (Line(points={{-130,114},{-130,114}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics={  Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),

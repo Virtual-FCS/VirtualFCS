@@ -51,7 +51,7 @@ record DriveDataDcPm
   parameter Modelica.Units.SI.Time Tsub = 2 * Tsigma "Substitute time constant" annotation (
     Dialog(tab = "Controller", group = "Current controller", enable = false));
   //Speed controller: symmetrical optimum
-  parameter Real kpw = (JL + motorData.Jr) / (2 * Tsub) "Proportional gain" annotation (
+  parameter Real kpw = 50 "Proportional gain" annotation (
     Dialog(tab = "Controller", group = "Speed controller", enable = false));
   parameter Modelica.Units.SI.Time Tiw = 4 * Tsub "Integral time constant" annotation (
     Dialog(tab = "Controller", group = "Speed controller", enable = false));

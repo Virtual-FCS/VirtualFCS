@@ -4,3 +4,8 @@ PressureRegulator
 PumpElectricDC
 RecirculationBlower
 ThrottleValve
+Compressor_new
+Compressor_newp
+Compressor_mc
+Compressor_mc_h
+RecirculationBlower_mc
