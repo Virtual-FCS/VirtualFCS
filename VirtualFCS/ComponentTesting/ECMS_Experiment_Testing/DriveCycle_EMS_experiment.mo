@@ -17,7 +17,7 @@ model DriveCycle_EMS_experiment
 
   Real P(unit = "W");
   // *** INSTANTIATE COMPONENTS *** //
-  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, shiftTime = -200, smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
+  Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic,                   smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     table=[1,3.437850241; 2,4.126497941; 3,8.254588947; 4,3.440535871; 5,5.501631032;
         6,4.816128128; 7,5.500923003; 8,4.126497941; 9,8.94073427; 10,3.441649797;
         11,3.43807913; 12,6.876176285; 13,2.750815516; 14,11.00255403; 15,8.252446548;

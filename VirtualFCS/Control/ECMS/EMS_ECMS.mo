@@ -174,7 +174,7 @@ equation
 //---- Consumptions ----
   //C_fc = (((n_cell*(U_0 - R*fcTemperature/(2*F)*log(pH2*(pO2^0.5)) - (0.85*0.001)*(fcTemperature - 298.15) - R_O_FC_stack*(set_current_1/A_FC_surf) - (R*fcTemperature)/(2*F*0.3419)*log(abs(max(set_current_1, 0.001)/A_FC_surf)/i_0_FC_stack) + (R*1.4672*fcTemperature)/(2*F)*log(1-(abs(set_current_1/A_FC_surf)/i_L_FC_stack))))*set_current_1)/(LHV_H2*(-2.28032634348 * 10^(-16)* set_current_3^6 + 5.29567212538 * 10^(-13) * set_current_3^5 - 4.83584705561 * 10^(-10) * set_current_3^4 + 2.19811746997 * 10^(-7) * set_current_3^3 -5.08697130216 * 10^(-5) * set_current_3^2 + 4.7311314221 * 10^(-3) * set_current_3 + 0.427083655202))); // Calculates C_fc the same as the optimization solver. This will vary from the actual FC since set_current_1 is used, and no dynamic behavious is considered.
   C_fc = ((calcFCV(n_cell, inputFCTemp, inputP_H2, inputP_O2, R_O_FC_stack, A_FC_surf, i_0_FC_stack, i_L_FC_stack, set_current_1)*set_current_1)/(LHV_H2*(-2.28032634348 * 10^(-16)* set_current_3^6 + 5.29567212538 * 10^(-13) * set_current_3^5 - 4.83584705561 * 10^(-10) * set_current_3^4 + 2.19811746997 * 10^(-7) * set_current_3^3 -5.08697130216 * 10^(-5) * set_current_3^2 + 4.7311314221 * 10^(-3) * set_current_3 + 0.427083655202)));
-  C_batt = ((sigma*batt_V*batterySetCurrent)/(LHV_H2)); // Calculates C_batt same as the optimization solver. Will vary from actual batt.
+  C_batt = ((sigma*batt_V*batterySetCurrent)/(LHV_H2*calcFcEfficiency(set_current_1))); // Calculates C_batt same as the optimization solver. Will vary from actual batt.
   k_b_f = 1-2*mu*((SOC - 0.5*(SOC_max + SOC_min))/(SOC_max - SOC_min)); // Calculates the k_b term
   C_batt_2 = k_b_f*C_batt; // Calculates k_b * C_batt
   C = C_fc + k_b_f*C_batt; // Calcualtes C_tot
@@ -249,6 +249,7 @@ equation
     set_current_3 = 0;
   else
     set_current_3 = set_current_2;
+    //set_current_3 = 130;
 
   end if;
 
