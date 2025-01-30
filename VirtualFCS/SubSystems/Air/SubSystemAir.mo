@@ -4,6 +4,7 @@ model SubSystemAir
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
+  //replaceable package Medium = Modelica.Media.Air.MoistAir;
   replaceable package Medium = Buildings.Media.Air;
   // Parameter definition
   parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
@@ -61,7 +62,7 @@ Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.
 //Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(0.9*0.7))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
  Power_Compressor_electrical = pin_p.i*pin_p.v;
 
-  // This introduces chattering and slows down simulation. 
+  // This introduces chattering and slows down simulation.
   //if Power_Compressor_electrical > 1 then
   //  t = Power_Compressor_electrical;
   //else

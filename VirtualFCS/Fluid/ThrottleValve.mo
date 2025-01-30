@@ -5,8 +5,8 @@ model ThrottleValve
   // Medium declaration
   //replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
   //replaceable package Medium = Modelica.Media.Air.MoistAir;
-  replaceable package Medium = Buildings.Media.Air(reference_X={0.01,0.99});
-  //replaceable package Medium = Buildings.Media.Air;
+  //replaceable package Medium = Buildings.Media.Air(reference_X={0.01,0.99});
+  replaceable package Medium = Buildings.Media.Air;
   //replaceable package Medium = Buildings.Media.Air;
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces

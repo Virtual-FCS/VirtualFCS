@@ -4,8 +4,8 @@ model Compressor
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
-  //replaceable package Medium = Modelica.Media.Air.MoistAir;//(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  replaceable package Medium = Buildings.Media.Air(reference_X={0.01,0.99});
+  //replaceable package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});//(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  replaceable package Medium = Buildings.Media.Air;
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation (

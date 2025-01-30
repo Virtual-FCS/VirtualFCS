@@ -3,6 +3,7 @@ model FuelCellSubSystems
   // System
   outer Modelica.Fluid.System system "System properties";
   // Medium decleration
+  //replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Cathode_Medium = Buildings.Media.Air;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby
     Modelica.Media.Interfaces.PartialPureSubstance;
@@ -82,6 +83,8 @@ equation
   connect(contolInput[1], subSystemAir.control) annotation (
     Line(points={{-120,-5},{-110,-5},{-110,-6},{-100,-6},{-100,-22},{44,-22},{
           44,5},{49,5}},                                  color = {0, 0, 127}));
+  connect(subSystemAir.RH_cathode, RH_cathode) annotation (Line(points={{49,-4.2},
+          {46,-4.2},{46,-14},{94,-14},{94,-26},{110,-26}}, color={0,0,127}));
   annotation (
     Icon(graphics={  Text(origin = {-31, -100}, lineColor = {0, 0, 255}, extent = {{-105, 8}, {167, -40}}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-82, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "H2"), Text(origin = {-2, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Cool"), Text(origin = {80, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Air")}, coordinateSystem(initialScale = 0.1)));
 end FuelCellSubSystems;
