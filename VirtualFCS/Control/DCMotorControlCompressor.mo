@@ -5,19 +5,13 @@ model DCMotorControlCompressor "Control the speed of a DC motor"
     Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM                                                                                                           annotation (
      Placement(transformation(extent={{-30,-96},{-10,-76}})));
   //*** INSTANTIATE COMPONENTS ***//
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf,
-    VMax=driveData.VaMax)                                                                                                                                                             annotation (
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf, VMax = driveData.VaMax) annotation (
     Placement(visible = true, transformation(extent = {{30, -10}, {50, 10}}, rotation = 0)));
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(
-    k=0.5,
-    Ti=0.01,                                                                                                         constantLimits = false, initType = Modelica.Blocks.Types.Init.InitialOutput,                    useFF = true) annotation (
-    Placement(visible = true, transformation(extent={{-22,-10},{-2,10}},      rotation = 0)));
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(Ti = driveData.TiI, constantLimits = false, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpI, useFF = true) annotation (
+    Placement(visible = true, transformation(extent = {{-22, -10}, {-2, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain tau2i(k = 1/driveData.kPhi) annotation (
     Placement(visible = true, transformation(origin = {-42, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(
-    k=driveData.kpw,
-    useI=true,
-    Ti=driveData.Tiw,                                                                                              constantLimits = true,
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(Ti = driveData.Tiw, constantLimits = true,
     symmetricLimits=false,
     yMax=driveData.tauMax + 100,
     yMin=0,                                                                                                                               initType = Modelica.Blocks.Types.Init.InitialOutput)                        annotation (

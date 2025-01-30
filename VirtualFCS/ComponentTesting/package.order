@@ -8,6 +8,7 @@ PumpElectricDCTest
 RecirculationBlowerTest
 SubSystemHydrogenControlTest
 ThrottleValveTest
+ECMS_Experiment_Testing
 RotaryMachine
 CompressorTest_new
 CompressorTest_newp

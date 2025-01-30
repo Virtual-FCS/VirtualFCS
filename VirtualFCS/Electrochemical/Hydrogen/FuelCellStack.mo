@@ -33,7 +33,8 @@ model FuelCellStack
   parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC_stack = 110.0 "FC stack specific heat capacity";
   parameter Modelica.Units.SI.Area A_cool_FCStack = L_FC_stack * W_FC_stack;//;
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 7.8 * 10 ^ 0.78 "HeatTransferCoefficient (W/(m2.K))";
-   //*** DECLARE VARIABLES ***//
+
+  //*** DECLARE VARIABLES ***//
   // Physical constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
@@ -144,7 +145,7 @@ equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
   p_H2 = H2_sink.ports[1].p*0.00001;
-  p_O2 = 0.2*O2_sink.ports[1].p;
+  p_O2 = 0.2*O2_sink.ports[1].p*0.00001;
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the stack voltage
 //  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));

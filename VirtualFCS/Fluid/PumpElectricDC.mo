@@ -51,7 +51,7 @@ model PumpElectricDC
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
     Placement(visible = true, transformation(origin = {60, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 270)));
   // Other
-  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal/2)        annotation (
+  Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal/9.5493) annotation (
     Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k=9.5493)   annotation (
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));

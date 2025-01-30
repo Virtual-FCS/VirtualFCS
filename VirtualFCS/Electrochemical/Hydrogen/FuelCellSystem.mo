@@ -49,7 +49,7 @@ equation
   Power_stack = fuelCellStack.pin_n.i*fuelCellStack.pin_p.v;
   Power_BOP = fuelCellSubSystems.batterySystem.pin_n.i*fuelCellSubSystems.batterySystem.pin_p.v;
   Power_system = Power_stack - Power_BOP;
-  eta_FC_sys = if ((Power_system)/(242000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321))))>1 then 1 elseif ((Power_system)/(242000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321))))<0.001 then 0 else (Power_system)/(242000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321)));
+  eta_FC_sys = min(max((Power_system)/(242000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321))), 0.001),1);
   eta_fu= (fuelCellStack.H2_sink.ports[1].m_flow)/max(((fuelCellStack.H2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemHydrogen.valveH2Purge.m_flow)),0.00001);
   eta_au= (fuelCellStack.O2_sink.ports[1].m_flow)/max(((fuelCellStack.O2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemAir.throttleValve.port_a.m_flow)),0.00001);
   connect(fuelCellStack.port_b_Air, fuelCellSubSystems.air_port_a) annotation (
