@@ -12,7 +12,7 @@ model FuelCellSubSystems
   parameter Modelica.Units.SI.Mass m_FC_subsystems = subSystemHydrogen.m_system_H2 + subSystemAir.m_system_air + subSystemCooling.m_system_coolant + batterySystem.m_bat_pack;
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Integer N_FC_stack = 455 "FC stack number of cells";
+  parameter Integer N_FC_stack = 399 "FC stack number of cells";
   Modelica.Fluid.Interfaces.FluidPort_a H2_port_a(redeclare package Medium =
         Anode_Medium)                                                                      annotation (
     Placement(visible = true, transformation(origin = {-66, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -40,12 +40,14 @@ model FuelCellSubSystems
   Cooling.SubSystemCooling subSystemCooling annotation (
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Electrochemical.Battery.BatterySystem batterySystem(
-    V_min_bat_pack=400,
-    V_nom_bat_pack=480,
-    V_max_bat_pack=520,
+    V_min_bat_pack=800,
+    V_nom_bat_pack=900,
+    V_max_bat_pack=1000,
     C_bat_pack=2000,
     SOC_init=0.99,                                                                                                                                    m_bat_pack = 1) annotation (
-    Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin={0,-70},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput RH_cathode
+    annotation (Placement(transformation(extent={{100,-36},{120,-16}})));
 equation
   connect(contolInput[1], subSystemHydrogen.control) annotation (
     Line(points={{-120,-5},{-90,-5},{-90,6},{-71,6}},        color = {0, 0, 127}));

@@ -7,18 +7,18 @@ model CompressorTest "Simple model to test the compressor component"
   replaceable package Medium = Buildings.Media.Air(reference_X={0.01,0.99});
 VirtualFCS.Fluid.Compressor compressor annotation (
     Placement(visible = true, transformation(origin = {-2.88658e-15, 2.66454e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-Modelica.Blocks.Sources.Sine sine(amplitude = 10, f = 0.01)  annotation (
-    Placement(visible = true, transformation(origin = {-70, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 Modelica.Fluid.Sources.FixedBoundary AirSink(redeclare package Medium = Medium, nPorts = 1)             annotation (
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 Modelica.Fluid.Sources.FixedBoundary AirSink2(redeclare package Medium = Medium, nPorts = 1) annotation (
     Placement(visible = true, transformation(origin = {66, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
 VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation (
     Placement(visible = true, transformation(origin = {0, 70}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
-  Modelica.Blocks.Sources.Sine sine1(amplitude = 0.2, f = 0.01, offset = 1, startTime = 20) annotation (
+  Modelica.Blocks.Sources.Sine sine1(
+    amplitude=1,
+    f=0.1,
+    offset=0,
+    startTime=0)                                                                            annotation (
     Placement(visible = true, transformation(origin = {-70, 34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=0.005)
-    annotation (Placement(transformation(extent={{-80,78},{-60,98}})));
 equation
 connect(AirSink.ports[1], compressor.Input) annotation (
     Line(points = {{-70, 0}, {-22, 0}}, color = {0, 127, 255}, thickness = 2));

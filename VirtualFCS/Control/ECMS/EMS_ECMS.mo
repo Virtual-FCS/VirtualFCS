@@ -249,7 +249,6 @@ equation
     set_current_3 = 0;
   else
     set_current_3 = set_current_2;
-    //set_current_3 = 130;
 
   end if;
 

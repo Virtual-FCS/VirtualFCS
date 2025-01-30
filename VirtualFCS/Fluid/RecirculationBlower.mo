@@ -20,10 +20,12 @@ model RecirculationBlower
     Placement(visible = true, transformation(origin = {72, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Interfaces.RealInput controlInterface annotation (
     Placement(visible = true, transformation(origin = {-113, 41}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {-30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal) annotation (
+  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal/2) annotation (
     Placement(visible = true, transformation(origin = {-87, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   // Machines
-  Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(fixed = true, start = 0.10472), wNominal = driveData.motorData.wNominal) annotation (
+  Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal,
+    alpha20a=driveData.motorData.alpha20a,                                                                                                                                                                                                        brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters,
+    wMechanical(fixed=true, start=0.10472),                                                                                                                                                                                                        wNominal = driveData.motorData.wNominal) annotation (
     Placement(visible = true, transformation(origin = {2, 0}, extent = {{-62, -26}, {-42, -6}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation (
     Placement(visible = true, transformation(origin = {-20, -16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -31,7 +33,8 @@ model RecirculationBlower
     Placement(visible = true, transformation(extent = {{-90, -24}, {-70, -4}}, rotation = 0)));
   Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare
       function flowCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                                V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), N_nominal = 200,
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                                V_flow_nominal = {0, 0.00365}, head_nominal = {500000, 100000}),
+    N_nominal=500,
     T_start=323.15,                                                                                                                                                                                                        V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,                                                                                                                                                                                                        medium(preferredMediumStates = false), nParallel = 1, use_N_in = true, use_T_start = true) annotation (
@@ -42,8 +45,8 @@ model RecirculationBlower
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
     Placement(visible = true, transformation(origin = {24, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Other
-  Modelica.Blocks.Math.Gain gain(k=4.5)      annotation (
-    Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Math.Gain gain(k=9.533)    annotation (
+    Placement(visible = true, transformation(origin={65,-16},    extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   VirtualFCS.Control.DCMotorControlRecirculationBlower dCMotorControlRecirculationBlower annotation (
     Placement(visible = true, transformation(origin = {-50, 42}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   // Power & Efficiencies
@@ -54,9 +57,9 @@ equation
   connect(dcpm.flange, inertia.flange_a) annotation (
     Line(points = {{-40, -16}, {-30, -16}}));
   connect(speedSensor.w, gain.u) annotation (
-    Line(points={{35,6},{40,6},{40,-16},{59.8,-16}},        color = {0, 0, 127}));
+    Line(points={{35,6},{40,6},{40,-16},{57.8,-16}},        color = {0, 0, 127}));
   connect(gain.y, pump.N_in) annotation (
-    Line(points={{73.6,-16},{82,-16},{82,-40},{0,-40},{0,-50}},          color = {0, 0, 127}));
+    Line(points={{71.6,-16},{82,-16},{82,-40},{0,-40},{0,-50}},          color = {0, 0, 127}));
   connect(pump.port_b, Output) annotation (
     Line(points = {{10, -60}, {84, -60}}, color = {0, 170, 0}, thickness = 1));
   connect(pump.port_a, Input) annotation (

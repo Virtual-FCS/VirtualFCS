@@ -42,22 +42,26 @@ model SubSystemAir
     Placement(visible = true, transformation(origin = {12, 18}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
   // Sensors
   Modelica.Blocks.Interfaces.RealOutput sensors[2] annotation (
-    Placement(visible = true, transformation(origin = {80, -86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {80, -86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin={-110,-4},     extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.MassFlowRate sen_Air_mflow(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {-46, 18}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
-  Modelica.Fluid.Sensors.Temperature compressorOutletSensor(redeclare package Medium = Medium) annotation (
+  Modelica.Fluid.Sensors.Temperature compressorOutletSensor(redeclare package
+      Medium =                                                                         Medium) annotation (
     Placement(visible = true, transformation(origin = {55, 35}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   // Valves
   VirtualFCS.Fluid.ThrottleValve throttleValve(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {21, -35}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {74, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput RH_cathode annotation (Placement(
+        transformation(extent={{-100,-52},{-120,-32}}), iconTransformation(
+          extent={{-100,-52},{-120,-32}})));
 equation
 Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
 //Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(0.9*0.7))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
  Power_Compressor_electrical = pin_p.i*pin_p.v;
 
-  // This introduces chattering and slows down simulation. Discuss with Yash.
+  // This introduces chattering and slows down simulation. 
   //if Power_Compressor_electrical > 1 then
   //  t = Power_Compressor_electrical;
   //else
@@ -109,6 +113,9 @@ Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.
     Line(points={{63,70},{44,70},{44,-26},{37.5,-26}},        color = {0, 0, 127}));
   connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation (
     Line(points={{63,70},{44,70},{44,-26},{37.5,-26}},        color = {0, 0, 127}));
+  connect(RH_cathode, compressor.RH_cathode) annotation (Line(points={{-110,-42},
+          {-102,-42},{-102,4},{8,4},{8,2},{26,2},{26,3.6},{28.64,3.6}}, color={
+          0,0,127}));
   annotation (
     Icon(coordinateSystem(initialScale = 0.1), graphics={  Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {23, -3}, extent = {{-7, 3}, {29, -3}}, textString = "Air compressor speed")}),

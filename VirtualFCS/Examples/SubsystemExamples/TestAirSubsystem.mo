@@ -3,19 +3,28 @@ model TestAirSubsystem "Example to evaluate the performance of the air subsystem
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  //replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  replaceable package Medium = Buildings.Media.Air;
+  replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  //replaceable package Medium = Buildings.Media.Air;
+
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Medium, nPorts = 1, use_m_flow_in = true) annotation (
     Placement(visible = true, transformation(origin = {0, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain(k = -0.032*1/(96485*2)) annotation (
+  Modelica.Blocks.Math.Gain gain(k=(0.02897*2/(96485*4*0.21)*180))
+                                                         annotation (
     Placement(visible = true, transformation(origin = {-35, 81}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {1, 49}, extent = {{-9, -9}, {9, 9}}, rotation = 0)));
   VirtualFCS.SubSystems.Air.SubSystemAir subSystemAir annotation (
     Placement(visible = true, transformation(origin = {-1.77636e-15, -1.77636e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation (
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(
+    C_bat_pack=20000,                                            SOC_init = 0.9,
+    V_max_bat_pack=480,
+    V_min_bat_pack=400,
+    V_nom_bat_pack=440,                                                                                                                         m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin = {-3.55271e-15, -70}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200) annotation (
+  Modelica.Blocks.Sources.Trapezoid trapezoid(
+    amplitude=280,                                             falling = 50, period = 500, rising = 50,
+    nperiod=10,
+    startTime=1,                                                                                                         width = 200) annotation (
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation (

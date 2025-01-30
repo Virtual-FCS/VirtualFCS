@@ -1,7 +1,8 @@
 within VirtualFCS.Control;
 model DCMotorControlCompressor "Control the speed of a DC motor"
   //*** DEFINE REPLACEABLE PACKAGES ***//
-  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData           constrainedby Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM annotation (
+  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData           constrainedby
+    Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM                                                                                                           annotation (
      Placement(transformation(extent={{-30,-96},{-10,-76}})));
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf, VMax = driveData.VaMax) annotation (
@@ -12,7 +13,8 @@ model DCMotorControlCompressor "Control the speed of a DC motor"
     Placement(visible = true, transformation(origin = {-42, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI speedController(Ti = driveData.Tiw, constantLimits = true,
     symmetricLimits=false,
-    yMin=0,                                                                                                                               initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpw, yMax = driveData.tauMax + 100) annotation (
+    yMax=driveData.tauMax + 100,
+    yMin=0,                                                                                                                               initType = Modelica.Blocks.Types.Init.InitialOutput)                        annotation (
     Placement(visible = true, transformation(extent = {{-92, -10}, {-72, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.FirstOrder preFilter(k = 1, T = driveData.Tfw, initType = Modelica.Blocks.Types.Init.InitialOutput) annotation (
     Placement(visible = true, transformation(extent = {{-132, -10}, {-112, 10}}, rotation = 0)));
@@ -31,13 +33,13 @@ model DCMotorControlCompressor "Control the speed of a DC motor"
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(armatureInverter.vDC, currentController.yMaxVar) annotation (
-    Line(points = {{29, 6}, {0, 6}}, color = {0, 0, 127}));
+    Line(points={{29,6},{0,6}},      color = {0, 0, 127}));
   connect(armatureInverter.vRef, currentController.y) annotation (
-    Line(points = {{28, 0}, {-1, 0}}, color = {0, 0, 127}));
+    Line(points={{28,0},{-1,0}},      color = {0, 0, 127}));
   connect(armatureInverter.iMot, currentController.u_m) annotation (
-    Line(points = {{29, -6}, {10, -6}, {10, -30}, {-18, -30}, {-18, -12}}, color = {0, 0, 127}));
+    Line(points={{29,-6},{10,-6},{10,-30},{-18,-30},{-18,-12}},            color = {0, 0, 127}));
   connect(tau2i.y, currentController.u) annotation (
-    Line(points = {{-31, 0}, {-24, 0}}, color = {0, 0, 127}));
+    Line(points={{-31,0},{-24,0}},      color = {0, 0, 127}));
   connect(preFilter.y, speedController.u) annotation (
     Line(points = {{-111, 0}, {-94, 0}}, color = {0, 0, 127}));
   connect(speedController.y, tau2i.u) annotation (
@@ -55,7 +57,7 @@ equation
   connect(measuredSpeedInput, speedController.u_m) annotation (
     Line(points = {{-88, -64}, {-88, -12}}, color = {0, 0, 127}));
   connect(currentController.feedForward, measuredSpeedInput) annotation (
-    Line(points = {{-12, -12}, {-12, -36}, {-88, -36}, {-88, -64}}, color = {0, 0, 127}));
+    Line(points={{-12,-12},{-12,-36},{-88,-36},{-88,-64}},          color = {0, 0, 127}));
   annotation (
     Documentation(info = "<html><head></head><body><p>This is a partial model of a controlled DC PM drive.</p>
 <p>

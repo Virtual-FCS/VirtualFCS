@@ -1,8 +1,8 @@
 within VirtualFCS.SubSystems.Air;
 block SubSystemAirControl
-  parameter Modelica.Units.SI.AbsolutePressure pressure_Air_set = 1.5 "Set air Pressure";
+  parameter Modelica.Units.SI.AbsolutePressure pressure_Air_set = 2.385e5 "Set air Pressure";
  // parameter Modelica.Units.SI.MassFlowRate massFlow_Air_set = 4e-3 "Set air Recirculation Mass Flow";
-  parameter Integer N_FC_stack = 455 "FC stack number of cells";
+  parameter Integer N_FC_stack = 399 "FC stack number of cells";
   VirtualFCS.Control.PumpSpeedControl pumpSpeedControl annotation (
     Placement(visible = true, transformation(origin = {0, -7.10543e-15}, extent = {{-58, -58}, {58, 58}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant setAirPressure(k = pressure_Air_set) annotation (
@@ -19,7 +19,8 @@ block SubSystemAirControl
     Placement(visible = true, transformation(origin = {-119, -30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput signalInterfaceFC annotation (
     Placement(visible = true, transformation(origin = {-220, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setAirMassFlow(y = max(signalInterfaceFC*(0.02897*2/(96485*4*0.21)*N_FC_stack), 1e-3)) annotation (
+  Modelica.Blocks.Sources.RealExpression setAirMassFlow(y=max(signalInterfaceFC*(0.02897
+        *1.75/(96485*4*0.21)*N_FC_stack)),1e-3)                                                                                       annotation (
     Placement(visible = true, transformation(origin = {-119, 30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(setAirPressure.y, multiplex2.u1[1]) annotation (
