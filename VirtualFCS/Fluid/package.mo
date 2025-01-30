@@ -1,7 +1,6 @@
 within VirtualFCS;
-
 package Fluid "Fluid components supplementing the Modelica Standard Library."
   extends Modelica.Icons.Package;
-  annotation(
+  annotation (
     Documentation);
 end Fluid;

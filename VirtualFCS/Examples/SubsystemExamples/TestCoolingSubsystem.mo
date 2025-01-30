@@ -1,54 +1,53 @@
 within VirtualFCS.Examples.SubsystemExamples;
-
 model TestCoolingSubsystem "Example to evaluate the performance of the cooling subsystem."
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  inner Modelica.Fluid.System system annotation(
+  inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation (
     Placement(visible = true, transformation(origin = {-30, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation(
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation (
     Placement(visible = true, transformation(origin = {0, 62}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation(
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(visible = true, transformation(origin = {-56, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*110, T(fixed = true, start = system.T_start), der_T(fixed = false)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*110, T(fixed = true, start = system.T_start), der_T(fixed = false)) annotation (
     Placement(visible = true, transformation(origin = {0, 102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, nNodes = 2, nParallel = 500, use_HeatTransfer = true, use_T_start = true) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, nNodes = 2, nParallel = 500, use_HeatTransfer = true, use_T_start = true) annotation (
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 1050, falling = 50, period = 500, rising = 50, startTime = 100, width = 300) annotation(
+  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 1050, falling = 50, period = 500, rising = 50, startTime = 100, width = 300) annotation (
     Placement(visible = true, transformation(origin = {-116, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin = {-1.9984e-15, -78}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp ramp(duration = 200, height = 1000, startTime = 100) annotation(
+  Modelica.Blocks.Sources.Ramp ramp(duration = 200, height = 1000, startTime = 100) annotation (
     Placement(visible = true, transformation(origin = {-116, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain gain(k = 50) annotation(
+  Modelica.Blocks.Math.Gain gain(k = 50) annotation (
     Placement(visible = true, transformation(origin = {-68, 72}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
+  VirtualFCS.SubSystems.Cooling.SubSystemCooling subSystemCooling annotation (
     Placement(visible = true, transformation(origin = {1.77636e-15, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
-  connect(heatCapacitor.port, thermalConductor.port_a) annotation(
+  connect(heatCapacitor.port, thermalConductor.port_a) annotation (
     Line(points = {{0, 92}, {0, 72}}, color = {191, 0, 0}));
-  connect(prescribedHeatFlow.port, thermalConductor.port_a) annotation(
+  connect(prescribedHeatFlow.port, thermalConductor.port_a) annotation (
     Line(points = {{-20, 72}, {0, 72}}, color = {191, 0, 0}));
-  connect(heatCapacitor.port, temperatureSensor.port) annotation(
+  connect(heatCapacitor.port, temperatureSensor.port) annotation (
     Line(points = {{0, 92}, {-88, 92}, {-88, -2}, {-66, -2}}, color = {191, 0, 0}));
-  connect(pipe2.heatPorts[1], thermalConductor.port_b) annotation(
+  connect(pipe2.heatPorts[1], thermalConductor.port_b) annotation (
     Line(points = {{0, 34}, {0, 52}}, color = {191, 0, 0}));
-  connect(gain.y, prescribedHeatFlow.Q_flow) annotation(
+  connect(gain.y, prescribedHeatFlow.Q_flow) annotation (
     Line(points = {{-60, 72}, {-40, 72}}, color = {0, 0, 127}));
-  connect(trapezoid.y, gain.u) annotation(
+  connect(trapezoid.y, gain.u) annotation (
     Line(points = {{-104, 72}, {-78, 72}}, color = {0, 0, 127}));
-  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation(
+  connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation (
     Line(points = {{-44, -2}, {-22, -2}}, color = {0, 0, 127}));
-  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
+  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation (
     Line(points = {{-10, -30}, {-8, -30}, {-8, -58}}, color = {0, 0, 255}));
-  connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation(
+  connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation (
     Line(points = {{10, -30}, {10, -44}, {8, -44}, {8, -58}}, color = {0, 0, 255}));
-  connect(subSystemCooling.port_b, pipe2.port_a) annotation(
+  connect(subSystemCooling.port_b, pipe2.port_a) annotation (
     Line(points = {{-12, 12}, {-12, 30}, {-10, 30}}, color = {0, 0, 255}, thickness = 1.5));
-  connect(subSystemCooling.port_a, pipe2.port_b) annotation(
+  connect(subSystemCooling.port_a, pipe2.port_b) annotation (
     Line(points = {{12, 12}, {12, 30}, {10, 30}}, color = {255, 0, 0}, thickness = 1.5));
-  annotation(
+  annotation (
     Diagram,
     Icon,
     __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian,newInst aliasConflicts",
