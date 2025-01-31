@@ -3,8 +3,8 @@ model TestAirSubsystem "Example to evaluate the performance of the air subsystem
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  //replaceable package Medium = Buildings.Media.Air;
+  //replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  replaceable package Medium = Buildings.Media.Air;
 
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Medium, nPorts = 1, use_m_flow_in = true) annotation (
     Placement(visible = true, transformation(origin = {0, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));

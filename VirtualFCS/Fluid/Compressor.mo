@@ -67,7 +67,7 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
     Ti=15,
     k=8,                                                                xd_start = 0.01, xi_start = 0.01,
     yMax=2.4,
-    yMin=-2.4,                                                                                                                     y_start = 0.01) annotation (
+    yMin=0,                                                                                                                        y_start = 0.01) annotation (
     Placement(visible = true, transformation(origin={-34,-84},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   AixLib.Fluid.Sensors.TemperatureTwoPort senTem(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation (
     Placement(visible = true, transformation(origin={-12,-194},    extent = {{40, 90}, {60, 110}}, rotation = 0)));
