@@ -8,7 +8,7 @@ model TestAirSubsystem_new "Example to evaluate the performance of the air subsy
 
   Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Medium, nPorts = 1, use_m_flow_in = true) annotation (
     Placement(visible = true, transformation(origin = {0, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain(k=(0.02897*2/(96485*4*0.21)*180))
+  Modelica.Blocks.Math.Gain gain(k=-(0.02897*2/(96485*4*0.21)*180))
                                                          annotation (
     Placement(visible = true, transformation(origin = {-35, 81}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package

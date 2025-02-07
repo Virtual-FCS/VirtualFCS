@@ -55,6 +55,8 @@ model SubSystemCooling
       Medium =
         Coolant_Medium)                                                                            annotation (
     Placement(visible = true, transformation(origin = {-2, -5}, extent = {{-6, -5}, {6, 5}}, rotation = 0)));
+  Modelica.Blocks.Sources.RealExpression realExpression(y=1/min(max((Inlet_Temperature.T - Outlet_temperature.T), 0.001),5)*3600)
+    annotation (Placement(transformation(extent={{-70,78},{-50,98}})));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(heatSink.port_b, teeJunctionCoolantTank.port_1) annotation (
@@ -94,6 +96,8 @@ equation
   connect(pin_p, heatSink.pin_p) annotation (Line(points={{66,124},{66,126},{
           138,126},{138,-64},{34,-64},{34,-48},{33.4,-48},{33.4,-46.44}}, color
         ={0,0,255}));
+  connect(realExpression.y, subSystemCoolingControl.setPointPump) annotation (
+      Line(points={{-49,88},{-26,88},{-26,80.4},{-19.7,80.4}}, color={0,0,127}));
   annotation (
     Icon(graphics={  Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
     experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),

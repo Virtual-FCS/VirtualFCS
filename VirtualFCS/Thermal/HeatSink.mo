@@ -23,8 +23,11 @@ model HeatSink
         origin={0,-110},
         extent={{-10,-10},{10,10}},
         rotation=90)));
-  Modelica.Blocks.Continuous.LimPID limPID(Ni = 0.1, Td = 0, Ti = 27, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 40,
-    yMax=2000,                                                                                                                                                                                              yMin = 0, y_start = 1) annotation (
+  Modelica.Blocks.Continuous.LimPID limPID(Ni = 0.1, Td = 0, Ti = 27, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput,
+    k=1000,
+    yMax=15000,
+    yMin=1000,
+    y_start=1000)                                                                                                                                                                                                         annotation (
     Placement(visible = true, transformation(origin={-28,2},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput Stack_temperature annotation (
     Placement(visible = true, transformation(origin={-120,2},     extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {108, 78}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));

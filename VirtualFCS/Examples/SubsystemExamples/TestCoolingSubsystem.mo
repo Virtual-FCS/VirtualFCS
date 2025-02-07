@@ -10,7 +10,8 @@ model TestCoolingSubsystem "Example to evaluate the performance of the cooling s
     Placement(visible = true, transformation(origin = {0, 62}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(visible = true, transformation(origin = {-56, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 40*110, T(fixed = true, start = system.T_start), der_T(fixed = false)) annotation (
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(
+    C=4000*28,                                                                     T(fixed = true, start = system.T_start), der_T(fixed = false)) annotation (
     Placement(visible = true, transformation(origin = {0, 102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Pipes.DynamicPipe pipe2(redeclare package Medium = Medium, diameter = 0.003, length = 1, modelStructure = Modelica.Fluid.Types.ModelStructure.a_v_b, nNodes = 2, nParallel = 500, use_HeatTransfer = true, use_T_start = true) annotation (
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -32,17 +33,18 @@ equation
   connect(heatCapacitor.port, temperatureSensor.port) annotation (
     Line(points = {{0, 92}, {-88, 92}, {-88, -2}, {-66, -2}}, color = {191, 0, 0}));
   connect(pipe2.heatPorts[1], thermalConductor.port_b) annotation (
-    Line(points = {{0, 34}, {0, 52}}, color = {191, 0, 0}));
+    Line(points={{-0.675,34.4},{-0.675,44},{0,44},{0,52}},
+                                      color = {191, 0, 0}));
   connect(gain.y, prescribedHeatFlow.Q_flow) annotation (
-    Line(points = {{-60, 72}, {-40, 72}}, color = {0, 0, 127}));
+    Line(points={{-59.2,72},{-40,72}},    color = {0, 0, 127}));
   connect(trapezoid.y, gain.u) annotation (
-    Line(points = {{-104, 72}, {-78, 72}}, color = {0, 0, 127}));
+    Line(points={{-105,72},{-77.6,72}},    color = {0, 0, 127}));
   connect(temperatureSensor.T, subSystemCooling.controlInterface) annotation (
-    Line(points = {{-44, -2}, {-22, -2}}, color = {0, 0, 127}));
+    Line(points={{-45,-2},{-22,-2}},      color = {0, 0, 127}));
   connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation (
-    Line(points = {{-10, -30}, {-8, -30}, {-8, -58}}, color = {0, 0, 255}));
+    Line(points={{-10,-30},{-8.8,-30},{-8.8,-58.8}},  color = {0, 0, 255}));
   connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation (
-    Line(points = {{10, -30}, {10, -44}, {8, -44}, {8, -58}}, color = {0, 0, 255}));
+    Line(points={{10,-30},{10,-44},{8.8,-44},{8.8,-58.8}},    color = {0, 0, 255}));
   connect(subSystemCooling.port_b, pipe2.port_a) annotation (
     Line(points = {{-12, 12}, {-12, 30}, {-10, 30}}, color = {0, 0, 255}, thickness = 1.5));
   connect(subSystemCooling.port_a, pipe2.port_b) annotation (
