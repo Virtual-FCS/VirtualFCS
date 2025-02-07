@@ -1,3 +1,0 @@
-within VirtualFCS.ComponentTesting;
-package ECMS_Experiment_Testing
-end ECMS_Experiment_Testing;
