@@ -55,8 +55,20 @@ model SubSystemCooling
       Medium =
         Coolant_Medium)                                                                            annotation (
     Placement(visible = true, transformation(origin = {-2, -5}, extent = {{-6, -5}, {6, 5}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=1/min(max((Inlet_Temperature.T - Outlet_temperature.T), 0.001),5)*3600)
-    annotation (Placement(transformation(extent={{-70,78},{-50,98}})));
+  Modelica.Blocks.Sources.RealExpression realExpression1(y=80 + 273.15)
+    annotation (Placement(transformation(extent={{-68,62},{-48,82}})));
+  Modelica.Fluid.Sensors.Temperature InletPump_Temperature(redeclare package
+      Medium = Coolant_Medium) annotation (Placement(visible=true,
+        transformation(
+        origin={-1,27},
+        extent={{5,-5},{-5,5}},
+        rotation=0)));
+  Modelica.Fluid.Sensors.Temperature OutletPump_temperature(redeclare package
+      Medium = Coolant_Medium) annotation (Placement(visible=true,
+        transformation(
+        origin={108,27},
+        extent={{-6,-5},{6,5}},
+        rotation=0)));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(heatSink.port_b, teeJunctionCoolantTank.port_1) annotation (
@@ -78,26 +90,31 @@ equation
           -27.3}},                                                                             color = {255, 0, 0}, thickness = 1.5));
   connect(pumpElectricDC.Output, port_b) annotation (
     Line(points = {{59, 46}, {120, 46}}, color = {0, 0, 255}, thickness = 1.5));
-  connect(sensors[1], subSystemCoolingControl.sensorInterface) annotation (
-    Line(points={{68,23.5},{68,24},{74,24},{74,18},{-28,18},{-28,86},{-19.7,86},
-          {-19.7,85.5}},                                                                                          color = {0, 0, 127}));
   connect(Outlet_temperature.port, heatSink.port_b) annotation (
     Line(points={{-2,-10},{-2,-14.5},{18,-14.5},{18,-27.3}},        color = {0, 127, 255}));
   connect(Inlet_Temperature.port, heatSink.port_a) annotation (
     Line(points={{63,-14},{40,-14},{40,-27.3}},      color = {0, 127, 255}));
-  connect(heatSink.Stack_temperature, controlInterface) annotation (
-    Line(points={{17.12,-43.58},{-48,-43.58},{-48,-44},{-114,-44}},
-                                            color = {0, 0, 127}));
-  connect(subSystemCoolingControl.Setpoint_Temperature, heatSink.Set_Point) annotation (
-    Line(points={{17.53,88.05},{25,88.05},{25,104},{-82,104},{-82,-34.12},{
-          17.12,-34.12}},                                                             color = {0, 0, 127}));
   connect(heatSink.pin_n, pin_n) annotation (Line(points={{24.6,-46.44},{24.6,
           -64},{-134,-64},{-134,124},{30,124}}, color={0,0,255}));
   connect(pin_p, heatSink.pin_p) annotation (Line(points={{66,124},{66,126},{
           138,126},{138,-64},{34,-64},{34,-48},{33.4,-48},{33.4,-46.44}}, color
         ={0,0,255}));
-  connect(realExpression.y, subSystemCoolingControl.setPointPump) annotation (
-      Line(points={{-49,88},{-26,88},{-26,80.4},{-19.7,80.4}}, color={0,0,127}));
+  connect(realExpression1.y, subSystemCoolingControl.sensorInterface)
+    annotation (Line(points={{-47,72},{-24,72},{-24,85.5},{-19.7,85.5}}, color=
+          {0,0,127}));
+  connect(InletPump_Temperature.port, pumpElectricDC.Input) annotation (Line(
+        points={{-1,22},{-2,22},{-2,18},{10,18},{10,46},{41,46}}, color={0,127,
+          255}));
+  connect(OutletPump_temperature.port, pumpElectricDC.Output) annotation (Line(
+        points={{108,22},{108,20},{88,20},{88,46},{59,46}}, color={0,127,255}));
+  connect(controlInterface, subSystemCoolingControl.setPointPump) annotation (
+      Line(points={{-114,-44},{-19.7,-44},{-19.7,80.4}}, color={0,0,127}));
+  connect(realExpression1.y, heatSink.Set_Point) annotation (Line(points={{-47,
+          72},{-24,72},{-24,-30},{12,-30},{12,-34.12},{17.12,-34.12}}, color={0,
+          0,127}));
+  connect(controlInterface, heatSink.Stack_temperature) annotation (Line(points
+        ={{-114,-44},{-20,-44},{-20,-40},{12,-40},{12,-43.58},{17.12,-43.58}},
+        color={0,0,127}));
   annotation (
     Icon(graphics={  Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
     experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),

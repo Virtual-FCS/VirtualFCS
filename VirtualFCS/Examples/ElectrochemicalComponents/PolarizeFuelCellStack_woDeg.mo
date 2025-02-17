@@ -15,9 +15,9 @@ model PolarizeFuelCellStack_woDeg
     rising=50,
     width=1500,
     falling=50,
-    period=700,
+    period=2000,
     nperiod=-1,
-    offset=1,
+    offset=0,
     startTime=50) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,

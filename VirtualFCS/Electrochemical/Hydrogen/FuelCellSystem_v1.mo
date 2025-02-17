@@ -72,7 +72,7 @@ equation
   connect(pin_p, fuelCellStack.pin_p) annotation (
     Line(points={{46,96},{46,29.0667},{12.8667,29.0667}},
                                                   color = {0, 0, 255}));
-  connect(currentSensor.i, fd1_stack.I_FC) annotation (Line(points={{-69,46},{
+  connect(currentSensor.i,fd1_stack.J_FC)  annotation (Line(points={{-69,46},{
           -80,46},{-80,20},{-204,20},{-204,-19.62},{-191.26,-19.62}}, color={0,
           0,127}));
   connect(temperatureSensor.T, fd1_stack.T_FC) annotation (Line(points={{-87,-66},

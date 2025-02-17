@@ -3,10 +3,7 @@ model SubSystemCoolingControl
   parameter Modelica.Units.SI.Temperature temperature_Cooling_set = 80 +273.15 "Set Fuel cell water flow rate";
 
 
-  VirtualFCS.Control.PumpSpeedControlCooling pumpSpeedControlCooling(
-    Td=0.1,
-    Ti=1,
-    k=1)                                                                                      annotation (
+  VirtualFCS.Control.PumpSpeedControlCooling pumpSpeedControlCooling                                                                                      annotation (
     Placement(visible = true, transformation(origin={2,-38},  extent={{-38,-38},
             {38,38}},                                                                          rotation = 0)));
   Modelica.Blocks.Sources.Constant temperature_Cooling(k=
