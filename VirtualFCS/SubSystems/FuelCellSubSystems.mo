@@ -41,9 +41,9 @@ model FuelCellSubSystems
   Cooling.SubSystemCooling subSystemCooling annotation (
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Electrochemical.Battery.BatterySystem batterySystem(
-    V_min_bat_pack=800,
-    V_nom_bat_pack=900,
-    V_max_bat_pack=1000,
+    V_min_bat_pack=50,
+    V_nom_bat_pack=60,
+    V_max_bat_pack=70,
     C_bat_pack=2000,
     SOC_init=0.99,                                                                                                                                    m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin={0,-70},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));

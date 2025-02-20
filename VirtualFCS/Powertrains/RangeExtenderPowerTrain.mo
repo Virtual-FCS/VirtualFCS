@@ -8,9 +8,9 @@ model RangeExtenderPowerTrain
   parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus" annotation (
     Dialog(group = "Powertrain Parameters"));
   // H2 Subsystem Paramters
-  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume" annotation (
+  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
-  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure" annotation (
+  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
   // Fuel Cell Stack Paramters
   parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass" annotation (

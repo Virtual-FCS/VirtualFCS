@@ -2,8 +2,7 @@ within VirtualFCS.Control;
 model DCMotorControlRecirculationBlower_mc "Control the speed of a DC motor"
   //*** DEFINE REPLACEABLE PACKAGES ***//
   replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower driveData        constrainedby
-    Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM
-                                                                                                                                                                                               annotation (
+    Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM                                                                                                           annotation (
      Placement(transformation(extent={{-196,-78},{-176,-58}})));
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf, VMax = driveData.VaMax) annotation (

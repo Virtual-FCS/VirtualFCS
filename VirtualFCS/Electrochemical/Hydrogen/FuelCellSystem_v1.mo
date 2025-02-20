@@ -4,7 +4,7 @@ model FuelCellSystem_v1
   outer Modelica.Fluid.System system "System properties";
   parameter Modelica.Units.SI.Mass m_FC_system = fuelCellStack.m_FC_stack + fuelCellSubSystems_new.m_FC_subsystems;
   // Fuel Cell Stack Paramters
-  parameter Modelica.Units.SI.Mass m_FC_stack = 42 "FC stack mass";
+  parameter Modelica.Units.SI.Mass m_FC_stack = 96.2 "FC stack mass";
   parameter Modelica.Units.SI.Length L_FC_stack = 0.420 "FC stack length";
   parameter Modelica.Units.SI.Breadth W_FC_stack = 0.582 "FC stack width";
   parameter Modelica.Units.SI.Height H_FC_stack = 0.156 "FC stack height";
@@ -13,11 +13,10 @@ model FuelCellSystem_v1
   parameter Modelica.Units.SI.Current I_nom_FC_stack = 280.0 "FC stack nominal current";
   parameter Modelica.Units.SI.Current I_rated_FC_stack = 320 "FC stack maximum operating current";
   // parameter Modelica.Units.SI.Current I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current";
-  parameter Integer N_FC_stack = 180 "FC stack number of cells";
+  parameter Integer N_FC_stack = 399 "FC stack number of cells";
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 12 "HeatTransferCoefficient (W/(m2.K))";
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system "Power delivered from the FC system (Stack - BOP)";
   Modelica.Units.SI.Power Power_stack "Power delivered from the FC stack";
@@ -44,7 +43,10 @@ model FuelCellSystem_v1
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   fd1 fd1_stack
     annotation (Placement(transformation(extent={{-190,-36},{-148,6}})));
-  SubSystems.FuelCellSubSystems_new fuelCellSubSystems_new
+  SubSystems.FuelCellSubSystems_new fuelCellSubSystems_new(
+    V_tank_H2=V_tank_H2,
+    p_tank_H2=p_tank_H2,
+    N_FC_stack=N_FC_stack)
     annotation (Placement(transformation(extent={{-24,-86},{26,-36}})));
 equation
   Power_stack = fuelCellStack.pin_n.i*fuelCellStack.pin_p.v;
@@ -70,7 +72,7 @@ equation
   connect(pin_p, fuelCellStack.pin_p) annotation (
     Line(points={{46,96},{46,29.0667},{12.8667,29.0667}},
                                                   color = {0, 0, 255}));
-  connect(currentSensor.i, fd1_stack.I_FC) annotation (Line(points={{-69,46},{
+  connect(currentSensor.i,fd1_stack.J_FC)  annotation (Line(points={{-69,46},{
           -80,46},{-80,20},{-204,20},{-204,-19.62},{-191.26,-19.62}}, color={0,
           0,127}));
   connect(temperatureSensor.T, fd1_stack.T_FC) annotation (Line(points={{-87,-66},

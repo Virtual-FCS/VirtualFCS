@@ -3,10 +3,7 @@ model SubSystemCoolingControl
   parameter Modelica.Units.SI.Temperature temperature_Cooling_set = 80 +273.15 "Set Fuel cell water flow rate";
 
 
-  VirtualFCS.Control.PumpSpeedControlCooling pumpSpeedControlCooling(
-    Td=0.1,
-    Ti=1,
-    k=1)                                                                                      annotation (
+  VirtualFCS.Control.PumpSpeedControlCooling pumpSpeedControlCooling                                                                                      annotation (
     Placement(visible = true, transformation(origin={2,-38},  extent={{-38,-38},
             {38,38}},                                                                          rotation = 0)));
   Modelica.Blocks.Sources.Constant temperature_Cooling(k=
@@ -24,17 +21,20 @@ model SubSystemCoolingControl
   Modelica.Blocks.Interfaces.RealInput Setpoint_Temperature annotation (
     Placement(visible = true, transformation(origin={200,120},    extent={{-32,-32},
             {32,32}},                                                                              rotation = 0), iconTransformation(origin = {218, 130}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput setPointPump
+    annotation (Placement(transformation(extent={{-240,20},{-200,60}})));
 equation
   connect(sensorInterface,pumpSpeedControlCooling. getMassFlow) annotation (
     Line(points={{-229,-57},{-39.8,-57}},                          color = {0, 0, 127}));
   connect(Setpoint_Temperature,temperature_Cooling. y) annotation (
     Line(points={{200,120},{-148.4,120}},                 color = {0, 0, 127}));
-  connect(realExpression2.y,pumpSpeedControlCooling. setMassFlow) annotation (
-    Line(points={{-137.1,-19},{-39.8,-19}},                      color = {0, 0, 127}));
   connect(controlInterface, controlInterface)
     annotation (Line(points={{219,-39},{219,-39}}, color={0,0,127}));
   connect(pumpSpeedControlCooling.setPumpSpeed, controlInterface) annotation (
       Line(points={{43.8,-38},{131.4,-38},{131.4,-39},{219,-39}}, color={0,0,
+          127}));
+  connect(setPointPump, pumpSpeedControlCooling.setMassFlow) annotation (Line(
+        points={{-220,40},{-220,4},{-50,4},{-50,-19},{-39.8,-19}}, color={0,0,
           127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),

@@ -14,7 +14,7 @@ model FuelCellStack_woDeg
   //*** DECLARE PARAMETERS ***//
   // Physical parameters
   // Fuel Cell Stack Paramters
-  parameter Modelica.Units.SI.Mass m_FC_stack = 42 "FC stack mass";
+  parameter Modelica.Units.SI.Mass m_FC_stack = 28.6 "FC stack mass"; // Reference Virtual-FCS D2.1
   parameter Modelica.Units.SI.Length L_FC_stack = 0.420 "FC stack length";
   parameter Modelica.Units.SI.Breadth W_FC_stack = 0.582 "FC stack width";
   parameter Modelica.Units.SI.Height H_FC_stack = 0.156 "FC stack height";
@@ -84,7 +84,7 @@ model FuelCellStack_woDeg
     Placement(visible = true, transformation(origin = {-33, 60}, extent = {{9, -9}, {-9, 9}}, rotation = 0)));
   Modelica.Blocks.Math.Gain O2_mflow(k = 0.02897/(96485*4*0.21)*N_FC_stack) annotation (
     Placement(visible = true, transformation(origin = {34, 60}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 10000) annotation (
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G=10000)   annotation (
     Placement(visible = true, transformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation (
     Placement(visible = true, transformation(origin = {0, -144}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin={-32,70},  extent = {{-10, -10}, {10, 10}}, rotation = 0)));

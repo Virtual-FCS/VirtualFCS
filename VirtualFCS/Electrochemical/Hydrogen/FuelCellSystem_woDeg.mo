@@ -4,10 +4,10 @@ model FuelCellSystem_woDeg
   outer Modelica.Fluid.System system "System properties";
   parameter Modelica.Units.SI.Mass m_FC_system = fuelCellStack_woDeg.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
   // Fuel Cell Stack Paramters
-  parameter Modelica.Units.SI.Mass m_FC_stack = 42 "FC stack mass";
-  parameter Modelica.Units.SI.Length L_FC_stack = 0.420 "FC stack length";
-  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.582 "FC stack width";
-  parameter Modelica.Units.SI.Height H_FC_stack = 0.156 "FC stack height";
+  parameter Modelica.Units.SI.Mass m_FC_stack = 28.6 "FC stack mass"; // Reference Virtual-FCS D2.1
+  parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length";
+  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.760 "FC stack width";
+  parameter Modelica.Units.SI.Height H_FC_stack = 0.060 "FC stack height";
   parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   //  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage";
   parameter Modelica.Units.SI.Current I_nom_FC_stack = 280.0 "FC stack nominal current";
@@ -15,9 +15,8 @@ model FuelCellSystem_woDeg
   // parameter Modelica.Units.SI.Current I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current";
   parameter Integer N_FC_stack = 180 "FC stack number of cells";
   // H2 Subsystem Paramters
-  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
-  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Modelica.Units.SI.CoefficientOfHeatTransfer heatTransferCoefficient = 12 "HeatTransferCoefficient (W/(m2.K))";
+  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
+  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure";
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system "Power delivered from the FC system (Stack - BOP)";
   Modelica.Units.SI.Power Power_stack "Power delivered from the FC stack";
@@ -49,7 +48,8 @@ model FuelCellSystem_woDeg
     vol_FC_stack=vol_FC_stack,
     I_rated_FC_stack=I_nom_FC_stack,
     i_L_FC_stack=I_rated_FC_stack,
-    N_FC_stack=N_FC_stack)
+    N_FC_stack=N_FC_stack,
+    Cp_FC_stack=4000)
     annotation (Placement(transformation(extent={{-32,-10},{20,42}})));
 equation
   Power_stack = fuelCellStack_woDeg.pin_n.i*fuelCellStack_woDeg.pin_p.v;

@@ -12,7 +12,7 @@ model VaryingLoadFuelCellStack
     width=100,
     falling=500,
     period=2800,
-    nperiod=2,
+    nperiod=-1,
     offset=0,
     startTime=1)
     annotation (Placement(transformation(extent={{8,42},{-12,62}})));

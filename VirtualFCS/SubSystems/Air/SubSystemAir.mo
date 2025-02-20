@@ -37,7 +37,7 @@ model SubSystemAir
   Modelica.Blocks.Sources.RealExpression setCompressorSpeed(y = deMultiplexControl.y2[1]) annotation (
     Placement(visible = true, transformation(origin = {-38, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.SubSystems.Air.SubSystemAirControl subSystemAirControl(N_FC_stack = N_FC_stack)  annotation (
-    Placement(visible = true, transformation(origin = {-45, 79}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
+    Placement(visible = true, transformation(origin={-43,79},    extent = {{-15, -15}, {15, 15}}, rotation = 0)));
   // Machines
   VirtualFCS.Fluid.Compressor compressor annotation (
     Placement(visible = true, transformation(origin = {12, 18}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
@@ -52,11 +52,17 @@ model SubSystemAir
   // Valves
   VirtualFCS.Fluid.ThrottleValve throttleValve(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {21, -35}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
-  Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium = Medium) annotation (
+  Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium
+      =                                                                         Medium) annotation (
     Placement(visible = true, transformation(origin = {74, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput RH_cathode annotation (Placement(
         transformation(extent={{-100,-52},{-120,-32}}), iconTransformation(
           extent={{-100,-52},{-120,-32}})));
+  Modelica.Fluid.Sensors.Temperature compressorInletSensor(redeclare package
+      Medium = Medium) annotation (Placement(visible=true, transformation(
+        origin={-63,41},
+        extent={{-7,-7},{7,7}},
+        rotation=0)));
 equation
 Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
 //Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(0.9*0.7))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
@@ -93,7 +99,7 @@ Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.
   connect(setAirPressure.y, throttleValve.FC_pAirOut_P) annotation (
     Line(points={{-25,-94},{21,-94},{21,-37.1}},      color = {0, 0, 127}));
   connect(subSystemAirControl.controlInterface, deMultiplexControl.u) annotation (
-    Line(points={{-29.1,78.85},{-20,78.85},{-20,78},{-18,78}},  color = {0, 0, 127}, thickness = 0.5));
+    Line(points={{-27.1,78.85},{-20,78.85},{-20,78},{-18,78}},  color = {0, 0, 127}, thickness = 0.5));
   connect(pin_n, compressor.pin_n) annotation (
     Line(points={{-4,48},{9.44,48},{9.44,27.6}},  color = {0, 0, 255}));
   connect(sen_Air_mflow.m_flow, multiplexSensors.u1[1]) annotation (
@@ -102,9 +108,10 @@ Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.
   connect(multiplexSensors.y, sensors) annotation (
     Line(points={{58,-68.8},{58,-86},{80,-86}},      color = {0, 0, 127}));
   connect(sensors, subSystemAirControl.sensorInterface) annotation (
-    Line(points={{80,-86},{108,-86},{108,-108},{-108,-108},{-108,71.5},{-61.5,71.5}},        color = {0, 0, 127}, thickness = 0.5));
+    Line(points={{80,-86},{108,-86},{108,-108},{-108,-108},{-108,71.5},{-59.5,
+          71.5}},                                                                            color = {0, 0, 127}, thickness = 0.5));
   connect(control, subSystemAirControl.signalInterfaceFC) annotation (
-    Line(points={{-116,86},{-88,86},{-88,86.5},{-61.5,86.5}},
+    Line(points={{-116,86},{-88,86},{-88,86.5},{-59.5,86.5}},
                                            color = {0, 0, 127}));
   connect(compressorOutletSensor.port, compressor.Output) annotation (
     Line(points={{55,28},{55,18},{29.6,18}}));
@@ -117,6 +124,9 @@ Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.
   connect(RH_cathode, compressor.RH_cathode) annotation (Line(points={{-110,-42},
           {-102,-42},{-102,4},{8,4},{8,2},{26,2},{26,3.6},{28.64,3.6}}, color={
           0,0,127}));
+  connect(compressorInletSensor.port, compressor.Input) annotation (Line(points
+        ={{-63,34},{-64,34},{-64,30},{-52,30},{-52,32},{-22,32},{-22,18},{-5.6,
+          18}}, color={0,127,255}));
   annotation (
     Icon(coordinateSystem(initialScale = 0.1), graphics={  Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {23, -3}, extent = {{-7, 3}, {29, -3}}, textString = "Air compressor speed")}),

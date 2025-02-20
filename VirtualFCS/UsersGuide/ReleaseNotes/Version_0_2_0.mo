@@ -1,8 +1,7 @@
 within VirtualFCS.UsersGuide.ReleaseNotes;
-
 class Version_0_2_0
   extends Modelica.Icons.ReleaseNotes;
-  annotation(
+  annotation (
     Documentation(info = "<html><head></head><body>
 <h4>What's Changed</h4>
 <div><ul>

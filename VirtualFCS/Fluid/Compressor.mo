@@ -63,14 +63,18 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
   // Power & Efficiencies
   Modelica.Units.SI.Power Power_Compressor "The power consumed by the Compressor";
   Modelica.Blocks.Continuous.LimPID limPID(
-    Td=2,
-    Ti=15,
-    k=8,                                                                xd_start = 0.01, xi_start = 0.01,
-    yMax=2.4,
+    Td=0.01,
+    Ti=0.1,
+    k=10,                                                               xd_start = 0.01, xi_start = 0.01,
+    yMax=1,
     yMin=0,                                                                                                                        y_start = 0.01) annotation (
     Placement(visible = true, transformation(origin={-34,-84},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  AixLib.Fluid.Sensors.TemperatureTwoPort senTem(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation (
-    Placement(visible = true, transformation(origin={-12,-194},    extent = {{40, 90}, {60, 110}}, rotation = 0)));
+  AixLib.Fluid.Sensors.TemperatureTwoPort tempOutletHum(redeclare package
+      Medium = Medium, m_flow_nominal=0.1) annotation (Placement(visible=true,
+        transformation(
+        origin={-12,-194},
+        extent={{40,90},{60,110}},
+        rotation=0)));
   AixLib.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package
       Medium =                                                                      Medium, m_flow_nominal = 0.1) annotation (
     Placement(visible = true, transformation(origin = {-12, -186}, extent = {{74, 90}, {94, 110}}, rotation = 0)));
@@ -79,12 +83,14 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
   Buildings.Fluid.Humidifiers.Humidifier_u hum(
     redeclare package Medium = Medium,
     allowFlowReversal=false,
-    dp_nominal = 1200,
+    dp_nominal=1200,
     tau=10,
-    mWat_flow_nominal=0.1*0.003,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    mWat_flow_nominal=0.015*0.005,
     T_start = system.T_start,
-    m_flow_nominal = 0.1) annotation (
-    Placement(visible = true, transformation(origin={34,-48},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    m_flow_nominal=0.015) annotation (
+    Placement(visible = true, transformation(origin={52,-48},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+                                                // Reference: https://www.mdpi.com/1996-1073/15/6/2113
   Modelica.Blocks.Interfaces.RealOutput RH_cathode annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
@@ -93,6 +99,26 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={104,-90})));
+  AixLib.Fluid.Sensors.TemperatureTwoPort tempInletHum(redeclare package Medium =
+        Medium, m_flow_nominal=0.1) annotation (Placement(visible=true,
+        transformation(
+        origin={-24,-148},
+        extent={{40,90},{60,110}},
+        rotation=0)));
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow
+    annotation (Placement(transformation(extent={{-10,-122},{10,-102}})));
+  Modelica.Blocks.Sources.RealExpression realExpression(y=50 + 273.15)
+    annotation (Placement(transformation(extent={{-86,-126},{-66,-106}})));
+  Modelica.Blocks.Continuous.LimPID limPID1(
+    Td=0.01,
+    Ti=0.1,
+    k=10,
+    xd_start=0.01,
+    xi_start=0.01,
+    yMax=500,
+    yMin=0,
+    y_start=0.01)                                                                                                                                  annotation (
+    Placement(visible = true, transformation(origin={-34,-120},   extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
   Power_Compressor = pin_p.i*pin_p.v;
@@ -125,8 +151,8 @@ equation
     Line(points={{-47.9,25.7},{-46,25.7},{-46,-6}},  color = {0, 0, 255}));
   connect(pump.N_in, gain.y) annotation (
     Line(points={{0,-50},{0,-34},{82,-34},{82,-16},{73.6,-16}},color = {0, 0, 127}));
-  connect(senTem.port_b, senRelHum.port_a) annotation (
-    Line(points={{48,-94},{56,-94},{56,-86},{62,-86}}));
+  connect(tempOutletHum.port_b, senRelHum.port_a)
+    annotation (Line(points={{48,-94},{56,-94},{56,-86},{62,-86}}));
   connect(senRelHum.port_b, Output) annotation (
     Line(points = {{82, -86}, {84, -86}, {84, -60}}, color = {0, 127, 255}));
   connect(senRelHum.phi, limPID.u_m) annotation (
@@ -134,15 +160,25 @@ equation
   connect(constant3.y, limPID.u_s) annotation (
     Line(points={{-64.25,-83.5},{-52,-83.5},{-52,-84},{-46,-84}},
                                             color = {0, 0, 127}));
-  connect(hum.port_a, pump.port_b) annotation (
-    Line(points={{24,-48},{16,-48},{16,-60},{10,-60}},
-                                          color = {0, 127, 255}));
-  connect(hum.port_b, senTem.port_a) annotation (
-    Line(points={{44,-48},{48,-48},{48,-80},{24,-80},{24,-94},{28,-94}},              color = {0, 127, 255}));
+  connect(hum.port_b, tempOutletHum.port_a) annotation (Line(points={{62,-48},{
+          66,-48},{66,-72},{52,-72},{52,-80},{24,-80},{24,-94},{28,-94}}, color
+        ={0,127,255}));
   connect(hum.u, limPID.y) annotation (
-    Line(points={{23,-42},{-23,-42},{-23,-84}},                  color = {0, 0, 127}));
+    Line(points={{41,-42},{-23,-42},{-23,-84}},                  color = {0, 0, 127}));
   connect(senRelHum.phi, RH_cathode) annotation (Line(points={{72.1,-75},{72.1,
           -76},{104,-76},{104,-90}}, color={0,0,127}));
+  connect(pump.port_b, tempInletHum.port_a) annotation (Line(points={{10,-60},{
+          10,-56},{16,-56},{16,-48}}, color={0,127,255}));
+  connect(tempInletHum.port_b, hum.port_a)
+    annotation (Line(points={{36,-48},{42,-48}}, color={0,127,255}));
+  connect(prescribedHeatFlow.port, hum.heatPort) annotation (Line(points={{10,
+          -112},{14,-112},{14,-62},{42,-62},{42,-54}}, color={191,0,0}));
+  connect(limPID1.y, prescribedHeatFlow.Q_flow) annotation (Line(points={{-23,
+          -120},{-18,-120},{-18,-112},{-10,-112}}, color={0,0,127}));
+  connect(realExpression.y, limPID1.u_s) annotation (Line(points={{-65,-116},{
+          -54,-116},{-54,-120},{-46,-120}}, color={0,0,127}));
+  connect(tempOutletHum.T, limPID1.u_m) annotation (Line(points={{38,-83},{38,
+          -78},{16,-78},{16,-142},{-34,-142},{-34,-132}}, color={0,0,127}));
   annotation (
     Icon(graphics={  Polygon(visible = false, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{20, -75}, {50, -85}, {20, -95}, {20, -75}}), Line(visible = false, points = {{55, -85}, {-60, -85}}, color = {0, 128, 255}), Polygon(visible = false, lineColor = {0, 128, 255}, fillColor = {0, 128, 255}, fillPattern = FillPattern.Solid, points = {{20, -70}, {60, -85}, {20, -100}, {20, -70}}), Polygon(origin = {15, 0}, fillColor = {208, 208, 208}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-115, 80}, {-115, -80}, {85, -50}, {85, 50}, {85, 50}, {-115, 80}}), Line(origin = {5.2, 0.61}, points = {{-57, 0}, {47, 0}}, thickness = 1.5, arrow = {Arrow.None, Arrow.Filled}, arrowSize = 20, smooth = Smooth.Bezier),
         Line(
