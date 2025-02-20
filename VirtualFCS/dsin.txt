@@ -1,0 +1,1235 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+      10                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+      10                   # nInterval    Number of communication intervals, if > 0
+  1.0000000000000000E-04   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+       8                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.0000000000000000E-14   # teps     Bound to check, if 2 equal time instants
+  1.0000000000000000E-10   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  9.9999999999999995E-07   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(270,51)
+ground.p.v
+ground.p.i
+liIonCell.mass
+liIonCell.coolingArea
+liIonCell.specificHeatCapacity
+liIonCell.SOC_init
+liIonCell.chargeCapacity
+liIonCell.a1
+liIonCell.b1
+liIonCell.c1
+liIonCell.d1
+liIonCell.m1
+liIonCell.n1
+liIonCell.pin_p.v
+liIonCell.pin_p.i
+liIonCell.pin_n.v
+liIonCell.pin_n.i
+liIonCell.OCV.p.v
+liIonCell.OCV.n.v
+liIonCell.P_bat
+liIonCell.getChargeCapacity.y
+liIonCell.chargeCounter.SOC
+liIonCell.chargeCounter.chargeCapacity_Cou
+liIonCell.chargeCounter.add.y
+liIonCell.chargeCounter.add.k1
+liIonCell.chargeCounter.add.k2
+liIonCell.chargeCounter.integrator.k
+liIonCell.chargeCounter.integrator.use_reset
+liIonCell.chargeCounter.integrator.use_set
+liIonCell.chargeCounter.integrator.initType
+liIonCell.chargeCounter.integrator.y_start
+liIonCell.chargeCounter.integrator.u
+liIonCell.chargeCounter.integrator.y
+liIonCell.chargeCounter.integrator.der(y)
+liIonCell.chargeCounter.integrator.local_reset
+liIonCell.chargeCounter.integrator.local_set
+liIonCell.chargeCounter.limiter.uMax
+liIonCell.chargeCounter.limiter.uMin
+liIonCell.chargeCounter.limiter.strict
+liIonCell.chargeCounter.limiter.homotopyType
+liIonCell.chargeCounter.product1.y
+liIonCell.chargeCounter.add1.y
+liIonCell.chargeCounter.add1.k1
+liIonCell.chargeCounter.add1.k2
+liIonCell.chargeCounter.integrator1.k
+liIonCell.chargeCounter.integrator1.use_reset
+liIonCell.chargeCounter.integrator1.use_set
+liIonCell.chargeCounter.integrator1.initType
+liIonCell.chargeCounter.integrator1.y_start
+liIonCell.chargeCounter.integrator1.u
+liIonCell.chargeCounter.integrator1.y
+liIonCell.chargeCounter.integrator1.der(y)
+liIonCell.chargeCounter.integrator1.local_reset
+liIonCell.chargeCounter.integrator1.local_set
+liIonCell.chargeCounter.limiterCC.uMax
+liIonCell.chargeCounter.limiterCC.uMin
+liIonCell.chargeCounter.limiterCC.strict
+liIonCell.chargeCounter.limiterCC.homotopyType
+liIonCell.heatSource.T_ref
+liIonCell.heatSource.alpha
+liIonCell.heatSource.Q_flow
+liIonCell.heatSource.port.Q_flow
+liIonCell.heatCapacitor.C
+liIonCell.heatCapacitor.T
+liIonCell.heatCapacitor.der(T)
+liIonCell.heatCapacitor.port.Q_flow
+liIonCell.heatPort.Q_flow
+liIonCell.R1.T_ref
+liIonCell.R1.alpha
+liIonCell.R1.v
+liIonCell.R1.p.v
+liIonCell.R1.p.i
+liIonCell.R1.n.v
+liIonCell.R1.useHeatPort
+liIonCell.R1.T
+liIonCell.R1.LossPower
+liIonCell.R1.R_actual
+liIonCell.R1.R
+liIonCell.R2.T_ref
+liIonCell.R2.alpha
+liIonCell.R2.v
+liIonCell.R2.p.i
+liIonCell.R2.useHeatPort
+liIonCell.R2.T
+liIonCell.R2.LossPower
+liIonCell.R2.R_actual
+liIonCell.R2.R
+liIonCell.R_ohm.T_ref
+liIonCell.R_ohm.alpha
+liIonCell.R_ohm.v
+liIonCell.R_ohm.useHeatPort
+liIonCell.R_ohm.T
+liIonCell.R_ohm.LossPower
+liIonCell.R_ohm.R_actual
+liIonCell.R_ohm.R
+liIonCell.C1.v
+liIonCell.C1.C
+liIonCell.C1.Cmin
+liIonCell.C1.Q
+liIonCell.C1.der(Q)
+liIonCell.C1.IC
+liIonCell.C1.UIC
+liIonCell.C2.v
+liIonCell.C2.C
+liIonCell.C2.Cmin
+liIonCell.C2.Q
+liIonCell.C2.der(Q)
+liIonCell.C2.IC
+liIonCell.C2.UIC
+liIonCell.InputR0.nout
+liIonCell.InputR0.tableOnFile
+liIonCell.InputR0.verboseRead
+liIonCell.InputR0.columns[1]
+liIonCell.InputR0.smoothness
+liIonCell.InputR0.extrapolation
+liIonCell.InputR0.verboseExtrapolation
+liIonCell.InputR0.u_min
+liIonCell.InputR0.u_max
+liIonCell.InputR0.tableID.id
+liIonCell.InputR1.nout
+liIonCell.InputR1.tableOnFile
+liIonCell.InputR1.verboseRead
+liIonCell.InputR1.columns[1]
+liIonCell.InputR1.smoothness
+liIonCell.InputR1.extrapolation
+liIonCell.InputR1.verboseExtrapolation
+liIonCell.InputR1.u_min
+liIonCell.InputR1.u_max
+liIonCell.InputR1.tableID.id
+liIonCell.InputR2.nout
+liIonCell.InputR2.tableOnFile
+liIonCell.InputR2.verboseRead
+liIonCell.InputR2.columns[1]
+liIonCell.InputR2.smoothness
+liIonCell.InputR2.extrapolation
+liIonCell.InputR2.verboseExtrapolation
+liIonCell.InputR2.u_min
+liIonCell.InputR2.u_max
+liIonCell.InputR2.tableID.id
+liIonCell.InputC1.nout
+liIonCell.InputC1.tableOnFile
+liIonCell.InputC1.verboseRead
+liIonCell.InputC1.columns[1]
+liIonCell.InputC1.smoothness
+liIonCell.InputC1.extrapolation
+liIonCell.InputC1.verboseExtrapolation
+liIonCell.InputC1.u_min
+liIonCell.InputC1.u_max
+liIonCell.InputC1.tableID.id
+liIonCell.InputC2.nout
+liIonCell.InputC2.tableOnFile
+liIonCell.InputC2.verboseRead
+liIonCell.InputC2.columns[1]
+liIonCell.InputC2.smoothness
+liIonCell.InputC2.extrapolation
+liIonCell.InputC2.verboseExtrapolation
+liIonCell.InputC2.u_min
+liIonCell.InputC2.u_max
+liIonCell.InputC2.tableID.id
+pulseCurrent.I
+pulseCurrent.width
+pulseCurrent.period
+pulseCurrent.v
+pulseCurrent.p.v
+pulseCurrent.p.i
+pulseCurrent.signalSource.amplitude
+pulseCurrent.signalSource.width
+pulseCurrent.signalSource.period
+pulseCurrent.signalSource.nperiod
+pulseCurrent.signalSource.offset
+pulseCurrent.signalSource.startTime
+pulseCurrent.signalSource.T_width
+pulseCurrent.signalSource.T_start
+pulseCurrent.signalSource.count
+pulseCurrent.offset
+pulseCurrent.startTime
+getChargeCapacity.y
+BMS.N_s
+BMS.lowerVoltageLimit
+BMS.upperVoltageLimit
+BMS.chargeCounter.chargeCapacity_Cou
+BMS.chargeCounter.add.y
+BMS.chargeCounter.add.k1
+BMS.chargeCounter.add.k2
+BMS.chargeCounter.integrator.k
+BMS.chargeCounter.integrator.use_reset
+BMS.chargeCounter.integrator.use_set
+BMS.chargeCounter.integrator.initType
+BMS.chargeCounter.integrator.y_start
+BMS.chargeCounter.integrator.u
+BMS.chargeCounter.integrator.y
+BMS.chargeCounter.integrator.der(y)
+BMS.chargeCounter.integrator.local_reset
+BMS.chargeCounter.integrator.local_set
+BMS.chargeCounter.limiter.uMax
+BMS.chargeCounter.limiter.uMin
+BMS.chargeCounter.limiter.strict
+BMS.chargeCounter.limiter.homotopyType
+BMS.chargeCounter.product1.y
+BMS.chargeCounter.add1.y
+BMS.chargeCounter.add1.k1
+BMS.chargeCounter.add1.k2
+BMS.chargeCounter.integrator1.k
+BMS.chargeCounter.integrator1.use_reset
+BMS.chargeCounter.integrator1.use_set
+BMS.chargeCounter.integrator1.initType
+BMS.chargeCounter.integrator1.y_start
+BMS.chargeCounter.integrator1.u
+BMS.chargeCounter.integrator1.y
+BMS.chargeCounter.integrator1.der(y)
+BMS.chargeCounter.integrator1.local_reset
+BMS.chargeCounter.integrator1.local_set
+BMS.chargeCounter.limiterCC.uMax
+BMS.chargeCounter.limiterCC.uMin
+BMS.chargeCounter.limiterCC.strict
+BMS.chargeCounter.limiterCC.homotopyType
+BMS.pin_n_battery.v
+BMS.pin_n_battery.i
+BMS.pin_n_load.v
+BMS.voltageLimiter.upperVoltageLimit
+BMS.voltageLimiter.lowerVoltageLimit
+BMS.voltageLimiter.pin_n_battery.v
+BMS.voltageLimiter.voltageSensor.p.i
+BMS.voltageLimiter.voltageSensor.n.v
+BMS.voltageLimiter.voltageSensor.n.i
+BMS.voltageLimiter.greaterThreshold.threshold
+BMS.voltageLimiter.greaterThreshold.y
+BMS.voltageLimiter.lessThreshold.threshold
+BMS.voltageLimiter.lessThreshold.y
+BMS.voltageLimiter.and1.y
+BMS.voltageLimiter.pin_n_load.v
+BMS.voltageLimiter.switchVotageSource.Ron
+BMS.voltageLimiter.switchVotageSource.Goff
+BMS.voltageLimiter.switchVotageSource.useHeatPort
+BMS.voltageLimiter.switchVotageSource.T
+BMS.voltageLimiter.switchVotageSource.LossPower
+BMS.voltageLimiter.switchVotageSource.T_heatPort
+BMS.voltageLimiter.switchVotageSource.n1.v
+BMS.voltageLimiter.switchVotageSource.n1.i
+BMS.voltageLimiter.switchVotageSource.s1
+BMS.voltageLimiter.switchVotageSource.s2
+BMS.voltageLimiter.switchVotageSource.unitVoltage
+BMS.voltageLimiter.switchVotageSource.unitCurrent
+BMS.voltageLimiter.upperVoltageSource.V
+BMS.voltageLimiter.upperVoltageSource.p.i
+BMS.voltageLimiter.upperVoltageSource.n.v
+BMS.voltageLimiter.constantVoltage.V
+BMS.voltageLimiter.constantVoltage.p.i
+BMS.voltageLimiter.constantVoltage.n.v
+BMS.voltageLimiter.idealCommutingSwitch.Ron
+BMS.voltageLimiter.idealCommutingSwitch.Goff
+BMS.voltageLimiter.idealCommutingSwitch.useHeatPort
+BMS.voltageLimiter.idealCommutingSwitch.T
+BMS.voltageLimiter.idealCommutingSwitch.LossPower
+BMS.voltageLimiter.idealCommutingSwitch.T_heatPort
+BMS.voltageLimiter.idealCommutingSwitch.control
+BMS.voltageLimiter.idealCommutingSwitch.s1
+BMS.voltageLimiter.idealCommutingSwitch.s2
+BMS.voltageLimiter.idealCommutingSwitch.unitVoltage
+BMS.voltageLimiter.idealCommutingSwitch.unitCurrent
+BMS.voltageLimiter.lessThreshold1.threshold
+BMS.sensorInterface
+convection.Q_flow
+convection.dT
+convection.Gc
+bodyRadiation.Q_flow
+bodyRadiation.dT
+bodyRadiation.Gr
+fixedTemperature.T
+fixedTemperature.port.Q_flow
+
+double initialValue(270,6)
+  0       0                       0                       0                
+  6   260   # ground.p.v
+  0       0                       0                       0                
+  6   388   # ground.p.i
+ -1  8.0000000000000002E-02       0                 1.0000000000000000E+100
+  1   280   # liIonCell.mass
+ -1  1.4300000000000001E-03       0                       0                
+  1   280   # liIonCell.coolingArea
+ -1    1000                       0                       0                
+  1   280   # liIonCell.specificHeatCapacity
+ -1       0                       0                       0                
+  1   280   # liIonCell.SOC_init
+ -1  2.6000000000000001E+00       0                       0                
+  1   280   # liIonCell.chargeCapacity
+  0  3.1349999999999998E+00       0                       0                
+  6   256   # liIonCell.a1
+  0 -6.8500000000000005E-01       0                       0                
+  6   256   # liIonCell.b1
+  0 -1.3420000000000001E+00       0                       0                
+  6   256   # liIonCell.c1
+  0  1.7340000000000000E+00       0                       0                
+  6   256   # liIonCell.d1
+  0  4.7799999999999998E-01       0                       0                
+  6   256   # liIonCell.m1
+  0  4.0000000000000002E-01       0                       0                
+  6   256   # liIonCell.n1
+  0       0                       0                       0                
+  6   260   # liIonCell.pin_p.v
+  0       0                       0                       0                
+  6   388   # liIonCell.pin_p.i
+  0       0                       0                       0                
+  6   260   # liIonCell.pin_n.v
+  0       0                       0                       0                
+  6   388   # liIonCell.pin_n.i
+  0       0                       0                       0                
+  6   260   # liIonCell.OCV.p.v
+  0       0                       0                       0                
+  6   260   # liIonCell.OCV.n.v
+  0       0                       0                       0                
+  6   256   # liIonCell.P_bat
+  0       0                       0                       0                
+  6   256   # liIonCell.getChargeCapacity.y
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.SOC
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.chargeCapacity_Cou
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.add.y
+ -1       1                       0                       0                
+  1   280   # liIonCell.chargeCounter.add.k1
+ -1      -1                       0                       0                
+  1   280   # liIonCell.chargeCounter.add.k2
+ -1       1                       0                       0                
+  1   280   # liIonCell.chargeCounter.integrator.k
+  0       0                       0                       0                
+  6   769   # liIonCell.chargeCounter.integrator.use_reset
+  0       0                       0                       0                
+  6   769   # liIonCell.chargeCounter.integrator.use_set
+  0       3                       1                       4                
+  6   258   # liIonCell.chargeCounter.integrator.initType
+ -1       0                       0                       0                
+  1   280   # liIonCell.chargeCounter.integrator.y_start
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.integrator.u
+ -1       0                       0                       0                
+  2   272   # liIonCell.chargeCounter.integrator.y
+  0       0                       0                       0                
+  3   256   # liIonCell.chargeCounter.integrator.der(y)
+  0       0                       0                       0                
+  6   769   # liIonCell.chargeCounter.integrator.local_reset
+  0       0                       0                       0                
+  6   768   # liIonCell.chargeCounter.integrator.local_set
+ -1  9.9999899999999997E-01       0                       0                
+  1   280   # liIonCell.chargeCounter.limiter.uMax
+ -1  9.9999999999999995E-07       0                       0                
+  1   280   # liIonCell.chargeCounter.limiter.uMin
+  0       0                       0                       0                
+  6   257   # liIonCell.chargeCounter.limiter.strict
+  0       2                       1                       4                
+  6   258   # liIonCell.chargeCounter.limiter.homotopyType
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.product1.y
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.add1.y
+ -1       1                       0                       0                
+  1   280   # liIonCell.chargeCounter.add1.k1
+ -1       1                       0                       0                
+  1   280   # liIonCell.chargeCounter.add1.k2
+ -1       1                       0                       0                
+  1   280   # liIonCell.chargeCounter.integrator1.k
+  0       0                       0                       0                
+  6   769   # liIonCell.chargeCounter.integrator1.use_reset
+  0       0                       0                       0                
+  6   769   # liIonCell.chargeCounter.integrator1.use_set
+  0       3                       1                       4                
+  6   258   # liIonCell.chargeCounter.integrator1.initType
+ -1       0                       0                       0                
+  1   280   # liIonCell.chargeCounter.integrator1.y_start
+  0       0                       0                       0                
+  6   256   # liIonCell.chargeCounter.integrator1.u
+ -1       0                       0                       0                
+  2   272   # liIonCell.chargeCounter.integrator1.y
+  0       0                       0                       0                
+  3   256   # liIonCell.chargeCounter.integrator1.der(y)
+  0       0                       0                       0                
+  6   769   # liIonCell.chargeCounter.integrator1.local_reset
+  0       0                       0                       0                
+  6   768   # liIonCell.chargeCounter.integrator1.local_set
+  0       1                       0                       0                
+  6   256   # liIonCell.chargeCounter.limiterCC.uMax
+ -1  9.9999999999999995E-07       0                       0                
+  1   280   # liIonCell.chargeCounter.limiterCC.uMin
+  0       0                       0                       0                
+  6   257   # liIonCell.chargeCounter.limiterCC.strict
+  0       2                       1                       4                
+  6   258   # liIonCell.chargeCounter.limiterCC.homotopyType
+ -1  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # liIonCell.heatSource.T_ref
+ -1       0                       0                       0                
+  1   280   # liIonCell.heatSource.alpha
+  0       0                       0                       0                
+  6   256   # liIonCell.heatSource.Q_flow
+  0       0                       0                       0                
+  6   388   # liIonCell.heatSource.port.Q_flow
+  0       0                       0                       0                
+  6   256   # liIonCell.heatCapacitor.C
+ -1  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  2   280   # liIonCell.heatCapacitor.T
+  0       0                       0                       0                
+  3   256   # liIonCell.heatCapacitor.der(T)
+  0       0                       0                       0                
+  6   388   # liIonCell.heatCapacitor.port.Q_flow
+  0       0                       0                       0                
+  6   388   # liIonCell.heatPort.Q_flow
+ -1  3.0014999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # liIonCell.R1.T_ref
+ -1       0                       0                       0                
+  1   280   # liIonCell.R1.alpha
+  0       0                       0                       0                
+  6   256   # liIonCell.R1.v
+  0       0                       0                       0                
+  6   260   # liIonCell.R1.p.v
+  0       0                       0                       0                
+  6   388   # liIonCell.R1.p.i
+  0       0                       0                       0                
+  6   260   # liIonCell.R1.n.v
+  0       0                       0                       0                
+  6   769   # liIonCell.R1.useHeatPort
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # liIonCell.R1.T
+  0       0                       0                       0                
+  6   256   # liIonCell.R1.LossPower
+  0       0                       0                       0                
+  6   256   # liIonCell.R1.R_actual
+  0       0                       0                       0                
+  6   256   # liIonCell.R1.R
+ -1  3.0014999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # liIonCell.R2.T_ref
+ -1       0                       0                       0                
+  1   280   # liIonCell.R2.alpha
+  0       0                       0                       0                
+  6   256   # liIonCell.R2.v
+  0       0                       0                       0                
+  6   388   # liIonCell.R2.p.i
+  0       0                       0                       0                
+  6   769   # liIonCell.R2.useHeatPort
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # liIonCell.R2.T
+  0       0                       0                       0                
+  6   256   # liIonCell.R2.LossPower
+  0       0                       0                       0                
+  6   256   # liIonCell.R2.R_actual
+  0       0                       0                       0                
+  6   256   # liIonCell.R2.R
+ -1  3.0014999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # liIonCell.R_ohm.T_ref
+ -1       0                       0                       0                
+  1   280   # liIonCell.R_ohm.alpha
+  0       0                       0                       0                
+  6   256   # liIonCell.R_ohm.v
+  0       0                       0                       0                
+  6   769   # liIonCell.R_ohm.useHeatPort
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # liIonCell.R_ohm.T
+  0       0                       0                       0                
+  6   256   # liIonCell.R_ohm.LossPower
+  0       0                       0                       0                
+  6   256   # liIonCell.R_ohm.R_actual
+  0       0                       0                       0                
+  6   256   # liIonCell.R_ohm.R
+  0       0                       0                       0                
+  6   256   # liIonCell.C1.v
+  0       0                       0                       0                
+  6   256   # liIonCell.C1.C
+ -1  1.0000000000000001E-15       0                 1.0000000000000000E+100
+  1   280   # liIonCell.C1.Cmin
+ -1       0                       0                       0                
+  2   280   # liIonCell.C1.Q
+  0       0                       0                       0                
+  3   256   # liIonCell.C1.der(Q)
+ -1       0                       0                       0                
+  1   280   # liIonCell.C1.IC
+  0       0                       0                       0                
+  6   257   # liIonCell.C1.UIC
+  0       0                       0                       0                
+  6   256   # liIonCell.C2.v
+  0       0                       0                       0                
+  6   256   # liIonCell.C2.C
+ -1  1.0000000000000001E-15       0                 1.0000000000000000E+100
+  1   280   # liIonCell.C2.Cmin
+ -1       0                       0                       0                
+  2   280   # liIonCell.C2.Q
+  0       0                       0                       0                
+  3   256   # liIonCell.C2.der(Q)
+ -1       0                       0                       0                
+  1   280   # liIonCell.C2.IC
+  0       0                       0                       0                
+  6   257   # liIonCell.C2.UIC
+  0       1                       0                       0                
+  6   258   # liIonCell.InputR0.nout
+  0       1                       0                       0                
+  6   257   # liIonCell.InputR0.tableOnFile
+ -1       0                       0                       0                
+  1   281   # liIonCell.InputR0.verboseRead
+  0       2                       0                       0                
+  6   258   # liIonCell.InputR0.columns[1]
+  0       2                       1                       6                
+  6   258   # liIonCell.InputR0.smoothness
+  0       2                       1                       4                
+  6   258   # liIonCell.InputR0.extrapolation
+  0       0                       0                       0                
+  6   257   # liIonCell.InputR0.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # liIonCell.InputR0.u_min
+  0       0                       0                       0                
+  6   256   # liIonCell.InputR0.u_max
+  0       0                       0                       0                
+  6  1282   # liIonCell.InputR0.tableID.id
+  0       1                       0                       0                
+  6   258   # liIonCell.InputR1.nout
+  0       1                       0                       0                
+  6   257   # liIonCell.InputR1.tableOnFile
+ -1       0                       0                       0                
+  1   281   # liIonCell.InputR1.verboseRead
+  0       2                       0                       0                
+  6   258   # liIonCell.InputR1.columns[1]
+  0       2                       1                       6                
+  6   258   # liIonCell.InputR1.smoothness
+  0       2                       1                       4                
+  6   258   # liIonCell.InputR1.extrapolation
+  0       0                       0                       0                
+  6   257   # liIonCell.InputR1.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # liIonCell.InputR1.u_min
+  0       0                       0                       0                
+  6   256   # liIonCell.InputR1.u_max
+  0       0                       0                       0                
+  6  1282   # liIonCell.InputR1.tableID.id
+  0       1                       0                       0                
+  6   258   # liIonCell.InputR2.nout
+  0       1                       0                       0                
+  6   257   # liIonCell.InputR2.tableOnFile
+ -1       0                       0                       0                
+  1   281   # liIonCell.InputR2.verboseRead
+  0       2                       0                       0                
+  6   258   # liIonCell.InputR2.columns[1]
+  0       2                       1                       6                
+  6   258   # liIonCell.InputR2.smoothness
+  0       2                       1                       4                
+  6   258   # liIonCell.InputR2.extrapolation
+  0       0                       0                       0                
+  6   257   # liIonCell.InputR2.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # liIonCell.InputR2.u_min
+  0       0                       0                       0                
+  6   256   # liIonCell.InputR2.u_max
+  0       0                       0                       0                
+  6  1282   # liIonCell.InputR2.tableID.id
+  0       1                       0                       0                
+  6   258   # liIonCell.InputC1.nout
+  0       1                       0                       0                
+  6   257   # liIonCell.InputC1.tableOnFile
+ -1       0                       0                       0                
+  1   281   # liIonCell.InputC1.verboseRead
+  0       2                       0                       0                
+  6   258   # liIonCell.InputC1.columns[1]
+  0       2                       1                       6                
+  6   258   # liIonCell.InputC1.smoothness
+  0       2                       1                       4                
+  6   258   # liIonCell.InputC1.extrapolation
+  0       0                       0                       0                
+  6   257   # liIonCell.InputC1.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # liIonCell.InputC1.u_min
+  0       0                       0                       0                
+  6   256   # liIonCell.InputC1.u_max
+  0       0                       0                       0                
+  6  1282   # liIonCell.InputC1.tableID.id
+  0       1                       0                       0                
+  6   258   # liIonCell.InputC2.nout
+  0       1                       0                       0                
+  6   257   # liIonCell.InputC2.tableOnFile
+ -1       0                       0                       0                
+  1   281   # liIonCell.InputC2.verboseRead
+  0       2                       0                       0                
+  6   258   # liIonCell.InputC2.columns[1]
+  0       2                       1                       6                
+  6   258   # liIonCell.InputC2.smoothness
+  0       2                       1                       4                
+  6   258   # liIonCell.InputC2.extrapolation
+  0       0                       0                       0                
+  6   257   # liIonCell.InputC2.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # liIonCell.InputC2.u_min
+  0       0                       0                       0                
+  6   256   # liIonCell.InputC2.u_max
+  0       0                       0                       0                
+  6  1282   # liIonCell.InputC2.tableID.id
+ -1  5.2000000000000002E+00       0                       0                
+  1   280   # pulseCurrent.I
+ -1      50                  9.9999999999999997E-61     100                
+  1   280   # pulseCurrent.width
+ -1    7200                  9.9999999999999997E-61 1.0000000000000000E+100
+  1   280   # pulseCurrent.period
+  0       0                       0                       0                
+  6   256   # pulseCurrent.v
+  0       0                       0                       0                
+  6   260   # pulseCurrent.p.v
+  0       0                       0                       0                
+  6   452   # pulseCurrent.p.i
+  0       0                       0                       0                
+  6   256   # pulseCurrent.signalSource.amplitude
+  0  9.9999999999999997E-61  9.9999999999999997E-61     100                
+  6   256   # pulseCurrent.signalSource.width
+  0       1                  9.9999999999999997E-61 1.0000000000000000E+100
+  6   256   # pulseCurrent.signalSource.period
+ -1      -1                       0                       0                
+  1   282   # pulseCurrent.signalSource.nperiod
+  0       0                       0                       0                
+  6   256   # pulseCurrent.signalSource.offset
+  0       0                       0                       0                
+  6   256   # pulseCurrent.signalSource.startTime
+  0       0                       0                       0                
+  6  1280   # pulseCurrent.signalSource.T_width
+  0       0                       0                       0                
+  6  1344   # pulseCurrent.signalSource.T_start
+  0       0                       0                       0                
+  6  1346   # pulseCurrent.signalSource.count
+ -1 -2.6000000000000001E+00       0                       0                
+  1   280   # pulseCurrent.offset
+ -1       0                       0                       0                
+  1   280   # pulseCurrent.startTime
+  0       0                       0                       0                
+  6   256   # getChargeCapacity.y
+ -1       1                       0                       0                
+  1   280   # BMS.N_s
+  0       0                       0                       0                
+  6   256   # BMS.lowerVoltageLimit
+  0       0                       0                       0                
+  6   256   # BMS.upperVoltageLimit
+ -1       1                       0                       0                
+  1   280   # BMS.chargeCounter.chargeCapacity_Cou
+  0       0                       0                       0                
+  6   256   # BMS.chargeCounter.add.y
+ -1       1                       0                       0                
+  1   280   # BMS.chargeCounter.add.k1
+ -1      -1                       0                       0                
+  1   280   # BMS.chargeCounter.add.k2
+ -1       1                       0                       0                
+  1   280   # BMS.chargeCounter.integrator.k
+  0       0                       0                       0                
+  6   769   # BMS.chargeCounter.integrator.use_reset
+  0       0                       0                       0                
+  6   769   # BMS.chargeCounter.integrator.use_set
+  0       3                       1                       4                
+  6   258   # BMS.chargeCounter.integrator.initType
+ -1       0                       0                       0                
+  1   280   # BMS.chargeCounter.integrator.y_start
+  0       0                       0                       0                
+  6   256   # BMS.chargeCounter.integrator.u
+ -1       0                       0                       0                
+  2   272   # BMS.chargeCounter.integrator.y
+  0       0                       0                       0                
+  3   256   # BMS.chargeCounter.integrator.der(y)
+  0       0                       0                       0                
+  6   769   # BMS.chargeCounter.integrator.local_reset
+  0       0                       0                       0                
+  6   768   # BMS.chargeCounter.integrator.local_set
+ -1  9.9999899999999997E-01       0                       0                
+  1   280   # BMS.chargeCounter.limiter.uMax
+ -1  9.9999999999999995E-07       0                       0                
+  1   280   # BMS.chargeCounter.limiter.uMin
+  0       0                       0                       0                
+  6   257   # BMS.chargeCounter.limiter.strict
+  0       2                       1                       4                
+  6   258   # BMS.chargeCounter.limiter.homotopyType
+  0       0                       0                       0                
+  6   256   # BMS.chargeCounter.product1.y
+  0       0                       0                       0                
+  6   256   # BMS.chargeCounter.add1.y
+ -1       1                       0                       0                
+  1   280   # BMS.chargeCounter.add1.k1
+ -1       1                       0                       0                
+  1   280   # BMS.chargeCounter.add1.k2
+ -1       1                       0                       0                
+  1   280   # BMS.chargeCounter.integrator1.k
+  0       0                       0                       0                
+  6   769   # BMS.chargeCounter.integrator1.use_reset
+  0       0                       0                       0                
+  6   769   # BMS.chargeCounter.integrator1.use_set
+  0       3                       1                       4                
+  6   258   # BMS.chargeCounter.integrator1.initType
+ -1       0                       0                       0                
+  1   280   # BMS.chargeCounter.integrator1.y_start
+  0       0                       0                       0                
+  6   256   # BMS.chargeCounter.integrator1.u
+ -1       0                       0                       0                
+  2   272   # BMS.chargeCounter.integrator1.y
+  0       0                       0                       0                
+  3   256   # BMS.chargeCounter.integrator1.der(y)
+  0       0                       0                       0                
+  6   769   # BMS.chargeCounter.integrator1.local_reset
+  0       0                       0                       0                
+  6   768   # BMS.chargeCounter.integrator1.local_set
+  0       1                       0                       0                
+  6   256   # BMS.chargeCounter.limiterCC.uMax
+ -1  9.9999999999999995E-07       0                       0                
+  1   280   # BMS.chargeCounter.limiterCC.uMin
+  0       0                       0                       0                
+  6   257   # BMS.chargeCounter.limiterCC.strict
+  0       2                       1                       4                
+  6   258   # BMS.chargeCounter.limiterCC.homotopyType
+  0       0                       0                       0                
+  6   260   # BMS.pin_n_battery.v
+  0       0                       0                       0                
+  6   388   # BMS.pin_n_battery.i
+  0       0                       0                       0                
+  6   260   # BMS.pin_n_load.v
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.upperVoltageLimit
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.lowerVoltageLimit
+  0       0                       0                       0                
+  6   260   # BMS.voltageLimiter.pin_n_battery.v
+  0       0                       0                       0                
+  6   388   # BMS.voltageLimiter.voltageSensor.p.i
+  0       0                       0                       0                
+  6   260   # BMS.voltageLimiter.voltageSensor.n.v
+  0       0                       0                       0                
+  6   388   # BMS.voltageLimiter.voltageSensor.n.i
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.greaterThreshold.threshold
+  0       0                       0                       0                
+  6   353   # BMS.voltageLimiter.greaterThreshold.y
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.lessThreshold.threshold
+  0       0                       0                       0                
+  6   353   # BMS.voltageLimiter.lessThreshold.y
+  0       0                       0                       0                
+  6   353   # BMS.voltageLimiter.and1.y
+  0       0                       0                       0                
+  6   260   # BMS.voltageLimiter.pin_n_load.v
+ -1  1.0000000000000001E-05       0                 1.0000000000000000E+100
+  1   280   # BMS.voltageLimiter.switchVotageSource.Ron
+ -1  1.0000000000000001E-05       0                 1.0000000000000000E+100
+  1   280   # BMS.voltageLimiter.switchVotageSource.Goff
+  0       0                       0                       0                
+  6   769   # BMS.voltageLimiter.switchVotageSource.useHeatPort
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # BMS.voltageLimiter.switchVotageSource.T
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.switchVotageSource.LossPower
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # BMS.voltageLimiter.switchVotageSource.T_heatPort
+  0       0                       0                       0                
+  6   260   # BMS.voltageLimiter.switchVotageSource.n1.v
+  0       0                       0                       0                
+  6   388   # BMS.voltageLimiter.switchVotageSource.n1.i
+  0       0                       0                       0                
+  6  1280   # BMS.voltageLimiter.switchVotageSource.s1
+  0       0                       0                       0                
+  6  1344   # BMS.voltageLimiter.switchVotageSource.s2
+  0       1                       0                       0                
+  6   768   # BMS.voltageLimiter.switchVotageSource.unitVoltage
+  0       1                       0                       0                
+  6   768   # BMS.voltageLimiter.switchVotageSource.unitCurrent
+  0       1                       0                       0                
+  6   256   # BMS.voltageLimiter.upperVoltageSource.V
+  0       0                       0                       0                
+  6   388   # BMS.voltageLimiter.upperVoltageSource.p.i
+  0       0                       0                       0                
+  6   260   # BMS.voltageLimiter.upperVoltageSource.n.v
+  0       1                       0                       0                
+  6   256   # BMS.voltageLimiter.constantVoltage.V
+  0       0                       0                       0                
+  6   388   # BMS.voltageLimiter.constantVoltage.p.i
+  0       0                       0                       0                
+  6   260   # BMS.voltageLimiter.constantVoltage.n.v
+ -1  1.0000000000000001E-05       0                 1.0000000000000000E+100
+  1   280   # BMS.voltageLimiter.idealCommutingSwitch.Ron
+ -1  1.0000000000000001E-05       0                 1.0000000000000000E+100
+  1   280   # BMS.voltageLimiter.idealCommutingSwitch.Goff
+  0       0                       0                       0                
+  6   769   # BMS.voltageLimiter.idealCommutingSwitch.useHeatPort
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # BMS.voltageLimiter.idealCommutingSwitch.T
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.idealCommutingSwitch.LossPower
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # BMS.voltageLimiter.idealCommutingSwitch.T_heatPort
+  0       0                       0                       0                
+  6   353   # BMS.voltageLimiter.idealCommutingSwitch.control
+  0       0                       0                       0                
+  6  1280   # BMS.voltageLimiter.idealCommutingSwitch.s1
+  0       0                       0                       0                
+  6  1280   # BMS.voltageLimiter.idealCommutingSwitch.s2
+  0       1                       0                       0                
+  6   768   # BMS.voltageLimiter.idealCommutingSwitch.unitVoltage
+  0       1                       0                       0                
+  6   768   # BMS.voltageLimiter.idealCommutingSwitch.unitCurrent
+  0       0                       0                       0                
+  6   256   # BMS.voltageLimiter.lessThreshold1.threshold
+  0       0                       0                       0                
+  6   256   # BMS.sensorInterface
+  0       0                       0                       0                
+  6   256   # convection.Q_flow
+  0       0                       0                       0                
+  6   256   # convection.dT
+  0       0                       0                       0                
+  6   256   # convection.Gc
+  0       0                       0                       0                
+  6   256   # bodyRadiation.Q_flow
+  0       0                       0                       0                
+  6   256   # bodyRadiation.dT
+  0       0                       0                       0                
+  6   256   # bodyRadiation.Gr
+ -1  2.9814999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # fixedTemperature.T
+  0       0                       0                       0                
+  6   388   # fixedTemperature.port.Q_flow
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable and flags according to dsBaseType
+#  <value>&3= 0: real.
+#  <value>&3= 1: boolean.
+#  <value>&3= 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, the initialization is performed in the normal way.
+#
+# - If parameters and inputs are FIXED, and all other variables
+#   have special case for continue (-2 in 1st column), or FREE
+#   the initialization is ignored and variables are set to these values.
+#   This is intended to continue the simulation.
+#
+#   Which variables will be important for initialization and continue
+#   is indicated by value in column 6 & dsStartMasks.
+#
+char initialDescription(270,111)
+Potential at the pin [V]
+Current flowing into the pin [A]
+Mass of the cell [kg]
+Surface area for cooling [m2]
+Specific Heat Capacity [J/(kg.K)]
+Initial State of Charge [1]
+Battery Cell Capacity [A.h]
+[V]
+
+[V]
+[V]
+
+
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Potential at the pin [V]
+[W]
+Value of Real output
+Battery state of charge at the current time step.
+Battery Cell Capacity [A.h]
+Connector of Real output signal
+Gain of input signal 1
+Gain of input signal 2
+Integrator gain [1]
+= true, if reset port enabled [:#(type=Boolean)]
+= true, if set port enabled and used as reinitialization value when reset [:#(type=Boolean)]
+Type of initialization (1: no init, 2: steady state, 3,4: initial output) [:#(type=Modelica.Blocks.Types.Init)]
+Initial or guess value of output (= state)
+Connector of Real input signal
+Connector of Real output signal
+der(Connector of Real output signal)
+[:#(type=Boolean)]
+
+Upper limits of input signals
+Lower limits of input signals
+= true, if strict limits with noEvent(..) [:#(type=Boolean)]
+Simplified model for homotopy-based initialization [:#(type=Modelica.Blocks.Types.LimiterHomotopy)]
+Connector of Real output signal
+Connector of Real output signal
+Gain of input signal 1
+Gain of input signal 2
+Integrator gain [1]
+= true, if reset port enabled [:#(type=Boolean)]
+= true, if set port enabled and used as reinitialization value when reset [:#(type=Boolean)]
+Type of initialization (1: no init, 2: steady state, 3,4: initial output) [:#(type=Modelica.Blocks.Types.Init)]
+Initial or guess value of output (= state)
+Connector of Real input signal
+Connector of Real output signal
+der(Connector of Real output signal)
+[:#(type=Boolean)]
+
+Upper limits of input signals
+Lower limits of input signals
+= true, if strict limits with noEvent(..) [:#(type=Boolean)]
+Simplified model for homotopy-based initialization [:#(type=Modelica.Blocks.Types.LimiterHomotopy)]
+Reference temperature [K|degC]
+Temperature coefficient of heat flow rate [1/K]
+[W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat capacity of element (= cp*m) [J/K]
+Temperature of element [K|degC]
+der(Temperature of element) [K/s]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Reference temperature [K|degC]
+Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref)) [1/K]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Fixed device temperature if useHeatPort = false [K|degC]
+Loss power leaving component via heatPort [W]
+Actual resistance = R*(1 + alpha*(T_heatPort - T_ref)) [Ohm]
+[Ohm]
+Reference temperature [K|degC]
+Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref)) [1/K]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Current flowing into the pin [A]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Fixed device temperature if useHeatPort = false [K|degC]
+Loss power leaving component via heatPort [W]
+Actual resistance = R*(1 + alpha*(T_heatPort - T_ref)) [Ohm]
+[Ohm]
+Reference temperature [K|degC]
+Temperature coefficient of resistance (R_actual = R*(1 + alpha*(T_heatPort - T_ref)) [1/K]
+Voltage drop of the two pins (= p.v - n.v) [V]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Fixed device temperature if useHeatPort = false [K|degC]
+Loss power leaving component via heatPort [W]
+Actual resistance = R*(1 + alpha*(T_heatPort - T_ref)) [Ohm]
+[Ohm]
+Voltage drop of the two pins (= p.v - n.v) [V]
+[F]
+Lower bound for variable capacitance [F]
+[C]
+[A]
+Initial Value [V]
+Decision if initial value IC shall be used [:#(type=Boolean)]
+Voltage drop of the two pins (= p.v - n.v) [V]
+[F]
+Lower bound for variable capacitance [F]
+[C]
+[A]
+Initial Value [V]
+Decision if initial value IC shall be used [:#(type=Boolean)]
+Number of outputs [:#(type=Integer)]
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Columns of table to be interpolated [:#(type=Integer)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+Number of outputs [:#(type=Integer)]
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Columns of table to be interpolated [:#(type=Integer)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+Number of outputs [:#(type=Integer)]
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Columns of table to be interpolated [:#(type=Integer)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+Number of outputs [:#(type=Integer)]
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Columns of table to be interpolated [:#(type=Integer)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+Number of outputs [:#(type=Integer)]
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Columns of table to be interpolated [:#(type=Integer)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+Amplitude of pulse [A]
+Width of pulse in % of period
+Time for one period [s]
+Voltage drop of the two pins (= p.v - n.v) [V]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Amplitude of pulse
+Width of pulse in % of period
+Time for one period [s]
+Number of periods (< 0 means infinite number of periods) [:#(type=Integer)]
+Offset of output signal y
+Output y = offset for time < startTime [s]
+[s]
+Start time of current period [s]
+Period count [:#(type=Integer)]
+Current offset [A]
+Time offset [s]
+Value of Real output
+Number of Cells in Series
+[V]
+[V]
+Battery Cell Capacity [A.h]
+Connector of Real output signal
+Gain of input signal 1
+Gain of input signal 2
+Integrator gain [1]
+= true, if reset port enabled [:#(type=Boolean)]
+= true, if set port enabled and used as reinitialization value when reset [:#(type=Boolean)]
+Type of initialization (1: no init, 2: steady state, 3,4: initial output) [:#(type=Modelica.Blocks.Types.Init)]
+Initial or guess value of output (= state)
+Connector of Real input signal
+Connector of Real output signal
+der(Connector of Real output signal)
+[:#(type=Boolean)]
+
+Upper limits of input signals
+Lower limits of input signals
+= true, if strict limits with noEvent(..) [:#(type=Boolean)]
+Simplified model for homotopy-based initialization [:#(type=Modelica.Blocks.Types.LimiterHomotopy)]
+Connector of Real output signal
+Connector of Real output signal
+Gain of input signal 1
+Gain of input signal 2
+Integrator gain [1]
+= true, if reset port enabled [:#(type=Boolean)]
+= true, if set port enabled and used as reinitialization value when reset [:#(type=Boolean)]
+Type of initialization (1: no init, 2: steady state, 3,4: initial output) [:#(type=Modelica.Blocks.Types.Init)]
+Initial or guess value of output (= state)
+Connector of Real input signal
+Connector of Real output signal
+der(Connector of Real output signal)
+[:#(type=Boolean)]
+
+Upper limits of input signals
+Lower limits of input signals
+= true, if strict limits with noEvent(..) [:#(type=Boolean)]
+Simplified model for homotopy-based initialization [:#(type=Modelica.Blocks.Types.LimiterHomotopy)]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Upper Voltage Limit [V]
+Lower Voltage Limit [V]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Current flowing into the pin [A]
+Comparison with respect to threshold
+Connector of Boolean output signal [:#(type=Boolean)]
+Comparison with respect to threshold
+Connector of Boolean output signal [:#(type=Boolean)]
+Connector of Boolean output signal [:#(type=Boolean)]
+Potential at the pin [V]
+Closed switch resistance [Ohm]
+Opened switch conductance [S]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Fixed device temperature if useHeatPort = false [K|degC]
+Loss power leaving component via heatPort [W]
+Temperature of heatPort [K|degC]
+Potential at the pin [V]
+Current flowing into the pin [A]
+[1]
+Auxiliary variables [1]
+[V]
+[A]
+Value of constant voltage [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Value of constant voltage [V]
+Current flowing into the pin [A]
+Potential at the pin [V]
+Closed switch resistance [Ohm]
+Opened switch conductance [S]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Fixed device temperature if useHeatPort = false [K|degC]
+Loss power leaving component via heatPort [W]
+Temperature of heatPort [K|degC]
+true => p--n2 connected, false => p--n1 connected [:#(type=Boolean)]
+[1]
+Auxiliary variables [1]
+[V]
+[A]
+Comparison with respect to threshold
+
+Heat flow rate from solid -> fluid [W]
+= solid.T - fluid.T [K,]
+Signal representing the convective thermal conductance in [W/K] [W/K]
+Heat flow rate from port_a -> port_b [W]
+port_a.T - port_b.T [K,]
+Net radiation conductance between two surfaces (see docu) [m2]
+Fixed temperature at port [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+

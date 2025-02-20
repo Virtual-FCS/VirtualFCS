@@ -1,0 +1,32 @@
+Log-file of program ./dymosim
+(generated: Wed Feb 19 15:12:18 2025)
+
+dymosim started
+... "VirtualFCS.Examples.ElectrochemicalComponents.CycleBatteryCell" simulating
+... "dsin.txt" loading (dymosim input file)
+... "C:/Users/danielcl/PycharmProjects/PyVirtualFCS/PyVirtualFCS/dymola/Results/results.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dassault Systemes))
+
+Integration terminated successfully at T = 10
+   CPU-time for integration                : 0.001 seconds
+   CPU-time for one grid interval          : 0.1 milliseconds
+   CPU-time for initialization             : 0.001 seconds
+   Number of result points                 : 14
+   Number of grid points                   : 11
+   Number of accepted steps                : 39
+   Number of f-evaluations (dynamics)      : 65
+   Number of crossing function evaluations : 59
+   Number of Jacobian-evaluations          : 22
+   Number of model time events             : 0
+   Number of input time events             : 0
+   Number of state events                  : 1
+   Number of step events                   : 0
+   Minimum integration stepsize            : 2.74e-05
+   Maximum integration stepsize            : 1.07
+   Maximum integration order               : 4
+Calling terminal section
+... "dsfinal.txt" creating (final states)
+
+SUCCESSFUL simulation of VirtualFCS.Examples.ElectrochemicalComponents.CycleBatteryCell
