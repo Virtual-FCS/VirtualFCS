@@ -108,7 +108,7 @@ equation
   connect(OutletPump_temperature.port, pumpElectricDC.Output) annotation (Line(
         points={{108,22},{108,20},{88,20},{88,46},{59,46}}, color={0,127,255}));
   connect(controlInterface, subSystemCoolingControl.setPointPump) annotation (
-      Line(points={{-114,-44},{-19.7,-44},{-19.7,80.4}}, color={0,0,127}));
+      Line(points={{-114,-44},{-19.7,-44},{-19.7,77.34}},color={0,0,127}));
   connect(realExpression1.y, heatSink.Set_Point) annotation (Line(points={{-47,
           72},{-24,72},{-24,-30},{12,-30},{12,-34.12},{17.12,-34.12}}, color={0,
           0,127}));

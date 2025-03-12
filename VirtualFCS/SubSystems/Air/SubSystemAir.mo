@@ -52,8 +52,7 @@ model SubSystemAir
   // Valves
   VirtualFCS.Fluid.ThrottleValve throttleValve(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {21, -35}, extent = {{15, -15}, {-15, 15}}, rotation = 0)));
-  Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium
-      =                                                                         Medium) annotation (
+  Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium = Medium) annotation (
     Placement(visible = true, transformation(origin = {74, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput RH_cathode annotation (Placement(
         transformation(extent={{-100,-52},{-120,-32}}), iconTransformation(

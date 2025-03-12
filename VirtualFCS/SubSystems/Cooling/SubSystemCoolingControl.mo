@@ -10,9 +10,6 @@ model SubSystemCoolingControl
         temperature_Cooling_set)                                                    annotation (
     Placement(visible = true, transformation(origin={-166,120},    extent={{-16,-16},
             {16,16}},                                                                               rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression realExpression2(y=0.0012)   annotation (
-    Placement(visible = true, transformation(origin={-169,-19},   extent={{-29,-15},
-            {29,15}},                                                                              rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput sensorInterface annotation (
     Placement(visible = true, transformation(origin={-229,-57},  extent={{-29,-29},
             {29,29}},                                                                             rotation = 0), iconTransformation(origin={-220,100},  extent = {{-20, -20}, {20, 20}}, rotation = 0)));
@@ -22,10 +19,10 @@ model SubSystemCoolingControl
     Placement(visible = true, transformation(origin={200,120},    extent={{-32,-32},
             {32,32}},                                                                              rotation = 0), iconTransformation(origin = {218, 130}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput setPointPump
-    annotation (Placement(transformation(extent={{-240,20},{-200,60}})));
+    annotation (Placement(transformation(extent={{-240,-16},{-200,24}})));
 equation
-  connect(sensorInterface,pumpSpeedControlCooling. getMassFlow) annotation (
-    Line(points={{-229,-57},{-39.8,-57}},                          color = {0, 0, 127}));
+  connect(sensorInterface, pumpSpeedControlCooling.getTStack)
+    annotation (Line(points={{-229,-57},{-39.8,-57}}, color={0,0,127}));
   connect(Setpoint_Temperature,temperature_Cooling. y) annotation (
     Line(points={{200,120},{-148.4,120}},                 color = {0, 0, 127}));
   connect(controlInterface, controlInterface)
@@ -33,9 +30,8 @@ equation
   connect(pumpSpeedControlCooling.setPumpSpeed, controlInterface) annotation (
       Line(points={{43.8,-38},{131.4,-38},{131.4,-39},{219,-39}}, color={0,0,
           127}));
-  connect(setPointPump, pumpSpeedControlCooling.setMassFlow) annotation (Line(
-        points={{-220,40},{-220,4},{-50,4},{-50,-19},{-39.8,-19}}, color={0,0,
-          127}));
+  connect(setPointPump, pumpSpeedControlCooling.setTStack) annotation (Line(
+        points={{-220,4},{-50,4},{-50,-19},{-39.8,-19}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={  Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin={0,218},     textColor={0,0,255},     extent={{-200,60},

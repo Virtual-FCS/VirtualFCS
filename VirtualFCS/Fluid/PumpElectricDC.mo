@@ -5,7 +5,8 @@ model PumpElectricDC
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater
-                                                                                constrainedby Modelica.Media.Interfaces.PartialMedium;
+                                                                                constrainedby
+    Modelica.Media.Interfaces.PartialMedium;
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
@@ -27,19 +28,19 @@ model PumpElectricDC
     Placement(visible = true, transformation(origin = {-20, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   // Machines
   Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare
-      function                                                                                      flowCharacteristic =
+      function flowCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                                V_flow_nominal = {0, 5}, head_nominal = {150, 80}),redeclare
-      function                                                                                                                                                                                                         efficiencyCharacteristic =
+      function efficiencyCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
         (                                                                                                                                                                                                        eta_nominal =0.1),
-    N_nominal=1200,                                                                                                                                                                                                        V = 0.5, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1,
+    N_nominal=500,                                                                                                                                                                                                        V = 0.5, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1,
     p_a_start=102502,                                                                                                                                                                                                        use_N_in = true) annotation (
     Placement(visible = true, transformation(origin = {20, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal,
     alpha20a=driveData.motorData.alpha20a,                                                                                                                                                                                                        brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters,
     wMechanical(fixed=true, start=0.10472),                                                                                                                                                                                                        wNominal = driveData.motorData.wNominal) annotation (
     Placement(visible = true, transformation(origin = {-20, -6}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
-  Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation (
+  Modelica.Mechanics.Rotational.Components.Inertia inertia(J=0.15)   annotation (
     Placement(visible = true, transformation(origin = {50, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   parameter VirtualFCS.Utilities.ParameterRecords.DriveDataCpump driveData annotation (
     Placement(visible = true, transformation(extent = {{-64, -16}, {-44, 4}}, rotation = 0)));
@@ -51,7 +52,7 @@ model PumpElectricDC
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
     Placement(visible = true, transformation(origin = {60, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 270)));
   // Other
-  Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal/9.5493) annotation (
+  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal)          annotation (
     Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k=9.5493)   annotation (
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));

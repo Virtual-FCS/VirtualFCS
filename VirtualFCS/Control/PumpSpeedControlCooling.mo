@@ -1,23 +1,40 @@
 within VirtualFCS.Control;
 block PumpSpeedControlCooling
-  Modelica.Blocks.Interfaces.RealInput setMassFlow annotation (
-    Placement(visible = true, transformation(origin = {-100, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput getMassFlow annotation (
-    Placement(visible = true, transformation(origin = {-100, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput setTStack annotation (Placement(
+      visible=true,
+      transformation(
+        origin={-100,40},
+        extent={{-20,-20},{20,20}},
+        rotation=0),
+      iconTransformation(
+        origin={-110,50},
+        extent={{-10,-10},{10,10}},
+        rotation=0)));
+  Modelica.Blocks.Interfaces.RealInput getTStack annotation (Placement(
+      visible=true,
+      transformation(
+        origin={-100,-20},
+        extent={{-20,-20},{20,20}},
+        rotation=0),
+      iconTransformation(
+        origin={-110,-50},
+        extent={{-10,-10},{10,10}},
+        rotation=0)));
   Modelica.Blocks.Interfaces.RealOutput setPumpSpeed annotation (
     Placement(visible = true, transformation(origin = {84, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.LimPID limPID(
-    k=0.001,
+    k=0.01,
     Ti=1,
     Td=1,                                  Ni = 0.1,
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,                                                                     initType = Modelica.Blocks.Types.Init.InitialOutput,        yMax = 1,
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,                                                                     initType = Modelica.Blocks.Types.Init.InitialOutput,
+    yMax=1,
     yMin=0,                                                                                                                                                                                                       y_start = 0.005) annotation (
     Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(setMassFlow, limPID.u_s) annotation (
-    Line(points = {{-100, 40}, {-60, 40}, {-60, 30}, {-42, 30}}, color = {0, 0, 127}));
-  connect(getMassFlow, limPID.u_m) annotation (
-    Line(points = {{-100, -20}, {-30, -20}, {-30, 18}}, color = {0, 0, 127}));
+  connect(setTStack, limPID.u_s) annotation (Line(points={{-100,40},{-60,40},{-60,
+          30},{-42,30}}, color={0,0,127}));
+  connect(getTStack, limPID.u_m)
+    annotation (Line(points={{-100,-20},{-30,-20},{-30,18}}, color={0,0,127}));
   connect(limPID.y, setPumpSpeed)
     annotation (Line(points={{-19,30},{84,30},{84,0}}, color={0,0,127}));
   annotation (

@@ -52,6 +52,11 @@ equation
           {70,44},{70,12.4},{41.6,12.4}}, color={0,0,127}));
   connect(temperature2.T, heatSink.Stack_temperature) annotation (Line(points={
           {55,-24},{50,-24},{50,29.6},{41.6,29.6}}, color={0,0,127}));
+  connect(batterySystem.pin_p, heatSink.pin_p) annotation (Line(points={{-31.6,
+          30.4},{-31.6,28},{-6,28},{-6,42},{12,42},{12,34.8}}, color={0,0,255}));
+  connect(heatSink.pin_n, pumpElectricDC.pin_n) annotation (Line(points={{28,
+          34.8},{-6,34.8},{-6,24},{-40.4,24},{-40.4,20},{-40.2,20},{-40.2,11.2}},
+        color={0,0,255}));
 annotation (
   experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
 end HeatSinkTest;

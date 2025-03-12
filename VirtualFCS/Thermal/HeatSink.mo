@@ -25,7 +25,7 @@ model HeatSink
         rotation=90)));
   Modelica.Blocks.Continuous.LimPID limPID(Ni = 0.1, Td = 0,
     Ti=10,                                                            controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput,
-    k=0.1,
+    k=1,
     yMax=100,
     yMin=1,
     y_start=100)                                                                                                                                                                                                         annotation (
@@ -47,8 +47,8 @@ model HeatSink
         transformation(
         extent={{-6,-6},{6,6}},
         rotation=90,
-        origin={0,20})));
-  Modelica.Blocks.Math.Gain Voltagecorrection2(k=1/60)  annotation (Placement(
+        origin={0,30})));
+  Modelica.Blocks.Math.Gain PowerToCurrent(k=1/60) annotation (Placement(
         transformation(
         extent={{-6,-6},{6,6}},
         rotation=90,
@@ -62,7 +62,7 @@ model HeatSink
         rotation=0)));
   Modelica.Blocks.Sources.RealExpression realExpression1(y=(realExpression.y*(
         Temp_Sensor.T - 293.15))/(0.7))
-    annotation (Placement(transformation(extent={{-52,20},{-32,40}})));
+    annotation (Placement(transformation(extent={{-52,14},{-32,34}})));
 equation
 Power_heatsink =pin_p.i*pin_p.v;
 
@@ -82,8 +82,8 @@ Power_heatsink =pin_p.i*pin_p.v;
   connect(pin_p, signalCurrent.p)
     annotation (Line(points={{-40,104},{-40,92},{-10,92}},
                                                        color={0,0,255}));
-  connect(signalCurrent.i, Voltagecorrection2.y) annotation (Line(points={{0,80},{
-          0,76.3},{3.88578e-16,76.3},{3.88578e-16,72.6}},  color={0,0,127}));
+  connect(signalCurrent.i, PowerToCurrent.y) annotation (Line(points={{0,80},{0,
+          76.3},{3.88578e-16,76.3},{3.88578e-16,72.6}}, color={0,0,127}));
   connect(Set_Point, limPID.u_s) annotation (Line(points={{-120,2},{-90,2},{-90,
           0},{-82,0}}, color={0,0,127}));
   connect(Stack_temperature, limPID.u_m) annotation (Line(points={{-120,-32},{-70,
@@ -92,10 +92,10 @@ Power_heatsink =pin_p.i*pin_p.v;
           0},{16,-76},{18,-76},{18,-84},{10,-84}}, color={0,0,127}));
   connect(port_a, Temp_Sensor.port) annotation (Line(points={{-100,-54},{-41,-54},
           {-41,-42}}, color={0,127,255}));
-  connect(realExpression1.y, Voltagecorrection.u) annotation (Line(points={{-31,
-          30},{-12,30},{-12,12.8},{-4.44089e-16,12.8}}, color={0,0,127}));
-  connect(Voltagecorrection.y, Voltagecorrection2.u) annotation (Line(points={{
-          3.88578e-16,26.6},{3.88578e-16,42.7},{-4.44089e-16,42.7},{
+  connect(realExpression1.y, Voltagecorrection.u) annotation (Line(points={{-31,24},
+          {-12,24},{-12,22.8},{-4.44089e-16,22.8}},     color={0,0,127}));
+  connect(Voltagecorrection.y, PowerToCurrent.u) annotation (Line(points={{
+          3.88578e-16,36.6},{3.88578e-16,47.7},{-4.44089e-16,47.7},{
           -4.44089e-16,58.8}}, color={0,0,127}));
   annotation (
     Icon(graphics={  Rectangle(origin = {-16, -71}, fillColor = {0, 0, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-84, 11}, {116, -9}}), Ellipse(origin = {40, 76}, fillColor = {166, 166, 166}, fillPattern = FillPattern.Sphere, extent = {{40, 14}, {-40, -6}}), Ellipse(origin = {-40, 76}, fillColor = {166, 166, 166}, fillPattern = FillPattern.Sphere, extent = {{40, 14}, {-40, -6}}), Ellipse(origin = {30, 78}, fillColor = {166, 166, 166}, fillPattern = FillPattern.Sphere, extent = {{-20, 12}, {-40, -6}}), Rectangle(origin = {0, 20}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-100, 7}, {100, -21}}, radius = 2), Ellipse(origin = {0, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}}, startAngle = 180, closure = EllipseClosure.Chord), Ellipse(origin = {-57.2, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}}, startAngle = 180, closure = EllipseClosure.Chord), Ellipse(origin = {57.2, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}}, startAngle = 180, closure = EllipseClosure.Chord), Rectangle(origin = {-85.75, -13}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -32}}), Rectangle(origin = {-28.6, -13}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -32}}), Rectangle(origin = {28.6, -13}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -32}}), Ellipse(origin = {-85.75, -45}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}}), Ellipse(origin = {-28.6, -45}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}}), Ellipse(origin = {28.6, -45}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}}), Rectangle(origin = {85.75, -13}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -32}}), Ellipse(origin = {85.75, -45}, fillColor = {166, 166, 166}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.3, 14.3}, {14.3, -14.3}})}, coordinateSystem(initialScale = 0.1)));
