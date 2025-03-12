@@ -24,11 +24,11 @@ model HeatSink
         extent={{-10,-10},{10,10}},
         rotation=90)));
   Modelica.Blocks.Continuous.LimPID limPID(Ni = 0.1, Td = 0,
-    Ti=10,                                                            controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput,
+    Ti=1,                                                             controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput,
     k=1,
-    yMax=100,
+    yMax=300,
     yMin=1,
-    y_start=100)                                                                                                                                                                                                         annotation (
+    y_start=300)                                                                                                                                                                                                         annotation (
     Placement(visible = true, transformation(origin={-70,0},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput Stack_temperature annotation (
     Placement(visible = true, transformation(origin={-120,-32},   extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {108, 78}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
@@ -53,7 +53,7 @@ model HeatSink
         extent={{-6,-6},{6,6}},
         rotation=90,
         origin={0,66})));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=101 - limPID.y)
+  Modelica.Blocks.Sources.RealExpression realExpression(y=301 - limPID.y)
     annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
   Modelica.Fluid.Sensors.Temperature Temp_Sensor(redeclare package Medium =
         Medium) annotation (Placement(visible=true, transformation(
