@@ -41,8 +41,8 @@ block fd1
             {-94,80}})));
   Modelica.Blocks.Interfaces.RealInput RH_ca annotation (Placement(transformation(extent={{-12,-12},{12,12}}, origin={-106,26}), iconTransformation(extent={{-118,14},
             {-94,38}})));
-  Modelica.Blocks.Interfaces.RealInput V_FC annotation (Placement(transformation(extent={{-12,-12},{12,12}}, origin={-112,-44}), iconTransformation(extent={{-118,
-            -82},{-94,-58}})));
+//  Modelica.Blocks.Interfaces.RealInput V_FC annotation (Placement(transformation(extent={{-12,-12},{12,12}}, origin={-112,-44}), iconTransformation(extent={{-118,
+            //-82},{-94,-58}})));
   Modelica.Blocks.Interfaces.RealOutput FCDeg_new annotation (Placement(transformation(extent={{-10,-10},{10,10}}, origin={100,0}),  iconTransformation(extent={{94,-10},
             {114,10}})));
   Modelica.Blocks.Sources.RealExpression realExpression(y=FCDeg)     annotation (Placement(transformation(extent={{48,-10},
