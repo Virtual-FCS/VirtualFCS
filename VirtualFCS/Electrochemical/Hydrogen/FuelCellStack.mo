@@ -149,7 +149,7 @@ equation
 // ELECTROCHEMICAL EQUATIONS //
 // Calculate the stack voltage
 //  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
-  potentialSource.v = (N_FC_stack*((1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)))))-FCDeg_new;
+  potentialSource.v = (N_FC_stack*((1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)))));//-FCDeg_new;
 // Calculate the voltage of the cell
   V_cell = if potentialSource.v/N_FC_stack >1 then 0.9 else potentialSource.v/N_FC_stack;
 // THERMAL EQUATIONS //

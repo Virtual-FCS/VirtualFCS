@@ -7,7 +7,7 @@ record DCPMMCoolingPump
     Dialog(tab = "Nominal parameters"));
   parameter Modelica.Units.SI.Current IaNominal = 10 "Nominal armature current (>0..Motor, <0..Generator)" annotation (
     Dialog(tab = "Nominal parameters"));
-  parameter Modelica.Units.SI.AngularVelocity wNominal(displayUnit = "rev/min") = 1425 * 2 * Modelica.Constants.pi / 60 "Nominal speed" annotation (
+  parameter Modelica.Units.SI.AngularVelocity wNominal(displayUnit = "rev/min") = 2000 * 2 * Modelica.Constants.pi / 60 "Nominal speed" annotation (
     Dialog(tab = "Nominal parameters"));
   parameter Modelica.Units.SI.Temperature TaNominal = 293.15 "Nominal armature temperature" annotation (
     Dialog(tab = "Nominal parameters"));

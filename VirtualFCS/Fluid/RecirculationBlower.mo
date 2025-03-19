@@ -20,7 +20,7 @@ model RecirculationBlower
     Placement(visible = true, transformation(origin = {72, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Interfaces.RealInput controlInterface annotation (
     Placement(visible = true, transformation(origin = {-113, 41}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {-30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal/2) annotation (
+  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal)   annotation (
     Placement(visible = true, transformation(origin = {-87, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   // Machines
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal,
@@ -34,7 +34,7 @@ model RecirculationBlower
   Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare
       function flowCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                                V_flow_nominal = {0, 0.00365}, head_nominal = {500000, 100000}),
-    N_nominal=500,
+    N_nominal=100,
     T_start=323.15,                                                                                                                                                                                                        V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,                                                                                                                                                                                                        medium(preferredMediumStates = false), nParallel = 1, use_N_in = true, use_T_start = true) annotation (
