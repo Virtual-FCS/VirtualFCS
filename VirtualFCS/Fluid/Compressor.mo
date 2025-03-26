@@ -42,7 +42,7 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
       function                                                                                                                                              efficiencyCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
         (eta_nominal =0.62),
-    N_nominal=1425,
+    N_nominal=1200,
     T_start=298.15,V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     m_flow_start=0.0001,

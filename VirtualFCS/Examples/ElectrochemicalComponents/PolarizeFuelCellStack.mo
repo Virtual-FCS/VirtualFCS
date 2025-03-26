@@ -17,7 +17,7 @@ model PolarizeFuelCellStack
     falling=100,
     period=400,
     nperiod=-1,
-    offset=0,
+    offset=1,
     startTime=50) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,

@@ -2,12 +2,12 @@ within VirtualFCS.Utilities.ParameterRecords;
 record DCPMMCoolingPump
   extends Modelica.Icons.Record;
   parameter Modelica.Units.SI.Inertia Jr = 0.15 "Rotor's moment of inertia";
-  parameter Modelica.Units.SI.Inertia Js = 0.15 "Stator's moment of inertia";
-  parameter Modelica.Units.SI.Voltage VaNominal = 24 "Nominal armature voltage" annotation (
+  parameter Modelica.Units.SI.Inertia Js = 0.29 "Stator's moment of inertia";
+  parameter Modelica.Units.SI.Voltage VaNominal = 50 "Nominal armature voltage" annotation (
     Dialog(tab = "Nominal parameters"));
-  parameter Modelica.Units.SI.Current IaNominal = 10 "Nominal armature current (>0..Motor, <0..Generator)" annotation (
+  parameter Modelica.Units.SI.Current IaNominal = 90 "Nominal armature current (>0..Motor, <0..Generator)" annotation (
     Dialog(tab = "Nominal parameters"));
-  parameter Modelica.Units.SI.AngularVelocity wNominal(displayUnit = "rev/min") = 2000 * 2 * Modelica.Constants.pi / 60 "Nominal speed" annotation (
+  parameter Modelica.Units.SI.AngularVelocity wNominal(displayUnit = "rev/min") = 500 * 2 * Modelica.Constants.pi / 60 "Nominal speed" annotation (
     Dialog(tab = "Nominal parameters"));
   parameter Modelica.Units.SI.Temperature TaNominal = 293.15 "Nominal armature temperature" annotation (
     Dialog(tab = "Nominal parameters"));

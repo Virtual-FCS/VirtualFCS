@@ -4,7 +4,10 @@ model HeatSinkTest2 "Simple model to test the HeatSink model"
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   inner Modelica.Fluid.System system(energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial)  annotation (
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation (
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9,
+    V_max_bat_pack=61,
+    V_min_bat_pack=59,
+    V_nom_bat_pack=60,                                                                                                                          m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin={20,68},     extent={{-10,-10},
             {10,10}},                                                                             rotation = -180)));
   VirtualFCS.Thermal.HeatSink heatSink annotation (
@@ -66,8 +69,8 @@ equation
           {-90,18},{-82,18}}, color={0,0,127}));
   connect(trapezoid1.y, boundary.m_flow_in)
     annotation (Line(points={{-113,38},{-80,38},{-80,22}}, color={0,0,127}));
-  connect(temperature1.T, heatSink.Stack_temperature) annotation (Line(points={{
-          -19,-24},{-26,-24},{-26,82},{41.6,82},{41.6,29.6}}, color={0,0,127}));
+  connect(temperature2.T, heatSink.Stack_temperature) annotation (Line(points={
+          {55,-24},{48,-24},{48,29.6},{41.6,29.6}}, color={0,0,127}));
 annotation (
   experiment(StopTime = 500, Interval = 0.5, Tolerance = 1e-6));
 end HeatSinkTest2;

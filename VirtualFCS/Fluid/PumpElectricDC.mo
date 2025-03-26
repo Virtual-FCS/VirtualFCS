@@ -23,17 +23,16 @@ model PumpElectricDC
   Modelica.Blocks.Routing.Multiplex2 multiplex2(n1 = 1, n2 = 1) annotation (
     Placement(visible = true, transformation(origin = {82, 90}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput contol_input annotation (
-    Placement(visible = true, transformation(origin = {-72, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-30, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+    Placement(visible = true, transformation(origin={-110,40},   extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-30, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   VirtualFCS.Control.DCMotorControlPumpElectricDC dCMotorControlPumpElectricDC annotation (
     Placement(visible = true, transformation(origin = {-20, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   // Machines
-  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, redeclare
-      function flowCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow (                                                                                                                V_flow_nominal = {0, 5}, head_nominal = {150, 80}),redeclare
-      function efficiencyCharacteristic =
+  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
+     redeclare function flowCharacteristic =
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.quadraticFlow (                                     V_flow_nominal={0,0.25,0.5}, head_nominal={100,60,0}),
+     redeclare function efficiencyCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (                                                                                                                                                                                                        eta_nominal =0.1),
-    N_nominal=500,                                                                                                                                                                                                        V = 0.5, checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1,
+        (                                                                                                                     eta_nominal =0.1), N_nominal=500,V=0.005,                                                                                                                                                                                                       checkValve = true, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1,
     p_a_start=102502,                                                                                                                                                                                                        use_N_in = true) annotation (
     Placement(visible = true, transformation(origin = {20, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal,
@@ -52,12 +51,14 @@ model PumpElectricDC
   Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation (
     Placement(visible = true, transformation(origin = {60, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 270)));
   // Other
-  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal)          annotation (
-    Placement(visible = true, transformation(origin = {-60, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain(k=9.5493)   annotation (
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
   // Power & Efficiency
   Modelica.Units.SI.Power Power_PumpElectricDC "The power consumed by the PumpElectricDC";
+  Modelica.Blocks.Math.Gain gain1(k=pump.N_nominal)
+                                             annotation (
+    Placement(visible = true, transformation(origin={-70,40},    extent={{-6,-6},
+            {6,6}},                                                                           rotation=0)));
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
   Power_PumpElectricDC =pin_p.i*pin_p.v;
@@ -74,12 +75,8 @@ equation
     Line(points = {{-6, -6}, {40, -6}}));
   connect(inertia.flange_b, torque.flange) annotation (
     Line(points = {{60, -6}, {70, -6}}));
-  connect(contol_input, gain1.u) annotation (
-    Line(points = {{-72, 66}, {-56, 66}, {-56, 54}, {-76, 54}, {-76, 41}, {-66, 41}}, color = {0, 0, 127}));
   connect(inertia.flange_b, speedSensor.flange) annotation (
     Line(points = {{60, -6}, {60, 12}}));
-  connect(gain1.y, dCMotorControlPumpElectricDC.setSpeedInput) annotation (
-    Line(points={{-54.5,41},{-44,41},{-44,40}},      color = {0, 0, 127}));
   connect(pin_n, dCMotorControlPumpElectricDC.pwr_pin_n) annotation (
     Line(points = {{-30, 80}, {-30, 68}, {-26, 68}, {-26, 58}}, color = {0, 0, 255}));
   connect(pin_p, dCMotorControlPumpElectricDC.pwr_pin_p) annotation (
@@ -98,9 +95,12 @@ equation
     Line(points={{60,33},{60,40},{20,40},{20,-18.4}},        color = {0, 0, 127}));
   connect(gain.y, pump.N_in) annotation (
     Line(points={{20,-36.8},{20,-50}},    color = {0, 0, 127}));
+  connect(contol_input, gain1.u)
+    annotation (Line(points={{-110,40},{-77.2,40}}, color={0,0,127}));
+  connect(gain1.y, dCMotorControlPumpElectricDC.setSpeedInput)
+    annotation (Line(points={{-63.4,40},{-44,40}}, color={0,0,127}));
   annotation (
     Icon(coordinateSystem(initialScale = 0.1), graphics={  Ellipse(origin = {-2, -15}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 3, extent = {{-78, 95}, {82, -65}}), Line(origin = {40, 40}, points = {{-40, 40}, {40, -40}, {40, -40}}, thickness = 3), Line(origin = {40, -40}, points = {{-40, -40}, {40, 40}, {40, 40}}, thickness = 3)}),
-    Diagram,
     Documentation(info = "<html><head></head><body>Models a DC pump<div><br></div><div>
 
 

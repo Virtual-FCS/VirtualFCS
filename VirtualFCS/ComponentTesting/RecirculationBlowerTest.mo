@@ -10,7 +10,8 @@ model RecirculationBlowerTest "Simple model to test the recirculation blower mod
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary fixedBoundary(redeclare package Medium = Medium, nPorts = 1)  annotation (
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Modelica.Blocks.Sources.Sine sine(amplitude = 0.2, f = 0.01, offset = 1, startTime = 20)  annotation (
+  Modelica.Blocks.Sources.Sine sine(amplitude = 0.2, f = 0.01, offset = 1,
+    startTime=1)                                                                            annotation (
     Placement(visible = true, transformation(origin = {-50, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression realExpression(y = 1.17) annotation (
     Placement(visible = true, transformation(origin = {50, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
