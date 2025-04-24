@@ -28,11 +28,11 @@ model FuelCellSubSystems
   Modelica.Fluid.Interfaces.FluidPort_b air_port_b(redeclare package Medium =
         Cathode_Medium)                                                                       annotation (
     Placement(visible = true, transformation(origin = {66, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_a coolant_port_a(redeclare package Medium =
-        Coolant_Medium)                                                                           annotation (
+  Modelica.Fluid.Interfaces.FluidPort_a coolant_port_a(redeclare package Medium
+      = Coolant_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {-6, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {10, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_b coolant_port_b(redeclare package Medium =
-        Coolant_Medium)                                                                           annotation (
+  Modelica.Fluid.Interfaces.FluidPort_b coolant_port_b(redeclare package Medium
+      = Coolant_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {6, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-10, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Hydrogen.SubSystemHydrogen subSystemHydrogen(N_FC_stack = N_FC_stack,V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2)  annotation (
     Placement(visible = true, transformation(origin = {-60, 0}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));
@@ -49,9 +49,11 @@ model FuelCellSubSystems
     Placement(visible = true, transformation(origin={0,-70},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput RH_cathode
     annotation (Placement(transformation(extent={{100,-36},{120,-16}})));
+  Modelica.Blocks.Interfaces.RealInput anodePressureDifference
+    annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
 equation
-  connect(contolInput[1], subSystemHydrogen.control) annotation (
-    Line(points={{-120,-5},{-90,-5},{-90,6},{-71,6}},        color = {0, 0, 127}));
+  connect(contolInput[1], subSystemHydrogen.stackCurrent) annotation (Line(
+        points={{-120,-5},{-90,-5},{-90,6},{-71,6}}, color={0,0,127}));
   connect(subSystemHydrogen.port_H2ToStack, H2_port_b) annotation (
     Line(points={{-65.4,11.9},{-65.4,36},{-54,36},{-54,60}},    color = {0, 127, 255}));
   connect(subSystemHydrogen.port_StackToH2, H2_port_a) annotation (
@@ -85,6 +87,9 @@ equation
           44,5},{49,5}},                                  color = {0, 0, 127}));
   connect(subSystemAir.RH_cathode, RH_cathode) annotation (Line(points={{49,-4.2},
           {46,-4.2},{46,-14},{94,-14},{94,-26},{110,-26}}, color={0,0,127}));
+  connect(anodePressureDifference, subSystemHydrogen.anodePressureDifference)
+    annotation (Line(points={{-120,40},{-86,40},{-86,-0.6},{-76.2,-0.6}}, color
+        ={0,0,127}));
   annotation (
     Icon(graphics={  Text(origin = {-31, -100}, lineColor = {0, 0, 255}, extent = {{-105, 8}, {167, -40}}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-82, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "H2"), Text(origin = {-2, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Cool"), Text(origin = {80, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Air")}, coordinateSystem(initialScale = 0.1)));
 end FuelCellSubSystems;

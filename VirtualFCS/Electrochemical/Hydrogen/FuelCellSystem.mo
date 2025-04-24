@@ -24,6 +24,7 @@ model FuelCellSystem
   Modelica.Units.SI.Efficiency eta_FC_sys "Fuel cell system efficiency";
   Modelica.Units.SI.Efficiency eta_fu "Fuel cell utilisation";
   Modelica.Units.SI.Efficiency eta_au "Fuel cell utilisation";
+  Real fuelConsumptionSLPM "Fuel consumption in standard litre per minute";
 
 
   VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_nom_FC_stack, L_FC_stack = L_FC_stack, N_FC_stack = N_FC_stack, W_FC_stack = W_FC_stack, i_L_FC_stack = I_rated_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack,
@@ -50,6 +51,9 @@ model FuelCellSystem
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-168,2})));
+  Modelica.Blocks.Sources.RealExpression anodePressureDrop_kPa(y=(fuelCellStack.port_a_H2.p
+         - fuelCellStack.port_b_H2.p)*0.001)
+    annotation (Placement(transformation(extent={{-70,-32},{-50,-12}})));
 equation
   Power_stack = fuelCellStack.pin_n.i*fuelCellStack.pin_p.v;
   Power_BOP = fuelCellSubSystems.batterySystem.pin_n.i*fuelCellSubSystems.batterySystem.pin_p.v;
@@ -57,6 +61,7 @@ equation
   eta_FC_sys = min(max((Power_system)/(242000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321))), 0.001),1);
   eta_fu= (fuelCellStack.H2_sink.ports[1].m_flow)/max(((fuelCellStack.H2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemHydrogen.valveH2Purge.m_flow)),0.00001);
   eta_au= (fuelCellStack.O2_sink.ports[1].m_flow)/max(((fuelCellStack.O2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemAir.throttleValve.port_a.m_flow)),0.00001);
+  fuelConsumptionSLPM = ((fuelCellStack.H2_sink.ports[1].m_flow * 22.414*1000)/(2.016)) * 60;
   connect(fuelCellStack.port_b_Air, fuelCellSubSystems.air_port_a) annotation (
     Line(points={{18.0667,-2.13333},{18.0667,-37.5},{16.5,-37.5}},
                                                           color = {0, 127, 255}));
@@ -105,6 +110,9 @@ equation
           22},{-222,22},{-222,46.72},{-213.44,46.72}}, color={0,0,127}));
   connect(currentSensor.i, gain.u) annotation (Line(points={{-69,46},{-80,46},{
           -80,20},{-148,20},{-148,2},{-156,2}}, color={0,0,127}));
+  connect(anodePressureDrop_kPa.y, fuelCellSubSystems.anodePressureDifference)
+    annotation (Line(points={{-49,-22},{-49,-40},{-31,-40},{-31,-50}}, color={0,
+          0,127}));
   annotation (
     Icon(graphics={  Text(origin = {-6, -250}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Rectangle(origin = {-55, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {58.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {-40, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-29.8, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-19.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-8.7, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {1.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {12.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {22.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {32.3, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {42.9, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}})}, coordinateSystem(initialScale = 0.1)),
     Documentation(info = "<html><head></head><body>The FuelCellSystem class packages together a <a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a> module and a&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.FuelCellSubSystems\">FuelCellSubSystems</a>&nbsp;module for controlling hydrogen, air, and coolant feeds into and out of the fuel cell.<div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using theblock, or individual&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>,&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, and&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>&nbsp;blocks.</div><div><br></div><div>In addition to the coolant subsystem, it is assumed that the fuel cell stack exchanges heat with its surroundings by convection and radiation.</div><div><br></div><div><div>Default parameters fit the polarization curve given by Powercell in their Powercellution data sheet, available&nbsp;<a href=\"https://powercellution.com/p-stack\">here</a>.</div>&nbsp;<table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><strong><u>Default Parameters</u></strong></caption><caption align=\"Left\" style=\"text-align: left;\"><strong><u><br></u></strong></caption><tbody><tr><th>Parameter name</th><th>Value</th><th>Unit</th></tr><tr><td align=\"Left\">m_FC_stack</td><td>=42</td><td align=\"Right\">kg</td></tr><tr><td align=\"Left\">L_FC_stack</td><td>=0.42</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">W_FC_stack</td><td>=0.582</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">H_FC_stack</td><td>=0.156</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">I_rated_FC_stack</td><td>=450</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">i_L_FC_stack</td><td>=760</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">N_FC_stack</td><td>=455</td><td align=\"Right\">-</td></tr><tr><td align=\"Left\">V_tank_H2</td><td>=0.13</td><td align=\"Right\">m<sup>3</sup></td></tr><tr><td align=\"Left\">p_tank_H2</td><td>=35000000</td><td align=\"Right\">Pa</td></tr>

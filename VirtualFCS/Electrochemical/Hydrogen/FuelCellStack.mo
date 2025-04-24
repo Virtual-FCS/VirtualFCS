@@ -117,8 +117,10 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {-126, 44}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice simpleGenericOrifice(redeclare
       package Medium =
-        Anode_Medium,                                                                                       diameter = 0.003, zeta = 0.7) annotation (
-    Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+        Anode_Medium,
+    diameter=0.005,
+    zeta=0.5)                                                                                                                             annotation (
+    Placement(visible = true, transformation(origin={-106,14},    extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y=
         heatTransferCoefficient*A_cool_FCStack)                                                                  annotation (
@@ -207,9 +209,9 @@ equation
   connect(teeJunctionVolume1.port_1, port_a_H2) annotation (
     Line(points = {{-126, 54}, {-126, 80}, {-150, 80}}, color = {0, 127, 255}));
   connect(teeJunctionVolume1.port_2, simpleGenericOrifice.port_a) annotation (
-    Line(points = {{-126, 34}, {-126, 30}, {-104, 30}, {-104, 24}}, color = {0, 127, 255}));
+    Line(points={{-126,34},{-126,30},{-106,30},{-106,24}},          color = {0, 127, 255}));
   connect(simpleGenericOrifice.port_b, port_b_H2) annotation (
-    Line(points = {{-104, 4}, {-104, -4}, {-150, -4}}, color = {0, 127, 255}));
+    Line(points={{-106,4},{-106,-4},{-150,-4}},        color = {0, 127, 255}));
   connect(convection.Gc,setConvectiveCoefficient. y) annotation (
     Line(points={{32,-166},{45.5,-166}},                            color = {0, 0, 127}));
   connect(bodyRadiation.port_b,heatBoundary)  annotation (
