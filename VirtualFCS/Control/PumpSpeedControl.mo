@@ -5,7 +5,8 @@ block PumpSpeedControl
   parameter Modelica.Units.SI.Time Ti = 0.1 "Integral constant of PID";
   Modelica.Blocks.Continuous.LimPID limPID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    Ti=Ti,                                 Td = Td, initType = Modelica.Blocks.Types.Init.InitialOutput, k = k, yMax = 1, yMin = 0,
+    Ti=Ti,                                 Td = Td, initType = Modelica.Blocks.Types.Init.InitialOutput, k = k,
+    yMax=1,                                                                                                               yMin = 0,
     y_start=0)                                                                                                                      annotation (
     Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput setMassFlow annotation (

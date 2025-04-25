@@ -109,7 +109,8 @@ model FuelCellStack
     Placement(visible = true, transformation(origin = {120, 38}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Fittings.SimpleGenericOrifice orifice(redeclare package Medium =
         Cathode_Medium,
-    diameter=0.01,                                                                                                 zeta = 0.7)  annotation (
+    diameter=0.01,
+    zeta=0.7)                                                                                                                   annotation (
     Placement(visible = true, transformation(origin = {96, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume1(redeclare
       package Medium =

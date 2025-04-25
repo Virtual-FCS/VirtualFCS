@@ -13,9 +13,9 @@ model PolarizeFuelCellStack
   Modelica.Electrical.Analog.Sources.TrapezoidCurrent trapezoidCurrent(
     I=280,
     rising=200,
-    width=100,
-    falling=100,
-    period=500,
+    width=200,
+    falling=200,
+    period=800,
     nperiod=-1,
     offset=1,
     startTime=50) annotation (Placement(transformation(
