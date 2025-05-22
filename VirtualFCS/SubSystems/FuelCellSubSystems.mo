@@ -28,11 +28,11 @@ model FuelCellSubSystems
   Modelica.Fluid.Interfaces.FluidPort_b air_port_b(redeclare package Medium =
         Cathode_Medium)                                                                       annotation (
     Placement(visible = true, transformation(origin = {66, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_a coolant_port_a(redeclare package Medium
-      = Coolant_Medium)                                                                           annotation (
+  Modelica.Fluid.Interfaces.FluidPort_a coolant_port_a(redeclare package Medium =
+        Coolant_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {-6, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {10, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_b coolant_port_b(redeclare package Medium
-      = Coolant_Medium)                                                                           annotation (
+  Modelica.Fluid.Interfaces.FluidPort_b coolant_port_b(redeclare package Medium =
+        Coolant_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {6, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-10, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Hydrogen.SubSystemHydrogen subSystemHydrogen(N_FC_stack = N_FC_stack,V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2)  annotation (
     Placement(visible = true, transformation(origin = {-60, 0}, extent = {{-15, -10}, {15, 10}}, rotation = 0)));

@@ -60,7 +60,7 @@ model HeatSink
   Modelica.Electrical.Analog.Sources.SignalCurrent signalCurrent
     annotation (Placement(transformation(extent={{-10,102},{10,82}})));
   Modelica.Units.SI.Power Power_heatsink "The power consumed by the Heat sink (radiator)";
-  Modelica.Blocks.Math.Gain PowerToCurrent(k=1/24) annotation (Placement(
+  Modelica.Blocks.Math.Gain PowerToCurrent(k=1/60) annotation (Placement(
         transformation(
         extent={{-6,-6},{6,6}},
         rotation=90,
