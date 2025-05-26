@@ -6,8 +6,7 @@ model PumpElectricDCTest "Simple model to test the PumpElectricDC model"
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary boundary(redeclare package Medium = Medium, nPorts = 1, p = system.p_start)  annotation (
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary fixedBoundary(redeclare package Medium
-      =                                                                         Medium, nPorts = 1)  annotation (
+  Modelica.Fluid.Sources.FixedBoundary fixedBoundary(redeclare package Medium = Medium, nPorts = 1)  annotation (
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(
     C_bat_pack=2000,                                             SOC_init = 0.9,

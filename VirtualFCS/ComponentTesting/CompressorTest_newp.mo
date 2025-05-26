@@ -25,20 +25,20 @@ VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(
     offset=100,
     startTime=0)                                                                            annotation (
     Placement(visible = true, transformation(origin = {-70, 34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Fluid.Compressor_newp compressor_newp
+  Fluid.Compressor_newp compressor
     annotation (Placement(transformation(extent={{-16,-18},{20,18}})));
 equation
-  connect(AirSink.ports[1], compressor_newp.Input)
+  connect(AirSink.ports[1], compressor.Input)
     annotation (Line(points={{-70,0},{-17.8,0}}, color={0,127,255}));
-  connect(compressor_newp.Output, AirSink2.ports[1]) annotation (Line(points={{
+  connect(compressor.Output, AirSink2.ports[1]) annotation (Line(points={{
           21.8,0},{38.9,0},{38.9,6.66134e-16},{56,6.66134e-16}}, color={0,127,
           255}));
-  connect(compressor_newp.pin_n, batterySystem.pin_n) annotation (Line(points={{-0.88,
+  connect(compressor.pin_n, batterySystem.pin_n) annotation (Line(points={{-0.88,
           10.8},{-0.88,12},{-2.72,12},{-2.72,46.52}},
                                                   color={0,0,255}));
-  connect(batterySystem.pin_p, compressor_newp.pin_p) annotation (Line(points={{8.72,
+  connect(batterySystem.pin_p, compressor.pin_p) annotation (Line(points={{8.72,
           46.52},{8.72,10},{5.6,10},{5.6,10.8}},    color={0,0,255}));
-  connect(sine1.y, compressor_newp.controlInterface) annotation (Line(points={{
+  connect(sine1.y, compressor.controlInterface) annotation (Line(points={{
           -59,34},{-28,34},{-28,10.98},{-18.34,10.98}}, color={0,0,127}));
 annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),
