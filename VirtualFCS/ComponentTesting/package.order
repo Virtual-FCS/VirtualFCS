@@ -16,3 +16,5 @@ PumpsTesting
 CompressorTest_mc
 CompressorTest_mc_h
 HeatSinkTest2
+NewHumidifierTest
+NewHumidifierGPTTest
