@@ -1,10 +1,9 @@
 within VirtualFCS.ComponentTesting;
-model NewHumidifierGPTTest
+model NewHumidifierv2Test
   extends Modelica.Icons.Example;
 
-  replaceable package dry_medium = Buildings.Media.Air(reference_X={0.00,1.0});
-  replaceable package wet_medium = Buildings.Media.Air(reference_X={0.2,0.8});
-
+  replaceable package dry_medium = Buildings.Media.Air(reference_X={0.0,1.0});
+  replaceable package wet_medium = Buildings.Media.Air(reference_X={0.01,0.99});
 
   Modelica.Fluid.Sources.MassFlowSource_T dry_air_source(
     redeclare package Medium = dry_medium,
@@ -35,6 +34,7 @@ model NewHumidifierGPTTest
   Buildings.Fluid.Sensors.RelativeHumidityTwoPort sen_dry_in_RH(
     redeclare package Medium = dry_medium,
     m_flow_nominal=0.1,
+    tau=0.00001,
     phi_start=0)
     annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
   Buildings.Fluid.Sensors.TemperatureTwoPort sen_dry_in_temp(redeclare package
@@ -46,6 +46,7 @@ model NewHumidifierGPTTest
   Buildings.Fluid.Sensors.RelativeHumidityTwoPort sen_dry_out_RH(
     redeclare package Medium = dry_medium,
     m_flow_nominal=0.1,
+    tau=0.00001,
     phi_start=0)
     annotation (Placement(transformation(extent={{52,-10},{72,10}})));
   Buildings.Fluid.Sensors.TemperatureTwoPort sen_dry_out_temp(redeclare package
@@ -58,8 +59,9 @@ model NewHumidifierGPTTest
         rotation=270,
         origin={0,84})));
   Buildings.Fluid.Sensors.RelativeHumidityTwoPort sen_wet_in_RH(redeclare
-      package Medium = wet_medium, m_flow_nominal=0.1)
-                           annotation (
+      package Medium = wet_medium, m_flow_nominal=0.1,
+    tau=0.00001,
+    phi_start=0)           annotation (
       Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
@@ -71,7 +73,11 @@ model NewHumidifierGPTTest
         extent={{-8,-8},{8,8}},
         rotation=270,
         origin={0,30})));
-  Fluid.Humidifier_test_GPT humidifier_test_GPT
+  Fluid.Humidifier_test_v2 humidifier(
+    redeclare package wet_medium_in = wet_medium,
+    redeclare package wet_medium_out = wet_medium,
+    redeclare package dry_medium_in = dry_medium,
+    redeclare package dry_medium_out = dry_medium)
     annotation (Placement(transformation(extent={{-14,-16},{16,16}})));
 equation
   connect(dry_air_source.ports[1],sen_dry_in_MF. port_a)
@@ -96,13 +102,13 @@ equation
   connect(sen_wet_in_RH.port_b,sen_wet_in_temp. port_a) annotation (Line(points={{
           -1.83187e-15,44},{-1.83187e-15,41},{1.4988e-15,41},{1.4988e-15,38}},
         color={0,127,255}));
-  connect(sen_wet_in_temp.port_b, humidifier_test_GPT.portA_in) annotation (
-      Line(points={{-1.4988e-15,22},{-1.4988e-15,16},{1,16}}, color={0,127,255}));
-  connect(sen_dry_in_temp.port_b, humidifier_test_GPT.portB_in)
+  connect(sen_wet_in_temp.port_b, humidifier.portA_in) annotation (Line(points=
+          {{-1.4988e-15,22},{-1.4988e-15,16},{1,16}}, color={0,127,255}));
+  connect(sen_dry_in_temp.port_b, humidifier.portB_in)
     annotation (Line(points={{-26,0},{-14,0}}, color={0,127,255}));
-  connect(humidifier_test_GPT.portB_out, sen_dry_out_MF.port_a) annotation (
-      Line(points={{16,2.22045e-15},{21,2.22045e-15},{21,0},{26,0}}, color={0,127,
-          255}));
-  connect(humidifier_test_GPT.portA_out, wet_air_sink.ports[1]) annotation (
-      Line(points={{1,-16},{0,-16},{0,-78},{-8,-78}}, color={0,127,255}));
-end NewHumidifierGPTTest;
+  connect(humidifier.portB_out, sen_dry_out_MF.port_a) annotation (Line(points=
+          {{16,2.22045e-15},{21,2.22045e-15},{21,0},{26,0}}, color={0,127,255}));
+  connect(humidifier.portA_out, wet_air_sink.ports[1]) annotation (Line(points=
+          {{1,-16},{0,-16},{0,-78},{-8,-78}}, color={0,127,255}));
+  annotation (experiment(StopTime=100, __Dymola_Algorithm="Dassl"));
+end NewHumidifierv2Test;

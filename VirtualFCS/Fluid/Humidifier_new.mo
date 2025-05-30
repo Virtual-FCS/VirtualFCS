@@ -39,7 +39,9 @@ model Humidifier_new
         extent={{-5,-5},{5,5}},
         rotation=270,
         origin={23,45})));
+  Real test "test";
 equation
+  test = dry_outlet.Xi_outflow[1];
   connect(dry_inlet, pressure_drop.port_a)
     annotation (Line(points={{-100,0},{-60,0}}, color={0,127,255}));
   connect(pressure_drop.port_b, mixing_volume.ports[1])

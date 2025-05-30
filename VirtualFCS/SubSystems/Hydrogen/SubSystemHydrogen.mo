@@ -13,8 +13,8 @@ model SubSystemHydrogen
   parameter Integer N_FC_stack = 180 "FC stack number of cells";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
-  Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium
-      = Anode_Medium,                                                                         T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation (
+  Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium =
+        Anode_Medium,                                                                         T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation (
     Placement(visible = true, transformation(origin = {-120, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput stackCurrent annotation (Placement(
       visible=true,
@@ -32,11 +32,11 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-15, -11}, extent = {{11, 11}, {-11, -11}}, rotation = 0), iconTransformation(origin = {-30, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput sensors[2] annotation (
     Placement(visible = true, transformation(origin = {160, -21}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, -60}, extent = {{10, 10}, {-10, -10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_b port_H2ToStack(redeclare package Medium
-      = Anode_Medium)                                                                           annotation (
+  Modelica.Fluid.Interfaces.FluidPort_b port_H2ToStack(redeclare package Medium =
+        Anode_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {78, 74}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-54, 119}, extent = {{-18, -19}, {18, 19}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_a port_StackToH2(redeclare package Medium
-      = Anode_Medium)                                                                           annotation (
+  Modelica.Fluid.Interfaces.FluidPort_a port_StackToH2(redeclare package Medium =
+        Anode_Medium)                                                                           annotation (
     Placement(visible = true, transformation(origin = {78, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {54, 119}, extent = {{-18, -19}, {18, 19}}, rotation = 0)));
   // Thermal components
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T( displayUnit = "K")= system.T_start) annotation (
@@ -68,8 +68,8 @@ model SubSystemHydrogen
   VirtualFCS.Fluid.RecirculationBlower recirculationBlower annotation (
     Placement(visible = true, transformation(origin = {26, -8.88178e-16}, extent = {{-18, -18}, {18, 18}}, rotation = 90)));
   // Sensors
-  Modelica.Fluid.Sensors.Pressure sensorPressureTank(redeclare package Medium
-      = Anode_Medium)                                                                         annotation (
+  Modelica.Fluid.Sensors.Pressure sensorPressureTank(redeclare package Medium =
+        Anode_Medium)                                                                         annotation (
     Placement(visible = true, transformation(origin = {-68, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   Modelica.Fluid.Sensors.Pressure sensorPressureHydrogenLine(redeclare package
       Medium =
@@ -79,8 +79,8 @@ model SubSystemHydrogen
         Anode_Medium,                                                                       allowFlowReversal = true) annotation (
     Placement(visible = true, transformation(origin = {26, -42}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
   // Valves
-  Modelica.Fluid.Valves.ValveCompressible valveH2Purge(redeclare package Medium
-      = Anode_Medium,                                                                           allowFlowReversal = true, checkValve = true, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, p_nominal = 2.5*100000) annotation (
+  Modelica.Fluid.Valves.ValveCompressible valveH2Purge(redeclare package Medium =
+        Anode_Medium,                                                                           allowFlowReversal = true, checkValve = true, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, p_nominal = 2.5*100000) annotation (
     Placement(visible = true, transformation(origin = {-40, -76}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   // Other
   Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal2(redeclare package
