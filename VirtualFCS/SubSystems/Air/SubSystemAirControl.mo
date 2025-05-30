@@ -19,8 +19,8 @@ block SubSystemAirControl
     Placement(visible = true, transformation(origin = {-119, -30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput signalInterfaceFC annotation (
     Placement(visible = true, transformation(origin = {-220, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setAirMassFlow(y=max(signalInterfaceFC*(0.02897
-        *1.75/(96485*4*0.21)*N_FC_stack), 0))                                                                                            annotation (
+  Modelica.Blocks.Sources.RealExpression setAirMassFlow(y=max(signalInterfaceFC
+        *(0.02897*1.4/(96485*4*0.21)*N_FC_stack), 0))                                                                                    annotation (
     Placement(visible = true, transformation(origin = {-119, 30}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
 equation
   connect(setAirPressure.y, multiplex2.u1[1]) annotation (

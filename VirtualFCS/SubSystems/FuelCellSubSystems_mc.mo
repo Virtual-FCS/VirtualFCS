@@ -66,8 +66,8 @@ equation
     Line(points={{4.4,-60.4},{4.4,-35},{5,-35},{5,-9}},    color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation (
     Line(points={{-55,-9},{-55,-44},{4.4,-44},{4.4,-60.4}},    color = {0, 0, 255}));
-  connect(contolInput[1], subSystemHydrogen.control) annotation (Line(points={{
-          -120,-5},{-82,-5},{-82,6},{-71,6}}, color={0,0,127}));
+  connect(contolInput[1], subSystemHydrogen.stackCurrent) annotation (Line(
+        points={{-120,-5},{-82,-5},{-82,6},{-71,6}}, color={0,0,127}));
   connect(contolInput[2], subSystemCooling.controlInterface) annotation (Line(
         points={{-120,5},{-96,5},{-96,-12},{-18,-12},{-18,5},{-11,5}}, color={0,
           0,127}));

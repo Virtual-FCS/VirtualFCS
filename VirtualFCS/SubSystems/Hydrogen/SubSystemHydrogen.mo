@@ -3,7 +3,8 @@ model SubSystemHydrogen
   // System
   outer Modelica.Fluid.System system "System properties";
   // Medium declaration
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby
+    Modelica.Media.Interfaces.PartialPureSubstance;
   // Parameter definition
   parameter Modelica.Units.SI.Mass m_system_H2 = 61 "H2 system mass";
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
@@ -15,8 +16,16 @@ model SubSystemHydrogen
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium =
         Anode_Medium,                                                                         T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation (
     Placement(visible = true, transformation(origin = {-120, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput control annotation (
-    Placement(visible = true, transformation(origin = {-163, 0}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {-110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput stackCurrent annotation (Placement(
+      visible=true,
+      transformation(
+        origin={-163,24},
+        extent={{-13,-13},{13,13}},
+        rotation=0),
+      iconTransformation(
+        origin={-110,60},
+        extent={{-10,-10},{10,10}},
+        rotation=0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {-16, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
@@ -62,7 +71,8 @@ model SubSystemHydrogen
   Modelica.Fluid.Sensors.Pressure sensorPressureTank(redeclare package Medium =
         Anode_Medium)                                                                         annotation (
     Placement(visible = true, transformation(origin = {-68, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Modelica.Fluid.Sensors.Pressure sensorPressureHydrogenLine(redeclare package Medium =
+  Modelica.Fluid.Sensors.Pressure sensorPressureHydrogenLine(redeclare package
+      Medium =
         Anode_Medium)                                                                                 annotation (
     Placement(visible = true, transformation(origin = {2, 42}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium =
@@ -73,20 +83,26 @@ model SubSystemHydrogen
         Anode_Medium,                                                                           allowFlowReversal = true, checkValve = true, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, p_nominal = 2.5*100000) annotation (
     Placement(visible = true, transformation(origin = {-40, -76}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   // Other
-  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal2(redeclare package Medium =
+  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal2(redeclare package
+      Medium =
         Anode_Medium)                                                                                 annotation (
     Placement(visible = true, transformation(origin = {26, -76}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
-  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium =
+  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package
+      Medium =
         Anode_Medium)                                                                                annotation (
     Placement(visible = true, transformation(origin = {26, 74}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
   VirtualFCS.Fluid.PressureRegulator pressureRegulator annotation (
     Placement(visible = true, transformation(origin = {-30, 74}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput anodePressureDifference annotation (
+      Placement(transformation(extent={{-174,-18},{-150,6}}),
+        iconTransformation(extent={{-174,-18},{-150,6}})));
 equation
 //*** DEFINE CONNECTIONS ***//
   connect(sensors, multiplex.y) annotation (
     Line(points={{160,-21},{120.8,-21}},    color = {0, 0, 127}));
-  connect(control, subSystemHydrogenControl.signalInterface_FC) annotation (
-    Line(points = {{-163, 0}, {-120, 0}}, color = {0, 0, 127}));
+  connect(stackCurrent, subSystemHydrogenControl.signalInterface_FC)
+    annotation (Line(points={{-163,24},{-130,24},{-130,0},{-120,0}}, color={0,0,
+          127}));
   connect(subSystemHydrogenControl.controlInterface, controlSignals.u) annotation (
     Line(points={{-77,-12},{-68,-12},{-68,-12},{-68,-12}},          color = {0, 0, 127}, thickness = 0.5));
   connect(sensors, subSystemHydrogenControl.signalInterface_H2) annotation (
@@ -141,6 +157,8 @@ equation
     Line(points = {{-68, 52}, {-40, 52}, {-40, 74}}));
   connect(sensorPressureHydrogenLine.port, pressureRegulator.Output) annotation (
     Line(points = {{2, 52}, {-20, 52}, {-20, 74}}));
+  connect(anodePressureDifference, subSystemHydrogenControl.anodePressureDifference)
+    annotation (Line(points={{-162,-6},{-120,-6}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics={  Text(origin = {-32, 90}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator"), Text(origin = {50, 14}, extent = {{-14, 4}, {22, -6}}, textString = "Recirculation blower")}),
     Icon(graphics={  Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H2"), Text(origin = {-75, 64}, textColor = {255, 255, 255}, extent = {{-19, 10}, {29, -18}}, textString = "Control"), Text(origin = {-74, -57}, textColor = {255, 255, 255}, extent = {{-28, 7}, {36, -11}}, textString = "Sensors")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),

@@ -27,9 +27,9 @@ block PumpSpeedControlCooling
     Ti=1,
     Td=1,                                  Ni = 0.1,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,                                                                     initType = Modelica.Blocks.Types.Init.InitialOutput,
-    yMax=10,
+    yMax=0.011,
     yMin=0,
-    y_start=0.005)                                                                                                                                                                                                         annotation (
+    y_start=0.000)                                                                                                                                                                                                         annotation (
     Placement(visible = true, transformation(origin={-30,32},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(setTStack, limPID.u_s) annotation (Line(points={{-100,40},{-60,40},{

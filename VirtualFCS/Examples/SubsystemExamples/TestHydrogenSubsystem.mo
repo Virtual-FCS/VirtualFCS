@@ -40,8 +40,8 @@ equation
                                                      color = {0, 0, 255}));
   connect(trapezoid.y, gain.u) annotation (
     Line(points={{-65,80},{-43.6,80}},    color = {0, 0, 127}));
-  connect(trapezoid.y, subSystemHydrogen.control) annotation (
-    Line(points={{-65,80},{-56,80},{-56,11.3334},{-23,11.3334}},color = {0, 0, 127}));
+  connect(trapezoid.y, subSystemHydrogen.stackCurrent) annotation (Line(points=
+          {{-65,80},{-56,80},{-56,11.3334},{-23,11.3334}}, color={0,0,127}));
   annotation (
     Diagram,
     Icon,

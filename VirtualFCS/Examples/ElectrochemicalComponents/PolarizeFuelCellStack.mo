@@ -13,9 +13,9 @@ model PolarizeFuelCellStack
   Modelica.Electrical.Analog.Sources.TrapezoidCurrent trapezoidCurrent(
     I=280,
     rising=200,
-    width=100,
-    falling=100,
-    period=400,
+    width=200,
+    falling=200,
+    period=800,
     nperiod=-1,
     offset=1,
     startTime=50) annotation (Placement(transformation(
@@ -31,7 +31,7 @@ equation
     Icon,
     Documentation(info = "<html><head></head><body>This example demonstrates the setup for a fuel cell system to generate a polarization curve. The fuel cell stack is connected to subsystems for hydrogen, air, and cooling. The electrical load is provided by a ramp voltage source that sweeps the current domain over a period of 500 seconds.&nbsp;</body></html>"),
     experiment(
-      StopTime=500,
+      StopTime=3000,
       Interval=1,
       Tolerance=1e-06,
       __Dymola_Algorithm="Dassl"));
