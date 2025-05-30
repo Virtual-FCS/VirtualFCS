@@ -52,7 +52,7 @@ model Compressor_mc_h
         origin={8,-160},
         extent={{40,90},{60,110}},
         rotation=0)));
-  Buildings.Fluid.Movers.FlowControlled_m_flow mov1(redeclare package Medium =
+  Buildings.Fluid.Movers.FlowControlled_m_flow mov(redeclare package Medium =
         Medium,
     allowFlowReversal=false,
     redeclare Buildings.Fluid.Movers.Data.Generic per(pressure(V_flow={0,V_flow_nominal}, dp={p_nominal,0}),
@@ -67,9 +67,9 @@ model Compressor_mc_h
     annotation (Placement(transformation(extent={{-48,-72},{-28,-52}})));
                                           //powerOrEfficiencyIsHydraulic=true
 equation
-  //torque.tau = -9.5488*mov.P/mov.y_actual;
+//torque.tau = -9.5488*mov.P/mov.y_actual;
   Power_Compressor = pin_p.i*pin_p.v;
- // V_flow_nominal=m_flow_nominal/1000;
+// V_flow_nominal=m_flow_nominal/1000;
   connect(controlInterface, gain1.u) annotation (
     Line(points={{-107,59},{-87,59}},                            color = {0, 0, 127}));
   connect(gain1.y, dCMotorControlCompressor_new.setSpeedInput) annotation (Line(
@@ -86,15 +86,15 @@ equation
         points={{6.6,77.8},{6.6,86},{12,86},{12,100}}, color={0,0,255}));
   connect(Comp_out.port_b, Output) annotation (Line(points={{68,-60},{100,-60},
           {100,-30}},      color={0,127,255}));
-  connect(controlInterface, mov1.m_flow_in) annotation (Line(points={{-107,59},{
+  connect(controlInterface, mov.m_flow_in) annotation (Line(points={{-107,59},{
           -108,59},{-108,-12},{-38,-12},{-38,-50}}, color={0,0,127}));
-  connect(Input, mov1.port_a) annotation (Line(points={{-100,-26},{-100,-62},{-48,
+  connect(Input, mov.port_a) annotation (Line(points={{-100,-26},{-100,-62},{-48,
           -62}}, color={0,127,255}));
-  connect(mov1.port_b, Comp_out.port_a) annotation (Line(points={{-28,-62},{-26,
+  connect(mov.port_b, Comp_out.port_a) annotation (Line(points={{-28,-62},{-26,
           -62},{-26,-60},{48,-60}}, color={0,127,255}));
-  connect(mov1.P, gain.u) annotation (Line(points={{-27,-53},{0,-53},{0,-10},{-4.44089e-16,
+  connect(mov.P, gain.u) annotation (Line(points={{-27,-53},{0,-53},{0,-10},{-4.44089e-16,
           -10},{-4.44089e-16,-9.2}}, color={0,0,127}));
-  connect(mov1.m_flow_actual, M_act) annotation (Line(points={{-27,-57},{-24,-57},
+  connect(mov.m_flow_actual, M_act) annotation (Line(points={{-27,-57},{-24,-57},
           {-24,-96},{0,-96},{0,-110}}, color={0,0,127}));
   annotation (
     Icon(graphics={  Polygon(visible = false, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{20, -75}, {50, -85}, {20, -95}, {20, -75}}), Line(visible = false, points = {{55, -85}, {-60, -85}}, color = {0, 128, 255}), Polygon(visible = false, lineColor = {0, 128, 255}, fillColor = {0, 128, 255}, fillPattern = FillPattern.Solid, points = {{20, -70}, {60, -85}, {20, -100}, {20, -70}}), Polygon(origin = {15, 0}, fillColor = {208, 208, 208}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-115, 80}, {-115, -80}, {85, -50}, {85, 50}, {85, 50}, {-115, 80}}), Line(origin = {5.2, 0.61}, points = {{-57, 0}, {47, 0}}, thickness = 1.5, arrow = {Arrow.None, Arrow.Filled}, arrowSize = 20, smooth = Smooth.Bezier),

@@ -13,12 +13,8 @@ Modelica.Fluid.Sources.FixedBoundary AirSink2(redeclare package Medium = Medium,
     Placement(visible = true, transformation(origin = {66, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
 VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation (
     Placement(visible = true, transformation(origin = {0, 70}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
-  Modelica.Blocks.Sources.Sine sine1(
-    amplitude=1,
-    f=0.1,
-    offset=0,
-    startTime=0)                                                                            annotation (
-    Placement(visible = true, transformation(origin = {-70, 34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Step step(height = 0.1, offset = 0.01, startTime = 10) annotation(
+    Placement(transformation(origin = {-72, 40}, extent = {{-10, -10}, {10, 10}})));
 equation
 connect(AirSink.ports[1], compressor.Input) annotation (
     Line(points = {{-70, 0}, {-22, 0}}, color = {0, 127, 255}, thickness = 2));
@@ -30,8 +26,9 @@ connect(batterySystem.pin_n, compressor.pin_n) annotation (
 connect(batterySystem.pin_p, compressor.pin_p) annotation (
     Line(points={{4.4,60.4},{4.4,36},{4,36},{4,12}},
                                       color = {0, 0, 255}));
-  connect(sine1.y, compressor.controlInterface) annotation (Line(points={{-59,34},
-          {-40,34},{-40,12.2},{-22.6,12.2}}, color={0,0,127}));
+  connect(step.y, compressor.controlInterface) annotation(
+    Line(points = {{-60, 40}, {-22, 40}, {-22, 12}}, color = {0, 0, 127}));
+
 annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),
     Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),

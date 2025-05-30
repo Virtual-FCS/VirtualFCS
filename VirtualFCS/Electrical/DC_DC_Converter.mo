@@ -41,8 +41,6 @@ equation
     Line(points = {{-30, -9}, {-30, -40}, {-4, -40}}, color = {0, 0, 127}));
   connect(gain.y, feedback.u2) annotation (
     Line(points = {{-11, 1.33227e-15}, {-21, 1.33227e-15}, {-21, 0}, {-10, 0}, {-22, 0}}, color = {0, 0, 127}));
-  connect(gain.u, powerSensor.power) annotation (
-    Line(points = {{12, -1.33227e-15}, {12, 0}, {40, 0}, {60, 0}, {60, -2}, {69, -2}}, color = {0, 0, 127}));
   connect(powerSensor.nc, variableCurrentSource.n) annotation (
     Line(points = {{80, -20}, {80, -30}}, color = {0, 0, 255}));
   connect(integrator.y, variableCurrentSource.i) annotation (
@@ -63,22 +61,17 @@ equation
     Line(points = {{80, 0}, {80, 0}, {80, 26}, {80, 26}}, color = {0, 0, 255}));
   connect(resistor1.p, dc_p2) annotation (
     Line(points = {{80, 46}, {80, 46}, {80, 58}, {100, 58}, {100, 60}}, color = {0, 0, 255}));
+  connect(powerSensor.power, gain.u) annotation(
+    Line(points = {{70, 0}, {12, 0}}, color = {0, 0, 127}));
   annotation (
     defaultComponentName = "converter",
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics={  Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "Low"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "High"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "="), Rectangle(origin = {-87, 79}, extent = {{-13, 21}, {187, -179}}), Line(origin = {0.792902, 1.64825}, points = {{-100.793, -101.648}, {99.2071, 98.3518}, {99.2071, 44.3518}})}),
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
     Documentation(info = "<html>
-<p>This is an ideal DC/DC converter.</p>
-<p>
-The DC/DC converter is characterized by:
-</p> 
-<ul>
-<li>Losses are not considered</li> 
-<li>The AC output current is determined based on power balance, calculating with instantaneous values: 
-    <code>vDC1*iDC1 + vDC2*iDC2 = 0<code></li>
-<li>The DC input voltage <code>vDCRef</code> is applied to the DC side 1 without limitations</li>
-<li>The phase angle input <code>phi</code> influences the AC reactive power based on the following figure,
-    where underlined voltages and currents represent complex phasors</li>
-</ul>
+<p>This is an ideal DC/DC converter with internal resistances which however do not influence its efficiency (mostly used to estimate heat generation).</p>
+<p>Input voltage is set programmatically by an input <tt>vDCRef</tt>, but that does not do what you would expect since it does not account for the effect of the internal resistor; input voltage will be different from the reference one.</p>
+<p>There is a <tt>VRef</tt> parameter that does nothing related to reference value of voltage.</p>
+<p>The -1 gain is a kludge to fix sign issues. It could just as well have been implemented by flipping the current generator, or making the <tt>feedback</tt> difference element into a sum.</p>
+<p>The output power sensor does not include the loss from resistor1, making output power a bit lower than measured.</p>
 </html>"));
 end DC_DC_Converter;

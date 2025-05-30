@@ -7,7 +7,7 @@ model DCMotorControlCompressor "Control the speed of a DC motor"
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf, VMax = driveData.VaMax) annotation (
     Placement(visible = true, transformation(extent = {{30, -10}, {50, 10}}, rotation = 0)));
-  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(Ti = driveData.TiI, constantLimits = false, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpI, useFF = true) annotation (
+  Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI currentController(Ti = driveData.TiI, constantLimits = true, initType = Modelica.Blocks.Types.Init.InitialOutput, k = driveData.kpI, useFF = true, useConstantKFF = true) annotation (
     Placement(visible = true, transformation(extent = {{-22, -10}, {-2, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain tau2i(k = 1/driveData.kPhi) annotation (
     Placement(visible = true, transformation(origin = {-42, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));

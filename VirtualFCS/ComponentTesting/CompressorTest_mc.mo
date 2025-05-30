@@ -23,7 +23,7 @@ VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(
     SOC_init=0.9)                                              annotation (
     Placement(visible = true, transformation(origin={3,59},    extent={{13,-13},
             {-13,13}},                                                                          rotation = -180)));
-  Fluid.Compressor_mc compressor_mc(m_flow_nominal=0.3)
+  Fluid.Compressor_mc compressor(m_flow_nominal=0.3)
     annotation (Placement(transformation(extent={{-14,-16},{20,18}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=0.12,
@@ -36,15 +36,15 @@ VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(
     startTime=0)
     annotation (Placement(transformation(extent={{-70,48},{-50,68}})));
 equation
-  connect(compressor_mc.Output, AirSink2.ports[1]) annotation (Line(points={{
+  connect(compressor.Output, AirSink2.ports[1]) annotation (Line(points={{
           21.7,1},{22,1},{22,6.66134e-16},{56,6.66134e-16}}, color={0,127,255}));
-  connect(compressor_mc.Input, AirSink.ports[1]) annotation (Line(points={{
+  connect(compressor.Input, AirSink.ports[1]) annotation (Line(points={{
           -15.7,1},{-20,1},{-20,0},{-70,0}}, color={0,127,255}));
-  connect(compressor_mc.pin_n, batterySystem.pin_n) annotation (Line(points={{
+  connect(compressor.pin_n, batterySystem.pin_n) annotation (Line(points={{
           0.28,11.2},{0.28,28.86},{-2.72,28.86},{-2.72,46.52}}, color={0,0,255}));
-  connect(compressor_mc.pin_p, batterySystem.pin_p) annotation (Line(points={{
+  connect(compressor.pin_p, batterySystem.pin_p) annotation (Line(points={{
           6.4,11.2},{6.4,46.52},{8.72,46.52}}, color={0,0,255}));
-  connect(trapezoid.y, compressor_mc.controlInterface) annotation (Line(points=
+  connect(trapezoid.y, compressor.controlInterface) annotation (Line(points=
           {{-49,58},{-24,58},{-24,11.37},{-16.21,11.37}}, color={0,0,127}));
 annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),

@@ -76,10 +76,20 @@ model Compressor_new
         rotation=-90,
         origin={104,-90})));
   Buildings.Fluid.Movers.SpeedControlled_y mov(redeclare package Medium =
-        Medium, redeclare Buildings.Fluid.Movers.Data.Generic per)
+        Medium,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    p_start=238500,
+    allowFlowReversal=false,
+    redeclare Buildings.Fluid.Movers.Data.Generic per(
+      pressure(V_flow={0.01,1}, dp={5,1.01325}),
+      etaHydMet=Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.NotProvided,
+      etaMotMet=Buildings.Fluid.Movers.BaseClasses.Types.MotorEfficiencyMethod.GenericCurve,
+      etaMot_max=0.95),
+    tau=1)
     annotation (Placement(transformation(extent={{-18,-68},{2,-48}})));
 equation
-  torque.tau = -9.5488*mov.P/mov.y_actual;
+  //torque.tau = -9.5488*mov.P/mov.y_actual;
+  torque.tau = -9.5488*mov.P/(mov.y_actual + 1e-6);
   Power_Compressor = pin_p.i*pin_p.v;
   connect(dcpm.flange, inertia.flange_a) annotation (
     Line(points = {{-42, -16}, {-30, -16}}));

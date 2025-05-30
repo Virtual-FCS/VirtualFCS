@@ -65,7 +65,7 @@ VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(
     y_start=0.01)   annotation (
     Placement(visible = true, transformation(origin={2,20},       extent={{-8,-8},
             {8,8}},                                                                                rotation = 0)));
-  Fluid.Compressor_mc_h compressor_mc_h(redeclare package Medium =
+  Fluid.Compressor_mc_h compressor(redeclare package Medium =
         Medium,    m_flow_nominal=m_flow_nominal,
     V_flow_nominal=m_flow_nominal/1000,
     p_nominal=400000)
@@ -105,16 +105,16 @@ equation
   connect(senRelHum.phi, limPID.u_m) annotation (Line(points={{84.1,-11},{84.1,
           -16},{84,-16},{84,-20},{2,-20},{2,10.4}},
                              color={0,0,127}));
-  connect(compressor_mc_h.pin_p, batterySystem.pin_p) annotation (Line(points={{-43.2,
+  connect(compressor.pin_p, batterySystem.pin_p) annotation (Line(points={{-43.2,
           8.4},{-43.2,10},{-43.28,10},{-43.28,60.52}},       color={0,0,255}));
-  connect(compressor_mc_h.pin_n, batterySystem.pin_n) annotation (Line(points={{-48.24,
+  connect(compressor.pin_n, batterySystem.pin_n) annotation (Line(points={{-48.24,
           8.4},{-48.24,10},{-54,10},{-54,60.52},{-54.72,60.52}},
                                                       color={0,0,255}));
-  connect(AirSink.ports[1], compressor_mc_h.Input) annotation (Line(points={{-100,0},
+  connect(AirSink.ports[1], compressor.Input) annotation (Line(points={{-100,0},
           {-81.7,0},{-81.7,1.77636e-15},{-61.4,1.77636e-15}},    color={0,127,255}));
-  connect(compressor_mc_h.Output, hum.port_a) annotation (Line(points={{-30.6,1.77636e-15},
+  connect(compressor.Output, hum.port_a) annotation (Line(points={{-30.6,1.77636e-15},
           {-5.3,1.77636e-15},{-5.3,0},{22,0}}, color={0,127,255}));
-  connect(compressor_mc_h.controlInterface, trapezoid.y) annotation (Line(
+  connect(compressor.controlInterface, trapezoid.y) annotation (Line(
         points={{-61.82,8.54},{-94,8.54},{-94,54},{-101,54}}, color={0,0,127}));
 
 
