@@ -30,8 +30,7 @@ model SubSystemCooling
         Coolant_Medium)                                                           annotation (
     Placement(visible = true, transformation(origin = {29, -35}, extent = {{-11, -11}, {11, 11}}, rotation = 180)));
   // Control components
-  Modelica.Blocks.Sources.RealExpression setPumpSpeed(y=subSystemCoolingControl.controlInterface)
-                                                                                                    annotation (
+  Modelica.Blocks.Sources.RealExpression setPumpSpeed(y=subSystemCoolingControl.controlInterface)   annotation (
     Placement(visible = true, transformation(origin = {26, 26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput controlInterface annotation (
     Placement(visible = true, transformation(origin = {-114, -44}, extent = {{-14, -14}, {14, 14}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

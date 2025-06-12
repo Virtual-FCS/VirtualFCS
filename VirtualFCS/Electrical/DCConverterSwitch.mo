@@ -87,17 +87,7 @@ equation
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics={  Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "hi"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "lo"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "=")}),
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
     Documentation(info = "<html>
-<p>This is an ideal DC/DC converter.</p>
-<p>
-The DC/DC converter is characterized by:
-</p> 
-<ul>
-<li>Losses are not considered</li> 
-<li>The AC output current is determined based on power balance, calculating with instantaneous values: 
-    <code>vDC1*iDC1 + vDC2*iDC2 = 0<code></li>
-<li>The DC input voltage <code>vDCRef</code> is applied to the DC side 1 without limitations</li>
-<li>The phase angle input <code>phi</code> influences the AC reactive power based on the following figure,
-    where underlined voltages and currents represent complex phasors</li>
-</ul>
+<p>This is a DC/DC converter with an off switch.</p>
+<p>When the boolean input <tt>u</tt> is off, output current is set to zero, and the input circuit is opened. There should be no wind-up issues since both powers are identically zero when <tt>u</tt> is off.</p>
 </html>"));
 end DCConverterSwitch;
