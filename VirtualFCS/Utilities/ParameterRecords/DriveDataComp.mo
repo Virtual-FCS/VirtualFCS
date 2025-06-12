@@ -3,9 +3,14 @@ record DriveDataComp
   extends Modelica.Icons.Record;
   import Modelica.Electrical.Machines.Thermal.convertResistance;
   //Motor
-  parameter VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor motorData                              "Motor data" annotation (
+  //parameter VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor motorData                              "Motor data" annotation (
+   // Dialog(group = "Motor"),
+    //Placement(transformation(extent = {{-10, -10}, {10, 10}})));
+  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor motorData  
+  constrainedby VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor                              "Motor data" annotation (
     Dialog(group = "Motor"),
     Placement(transformation(extent = {{-10, -10}, {10, 10}})));
+    
   parameter Modelica.Units.SI.Resistance Ra = convertResistance(motorData.Ra, motorData.TaRef, motorData.alpha20a, motorData.TaNominal) "Armature resistance at nominal temperature" annotation (
     Dialog(group = "Motor", enable = false));
   parameter Modelica.Units.SI.Time Ta = motorData.La / Ra "Armature time constant" annotation (
