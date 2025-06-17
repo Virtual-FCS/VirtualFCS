@@ -9,11 +9,11 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   constant Real nu_H2 = 1.5 "Stoichiometric coefficient for hydrohen in ammonia decomposition reaction";
   
   parameter Integer N = 10 "Number of reactor segments";
-  parameter Real L = 1.0 "Reactor length (m)";
-  parameter Modelica.Units.SI.Length D = 10e-2 "Tubes diameter (m)";
+  parameter Real L = 10.0 "Reactor length (m)";
+  parameter Modelica.Units.SI.Length D = 5e-2 "Tubes diameter (m)";
   parameter Real A = 3.1415 * (D/2)^2 "Cross-sectional area (m^2)";
   parameter Modelica.Units.SI.MassFlowRate mf_NH3 = 1.0 "Inlet mass flow rate ammonia(kg/s)";
-  parameter Real T_in = 350 "Inlet temperature (K)";
+  parameter Real T_in = 400 + 273.15 "Inlet temperature (K)";
   parameter Real k0 = 3.33/3.6*1e10 "Pre-exponential factor (mol/(kg*s))";
   parameter Real Ea = 1.54e5 "Activation energy (J/mol)";
   parameter Real a = 0.37 "Kinetic parameter";
@@ -22,39 +22,43 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   parameter Real deltaH = -50000 "Reaction enthalpy (J/mol)";
   parameter Real rho = 10 "Fluid density (kg/m^3)";
   parameter Real Cp = 4184 "Heat capacity (J/kg/K)";
+  parameter Modelica.Units.SI.Density rho_NH3_start = 7.04 "Parameter to initialize density-related variables";
   
   parameter Real dz = L / N "Segment length";
   parameter Real V = A * dz "Volume per segment";
   parameter Modelica.Units.SI.Length z[N] = {L/2/N * i for i in 1:N};
 
-  parameter Real W_cat = 10 "Mass catalyst in reactor (g)";
+  parameter Real W_cat = 100 "Mass catalyst in reactor (g)";
   
   parameter Real f = 0.01 "Friction factor (Should calculate it as function as Re)";
   
   parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
 
-  Real T[N](start=fill(T_in, N)) "Temperature in each segment (K)";
-  Real r_rxn[N](start=fill(0, N)) "Rate of ammonia decomposition(mol/(s*g_cat))";
- 
+
   parameter Real deltaG_0 = 95517 - 193.67 * T_in - 0.035293 * T_in^2 + (9.22 * 10e-6 * T_in^3);
   
   parameter Real k_eq = exp(-deltaG_0/R/T_in) "Equilibrium constant for the ammonia decomposition reaction";
+  parameter Real mol_frac_NH3_in = 0.95;
  
-  Modelica.Units.SI.MolarFlowRate mol_flow_NH3[N](start=fill(mf_NH3, N)) "Molar flow NH3(mol/s)";
-  Modelica.Units.SI.MolarFlowRate mol_flow_N2[N](start=fill(0, N)) "Molar flow N2(mol/s)";
-  Modelica.Units.SI.MolarFlowRate mol_flow_H2[N](start=fill(0, N)) "Molar flow H2(mol/s)";
+  Real T[N](start=fill(T_in, N)) "Temperature in each segment (K)";
+  Real r_rxn[N](start=fill(10, N)) "Rate of ammonia decomposition(mol/(s*g_cat))";
+ 
+  Modelica.Units.SI.MolarFlowRate mol_flow_NH3[N](start=fill(mf_NH3/M_NH3*mol_frac_NH3_in, N)) "Molar flow NH3(mol/s)";
+  Modelica.Units.SI.MolarFlowRate mol_flow_N2[N](start=fill(mf_NH3/M_NH3*(1-mol_frac_NH3_in)/2, N)) "Molar flow N2(mol/s)";
+  Modelica.Units.SI.MolarFlowRate mol_flow_H2[N](start=fill(mf_NH3/M_NH3*(1-mol_frac_NH3_in)/2, N)) "Molar flow H2(mol/s)";
   
-  Real mol_frac_NH3[N](start=fill(1, N)) "Molar fraction NH3(mol_i/mol_tot)";
-  Real mol_frac_N2[N](start=fill(0, N)) "Molar fraction N2(mol_i/mol_tot)";
-  Real mol_frac_H2[N](start=fill(0, N)) "Molar fraction H2(mol_i/mol_tot)";
+  Real mol_frac_NH3[N](start=fill(mol_frac_NH3_in, N)) "Molar fraction NH3(mol_i/mol_tot)";
+  Real mol_frac_N2[N](start=fill((1-mol_frac_NH3_in)/2, N)) "Molar fraction N2(mol_i/mol_tot)";
+  Real mol_frac_H2[N](start=fill((1-mol_frac_NH3_in)/2, N)) "Molar fraction H2(mol_i/mol_tot)";
  
-  Modelica.Units.SI.Pressure P_tot[N](start=fill(start = P_init)) "Reactor total Pressure (Pa)";
-  Modelica.Units.SI.Pressure P_NH3[N](start=fill(start = P_init)) "Partial Pressure NH3 (Pa)";
-  Modelica.Units.SI.Pressure P_N2[N](start=fill(0, N)) "Partial Pressure N2 (Pa)";
-  Modelica.Units.SI.Pressure P_H2[N](start=fill(0, N)) "Partial Pressure H2 (Pa)";
+  Modelica.Units.SI.Pressure P_tot[N](start=fill(P_out, N)) "Reactor total Pressure (Pa)";
+  Modelica.Units.SI.Pressure P_NH3[N](start=fill(P_out*mol_frac_NH3_in, N)) "Partial Pressure NH3 (Pa)";
+  Modelica.Units.SI.Pressure P_N2[N](start=fill(P_out*(1-mol_frac_NH3_in)/2, N)) "Partial Pressure N2 (Pa)";
+  Modelica.Units.SI.Pressure P_H2[N](start=fill(P_out*(1-mol_frac_NH3_in)/2, N)) "Partial Pressure H2 (Pa)";
+  
   
   // Initialize gas velocities along the reactor
-  Modelica.Units.SI.Velocity v_gas[N](start= fill(mf_NH3/rho_mix[1]/A, N)) "Gas mixture velocity (m/s)";
+  Modelica.Units.SI.Velocity v_gas[N](start=fill(mf_NH3/rho_NH3_start/A, N)) "Gas mixture velocity (m/s)";
 
 
 // Initialize ideal gas Medium objects for the different species
@@ -73,7 +77,7 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   Modelica.Units.SI.Density rho_NH3(start=7.04) "Initial density ammonia 30 bar 600degC";
   Modelica.Units.SI.Density rho_H2;
   Modelica.Units.SI.Density rho_N2;
-  Modelica.Units.SI.Density rho_mix[N](start=fill(rho_NH3, N));
+  Modelica.Units.SI.Density rho_mix[N](start=fill(rho_NH3_start, N));
   
   Modelica.Units.SI.SpecificHeatCapacity cp_NH3;
   Modelica.Units.SI.SpecificHeatCapacity cp_H2;
@@ -85,8 +89,8 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
     input Real P_NH3, P_N2, P_H2;
     output Real r;
     algorithm
-      r := k0 * exp(-Ea / (R*T)) * P_NH3^a * P_H2^b *
-         (1 - 1/k_eq^2 * (P_N2 * P_H2^3 / P_NH3^2));
+      r := k0 * exp(-Ea / (R*T)) * max(P_NH3/1e5, 1e-6)^a * max(P_H2/1e5, 1e-6)^b *
+     (1 - 1/k_eq^2 * (P_N2/1e5 * max(P_H2/1e5, 1e-6)^3 / max(P_NH3/1e5, 1e-6)^2));
   end rate;
 
   // Compute Pressure drop
@@ -107,9 +111,9 @@ end pressureDrop;
 equation
   
   // Calculate initial Pressure
-  for i in 1:N loop
-    P_init[i] = pressureDrop(v_gas[i], z[i], rho_NH3[i], f, D, P_out, L);
-  end for;
+  //for i in 1:N loop
+  //  P_init[i] = pressureDrop(v_gas[i], z[i], rho_NH3[i], f, D, P_out, L);
+  //end for;
   // Calculate the different relevant thermodynamic properties
   state_NH3 = AmmoniaMedium.setState_pT(P_out, T_in);
   state_H2 = HydrogenMedium.setState_pT(P_out, T_in);
@@ -126,23 +130,38 @@ equation
   cp_N2 = NitrogenMedium.specificHeatCapacityCp(state_N2);
   
   for i in 1:N loop
-    r_rxn[i] = rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]);
-    rho_mix[i] = rho_NH3*mol_frac_NH3 + rho_H2*mol_frac_H2 + rho_N2*mol_frac_N2; 
+    // Momentum balance
+    rho_mix[i] = rho_NH3*mol_frac_NH3[i] + rho_H2*mol_frac_H2[i] + rho_N2*mol_frac_N2[i]; 
     v_gas[i] = mf_NH3/rho_mix[i]/A;
     P_tot[i] = pressureDrop(v_gas[i], z[i], rho_mix[i], f, D, P_out, L);
+    P_NH3[i] = P_tot[i] * mol_frac_NH3[i];
+    P_H2[i] = P_tot[i] * mol_frac_H2[i];
+    P_N2[i] = P_tot[i] * mol_frac_N2[i];
     
+        
     if i == 1 then
       // Inlet boundary
+    
+      // Compute reaction rate
+      r_rxn[i] = min(rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]), mf_NH3/M_NH3/W_cat*N);
+      //r_rxn[i] = 0.001;
+      
+      // Mass balance
       mol_flow_NH3[i] = mf_NH3/M_NH3 + nu_NH3*r_rxn[i]*W_cat/N;
-      mol_flow_H2[i] = mf_H2/M_H2 + nu_H2*r_rxn[i]*W_cat/N;
-      mol_flow_N2[i] = mf_N2/M_N2 + nu_N2*r_rxn[i]*W_cat/N;
+      mol_flow_H2[i] = nu_H2*r_rxn[i]*W_cat/N;
+      mol_flow_N2[i] = nu_N2*r_rxn[i]*W_cat/N;
       
       mol_frac_NH3[i] = mol_flow_NH3[i] / (mol_flow_NH3[i] + mol_flow_H2[i] +  mol_flow_N2[i]);
       mol_frac_H2[i] = mol_flow_H2[i] / (mol_flow_NH3[i] + mol_flow_H2[i] +  mol_flow_N2[i]);
       mol_frac_N2[i] = mol_flow_N2[i] / (mol_flow_NH3[i] + mol_flow_H2[i] +  mol_flow_N2[i]);
      
       T[i] = T_in;
+    
     else
+      // Compute reaction rate
+      r_rxn[i] = min(rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]), mol_flow_NH3[i-1]/W_cat*N);
+      //r_rxn[i] = 0.001;
+      
       // Mass balance
       mol_flow_NH3[i] = mol_flow_NH3[i-1] + nu_NH3*r_rxn[i]*W_cat/N;
       mol_flow_H2[i] = mol_flow_H2[i-1] + nu_H2*r_rxn[i]*W_cat/N;
@@ -155,6 +174,7 @@ equation
      
       
       // Energy balance
+      der(T[i]) = 0;
       //der(T[i]) = (F/V) * (T[i-1] - T[i]) - (deltaH / (rho * Cp)) * rate(cA[i], T[i], k0, Ea, R);
     end if;
   end for;
