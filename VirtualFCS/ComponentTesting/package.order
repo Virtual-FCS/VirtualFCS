@@ -14,5 +14,6 @@ PumpsTesting
 HeatSinkTest2
 NewHumidifierTest
 NewHumidifierv2Test
-CompressorTest_30kW
+ChopperTest
 SubSystemAirTest
+CompressorTest_30kW
