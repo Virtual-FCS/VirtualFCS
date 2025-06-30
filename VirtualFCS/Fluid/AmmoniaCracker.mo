@@ -1,4 +1,4 @@
-within VirtualFCS.Fluid;
+﻿within VirtualFCS.Fluid;
 
 model AmmoniaCracker "Ammonia cracker model based on a tube and shell configuration with catalyst-covered outer tube walls for ammonia decomposition reaction. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
 
@@ -34,7 +34,8 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   
   // Flow and thermodynamic parameters
   parameter Modelica.Units.SI.MassFlowRate mf_NH3 = 1 "Inlet mass flow rate ammonia(kg/s)";
-  parameter Real T_in = 550 + 273.15 "Inlet temperature (K)";
+  parameter Real T_in_degC = 550 "Inlet temperature (K)";
+  parameter Modelica.Units.SI.Temperature T_in = T_in_degC + 273.15 "Inlet temperature (K)";
   parameter Real k0 = 3.33/3.6*1e10 "Pre-exponential factor (mol/(kg*s))";
   parameter Real Ea = 1.54e5 "Activation energy (J/mol)";
   parameter Real a = 0.37 "Kinetic parameter Co–Ba/CeO2 catalyst (Realpe 2023)";
@@ -51,8 +52,8 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   parameter Modelica.Units.SI.Length z_tube = H * (1 - z_head) "Tubes length(m)";
   parameter Modelica.Units.SI.Area A_r = N_tubes*2*3.1415*(D_tubes - t_tubes)/2 * z_tube "Catalyst-covered reaction area (m^2)";
   parameter Modelica.Units.SI.Area A_c = 3.1415 * (D_tubes/2)^2 "Cross-sectional area (m^2)";
-  parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes in the reactor";
-  parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes in the reactor";
+  parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes along length of reactor";
+  parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes along width of reactor";
   parameter Integer N_tubes = N_tubes_x * N_tubes_y "Number of tubes in the reactor";
   parameter Real g_catalyst_mol_flow_NH3 = W_cat*A_r/(mf_NH3*1000/M_NH3/3600) "g catalyst /(mol_NH3/h*)";  
   parameter Modelica.Units.SI.Length z[N] = {z_tube/N * i - z_tube/N/2 for i in 1:N} "Vector holding the distances from the center of the segments to the inlet";
@@ -191,7 +192,7 @@ equation
     
     // Inlet boundary
     if i == 1 then
-      // Compute reaction rate
+      // Compute reaction rate (minimume ensures no negative ammonia fractions)
       r_rxn[i] = min(rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]), mf_NH3/M_NH3/W_cat/A_r*N);
       
       // Mass balance
@@ -207,7 +208,7 @@ equation
       der(T[i]) = 0;
     
     else
-      // Compute reaction rate
+      // Compute reaction rate (minimume ensures no negative ammonia fractions)
       r_rxn[i] = min(rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]), mol_flow_NH3[i-1]/W_cat/A_r*N);
       
       // Mass balance

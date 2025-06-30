@@ -55,6 +55,6 @@ equation
     Line(points = {{76, 28}, {76, 28}, {76, 0}, {-10, 0}, {-10, -16}, {-10, -16}}, color = {0, 0, 255}));
   connect(armatureInverter.pin_pMot, dcpm.pin_ap) annotation (
     Line(points = {{88, 28}, {88, 28}, {88, -6}, {6, -6}, {6, -16}, {6, -16}}, color = {0, 0, 255}));
-annotation(
+annotation (
     Diagram);
 end SpeedControlledDCMotor;

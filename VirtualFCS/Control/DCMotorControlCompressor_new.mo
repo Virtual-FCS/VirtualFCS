@@ -15,7 +15,7 @@ model DCMotorControlCompressor_new "Control the speed of a DC motor"
     Placement(visible = true, transformation(origin={-44,100},  extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {30, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pwr_pin_n annotation (
     Placement(visible = true, transformation(origin={-96,100},  extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-30, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable parameter Utilities.ParameterRecords.DriveDataDcPm            driveData           constrainedby
+  replaceable parameter Utilities.ParameterRecords.DriveDataDcPm            driveData    constrainedby
     Utilities.ParameterRecords.DriveDataDcPm                                                                                                                                                   annotation (
      Placement(transformation(extent={{8,-22},{28,-2}})));
 equation
