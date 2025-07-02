@@ -24,9 +24,9 @@ model SubSystemAir_30kW
   Modelica.Fluid.Interfaces.FluidPort_b Output(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {94, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 121}, extent = {{-20, -19}, {20, 19}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(transformation(origin = {16, 98}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {30, 96}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
-    Placement(transformation(origin = {2, 98}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {10, 96}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Interfaces.RealInput control annotation(
     Placement(visible = true, transformation(origin = {-116, 86}, extent = {{-16, -16}, {16, 16}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Control components
@@ -50,9 +50,9 @@ model SubSystemAir_30kW
   Modelica.Blocks.Math.Gain Current_to_mass_flow(k = 0.02897*1.75/(96485*4*0.21)*N_FC_stack) annotation(
     Placement(transformation(origin = {-66, 76}, extent = {{-12, -12}, {12, 12}})));
   Modelica.Blocks.Continuous.LimPID mass_flow_to_rpm(Td = 1, initType = Modelica.Blocks.Types.Init.InitialOutput, k = compressor.rpm_nom, yMax = compressor.rpm_nom*1.5, yMin = 0) annotation(
-    Placement(transformation(origin = {-30, 76}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {-29, 77}, extent = {{-11, -11}, {11, 11}})));
   Fluid.Compressor_30kW compressor annotation(
-    Placement(transformation(origin = {16, 22}, extent = {{-26, -26}, {26, 26}})));
+    Placement(transformation(origin = {20, 22}, extent = {{-26, -26}, {26, 26}})));
   AixLib.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation(
     Placement(transformation(origin = {-16, 122}, extent = {{74, -90}, {94, -110}}, rotation = -0)));
   Modelica.Blocks.Math.Abs abs annotation(
@@ -82,25 +82,25 @@ equation
   connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation(
     Line(points = {{31, -24}, {-17, -24}, {-17, -34}}, color = {0, 0, 127}));
   connect(Current_to_mass_flow.y, mass_flow_to_rpm.u_s) annotation(
-    Line(points = {{-53, 76}, {-42, 76}}, color = {0, 0, 127}));
+    Line(points = {{-53, 76}, {-47.5, 76}, {-47.5, 77}, {-42, 77}}, color = {0, 0, 127}));
   connect(sen_Air_mflow.m_flow, mass_flow_to_rpm.u_m) annotation(
-    Line(points = {{-64, 33}, {-64, 58}, {-33, 58}, {-33, 64}, {-30, 64}}, color = {0, 0, 127}));
+    Line(points = {{-64, 33}, {-64, 58}, {-29, 58}, {-29, 64}}, color = {0, 0, 127}));
   connect(mass_flow_to_rpm.y, compressor.controlInterface) annotation(
-    Line(points = {{-19, 76}, {-13, 76}, {-13, 38}}, color = {0, 0, 127}));
+    Line(points = {{-17, 77}, {-17, 38}, {-9, 38}}, color = {0, 0, 127}));
   connect(sen_Air_mflow.port_b, compressor.Input) annotation(
-    Line(points = {{-54, 22}, {-13, 22}}, color = {0, 127, 255}));
+    Line(points = {{-54, 22}, {-9, 22}}, color = {0, 127, 255}));
   connect(compressor.Output, compressorOutletSensor.port) annotation(
-    Line(points = {{45, 22}, {51, 22}, {51, 32}}, color = {0, 127, 255}));
+    Line(points = {{49, 22}, {53, 22}, {53, 32}, {51, 32}}, color = {0, 127, 255}));
   connect(compressor.Input, compressorInletSensor.port) annotation(
-    Line(points = {{-13, 22}, {-40.6, 22}, {-40.6, 38}}, color = {0, 127, 255}));
+    Line(points = {{-9, 22}, {-38.6, 22}, {-38.6, 38}, {-40.6, 38}}, color = {0, 127, 255}));
   connect(compressor.pin_n, pin_n) annotation(
-    Line(points = {{12, 38}, {12, 67.6}, {1.84, 67.6}, {1.84, 97.6}}, color = {0, 0, 255}));
+    Line(points = {{16, 38}, {16, 67}, {10, 67}, {10, 96}}, color = {0, 0, 255}));
   connect(pin_p, compressor.pin_p) annotation(
-    Line(points = {{16, 98}, {16, 68}, {21, 68}, {21, 38}}, color = {0, 0, 255}));
+    Line(points = {{30, 96}, {30, 68}, {25, 68}, {25, 38}}, color = {0, 0, 255}));
   connect(setAirPressure.y, throttleValve.FC_pAirOut_P) annotation(
     Line(points = {{-22, -86}, {6, -86}, {6, -48}}, color = {0, 0, 127}));
   connect(compressor.Output, senRelHum.port_a) annotation(
-    Line(points = {{45, 22}, {58, 22}}, color = {0, 127, 255}));
+    Line(points = {{49, 22}, {58, 22}}, color = {0, 127, 255}));
   connect(senRelHum.port_b, Output) annotation(
     Line(points = {{78, 22}, {94, 22}}, color = {0, 127, 255}));
   connect(senRelHum.phi, RH_cathode) annotation(
