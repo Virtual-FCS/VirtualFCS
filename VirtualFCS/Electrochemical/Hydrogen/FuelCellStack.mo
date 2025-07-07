@@ -141,15 +141,14 @@ model FuelCellStack
         origin={-102,114})));
   Modelica.Blocks.Interfaces.RealInput FCDeg_new
     annotation (Placement(transformation(extent={{-190,-138},{-150,-98}})));
+
 equation
-//*** DEFINE EQUATIONS ***//
-// Redeclare variables
+  // FIXME These should have been in definition, AND declared with proper units!
   p_H2 = H2_sink.ports[1].p*0.00001;
   p_O2 = 0.2*O2_sink.ports[1].p*0.00001;
-// ELECTROCHEMICAL EQUATIONS //
-// Calculate the stack voltage
-//  potentialSource.v = N_FC_stack*(1.229 - R*temperatureSensor.T/(2*F)*log(1/(p_H2*(p_O2)^0.5)) - b_1_FC_stack*log10((abs(currentSensor.i) + i_x_FC_stack)/i_0_FC_stack) + b_2_FC_stack*log10(1 - (abs(currentSensor.i) + i_x_FC_stack)/i_L_FC_stack));
-  potentialSource.v = (N_FC_stack*((1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)))));//-FCDeg_new;
+
+  potentialSource.v = (N_FC_stack*((1.229 - (R*temperatureSensor.T)/(2*F)*log(p_H2*(p_O2^0.5)) - (0.85*0.001)*(temperatureSensor.T - 298.15) - R_O_FC_stack*(abs(currentSensor.i)/A_FC_surf) - (R*temperatureSensor.T)/(2*F*0.3419)*log(max(abs((currentSensor.i/A_FC_surf)/i_0_FC_stack), 0.00001)) + (R*1.4672*temperatureSensor.T)/(2*F)*log(1 - (abs(currentSensor.i/A_FC_surf)/i_L_FC_stack)))));
+
 // Calculate the voltage of the cell
   V_cell = if potentialSource.v/N_FC_stack >1 then 0.9 else potentialSource.v/N_FC_stack;
 // THERMAL EQUATIONS //
@@ -160,10 +159,8 @@ equation
 // Efficiencies
   eta_FC_LHV = V_cell/1.254;
 //*** DEFINE CONNECTIONS ***//
-  connect(pipeCoolant.port_b, port_b_Coolant) annotation (
+  connect(pipeCoolant.port_b, port_b_Coolant) annotation(
     Line(points = {{10, -40}, {130, -40}}, color = {255, 0, 0}, thickness = 1));
-  connect(pipeCoolant.port_a, port_a_Coolant) annotation (
-    Line(points = {{-10, -40}, {-134, -40}}, color = {0, 0, 255}, thickness = 1));
   connect(pin_n, potentialSource.n) annotation (
     Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
   connect(O2_mflow.y, O2_sink.m_flow_in) annotation (
@@ -228,6 +225,8 @@ equation
     annotation (Line(points={{-113,114},{-130,114}}, color={0,0,127}));
   connect(FCStack_V, FCStack_V)
     annotation (Line(points={{-130,114},{-130,114}}, color={0,0,127}));
+  connect(pipeCoolant.port_a, port_a_Coolant) annotation(
+    Line(points = {{-10, -40}, {-134, -40}}, color = {0, 0, 255}, thickness = 1));
   annotation (
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics={  Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C")}),
