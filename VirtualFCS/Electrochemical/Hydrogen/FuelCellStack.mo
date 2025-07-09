@@ -236,66 +236,131 @@ equation
 <td><p>H_FC_stack</p></td>
 <td><p>=0.156</p></td>
 <td><p align=\"right\">m</p></td>
+
 </tr>
 <tr>
-<td><p>I_rated_FC_stack</p></td>
-<td><p>=450</p></td>
-<td><p align=\"right\">A</p></td>
+<td><p>i_rated</p></td>
+<td><p>=1.4</p></td>
+<td><p align=\"right\">A/cm<sup>2</sup></p></td>
+
 </tr>
 <tr>
-<td><p>i_L_FC_stack</p></td>
-<td><p>=760</p></td>
-<td><p align=\"right\">A</p></td>
+<td><p>i<sub>L</sub></p></td>
+<td><p>=2.4</p></td>
+<td><p align=\"right\">A/cm<sup>2</sup></p></td>
+
+</tr>
+<tr>
+<td><p>i<sub>loss</sub></p></td>
+<td><p>=5e-6</p></td>
+<td><p align=\"right\">A/cm<sup>2</sup></p></td>
+
 </tr>
 <tr>
 <td><p>N_FC_stack</p></td>
 <td><p>=455</p></td>
 <td><p align=\"right\">-</p></td>
+
 </tr>
 <tr>
-<td><p>i_0_FC_stack</p></td>
-<td><p>=0.0091</p></td>
-<td><p align=\"right\">A</p></td>
+<td><p>i<sub>0</sub></p></td>
+<td><p>=2.9e-5</p></td>
+<td><p align=\"right\">A/cm<sup>2</sup></p></td>
+
 </tr>
 <tr>
-<td><p>i_x_FC_stack</p></td>
-<td><p>=0.001</p></td>
-<td><p align=\"right\">A</p></td>
-</tr>
-<tr>
-<td><p>b_1_FC_stack</p></td>
-<td><p>=0.0985</p></td>
-<td><p align=\"right\">V/dec</p></td>
-</tr>
-<tr>
-<td><p>b_2_FC_stack</p></td>
-<td><p>=0.0985</p></td>
-<td><p align=\"right\">V/dec</p></td>
-</tr>
-<tr>
-<td><p>R_0</p></td>
+<td><p>R_ohm</p></td>
 <td><p>=0.00022*N_FC_stack</p></td>
 <td><p align=\"right\">Ohm</p></td>
+
+</tr>
+<tr>
+<td><p>T<sub>ref</sub></p></td>
+<td><p>=298.15</p></td>
+<td><p align=\"right\">K</p></td>
+
+</tr>
+<tr>
+<td><p>F</p></td>
+<td><p>=96485</p></td>
+<td><p align=\"right\">s*A/mol é</p></td>
+
+</tr>
+<tr>
+<td><p>n</p></td>
+<td><p>=2</p></td>
+<td><p align=\"right\">mol é/mol H<sub>2</sub></p></td>
+
+</tr>
+<tr>
+<td><p></p><p>α</p><p></p></td>
+<td><p>=0.3419</p></td>
+<td><p align=\"right\">Charge transfer coefficient (-) </p></td>
+
+</tr>
+<tr>
+<td><p></p><p>c<sub>1</sub></p><p></p></td>
+<td><p>=1.4672</p></td>
+<td><p align=\"right\">Geometry correction factor(-) </p></td>
+
+</tr>
+<tr>
+<td><p>ΔS</p></td>
+<td><p>=163</p></td>
+<td><p align=\"right\">J/mol H<sub>2</sub> </p></td>
+
+</tr>
+<tr>
+<td><p>b<sub>1</sub></p></td>
+<td><p>=RT/nF</p></td>
+<td><p align=\"right\">V</p></td>
+
+</tr>
+<tr>
+<td><p>b<sub>2</sub></p></td>
+<td><p>=ΔS/nF=8.5e-4</p></td>
+<td><p align=\"right\">V</p></td>
+
+</tr>
+<tr>
+<td><p>b<sub>3</sub></p></td>
+<td><p>=RT/αF</p></td>
+<td><p align=\"right\">V</p></td>
+
 </tr>
 <tr>
 <td><p>Cp</p></td>
 <td><p>=1100</p></td>
-<td><p>J/(kg.K)</p></td>
+<td><p align=\"right\">J/(kg.K)</p></td>
 </tr>
 </tbody></table>
 <p><u><b>Electrochemical equations: </b></u></p>
-<p>In the equations below, i<sub>stack</sub>&nbsp;represents the current flowing through the stack, accessible in the code as <span style=\"font-family: Courier New;\">currentSensor.i</span>.</p>
+<p>In the equations below, i represents the current flowing through the stack, accessible in the code as <span style=\"font-family: Courier New;\">currentSensor.i</span>.</p>
 <p><u><i>The Nernst equilibrium potential, per cell</i></u><i>&nbsp;</i></p>
-<p>U<sub>FC</sub><sup>Nernst</sup>= U<sup>0</sup>-RT/(2F)ln(p<sub>H2</sub>&nbsp;p<sub>O2</sub><sup>0.5</sup>), U<sup>0 </sup>= 1.229 V</sub></sub></p>
-<p><u><i>Activation overpotential, per cell</i></u></p>
-<p>η<sup>act</sup> = b<sub>1</sub> ln(1-(i<sub>stack&nbsp;</sub>+ i<sub>x</sub>) / i<sub>0</sub>)</p>
+
+<p>U<sub>FC</sub><sup>Nernst</sup>= U<sup>0</sup>+b<sub>1</sub>ln(p<sub>H2</sub>&nbsp;p<sub>O2</sub><sup>0.5</sup>), U<sup>0 </sup>= 1.229 V</p>
+
+<p><u><i>Reversible potential change with temperature</i></u></p>
+<p>η<sup>T</sup> = b<sub>2</sub>(T-T<sub>ref</sub>)</p>
+
+<p><u><i>Activation overpotential</i></u></p>
+<p>η<sup>act</sup> = b<sub>3</sub> ln(i/i<sub>0</sub>)</p>
+
 <p><u><i>Concentration overpotential, per cell</i></u></p>
-<p>η<sup>con </sup>= -b<sub>2 </sub>ln( 1-(i<sub>stack&nbsp;</sub>+ i<sub>x</sub>) / i<sub>L</sub>)</p>
+<p>η<sup>con </sup>= b<sub>1</sub>c<sub>1</sub>ln(i<sub>L&nbsp;</sub> / (i<sub>L</sub> - i)</p>
+
+<p><u><i>Ohmic resistance overpotential</i></u></p>
+<p>η<sup>ohm</sup> = R_ohm * i</p>
+
+<p><u><i>H2 crossover overpotential</i></u></p>
+<p>η<sup>loss</sup> = b<sub>3</sub>ln(i<sub>loss</sub>&nbsp;/i<sub>0</sub>)</p>
+
 <p><u><i>Stack voltage</i></u></p>
-<p>V<sub>stack</sub> = N<sub>cell</sub> (U<sub>FC<sup>Nernst</sup>&nbsp;- η<sup>act&nbsp;</sup>&nbsp;- i<sub>FC</sub>R<sub>0</sub> - η<sup>con</sup>)</sub></p>
+<p>V<sub>stack</sub> = N<sub>cell</sub> (U<sub>FC<sup>Nernst</sup>&nbsp;</sub>&nbsp; - η<sup>T&nbsp;</sup>&nbsp; - η<sup>act&nbsp;</sup>&nbsp; - η<sup>con</sup> - η<sup>ohm&nbsp;</sup>&nbsp; - η<sup>loss&nbsp;</sup>&nbsp;)</sub></p>
+
 <p><u><b>Thermal equations:</b> </u></p>
 <p><u><i>Electrochemical heat generation</i></u></p>
-<p>Q<sub>gen<sup>&nbsp;</sup>= (V<sub>TN</sub> - V<sub><span style=\"font-size: 8pt;\">stack</span></sub>)i<sub>stack</sub>, V<sub>TN</sub> = 1.481 V</sub></p>
+<p>Q<sub>gen<sup>&nbsp;</sup>= (V<sub>TN</sub> - V<sub><span style=\"font-size: 8pt;\">stack</span></sub>)i, V<sub>TN</sub> = 1.481 V</sub></p>
 <p>&nbsp; </p>
 </body></html>"));
 end FuelCellStack;
