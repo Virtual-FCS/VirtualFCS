@@ -17,4 +17,4 @@ NewHumidifierv2Test
 ChopperTest
 SubSystemAirTest
 CompressorTest_30kW
-MoistAirTest
+CathodeAirTest

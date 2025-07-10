@@ -1,6 +1,6 @@
 within VirtualFCS.Media;
 
-package MoistAir "Template for media models"
+package CathodeAir "Template for media models"
   extends Modelica.Media.Interfaces.PartialMedium(
     final mediumName = "Moist_air",
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
@@ -33,6 +33,14 @@ package MoistAir "Template for media models"
   end ThermodynamicState;
 
   redeclare model extends BaseProperties(final standardOrderComponents = true) "Base properties of medium"
+      // I should add: X_l, Y, RH
+      Modelica.Units.SI.MoleFraction RH = relativeHumidity(state) "Relative humidity of gas phase";
+      Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
+      Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
+      Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T);
+      Modelica.Units.SI.AbsolutePressure y_sat = (MMs[Water]/MM)*(p_sat/state.p);
+    protected
+      Modelica.Units.SI.MassFraction Yi[nXi] = gasMassFraction(state) "Independent gas-phase compositions";
     equation
       d = density(state);
       h = specificEnthalpy(state);
@@ -102,7 +110,7 @@ package MoistAir "Template for media models"
   
   redeclare function extends molarMass
   algorithm
-    MM := 1 / sum(state.X .* MMs);
+    MM := 1 / sum(state.X ./ MMs);
   end molarMass;
   
   function liquidMassFraction "Fraction of mass in liquid phase, assumed only water."
@@ -215,7 +223,7 @@ package MoistAir "Template for media models"
     input ThermodynamicState state;
     output Modelica.Units.SI.MoleFraction RH;
   algorithm
-    RH := (state.X[Water]-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (p/saturationPressure(state));
+    RH := (state.X[Water]-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
   end relativeHumidity;
   
   redeclare function extends setSmoothState
@@ -237,4 +245,4 @@ the information that is requested in the comments of the
 Modelica source.
 </p>
 </html>"));
-end MoistAir;
+end CathodeAir;
