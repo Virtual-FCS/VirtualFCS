@@ -5,12 +5,14 @@ model Compressor_30kW
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
-  //replaceable package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});//(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  replaceable package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});
+  
   // Parameters
   parameter Utilities.ParameterRecords.DriveDataComp driveData(motorData = Utilities.ParameterRecords.DCPMMCompressor_30kW(), JL = 0.15) annotation(
     Placement(transformation(origin = {16, 12}, extent = {{-90, -24}, {-70, -4}})));
+  final parameter Real gamma_air = 1.4 "Moist air Cp/Cv";
   parameter Real rpm_nom = 11000 "Nominal compressor RPM";
-  replaceable package Medium = Buildings.Media.Air;
+  
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation(
@@ -27,7 +29,7 @@ model Compressor_30kW
   // Machines
   Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(start = 0.10471975511965978, fixed = true, displayUnit = "rpm"), wNominal = driveData.motorData.wNominal) annotation(
     Placement(transformation(origin = {16, 12}, extent = {{-62, -26}, {-42, -6}})));
-  Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
+  Modelica.Mechanics.Rotational.Components.Inertia inertia(J = driveData.motorData.Jr) annotation(
     Placement(transformation(origin = {-4, -4}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(transformation(origin = {24, -4}, extent = {{10, -10}, {-10, 10}})));
@@ -40,9 +42,13 @@ model Compressor_30kW
   // Power & Efficiencies
   Modelica.Units.SI.Power Power_Compressor "The power consumed by the Compressor";
   Modelica.Units.SI.Power Power_Compressor_2 "The power consumed by the Compressor";
+  Modelica.Units.SI.Temperature T_out_is "Outlet temperature in isentropic compression";
   Modelica.Fluid.Sensors.Temperature temp_in_comp(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {-62, -30}, extent = {{-10, -10}, {10, 10}})));
-  Buildings.Fluid.Movers.SpeedControlled_y mov(redeclare Buildings.Fluid.Movers.Data.Generic per(etaHydMet = Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Efficiency_VolumeFlowRate, etaMotMet = Buildings.Fluid.Movers.BaseClasses.Types.MotorEfficiencyMethod.GenericCurve, etaMot_max = 0.95, pressure(V_flow = {0, 0.171, 0.21, 0.227, 0.238, 0.245}, dp = {252000, 249590, 243590, 211190, 183080, 154240})), use_riseTime = false, redeclare package Medium = Medium, allowFlowReversal = false, addPowerToMedium = false, tau = 0.1) annotation(
+  Buildings.Fluid.Movers.SpeedControlled_y mov(redeclare Buildings.Fluid.Movers.Data.Generic per(etaHydMet = Buildings.Fluid.Movers.BaseClasses.Types.HydraulicEfficiencyMethod.Efficiency_VolumeFlowRate,
+  etaMotMet = Buildings.Fluid.Movers.BaseClasses.Types.MotorEfficiencyMethod.Efficiency_VolumeFlowRate,
+  efficiency(V_flow = {0}, eta = {0.75}),
+  motorEfficiency(V_flow = {0}, eta = {1.}), pressure(V_flow = {0, 0.171, 0.21, 0.227, 0.238, 0.245}, dp = {252000, 249590, 243590, 211190, 183080, 154240})), use_riseTime = false, redeclare package Medium = Medium, allowFlowReversal = false, addPowerToMedium = true, tau = 0.001, show_T = false) annotation(
     Placement(transformation(origin = {-4, -48}, extent = {{-14, -14}, {14, 14}})));
   Control.DCMotorControlCompressor_2 dCMotorControlCompressor(driveData = driveData) annotation(
     Placement(transformation(origin = {-35, 45}, extent = {{-19, -19}, {19, 19}})));
@@ -51,11 +57,11 @@ model Compressor_30kW
   Modelica.Blocks.Math.Gain rpm_normalized2(k = 1/rpm_nom) annotation(
     Placement(transformation(origin = {71, 18}, extent = {{-6, -6}, {6, 6}})));
 equation
-//  torque.tau = -9.5488*Power_Compressor_2/(mov.y*rpm_nom);
-//  torque.tau = -9.5488*Power_Compressor/(mov.y*rpm_nom);
-  torque.tau = -9.5488*mov.P/(mov.y*rpm_nom);
+  torque.tau = -9.5488*Power_Compressor_2/(mov.y*rpm_nom);
+//  torque.tau = -9.5488*mov.P/(mov.y*rpm_nom);
   Power_Compressor = pin_p.i*pin_p.v;
   Power_Compressor_2 = mov.m_flow*287*temp_in_comp.T/mov.eta*log(mov.port_b.p/mov.port_a.p);
+  T_out_is = (temp_in_comp.T) * (mov.port_b.p/mov.port_a.p)^((gamma_air - 1)/gamma_air);
   connect(dcpm.flange, inertia.flange_a) annotation(
     Line(points = {{-26, -4}, {-14, -4}}));
   connect(speedSensor.w, rad_s_to_rpm.u) annotation(

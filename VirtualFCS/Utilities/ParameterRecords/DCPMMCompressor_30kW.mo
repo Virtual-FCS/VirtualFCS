@@ -2,7 +2,7 @@ within VirtualFCS.Utilities.ParameterRecords;
 record DCPMMCompressor_30kW
   extends Modelica.Icons.Record;
   extends VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor(
-    Jr = 0.15,
+    Jr = 0.1,
     Js = 0.29,
     VaNominal = 400,
     IaNominal = 75,
@@ -13,24 +13,18 @@ record DCPMMCompressor_30kW
     alpha20a = 0.004,
     La = 0.002,
     frictionParameters = Modelica.Electrical.Machines.Losses.FrictionParameters(
-      PRef = 50,
+      PRef = 10,
       wRef = wNominal * 2 * Modelica.Constants.pi / 60),
     brushParameters = Modelica.Electrical.Machines.Losses.BrushParameters(
-      V = 1.0,
-      ILinear = 0.01 * 300),
-    ViNominal = VaNominal - Modelica.Electrical.Machines.Thermal.convertResistance(0.01, 293.15, 0.004, 293.15) * 300
-                    - Modelica.Electrical.Machines.Losses.DCMachines.brushVoltageDrop(
-                          Modelica.Electrical.Machines.Losses.BrushParameters(V = 1.0, ILinear = 3), 300),
+      V = 0.5,
+      ILinear = 0.01 * IaNominal),
+    ViNominal = VaNominal - Modelica.Electrical.Machines.Thermal.convertResistance(Ra, TaRef, alpha20a, TaNominal) * IaNominal - Modelica.Electrical.Machines.Losses.DCMachines.brushVoltageDrop(brushParameters, IaNominal),
     coreParameters = Modelica.Electrical.Machines.Losses.CoreParameters(
       m = 1,
       PRef = 50,
       VRef = 75,
       wRef = wNominal * 2 * Modelica.Constants.pi / 60),
-    strayLoadParameters = Modelica.Electrical.Machines.Losses.StrayLoadParameters(
-      PRef = 50,
-      IRef = 300,
-      wRef = wNominal * 2 * Modelica.Constants.pi / 60,
-      power_w = 1));
+    strayLoadParameters = Modelica.Electrical.Machines.Losses.StrayLoadParameters(PRef = 0, IRef = IaNominal, wRef = wNominal));
                // rotor inertia (assumed same)
                // stator inertia (assumed same)
                      // scaled up from 30A            // 6000 rpm

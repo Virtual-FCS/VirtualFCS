@@ -4,8 +4,7 @@ model CompressorTest_30kW "Simple model to test the compressor component"
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system(T_start = 300, p_start = 101325, m_flow_start = 0) annotation(
     Placement(transformation(origin = {140, 82}, extent = {{-10, -10}, {10, 10}})));
-  //replaceable package Medium = Modelica.Media.Air.MoistAir;//(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  replaceable package Medium = Buildings.Media.Air(reference_X = {0.01, 0.99});
+  package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});
   Modelica.Fluid.Sources.FixedBoundary AirSink(redeclare package Medium = Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {-82, -6}, extent = {{-10, -10}, {10, 10}})));
   Electrochemical.Battery.BatterySystem batterySystem annotation(
@@ -22,7 +21,7 @@ model CompressorTest_30kW "Simple model to test the compressor component"
     Placement(transformation(origin = {138, -46}, extent = {{-10, -10}, {10, 10}})));
   Fluid.ThrottleValve_2 throttleValve(m_flow_nominal = 0.5)  annotation(
     Placement(transformation(origin = {112, -8}, extent = {{-10, -10}, {10, 10}})));
-  Fluid.Compressor_30kW compressor annotation(
+  Fluid.Compressor_30kW compressor(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {1, -7}, extent = {{-29, -29}, {29, 29}})));
 equation
   connect(pressure.port, throttleValve.port_a) annotation(
