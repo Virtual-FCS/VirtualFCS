@@ -4,6 +4,7 @@ Control
 Electrical
 Electrochemical
 Fluid
+Media
 Thermal
 Powertrains
 SubSystems
@@ -11,4 +12,3 @@ Vehicles
 XInTheLoop
 ComponentTesting
 Utilities
-Media
