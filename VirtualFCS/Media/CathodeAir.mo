@@ -38,7 +38,8 @@ package CathodeAir "Template for media models"
       Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
       Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
       Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T);
-      Modelica.Units.SI.AbsolutePressure y_sat = (MMs[Water]/MM)*(p_sat/state.p);
+      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Y);
+      Modelica.Units.SI.SpecificEnthalpy h_liq = enthalpyOfWater(T);
     protected
       Modelica.Units.SI.MassFraction Yi[nXi] = gasMassFraction(state) "Independent gas-phase compositions";
     equation
