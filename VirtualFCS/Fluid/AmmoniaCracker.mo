@@ -1,4 +1,4 @@
-within VirtualFCS.Fluid;
+﻿within VirtualFCS.Fluid;
 
 model AmmoniaCracker "Ammonia cracker model based on a tube and shell configuration with catalyst-covered outer tube walls for ammonia decomposition reaction. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
 
@@ -8,6 +8,7 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   import Modelica.Media.IdealGases.SingleGases;
 
   // Define media types
+  package AmmoniaMedium_CP = VirtualFCS.Media.NH3_CP;
   package AmmoniaMedium = SingleGases.NH3;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
@@ -34,7 +35,7 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   
   // Flow and thermodynamic parameters
   parameter Modelica.Units.SI.MassFlowRate mf_NH3 = 1 "Inlet mass flow rate ammonia(kg/s)";
-  parameter Real T_in = 550 + 273.15 "Inlet temperature (K)";
+  parameter Real T_in_degC = 550 "Inlet temperature (K)";
   parameter Real k0 = 3.33/3.6*1e10 "Pre-exponential factor (mol/(kg*s))";
   parameter Real Ea = 1.54e5 "Activation energy (J/mol)";
   parameter Real a = 0.37 "Kinetic parameter Co–Ba/CeO2 catalyst (Realpe 2023)";
@@ -48,22 +49,24 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
   
   // Calculated parameters
   //protected
-  parameter Modelica.Units.SI.Length z_tube = H * (1 - z_head) "Tubes length(m)";
-  parameter Modelica.Units.SI.Area A_r = N_tubes*2*3.1415*(D_tubes - t_tubes)/2 * z_tube "Catalyst-covered reaction area (m^2)";
-  parameter Modelica.Units.SI.Area A_c = 3.1415 * (D_tubes/2)^2 "Cross-sectional area (m^2)";
-  parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes in the reactor";
-  parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes in the reactor";
-  parameter Integer N_tubes = N_tubes_x * N_tubes_y "Number of tubes in the reactor";
-  parameter Real g_catalyst_mol_flow_NH3 = W_cat*A_r/(mf_NH3*1000/M_NH3/3600) "g catalyst /(mol_NH3/h*)";  
-  parameter Modelica.Units.SI.Length z[N] = {z_tube/N * i - z_tube/N/2 for i in 1:N} "Vector holding the distances from the center of the segments to the inlet";
-  parameter Real deltaG_0 = 95517 - 193.67 * T_in - 0.035293 * T_in^2 + (9.22 * 10e-6 * T_in^3);
-  parameter Real k_eq = exp(-deltaG_0/R/T_in) "Equilibrium constant for the ammonia decomposition reaction";
+  final parameter Modelica.Units.SI.Temperature T_in = T_in_degC + 273.15 "Inlet temperature (K)";
+
+  final parameter Modelica.Units.SI.Length z_tube = H * (1 - z_head) "Tubes length(m)";
+  final parameter Modelica.Units.SI.Area A_r = N_tubes*2*3.1415*(D_tubes - t_tubes)/2 * z_tube "Catalyst-covered reaction area (m^2)";
+  final parameter Modelica.Units.SI.Area A_c = 3.1415 * (D_tubes/2)^2 "Cross-sectional area (m^2)";
+  final parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes along length of reactor";
+  final parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes along width of reactor";
+  final parameter Integer N_tubes = N_tubes_x * N_tubes_y "Number of tubes in the reactor";
+  final parameter Real g_catalyst_mol_flow_NH3 = W_cat*A_r/(mf_NH3*1000/M_NH3/3600) "g catalyst /(mol_NH3/h*)";  
+  final parameter Modelica.Units.SI.Length z[N] = {z_tube/N * i - z_tube/N/2 for i in 1:N} "Vector holding the distances from the center of the segments to the inlet";
+  final parameter Real deltaG_0 = 95517 - 193.67 * T_in - 0.035293 * T_in^2 + (9.22 * 10e-6 * T_in^3);
+  final parameter Real k_eq = exp(-deltaG_0/R/T_in) "Equilibrium constant for the ammonia decomposition reaction";
   
   
   // Declare variables
   Real NH3_conversion[N] "Fraction of ammonia reacted";
   Real T[N](start=fill(T_in, N)) "Temperature in each segment (K)";
-  Real r_rxn[N](start=fill(10, N)) "Rate of ammonia decomposition(mol/(s*g_cat))";
+  Real r_rxn[N](start=fill(1, N)) "Rate of ammonia decomposition(mol/(s*g_cat))";
   
   // Molar flow rates 
   Modelica.Units.SI.MolarFlowRate mol_flow_NH3[N](start=fill(mf_NH3/M_NH3*mol_frac_NH3_in, N)) "Molar flow NH3(mol/s)";
@@ -91,20 +94,24 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
 
   // Declare medium state records and thermodynamic properties
   AmmoniaMedium.ThermodynamicState state_NH3;
+  AmmoniaMedium_CP.ThermodynamicState state_NH3_CP;
   HydrogenMedium.ThermodynamicState state_H2;
   NitrogenMedium.ThermodynamicState state_N2;
    
-  Modelica.Units.SI.Density rho_NH3(start=7.04) "Initial density ammonia 30 bar 600degC";
+  Modelica.Units.SI.Density rho_NH3(start=rho_NH3_start) "Density ammonia 30 bar 600degC";
+  Modelica.Units.SI.Density rho_NH3_CP(start=rho_NH3_start) "Density ammonia 30 bar 600degC";
   Modelica.Units.SI.Density rho_H2;
   Modelica.Units.SI.Density rho_N2;
   Modelica.Units.SI.Density rho_mix[N](start=fill(rho_NH3_start, N));
   
-  Modelica.Units.SI.DynamicViscosity mu_NH3(start=7.04) "Initial density ammonia 30 bar 600degC";
+  Modelica.Units.SI.DynamicViscosity mu_NH3(start=2.6e-5) "Dynamic viscosity ammonia 30 bar 600degC";
+  Modelica.Units.SI.DynamicViscosity mu_NH3_CP(start=2.6e-5) "Dynamic viscosity ammonia 30 bar 600degC";
   Modelica.Units.SI.DynamicViscosity mu_H2;
   Modelica.Units.SI.DynamicViscosity mu_N2;
   Modelica.Units.SI.DynamicViscosity mu_mix[N];
   
-  Modelica.Units.SI.SpecificHeatCapacity cp_NH3;
+  Modelica.Units.SI.SpecificHeatCapacity cp_NH3 "Heat capacity ammonia";
+  Modelica.Units.SI.SpecificHeatCapacity cp_NH3_CP "Heat capacity ammonia";
   Modelica.Units.SI.SpecificHeatCapacity cp_H2;
   Modelica.Units.SI.SpecificHeatCapacity cp_N2;
   
@@ -154,21 +161,25 @@ equation
   
 // Calculate the different relevant thermodynamic properties
   state_NH3 = AmmoniaMedium.setState_pT(P_out, T_in);
+  state_NH3_CP = AmmoniaMedium_CP.setState_pT(P_out, T_in);
   state_H2 = HydrogenMedium.setState_pT(P_out, T_in);
   state_N2 = NitrogenMedium.setState_pT(P_out, T_in);
 
   // Densities
   rho_NH3 = AmmoniaMedium.density(state_NH3);
+  rho_NH3_CP = AmmoniaMedium_CP.density(state_NH3_CP);
   rho_H2 = HydrogenMedium.density(state_H2);
   rho_N2 = NitrogenMedium.density(state_N2);
   
   // Dynamic viscosities
   mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);
+  mu_NH3_CP = AmmoniaMedium_CP.dynamicViscosity(state_NH3_CP);
   mu_H2 = HydrogenMedium.dynamicViscosity(state_H2);
   mu_N2 = NitrogenMedium.dynamicViscosity(state_N2);
 
   // Heat capacities at constant pressure
   cp_NH3 = AmmoniaMedium.specificHeatCapacityCp(state_NH3);
+  cp_NH3_CP = AmmoniaMedium_CP.specificHeatCapacityCp(state_NH3_CP);
   cp_H2 = HydrogenMedium.specificHeatCapacityCp(state_H2);
   cp_N2 = NitrogenMedium.specificHeatCapacityCp(state_N2);
   
@@ -191,7 +202,7 @@ equation
     
     // Inlet boundary
     if i == 1 then
-      // Compute reaction rate
+      // Compute reaction rate (minimume ensures no negative ammonia fractions)
       r_rxn[i] = min(rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]), mf_NH3/M_NH3/W_cat/A_r*N);
       
       // Mass balance
@@ -207,7 +218,7 @@ equation
       der(T[i]) = 0;
     
     else
-      // Compute reaction rate
+      // Compute reaction rate (minimume ensures no negative ammonia fractions)
       r_rxn[i] = min(rate(a=a, b=b, T=T[i], k0=k0, Ea=Ea, R=R, k_eq=k_eq, P_NH3=P_NH3[i], P_N2=P_N2[i], P_H2=P_H2[i]), mol_flow_NH3[i-1]/W_cat/A_r*N);
       
       // Mass balance

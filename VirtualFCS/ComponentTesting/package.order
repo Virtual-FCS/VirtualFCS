@@ -10,13 +10,11 @@ SubSystemHydrogenControlTest
 ThrottleValveTest
 ECMS_Experiment_Testing
 RotaryMachine
-CompressorTest_new
-CompressorTest_newp
 PumpsTesting
-CompressorTest_mc
-CompressorTest_mc_h
 HeatSinkTest2
-CompressorTest_30kW
 NewHumidifierTest
 NewHumidifierv2Test
 ChopperTest
+SubSystemAirTest
+CompressorTest_30kW
+CathodeAirTest
