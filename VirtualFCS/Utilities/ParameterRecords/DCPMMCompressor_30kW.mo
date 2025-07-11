@@ -21,14 +21,9 @@ record DCPMMCompressor_30kW
     ViNominal = VaNominal - Modelica.Electrical.Machines.Thermal.convertResistance(Ra, TaRef, alpha20a, TaNominal) * IaNominal - Modelica.Electrical.Machines.Losses.DCMachines.brushVoltageDrop(brushParameters, IaNominal),
     coreParameters = Modelica.Electrical.Machines.Losses.CoreParameters(
       m = 1,
-      PRef = 50,
+      PRef = 10,
       VRef = 75,
       wRef = wNominal * 2 * Modelica.Constants.pi / 60),
     strayLoadParameters = Modelica.Electrical.Machines.Losses.StrayLoadParameters(PRef = 0, IRef = IaNominal, wRef = wNominal));
-               // rotor inertia (assumed same)
-               // stator inertia (assumed same)
-                     // scaled up from 30A            // 6000 rpm
-
-    // ViNominal is a derived parameter that uses brushParameters, Ra, etc.
 
 end DCPMMCompressor_30kW;

@@ -21,7 +21,7 @@ model CompressorTest_30kW "Simple model to test the compressor component"
     Placement(transformation(origin = {138, -46}, extent = {{-10, -10}, {10, 10}})));
   Fluid.ThrottleValve_2 throttleValve(m_flow_nominal = 0.5)  annotation(
     Placement(transformation(origin = {112, -8}, extent = {{-10, -10}, {10, 10}})));
-  Fluid.Compressor_30kW compressor(redeclare package Medium = Medium) annotation(
+  Fluid.Compressor_30kW compressor(redeclare package Medium = Medium, rpm_nom = 11000) annotation(
     Placement(transformation(origin = {1, -7}, extent = {{-29, -29}, {29, 29}})));
 equation
   connect(pressure.port, throttleValve.port_a) annotation(
