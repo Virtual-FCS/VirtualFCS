@@ -181,14 +181,15 @@ package CathodeAir "Template for media models"
     extends Modelica.Icons.Function;
     import h_T = Modelica.Media.IdealGases.Common.Functions.h_Tlow; // "Low" is anything below 1000 K
     import fluids = Modelica.Media.IdealGases.Common.SingleGasesData;
+    import Modelica.Media.Interfaces.Choices.ReferenceEnthalpy;
     
     input Modelica.Units.SI.Temperature T "Vapour temperature";
     input Modelica.Units.SI.MassFraction Y[nX] "Full vapour composition";
     output Modelica.Units.SI.SpecificEnthalpy h_gas;
   algorithm
-    h_gas := h_T(fluids.O2,  T, false)*Y[Oxygen] + 
-             h_T(fluids.N2,  T, false)*Y[Nitrogen] + 
-             h_T(fluids.H2O, T, false)*Y[Water];
+    h_gas := h_T(fluids.O2,  T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Oxygen] + 
+             h_T(fluids.N2,  T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Nitrogen] + 
+             h_T(fluids.H2O, T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Water];
   end enthalpyOfGas;
   
   function densityOfWater
