@@ -152,7 +152,7 @@ package CathodeAir "Template for media models"
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
     Y := cat(1, Yi, {1-sum(Yi)});
-    h := X_l*enthalpyOfWater(state.p, state.T) + (1-X_l)*enthalpyOfGas(state.T, Y);
+    h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Y);
   end specificEnthalpy;
   
   redeclare function extends specificInternalEnergy
@@ -164,18 +164,30 @@ package CathodeAir "Template for media models"
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
     Y := cat(1, Yi, {1-sum(Yi)});
-    u := X_l*(enthalpyOfWater(state.p, state.T) - state.p/densityOfWater(state.p, state.T)) +
+    u := X_l*(enthalpyOfWater(state.T) - state.p/densityOfWater(state.p, state.T)) +
         (1-X_l)*(enthalpyOfGas(state.T, Y) - state.p/densityOfGas(state));
   end specificInternalEnergy;
   
   function enthalpyOfWater
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.AbsolutePressure p;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificEnthalpy h_liq;
+  protected
+    Modelica.Units.SI.MolarEnthalpy h_mol;
+    Real t; // T/1000 K;
+    constant Real A = -203.6060;
+    constant Real B = 1523.290;
+    constant Real C = -3196.413;
+    constant Real D = 2474.455;
+    constant Real E = 3.855326;
+    constant Real F = -256.5478;
   algorithm
-    h_liq := Modelica.Media.Water.IF97_Utilities.h_pT(p, T, 1); // 1 is liquid phase
-  end enthalpyOfWater;
+    t := T/1000;
+    h_mol := 1000 * (A*t + (B/2)*t^2 + (C/3)*t^3 + (D/4)*t^4 - E/t + F);
+    h_liq := h_mol / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+  annotation(
+      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+end enthalpyOfWater;
   
   function enthalpyOfGas
     extends Modelica.Icons.Function;
