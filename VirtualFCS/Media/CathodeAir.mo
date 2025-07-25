@@ -169,40 +169,25 @@ package CathodeAir "Template for media models"
         (1-X_l)*(enthalpyOfGas(state.T, Y) - state.p/densityOfGas(state));
   end specificInternalEnergy;
   
-  function enthalpyOfWater
+  function enthalpyOfWater "Helper function for enthalpy of liquid water"
     extends Modelica.Icons.Function;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificEnthalpy h_liq;
-  protected
-    Modelica.Units.SI.MolarEnthalpy h_mol;
-    Real t; // T/1000 K;
-    constant Real A = -203.6060;
-    constant Real B = 1523.290;
-    constant Real C = -3196.413;
-    constant Real D = 2474.455;
-    constant Real E = 3.855326;
-    constant Real F = -256.5478;
   algorithm
-    t := T/1000;
-    h_mol := 1000 * (A*t + (B/2)*t^2 + (C/3)*t^3 + (D/4)*t^4 - E/t + F);
-    h_liq := h_mol / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
 end enthalpyOfWater;
   
   function enthalpyOfGas
-    extends Modelica.Icons.Function;
-    import h_T = Modelica.Media.IdealGases.Common.Functions.h_Tlow; // "Low" is anything below 1000 K
-    import fluids = Modelica.Media.IdealGases.Common.SingleGasesData;
-    import Modelica.Media.Interfaces.Choices.ReferenceEnthalpy;
-    
+    extends Modelica.Icons.Function;    
     input Modelica.Units.SI.Temperature T "Vapour temperature";
     input Modelica.Units.SI.MassFraction Y[nX] "Full vapour composition";
     output Modelica.Units.SI.SpecificEnthalpy h_gas;
+  protected
+    constant Shomate.Parameters[:] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
   algorithm
-    h_gas := h_T(fluids.O2,  T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Oxygen] + 
-             h_T(fluids.N2,  T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Nitrogen] + 
-             h_T(fluids.H2O, T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Water];
+    h_gas := sum( Y[i]*Shomate.enthalpy(T, parameters[i])/MMs[i] for i in 1:nX );
   end enthalpyOfGas;
   
   function densityOfWater

@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 partial model FCInterface
-  replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
+  replaceable package Cathode_Medium = Media.CathodeAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   
   Modelica.Fluid.Interfaces.FluidPort_b anode_out(redeclare package Medium = Anode_Medium) annotation(
@@ -9,7 +9,7 @@ partial model FCInterface
   Modelica.Fluid.Interfaces.FluidPort_a anode_in(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-150, 40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_a cathode_in(redeclare package Medium = Cathode_Medium) annotation(
-    Placement(transformation(origin = {150, 40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {110, 72}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {150, 40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_b cathode_out(redeclare package Medium = Cathode_Medium) annotation(
     Placement(transformation(origin = {150, -40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
