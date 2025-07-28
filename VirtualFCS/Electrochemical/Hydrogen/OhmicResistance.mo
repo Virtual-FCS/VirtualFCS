@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical;
+within VirtualFCS.Electrochemical.Hydrogen;
 
 model OhmicResistance "Ohmic resistance to proton flow through MEA"
   extends Modelica.Electrical.Analog.Interfaces.OnePort;
