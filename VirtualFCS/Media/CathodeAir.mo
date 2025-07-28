@@ -1,7 +1,8 @@
 within VirtualFCS.Media;
 
-package CathodeAir "Template for media models"
+package CathodeAir "Medium model for cathodic air"
   extends Modelica.Media.Interfaces.PartialMedium(
+    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pT,
     final mediumName = "Moist_air",
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
     final reference_X = {0.23, 0.76, 0.01},  // NB! These are MASS fractions, not molar. Oxygen is heavier, water is lighter.
@@ -93,6 +94,27 @@ package CathodeAir "Template for media models"
     state.T := T;
     state.X := X;
   end setState_pTX;
+
+  redeclare function extends setState_phX "Set state with pressure, enthalpy, composition"
+  protected
+    function f_nonlinear "Solve specificEnthalpy(state) for T with given h"
+      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+      input AbsolutePressure p "Pressure";
+      input SpecificEnthalpy h "Specific enthalpy";
+      input MassFraction[:] X "Mass fractions of composition";
+    protected
+      ThermodynamicState try_state;
+    algorithm
+      try_state.T := u;
+      try_state.p := p;
+      try_state.X := X;
+      y := specificEnthalpy(try_state) - h;
+    end f_nonlinear;
+  algorithm
+    state.p := p;
+    state.X := X;
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function f_nonlinear(p=p, h=h, X=X), 273.15, 500);
+  end setState_phX;
   
   redeclare function extends temperature
   algorithm
