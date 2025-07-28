@@ -21,7 +21,6 @@ model ReversibleVoltage
     Placement(transformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}})));
 
 protected
-  constant Modelica.Units.SI.AbsolutePressure p_atm = 101325;
   Modelica.Units.SI.AbsoluteActivity a_H2, a_O2;
   Modelica.Units.SI.MolarEnergy DeltaG0;
   Cathode_Medium.BaseProperties medium_cathode;
