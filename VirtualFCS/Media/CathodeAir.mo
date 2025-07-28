@@ -136,11 +136,11 @@ package CathodeAir "Template for media models"
     output Modelica.Units.SI.SpecificHeatCapacity R_s "Gas constant of the gas phase";
   protected
     import Modelica.Constants.R;
-    Modelica.Units.SI.MassFraction[nXi] Y "Independent mass fractions in gas phase";
+    Modelica.Units.SI.MassFraction[nXi] Yi "Independent mass fractions in gas phase";
     Modelica.Units.SI.MolarMass MM_gas "Average molar mass of gas phase";
   algorithm
-    Y := gasMassFraction(state);
-    MM_gas := 1/(sum(Y./MMs[Oxygen:Nitrogen]) + (1-sum(Y))/MMs[Water]);
+    Yi := gasMassFraction(state);
+    MM_gas := 1/(sum(Yi./MMs[Oxygen:Nitrogen]) + (1-sum(Yi))/MMs[Water]);
     R_s := R / MM_gas;
   end gasConstant;
 
