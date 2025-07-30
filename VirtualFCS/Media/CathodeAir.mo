@@ -96,23 +96,18 @@ package CathodeAir "Medium model for cathodic air"
 
   redeclare function extends setState_phX "Set state with pressure, enthalpy, composition"
   protected
-    function f_nonlinear "Solve specificEnthalpy(state) for T with given h"
+    function h_offset "Solve h = specificEnthalpy_pTX(p, T, X) for T with given h"
       extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
       input AbsolutePressure p "Pressure";
       input SpecificEnthalpy h "Specific enthalpy";
       input MassFraction[:] X "Mass fractions of composition";
-    protected
-      ThermodynamicState try_state;
     algorithm
-      try_state.T := u;
-      try_state.p := p;
-      try_state.X := X;
-      y := specificEnthalpy(try_state) - h;
-    end f_nonlinear;
+      y := specificEnthalpy_pTX(p, u, X) - h;
+    end h_offset;
   algorithm
     state.p := p;
     state.X := X;
-    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(function f_nonlinear(p=p, h=h, X=X), 273.15, 500);
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273.15, u_max = 500);
   end setState_phX;
   
   redeclare function extends temperature
