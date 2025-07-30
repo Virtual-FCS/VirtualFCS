@@ -9,14 +9,11 @@ model ButlerVolmer
   
   parameter Real alpha = 0.3419 "Charge transfer coefficient";
   parameter Integer N = 2 "Number of exchanged electrons";
-  parameter Modelica.Units.SI.Area A = 0.1 "Reaction area";
-  
-  Modelica.Units.SI.CurrentDensity i_exchange "Exchange current density";
-  Modelica.Units.SI.Voltage eta "Overvoltage";
+  parameter Modelica.Units.SI.CurrentDensity i_0 "Exchange current, assumed constant";
   
 equation
-  i = i_exchange*A * (exp(alpha*N*F*eta/R/T_heatPort) - exp(-(1-alpha)*N*F*eta/R/T_heatPort));
-  LossPower = eta*i;
+  i = i_0 * (exp(alpha*N*F*v/R/T_heatPort) - exp(-(1-alpha)*N*F*v/R/T_heatPort));
+  LossPower = v*i;
 
 annotation(
     Diagram(graphics),
