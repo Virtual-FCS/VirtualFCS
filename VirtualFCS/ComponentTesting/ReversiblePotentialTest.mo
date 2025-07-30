@@ -10,13 +10,11 @@ model ReversiblePotentialTest
     Placement(transformation(origin = {60, 30}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.FixedBoundary anode(nPorts = 1, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2)  annotation(
     Placement(transformation(origin = {-70, 10}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.FixedBoundary cathode(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1, use_T = true, X = {1, 0, 0})  annotation(
+  Modelica.Fluid.Sources.FixedBoundary cathode(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1, use_T = true, X = {0.99,0,0.01})  annotation(
     Placement(transformation(origin = {70, 10}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
   connect(fixedTemperature.port, E_rev.heatPort) annotation(
     Line(points = {{-20, -30}, {0, -30}, {0, 20}}, color = {191, 0, 0}));
-//E_rev.anode.p = 101325;
-//E_rev.cathode.p = 101325;
   connect(ground.p, E_rev.n) annotation(
     Line(points = {{60, 40}, {20, 40}}, color = {0, 0, 255}));
   connect(E_rev.anode, anode.ports[1]) annotation(

@@ -21,10 +21,11 @@ model ReversibleVoltage
     Placement(transformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}})));
 
 protected
-  Modelica.Units.SI.AbsoluteActivity a_H2, a_O2;
+  Modelica.Units.SI.AbsoluteActivity a_H2, a_O2, a_H2O;
   Modelica.Units.SI.MolarEnergy DeltaG0;
   Cathode_Medium.BaseProperties medium_cathode;
   Modelica.Units.SI.MolarMass MM_gas_cathode = 1/sum(medium_cathode.Y ./ MMs);
+  Shomate.Parameters H2O = if medium_cathode.phi < 1 then Shomate.H2O_G else Shomate.H2O_L;
 
 equation
   anode.m_flow = 0;
@@ -43,13 +44,14 @@ equation
   
   a_H2 = anode.p / Anode_Medium.reference_p;
   a_O2 = MM_gas_cathode/MMs[Oxygen] * medium_cathode.Y[Oxygen] * cathode.p / Cathode_Medium.reference_p;
+  a_H2O = max(medium_cathode.phi, Modelica.Constants.eps);
   
   LossPower = -v*i;
-  DeltaG0 = Shomate.gibbs_free_energy(T_heatPort, Shomate.H2O_L)
+  DeltaG0 = Shomate.gibbs_free_energy(T_heatPort, H2O)
           - Shomate.gibbs_free_energy(T_heatPort, Shomate.H2)
           - 0.5*Shomate.gibbs_free_energy(T_heatPort, Shomate.O2);
 
-  v = N_cell * (-DeltaG0/2/F) + R*T_heatPort/(2*F)*log(a_H2 * a_O2^0.5);
+  v = N_cell * (-DeltaG0/2/F) + R*T_heatPort/(2*F)*log(a_H2 * a_O2^0.5 / a_H2O);
 
   annotation(
     Icon(graphics = {Text(origin = {-100, -100}, extent = {{0, 0}, {30, 30}}, textString = "A"), 
