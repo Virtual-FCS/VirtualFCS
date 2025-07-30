@@ -51,7 +51,7 @@ equation
           - Shomate.gibbs_free_energy(T_heatPort, Shomate.H2)
           - 0.5*Shomate.gibbs_free_energy(T_heatPort, Shomate.O2);
 
-  v = N_cell * (-DeltaG0/2/F) + R*T_heatPort/(2*F)*log(a_H2 * a_O2^0.5 / a_H2O);
+  v = N_cell * (-DeltaG0/2/F + R*T_heatPort/(2*F)*log(a_H2 * a_O2^0.5 / a_H2O));
 
   annotation(
     Icon(graphics = {Text(origin = {-100, -100}, extent = {{0, 0}, {30, 30}}, textString = "A"), 
