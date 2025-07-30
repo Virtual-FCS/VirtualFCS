@@ -34,8 +34,7 @@ package CathodeAir "Medium model for cathodic air"
   end ThermodynamicState;
 
   redeclare model extends BaseProperties(final standardOrderComponents = true) "Base properties of medium"
-      // I should add: X_l, Y, RH
-      Modelica.Units.SI.MoleFraction RH = relativeHumidity(state) "Relative humidity of gas phase";
+      Modelica.Units.SI.MoleFraction phi = relativeHumidity(state) "Relative humidity of gas phase";
       Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
       Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
       Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T);
@@ -242,9 +241,9 @@ end enthalpyOfWater;
   function relativeHumidity
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
-    output Modelica.Units.SI.MoleFraction RH;
+    output Modelica.Units.SI.MoleFraction phi;
   algorithm
-    RH := (state.X[Water]-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
+    phi := (state.X[Water]-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
   end relativeHumidity;
   
   redeclare function extends setSmoothState
