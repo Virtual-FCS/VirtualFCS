@@ -54,6 +54,6 @@ equation
   v = N_cell * (-DeltaG0/2/F + R*T_heatPort/(2*F)*log(a_H2 * a_O2^0.5 / a_H2O));
 
   annotation(
-    Icon(graphics = {Text(origin = {-100, -100}, extent = {{0, 0}, {30, 30}}, textString = "A"), 
-                     Text(origin = {100, -100}, extent = {{-30, 0}, {0, 30}}, textString = "C")}));
+    Icon(graphics = {Text(origin = {-100, -100}, extent = {{0, 0}, {30, 30}}, textString = "A"), Text(origin = {100, -100}, extent = {{-30, 0}, {0, 30}}, textString = "C")}),
+  Documentation(info = "<html><head></head><body>This unit calculates the reversible voltage of a hydrogen fuel cell as a function of temperature (either set directly with <i>T</i>, or through the <i>heatPort</i>) and partial pressures in anode and cathode.<div>In case of relative humidity φ below 100%, the unit automatically switches to using the ΔG<sup>0</sup><sub>f</sub> of water vapour instead of liquid (reducing voltage); also, φ is used as an estimate of water activity, so the reversible voltage will increase with lower humidity (this effect will be weak and more than compensated for by increases ohmic resistance).</div><div>The anode and cathode <i>FluidPort</i>s use the <i>inStream</i> operator to estimate properties on the other side, so care must be taken in connecting them properly, to avoid reading the wrong numbers.</div></body></html>"));
 end ReversibleVoltage;
