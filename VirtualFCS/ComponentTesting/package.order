@@ -19,3 +19,5 @@ SubSystemAirTest
 CompressorTest_30kW
 CathodeAirTest
 ReversiblePotentialTest
+ManifoldTest
+MultiManifoldTest
