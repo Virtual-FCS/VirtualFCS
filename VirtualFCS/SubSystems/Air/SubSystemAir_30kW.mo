@@ -53,7 +53,7 @@ model SubSystemAir_30kW
     Placement(transformation(origin = {-29, 77}, extent = {{-11, -11}, {11, 11}})));
   Fluid.Compressor_30kW compressor annotation(
     Placement(transformation(origin = {20, 22}, extent = {{-26, -26}, {26, 26}})));
-  AixLib.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation(
+  Buildings.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation(
     Placement(transformation(origin = {-16, 122}, extent = {{74, -90}, {94, -110}}, rotation = -0)));
   Modelica.Blocks.Math.Abs abs annotation(
     Placement(transformation(origin = {-92, 76}, extent = {{-6, -6}, {6, 6}})));
