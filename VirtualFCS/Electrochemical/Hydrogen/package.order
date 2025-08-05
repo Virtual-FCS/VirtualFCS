@@ -1,6 +1,7 @@
 ReversibleVoltage
 OhmicResistance
 MassTransportLoss
+Manifold
 FCInterface
 FuelCell
 FuelCellStack

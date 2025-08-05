@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical;
+within VirtualFCS.Electrochemical.Hydrogen;
 
 model Manifold "Fuel cell manifold"
   extends Modelica.Fluid.Interfaces.PartialLumpedVolume;
