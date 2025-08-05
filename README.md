@@ -72,6 +72,8 @@ Attributions and credits
 ### Contributors (in alphabetical order)
 Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
 Benjamin Synnevåg, 		SINTEF Industry, Trondheim, Norway<br/>
+Dr. Daniel Pérez Clos,	SINTEF Industry, Trondheim, Norway<br/>
+Dr. Federico Zenith, 	SINTEF Digital, Trondheim, Norway<br/>
 Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
 Dr. Mike Gerhardt, 	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
@@ -81,6 +83,7 @@ Dr. Yash Raka, 		SINTEF Industry, Trondheim, Norway<br/>
 
 ### Projects
 - [Virtual-FCS](http://www.virtual-fcs.eu/); Grant Agreement No 875087.
+- [BeBoP](https://bebop-hydrogen.eu/); Grant Agreement No 101192365.
 
 ### Acknowledgements
-  This code repository is part of a project that has received funding from the Fuel Cells and Hydrogen 2 Joint Undertaking under Grant Agreement No 875087. This Joint Undertaking receives support from the European Union’s Horizon 2020 Research and Innovation programme, Hydrogen Europe and Hydrogen Europe Research.
+  This code repository is part of a project that has received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under Grant Agreements No 875087 and 101192365. This Joint Undertaking receives support from the European Union’s Horizon 2020 Research and Innovation programme, Hydrogen Europe and Hydrogen Europe Research.
