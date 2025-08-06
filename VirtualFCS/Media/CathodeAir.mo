@@ -2,14 +2,14 @@ within VirtualFCS.Media;
 
 package CathodeAir "Medium model for cathodic air"
   extends Modelica.Media.Interfaces.PartialMedium(
-    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pT,
-    final mediumName = "Moist_air",
+    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+    final mediumName = "Cathode_air",
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
     final reference_X = {0.23, 0.76, 0.01},  // NB! These are MASS fractions, not molar. Oxygen is heavier, water is lighter.
     final singleState = false,
     final reducedX = true,
     final fixedX = false,
-    Temperature(min = 298, max = 500, start = 333),
+    Temperature(min = 273.15, max = 500, start = 333),
     AbsolutePressure(min = 3E4, max = 3E5, start = 1E5));
 
   // Convenience variables to index arrays within class
@@ -48,8 +48,8 @@ package CathodeAir "Medium model for cathodic air"
       u = specificInternalEnergy(state);
       
       MM = molarMass(state); // Weighed average for all species, both phases
-      R_s = gasConstant(state); // Gas constant valid only for gas phase
-      
+      R_s = gasConstant(state); // Gas constant valid only for gas phase      
+
       state.p = p;
       state.T = T;
       state.X = X;
@@ -232,6 +232,7 @@ end enthalpyOfGas;
   end densityOfGas;
   
   redeclare function extends density
+  extends Modelica.Icons.Function;
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
   algorithm
