@@ -5,6 +5,7 @@ model CompressorTest_30kW "Simple model to test the compressor component"
   inner Modelica.Fluid.System system(T_start = 300, p_start = 101325, m_flow_start = 0) annotation(
     Placement(transformation(origin = {140, 82}, extent = {{-10, -10}, {10, 10}})));
   package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});
+  //package Medium = VirtualFCS.Media.CathodeAir;
   Modelica.Fluid.Sources.FixedBoundary AirSink(redeclare package Medium = Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {-82, -6}, extent = {{-10, -10}, {10, 10}})));
   Electrochemical.Battery.BatterySystem batterySystem annotation(

@@ -4,8 +4,8 @@ model SubSystemAirTest "Simple model to test the compressor component"
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system(T_start = 300, p_start = 101325, m_flow_start = 0) annotation(
     Placement(transformation(origin = {140, 82}, extent = {{-10, -10}, {10, 10}})));
-  //replaceable package Medium = Modelica.Media.Air.MoistAir;//(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  replaceable package Medium = Buildings.Media.Air(reference_X = {0.01, 0.99});
+  package Medium = Modelica.Media.Air.MoistAir;//(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
+  //replaceable package Medium = Buildings.Media.Air(reference_X = {0.01, 0.99});
   Electrochemical.Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {6, -72}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
   SubSystems.Air.SubSystemAir_30kW subSystemAir(set_air_pressure = 2.4e5)  annotation(
