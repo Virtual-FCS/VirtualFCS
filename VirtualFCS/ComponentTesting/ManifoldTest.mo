@@ -2,15 +2,15 @@ within VirtualFCS.ComponentTesting;
 
 model ManifoldTest
   extends Modelica.Icons.Example;
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nu = {-1}, MMs = {0.002}, useHeatPort = false)  annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, useHeatPort = false, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
-  Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir) annotation(
     Placement(transformation(origin = {80, 0}, extent = {{20, -20}, {-20, 20}}, rotation = -0)));
-  Modelica.Fluid.Sources.MassFlowSource_T source(nPorts = 1, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, m_flow = 1)  annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T source(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, m_flow = 1) annotation(
     Placement(transformation(origin = {-80, 0}, extent = {{-20, -20}, {20, 20}})));
-  Modelica.Blocks.Sources.RealExpression reactionRate(y = 200)  annotation(
+  Modelica.Blocks.Sources.RealExpression reactionRate(y = 5) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  inner Modelica.Fluid.System system(allowFlowReversal = false)  annotation(
+  inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(manifold.port_b, outlet.ports[1]) annotation(
