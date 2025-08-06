@@ -38,7 +38,7 @@ package CathodeAir "Medium model for cathodic air"
       Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
       Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
       Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T);
-      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Y);
+      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Yi[Oxygen], Yi[Nitrogen]);
       Modelica.Units.SI.SpecificEnthalpy h_liq = enthalpyOfWater(T);
     protected
       Modelica.Units.SI.MassFraction Yi[nXi] = gasMassFraction(state) "Independent gas-phase compositions";
@@ -168,8 +168,7 @@ package CathodeAir "Medium model for cathodic air"
   algorithm
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
-    Y := cat(1, Yi, {1-sum(Yi)});
-    h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Y);
+    h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Yi[Oxygen], Yi[Nitrogen]);
   end specificEnthalpy;
   
   redeclare function extends specificInternalEnergy
@@ -181,8 +180,7 @@ package CathodeAir "Medium model for cathodic air"
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
     Y := cat(1, Yi, {1-sum(Yi)});
-    u := X_l*(enthalpyOfWater(state.T) - state.p/densityOfWater(state.p, state.T)) +
-        (1-X_l)*(enthalpyOfGas(state.T, Y) - state.p/densityOfGas(state));
+    u := specificEnthalpy(state) - state.p*(X_l/densityOfWater(state.p, state.T) + (1-X_l)/densityOfGas(state));
   end specificInternalEnergy;
   
   function enthalpyOfWater "Helper function for enthalpy of liquid water"
@@ -195,16 +193,24 @@ package CathodeAir "Medium model for cathodic air"
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
 end enthalpyOfWater;
   
-  function enthalpyOfGas
+  impure function enthalpyOfGas
     extends Modelica.Icons.Function;    
     input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.MassFraction Y[nX] "Full vapour composition";
+    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
+    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
     output Modelica.Units.SI.SpecificEnthalpy h_gas;
   protected
-    constant Shomate.Parameters[:] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    Modelica.Units.SI.SpecificEnthalpy[nX] h_species;
   algorithm
-    h_gas := sum( Y[i]*Shomate.enthalpy(T, parameters[i])/MMs[i] for i in 1:nX );
-  end enthalpyOfGas;
+    h_species := {Shomate.enthalpy(T, parameters[i]) / MMs[i] for i in 1:nX};
+    h_gas := y_O2 * Shomate.enthalpy(T, Shomate.O2) / MMs[Oxygen] +
+             y_N2 * Shomate.enthalpy(T, Shomate.N2) / MMs[Nitrogen] +
+             (1-y_O2-y_N2) * Shomate.enthalpy(T, Shomate.H2O_G) / MMs[Water];
+  annotation(
+      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
+end enthalpyOfGas;
+  
   
   function densityOfWater
     extends Modelica.Icons.Function;
