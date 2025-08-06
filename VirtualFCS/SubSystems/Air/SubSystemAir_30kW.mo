@@ -5,8 +5,8 @@ model SubSystemAir_30kW
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
-  //replaceable package Medium = Modelica.Media.Air.MoistAir;
-  replaceable package Medium = Buildings.Media.Air;
+  replaceable package Medium = Modelica.Media.Air.MoistAir;
+
   // Parameter definition
   parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
   parameter Modelica.Units.SI.AbsolutePressure set_air_pressure = 2.4e5 "Set air pressure";
@@ -15,9 +15,10 @@ model SubSystemAir_30kW
   Modelica.Units.SI.Power Power_Compressor_electrical "The power consumed by the Compressor";
   Modelica.Units.SI.Efficiency Rendement_compressor "Compressor efficiency";
   Real t "parameter to cimpute efficiency";
+  
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
-  Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 2) annotation(
+  Modelica.Fluid.Sources.FixedBoundary airSource(redeclare package Medium = Medium, nPorts = 2) annotation(
     Placement(transformation(origin = {-80.5, -62.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {94, -47}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {62, 120}, extent = {{-20, -20}, {20, 20}})));
@@ -53,30 +54,23 @@ model SubSystemAir_30kW
     Placement(transformation(origin = {-29, 77}, extent = {{-11, -11}, {11, 11}})));
   Fluid.Compressor_30kW compressor annotation(
     Placement(transformation(origin = {20, 22}, extent = {{-26, -26}, {26, 26}})));
-  AixLib.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation(
+  Buildings.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation(
     Placement(transformation(origin = {-16, 122}, extent = {{74, -90}, {94, -110}}, rotation = -0)));
   Modelica.Blocks.Math.Abs abs annotation(
     Placement(transformation(origin = {-92, 76}, extent = {{-6, -6}, {6, 6}})));
+  Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 1) annotation(
+    Placement(transformation(origin = {-50.5, -64.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = -90)));
 equation
   Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.00001)^0.28) - 1);
-//Input.p*(();
-//Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(0.9*0.7))*(((Output.p*0.00001)^0.28)-1);//Input.p*(();
   Power_Compressor_electrical = pin_p.i*pin_p.v;
-// This introduces chattering and slows down simulation.
-//if Power_Compressor_electrical > 1 then
-//  t = Power_Compressor_electrical;
-//else
-//   t = 1;
-//end if;
+
   t = max(Power_Compressor_electrical, 1);
   Rendement_compressor = (sen_Air_mflow.m_flow*298.15*1004/(0.9*t))*(((Output.p*0.00001)^0.28) - 1);
 //*** DEFINE CONNECTIONS ***//
-  connect(airSink.ports[1], sen_Air_mflow.port_a) annotation(
+  connect(airSource.ports[1], sen_Air_mflow.port_a) annotation(
     Line(points = {{-80.5, -54}, {-82, -54}, {-82, 22}, {-74, 22}}, color = {0, 170, 255}, thickness = 1));
   connect(Input, throttleValve.port_b) annotation(
     Line(points = {{94, -47}, {26, -47}}));
-  connect(throttleValve.port_a, sen_Air_mflow.port_a) annotation(
-    Line(points = {{-14, -46}, {-82, -46}, {-82, 22}, {-74, 22}}, color = {0, 127, 255}));
   connect(Inlet_air_pressure.port, throttleValve.port_b) annotation(
     Line(points = {{42, -34}, {42, -46}, {26, -46}}, color = {0, 127, 255}));
   connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation(
@@ -109,6 +103,8 @@ equation
     Line(points = {{-116, 86}, {-100, 86}, {-100, 76}}, color = {0, 0, 127}));
   connect(abs.y, Current_to_mass_flow.u) annotation(
     Line(points = {{-86, 76}, {-80, 76}}, color = {0, 0, 127}));
+  connect(throttleValve.port_a, airSink.ports[1]) annotation(
+    Line(points = {{-14, -46}, {-50, -46}, {-50, -56}}, color = {0, 127, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),

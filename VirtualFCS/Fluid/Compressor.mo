@@ -69,13 +69,13 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
     yMax=1,
     yMin=0,                                                                                                                        y_start = 0.01) annotation (
     Placement(visible = true, transformation(origin={-34,-84},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  AixLib.Fluid.Sensors.TemperatureTwoPort tempOutletHum(redeclare package
+  Modelica.Fluid.Sensors.TemperatureTwoPort tempOutletHum(redeclare package
       Medium = Medium, m_flow_nominal=0.1) annotation (Placement(visible=true,
         transformation(
         origin={-12,-194},
         extent={{40,90},{60,110}},
         rotation=0)));
-  AixLib.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package
+  Buildings.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package
       Medium =                                                                      Medium, m_flow_nominal = 0.1) annotation (
     Placement(visible = true, transformation(origin = {-12, -186}, extent = {{74, 90}, {94, 110}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant constant3(k=0.8)   annotation (
@@ -99,7 +99,7 @@ Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium,
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={104,-90})));
-  AixLib.Fluid.Sensors.TemperatureTwoPort tempInletHum(redeclare package Medium =
+  Modelica.Fluid.Sensors.TemperatureTwoPort tempInletHum(redeclare package Medium =
         Medium, m_flow_nominal=0.1) annotation (Placement(visible=true,
         transformation(
         origin={-24,-148},
