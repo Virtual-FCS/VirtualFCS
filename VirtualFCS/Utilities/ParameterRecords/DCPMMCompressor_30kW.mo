@@ -2,7 +2,7 @@ within VirtualFCS.Utilities.ParameterRecords;
 record DCPMMCompressor_30kW
   extends Modelica.Icons.Record;
   extends VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor(
-    Jr = 0.1,
+    Jr = 0.15,
     Js = 0.29,
     VaNominal = 400,
     IaNominal = 75,
