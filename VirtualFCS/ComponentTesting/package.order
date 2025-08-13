@@ -21,3 +21,4 @@ CathodeAirTest
 ReversiblePotentialTest
 ManifoldTest
 MultiManifoldTest
+FuelCellTest

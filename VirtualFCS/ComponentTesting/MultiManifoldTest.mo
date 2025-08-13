@@ -15,14 +15,13 @@ model MultiManifoldTest
     Placement(transformation(origin = {0, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   inner Modelica.Fluid.System system(allowFlowReversal = false)  annotation(
     Placement(transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Step reactionRate(startTime = 0.5)  annotation(
+  Modelica.Blocks.Sources.Step reactionRate(startTime = 0.5, height = 0.9, offset = 0.1)  annotation(
     Placement(transformation(origin = {-70, 80}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.MassFlowSource_T hydrogen(nPorts = 1, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, use_m_flow_in = true)  annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T hydrogen(nPorts = 1, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, use_m_flow_in = true) annotation(
     Placement(transformation(origin = {-30, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Fluid.Sources.MassFlowSource_T air(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_m_flow_in = true)  annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T air(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_m_flow_in = true) annotation(
     Placement(transformation(origin = {30, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-
-  Modelica.Blocks.Math.Gain anode_gain(k = lambda*0.002)  annotation(
+  Modelica.Blocks.Math.Gain anode_gain(k = lambda*0.002) annotation(
     Placement(transformation(origin = {-22, 52}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Math.Gain cathode_gain(k = lambda*0.028/0.2) annotation(
     Placement(transformation(origin = {38, 52}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
