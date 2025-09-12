@@ -17,16 +17,21 @@ model Humidifier "Hollow fiber membrane humidifier:
     Placement(transformation(extent = {{-110, -10}, {-90, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_b portB_out(redeclare package Medium = dry_medium_out) "Dry side outlet" annotation(
     Placement(transformation(extent = {{100, -70}, {120, -50}}, origin = {210, -60}, rotation = 180)));
+  // Define constants
+  Real pi = Modelica.Constants.pi;
+  
   // Parameters for NTU model
-  parameter Real A_mem = 1.0 "Membrane effective area [m2]";
-  parameter Real D_mem = 3.6e-7 "Membrane diffusion coefficient [m2/s] (to be calibrated)";
-  parameter Real tau_perm = 6.1 "Time constant for moisture transfer [s]";
+  //parameter Modelica.Units.SI.Area A_mem = 1.0 "Membrane effective area [m2]";
+  parameter Modelica.Units.SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient [m2/s] (to be calibrated)";
+  parameter Modelica.Units.SI.Time tau_perm = 6.1 "Time constant for moisture transfer [s]";
   // Geometric and packing properties
   parameter Integer nFibers = 488 "Number of hollow fibers";
   parameter Real dFiber_i = 0.9e-3 "Inner fiber diameter [m]";
   parameter Real dFiber_o = 1.0e-3 "Outer fiber diameter [m]";
   parameter Real dHousing = 39.2e-3 "Inner diameter of shell [m]";
   parameter Real L_fiber = 150.8e-3 "Fiber length [m]";
+  
+  
   // Intermediate variables for NTU calculation
   Real V_dot_a "Volumetric flow A [m3/s]";
   Real V_dot_b "Volumetric flow B [m3/s]";
@@ -54,8 +59,14 @@ model Humidifier "Hollow fiber membrane humidifier:
   Real d_hyd_b "Or some effective shell hydraulic diameter";
   Real Re_a, Sc_a, Re_b, Sc_b;
   Real Sh_wet1, Sh_wet2, Sh_wet;
-  Real Phi, Sh_dry, v_a, A_shell, A_fibers, A_shell_gap, v_b;
-  parameter Real D_H2O_Air = 2.5e-5 "Binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
+  Real Phi, Sh_dry, v_a, v_b;
+  Modelica.Units.SI.Area A_c_fibers_in "Cross-section area of fibers inner diameter";
+  Modelica.Units.SI.Area A_c_fibers_out "Cross-section area of fibers outer diameter";
+  Modelica.Units.SI.Area A_mem "Surface area of fibers";
+  Modelica.Units.SI.Area A_c_shell "Cross-section area of humidifier shell";
+  Modelica.Units.SI.Area A_c_shell_gap "Cross-section area of humidifier shell space not occupied by fibers";
+   
+  parameter Real D_H2O_Air = 2.63e-7 "Binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
   //----- TEST IMPLEMENTATION OF RESISTANCES
   Modelica.Fluid.Sources.FixedBoundary sinkPortA_in(redeclare package Medium = wet_medium_in, nPorts = 1) annotation(
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {96, 74})));
@@ -85,8 +96,7 @@ model Humidifier "Hollow fiber membrane humidifier:
     Placement(transformation(extent = {{-40, -50}, {-20, -30}})));
   Modelica.Blocks.Sources.RealExpression realExpression5(y = portA_out_Xi) annotation(
     Placement(transformation(extent = {{-40, -64}, {-20, -44}})));
-  Modelica.Blocks.Sources.RealExpression realExpression6(y = 0.05) annotation(
-    Placement(transformation(extent = {{26, -48}, {46, -28}})));
+
 equation
 // 1. Compute volumetric flows
   V_dot_a = portA_in.m_flow/senDenPortA_in.d;
@@ -95,14 +105,16 @@ equation
 //----- TEST IMPLEMENTATION OF RESISTANCES
 // Wet side geometry
 // Dry side geometry
-  d_hyd_b = 4*(dHousing^2 - nFibers*(dFiber_o^2)/4)/(Modelica.Constants.pi*nFibers*dFiber_o);
+  d_hyd_b = 4*(dHousing^2 - nFibers*(dFiber_o^2)/4)/(pi*nFibers*dFiber_o);
 // or some effective shell hydraulic diameter
 // 1. Compute Re & Sc
-  v_a = (V_dot_a/nFibers)/(Modelica.Constants.pi*(dFiber_i^2)/4);
-  A_shell = Modelica.Constants.pi*(dHousing^2)/4;
-  A_fibers = nFibers*Modelica.Constants.pi*(dFiber_o^2)/4;
-  A_shell_gap = A_shell - A_fibers;
-  v_b = (portB_in.m_flow/senDenPortB_in.d)/A_shell_gap;
+  A_c_shell = pi*(dHousing^2)/4;
+  A_c_fibers_out = nFibers*pi*(dFiber_o^2)/4;
+  A_c_fibers_in = nFibers*pi*(dFiber_i^2)/4;
+  A_c_shell_gap = A_c_shell - A_c_fibers_out;
+  A_mem = 1000*nFibers*L_fiber*pi*dFiber_o^2;
+  v_a = V_dot_a/A_c_fibers_in;
+  v_b = (portB_in.m_flow/senDenPortB_in.d)/A_c_shell_gap;
   Re_a = senDenPortA_in.d*v_a*dFiber_i/wet_medium_in.dynamicViscosity(wet_medium_in.setState_phX(portA_in.p, portA_in.h_outflow, portA_in.Xi_outflow));
   Sc_a = wet_medium_in.dynamicViscosity(wet_medium_in.setState_phX(portA_in.p, portA_in.h_outflow, portA_in.Xi_outflow))/(senDenPortA_in.d*D_H2O_Air);
   Re_b = senDenPortB_in.d*v_b*d_hyd_b/dry_medium_in.dynamicViscosity(dry_medium_in.setState_phX(portB_in.p, portB_in.h_outflow, portB_in.Xi_outflow));
@@ -110,7 +122,7 @@ equation
 // 2. Sherwood numbers
   Sh_wet1 = 3.66;
   Sh_wet2 = 1.615*(Re_a*Sc_a*dFiber_i/L_fiber)^(1/3);
-  Sh_wet = (Sh_wet1^3 + 0.73 + (Sh_wet2 - 0.7)^3)^(1/3);
+  Sh_wet = (Sh_wet1^3 + 0.7^3 + (Sh_wet2 - 0.7)^3)^(1/3);
   Phi = nFibers*dFiber_o^2/dHousing^2;
   Sh_dry = (0.53 - 0.58*Phi)*Re_b^0.53*Sc_b^0.33;
 // 3. Convective coefficients & resistances
@@ -122,28 +134,37 @@ equation
 // FIX THIS:
 //h_conv_a = 1;
 //h_conv_b = 1;
+
 // 2. Resistances (fill with convective correlation or constants)
   R_conv_a = 1.0/h_conv_a;
+
 // placeholder: h_conv_a = f(velocityA, dFiber_o)
   R_conv_b = 1.0/h_conv_b;
+
 // placeholder: h_conv_b = f(velocityB, dHousing)
-  R_mem = dFiber_o/(D_mem*A_mem);
-  beta_eff = 1/(R_conv_a + R_mem + R_conv_b);
+  R_mem = (dFiber_o - dFiber_i)/(D_mem*A_mem);
+  beta_eff = 1/((R_conv_a + R_mem + R_conv_b)*A_mem);
+
 // 3. NTU and effectiveness
   NTU = beta_eff*A_mem/V_dot_a;
   eta = if VFR == 1 then NTU/(1 + NTU) else (1 - exp((VFR - 1)*NTU))/(1 - VFR*exp((VFR - 1)*NTU));
+  
 // 4. Steady permeation rate
   m_perm = eta*(portA_in.Xi_outflow[1] - portB_in.Xi_outflow[1])*portA_in.m_flow;
+
 // 5. First-order dynamics
   Xi = m_perm/min(portA_in.m_flow, portB_in.m_flow);
   der(Xi_state) = (Xi - Xi_state)/tau_perm;
   m_perm_state = Xi_state*min(portA_in.m_flow, portB_in.m_flow);
+
 // 6. Mass balances
   portA_out_m_flow = portA_in.m_flow - m_perm_state;
   portB_out_m_flow = portB_in.m_flow + m_perm_state;
+
 // 7. Species balances (water mass fraction at index 2)
   portA_out_Xi = (portA_in.m_flow*portA_in.Xi_outflow[1] - m_perm_state)/portA_out_m_flow;
   portB_out_Xi = (portB_in.m_flow*portB_in.Xi_outflow[1] + m_perm_state)/portB_out_m_flow;
+
 // 8. Energy balance (enthalpy flow)
   portA_out_h_outflow = portA_in.h_outflow - m_perm_state*senSpeEntPortA_in.h_out;
   portB_out_h_outflow = portB_in.h_outflow + m_perm_state*senSpeEntPortB_in.h_out;
