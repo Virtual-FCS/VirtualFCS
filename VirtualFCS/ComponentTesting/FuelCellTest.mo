@@ -11,15 +11,15 @@ model FuelCellTest
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1)  annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
-  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1)  annotation(
-    Placement(transformation(origin = {44, -10}, extent = {{4, -4}, {-4, 4}})));
+  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1, p = system.p_ambient)  annotation(
+    Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 60}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.Sine R_value(f (displayUnit = "mHz")= 0.1, phase = 0, offset = 30, startTime = 1, amplitude = 10)  annotation(
     Placement(transformation(origin = {50, 90}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  inner Modelica.Fluid.System system annotation(
+  inner Modelica.Fluid.System system(p_ambient = 5e5)  annotation(
     Placement(transformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.FixedBoundary coolant_sink(redeclare package Medium = Modelica.Media.Incompressible.Examples.Glycol47, nPorts = 1) annotation(
     Placement(transformation(origin = {25, -25}, extent = {{5, -5}, {-5, 5}})));

@@ -29,7 +29,7 @@ model FuelCell
   
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = T_start, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}) annotation(
+  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{20, -20}, {-20, 20}}, rotation = 90)));
   replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));

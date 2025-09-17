@@ -4,7 +4,7 @@ model ManifoldTest
   extends Modelica.Icons.Example;
   Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, useHeatPort = false, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
-  Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir) annotation(
+  Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, p = system.p_ambient) annotation(
     Placement(transformation(origin = {80, 0}, extent = {{20, -20}, {-20, 20}}, rotation = -0)));
   Modelica.Fluid.Sources.MassFlowSource_T source(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, m_flow = 1) annotation(
     Placement(transformation(origin = {-80, 0}, extent = {{-20, -20}, {20, 20}})));
@@ -19,4 +19,6 @@ equation
     Line(points = {{-60, 0}, {-20, 0}}, color = {0, 127, 255}));
   connect(manifold.r, reactionRate.y) annotation(
     Line(points = {{0, 14}, {0, 59}}, color = {0, 0, 127}));
+annotation(
+    experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
 end ManifoldTest;
