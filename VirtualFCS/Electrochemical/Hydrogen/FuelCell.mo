@@ -27,11 +27,14 @@ model FuelCell
   parameter Modelica.Units.SI.Area A = 0.1 "Membrane active area";
   parameter ArealResistivity r = 0.002 "Areal resistivity of the membrane to proton conduction";
   
+  // Initialization values
+  parameter Modelica.Units.SI.Pressure p_stack_start = 2e5 "Initial air-side pressure";
+  
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = T_start, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
+  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = p_stack_start) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{20, -20}, {-20, 20}}, rotation = 90)));
-  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium) annotation(
+  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium, p_start = p_stack_start) annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-80, 128}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
