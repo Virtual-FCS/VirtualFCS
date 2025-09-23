@@ -20,5 +20,6 @@ equation
   connect(manifold.r, reactionRate.y) annotation(
     Line(points = {{0, 14}, {0, 59}}, color = {0, 0, 127}));
 annotation(
-    experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
+    experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
 end ManifoldTest;

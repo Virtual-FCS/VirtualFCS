@@ -7,11 +7,13 @@ model FuelCellTest
   
   parameter Real lambda = 3;
   parameter Real P_air = 2.5e5;
+  parameter Integer N_cells = 42 "Number of cells in the stack";
+  parameter Modelica.Units.SI.Temperature T_stack = 320 "Stack temperature";
   package cathode_medium = VirtualFCS.Media.CathodeAir;
-  
-  
-  Electrochemical.Hydrogen.FuelCell fc(heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air)  annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
+
+
   Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1)  annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
   Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1, p = P_air)  annotation(
@@ -57,5 +59,6 @@ equation
     Line(points = {{40, 76}, {0, 76}, {0, 72}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.12),
-  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+  __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian");
 end FuelCellTest;

@@ -7,9 +7,9 @@ model FuelCell
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
   
-  replaceable Modelica.Electrical.Analog.Sources.ConstantVoltage OCV(V = 0.9*N_cell) "Open-circuit voltage" annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.NernstEquation OCV(p_H2=p_H2, p_O2=p_O2, T=T_stack, N_cells=N_cells) "Open-circuit voltage" annotation(
     Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180))) constrainedby OnePort;
-  replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = N_cell*r/A) "Internal resistance" annotation(
+  replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = N_cells*r/A) "Internal resistance" annotation(
     Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}}))) constrainedby OnePort;
   replaceable Modelica.Electrical.Analog.Ideal.Short mass_transport annotation(
     Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}}))) constrainedby OnePort;
@@ -22,13 +22,49 @@ model FuelCell
   constant SI.MolarMass M_O2  = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
 
-  parameter Modelica.Units.SI.Temperature T_start = 333 "Start temperature for fuel cell";
-  parameter Integer N_cell = 42 "Number of cells in the stack";
+  // Geometric parameters
+  parameter Integer N_cells = 42 "Number of cells in the stack";
+  parameter Modelica.Units.SI.Length L_FC = 0.420 "FC stack length";
+  parameter Modelica.Units.SI.Breadth W_FC = 0.582 "FC stack width";
+  parameter Modelica.Units.SI.Height H_FC = 0.156 "FC stack height";
+  parameter Modelica.Units.SI.Volume vol_FC = L_FC*W_FC*H_FC "FC stack volume";
   parameter Modelica.Units.SI.Area A = 0.1 "Membrane active area";
+    
+  // Fuel Cell Stack Parameters
+  parameter Modelica.Units.SI.Current I_rated = 280 "FC stack rated current";
+  parameter Modelica.Units.SI.CurrentDensity i_L = 1.12e4 "FC stack cell maximum limiting current density A/m2";
   parameter ArealResistivity r = 0.002 "Areal resistivity of the membrane to proton conduction";
+
+  // Electrochemical parameters
+  parameter Modelica.Units.SI.CurrentDensity i_0 = 0.193 "FC stack cell exchange current density A/m2";
+  parameter Modelica.Units.SI.CurrentDensity i_x = 10 "FC stack cell cross-over current density A/m2";
+  parameter Modelica.Units.SI.Resistance R_Ohm = 0.0923 "FC stack cell ohmic resistance";
+  
+  // Thermal parameters
+  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC = 110.0 "FC stack specific heat capacity";
+    //;
+  parameter Modelica.Units.SI.CoefficientOfHeatTransfer U_FC = 7.8*10^0.78 "HeatTransferCoefficient (W/(m2.K))";
+
+  // Declare calculated parameters
+  final parameter Modelica.Units.SI.Area A_cool_FCStack = L_FC*W_FC;
+
+
+  // Physical constants
+  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
+  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
   
   // Initialization values
-  parameter Modelica.Units.SI.Pressure p_stack_start = 2e5 "Initial air-side pressure";
+  parameter Modelica.Units.SI.Pressure p_stack_start = 2e5 "Initial stack pressure";
+  parameter Modelica.Units.SI.Temperature T_start = 333 "Start temperature for fuel cell";
+
+  
+  //*** DECLARE VARIABLES ***//
+ 
+  // Fuel cell variables
+  Modelica.Units.SI.AbsolutePressure p_H2(min = 0);
+  Modelica.Units.SI.AbsolutePressure p_O2(min = 0);
+  parameter Modelica.Units.SI.Temperature T_stack=320;
+    
   
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = T_start, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
@@ -43,6 +79,8 @@ model FuelCell
   Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true, T_start = T_start)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
+  p_H2 = anode.port_b.p;
+  p_O2 = cathode.port_b.p * cathode.medium.X[1]; 
   connect(mass_transport.n, pin_p) annotation(
     Line(points = {{80, 110}, {100, 110}, {100, 150}, {60, 150}}, color = {0, 0, 255}));
   connect(catalysis.n, mass_transport.p) annotation(
@@ -95,7 +133,7 @@ equation
     Line(points = {{30, -90}, {30, -106}}, color = {191, 0, 0}));  protected
   Modelica.Blocks.Math.Gain minus(k = -1)  annotation(
     Placement(transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Blocks.Math.Gain reaction_rate(k = N_cell/n/F)  annotation(
+  Modelica.Blocks.Math.Gain reaction_rate(k = N_cells/n/F)  annotation(
     Placement(transformation(origin = {20, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow electricPower annotation(
     Placement(transformation(origin = {0, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
