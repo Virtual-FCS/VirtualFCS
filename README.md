@@ -1,3 +1,11 @@
+## Project Status
+
+![Status: Inactive](https://img.shields.io/badge/status-inactive-red)
+![Planned Update: 2026](https://img.shields.io/badge/updates-2026-blue)
+
+This library is **not under active maintenance** at the moment.  
+Development and updates are planned to resume in **2026**.
+
 # VirtualFCS Library
 VirtualFCS is a Modelica library for fuel cell system modelling developed through the EU H2020 research project Virtual-FCS.
 

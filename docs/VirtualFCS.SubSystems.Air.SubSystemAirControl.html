@@ -1,8 +1,8 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.SubSystems.Air.SubSystemAirControl</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.html">SubSystems</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.Air.html">Air</a>.<span class="omc-h1">SubSystemAirControl</span></h1><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>VirtualFCS.SubSystems.Air.SubSystemAirControl</title>
+  </head>
+  <body>
+  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.html">SubSystems</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.Air.html">Air</a>.<span class="omc-h1">SubSystemAirControl</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><span style="font-size: 12px;">The air sub system control governs the flow and pressure of air, based on fuel cell current.&nbsp;</span><br style="font-size: 12px;"><div style="font-size: 12px;"><br></div><div style="font-size: 12px;"><div><br></div><div><b>Description</b></div><div><p class="MsoNormal"><o:p></o:p></p><p class="MsoNormal">The sensor interface (mass flow rate set value) signals are inputs to the&nbsp;<a href="modelica:///VirtualFCS.Control.PumpSpeedControl">Pump Speed Control</a>&nbsp;block. Other inputs include air feed pressure (from air tank to the fuel cell) and mass flow rate and are set to a constant value. The output signal is concatenated with two values, (1) Air Feed Pressure input to&nbsp;<a href="modelica://VirtualFCS.Fluid.ThrottleValve" style="font-size: medium;">Throttle Valve</a>, and (2) Set Speed to&nbsp;<a href="modelica://VirtualFCS.Fluid.Compressor" style="font-size: medium;">Air Compressor</a>. The&nbsp;<a href="modelica:///VirtualFCS.Control.PumpSpeedControl">Pump Speed Control</a>&nbsp;blocks uses&nbsp;simple PID control to set&nbsp;<a href="modelica://VirtualFCS.Fluid.Compressor" style="font-size: medium;">Air Compressor</a>&nbsp;speed as a function of mass flow.&nbsp;</p><p class="MsoNormal"><b><br></b></p><p class="MsoNormal"><b>List of components</b></p><p class="MsoNormal">The model comprises <a href="modelica:///VirtualFCS.Control.PumpSpeedControl">Pump Speed Control</a>,&nbsp;<a href="modelica:///Modelica.Blocks.Routing.DeMultiplex2">DeMultipex2</a>,&nbsp;<a href="modelica:///Modelica.Blocks.Routing.Multiplex3">Multiplex3</a>. The subsystem features multiple interface connections all of them are control port.&nbsp;</p></div></div></body></html><hr />Generated at The system cannot accept the date entered.
+Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.24.4 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>

@@ -1,8 +1,40 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.html">Battery</a>.<span class="omc-h1">LiIonBatteryPack_Composite</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of LiIonCell models. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass <span class="Apple-tab-span" style="white-space:pre">		</span>= 2.5&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>kg</div><div>Cp&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 1000&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>= 0.5&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>-</div><div>p<span class="Apple-tab-span" style="white-space:pre">		</span>= 5<span class="Apple-tab-span" style="white-space:pre">		</span>Cells in parallel</div><div>s&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 10&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>Cells in series</div><div><br></div></body></html><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite</title>
+  </head>
+  <body>
+  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.html">Battery</a>.<span class="omc-h1">LiIonBatteryPack_Composite</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of several separate instances of the&nbsp;<a href="modelica://VirtualFCS.Electrochemical.Battery.LiIonCell">LiIonCell model</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investigations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
+
+<br>
+This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face="Consolas">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span style="font-family: Consolas;">pin_p</span>&nbsp;and&nbsp;<span style="font-family: Consolas;">pin_n</span>.</div><div><br></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack. The ambient temperature T<sub>0</sub> is determined by connection to the heatBoundary.</div><div><br>
+
+<table border="0.9">
+<caption align="Left" style="text-align: left;"> <b><u>Default Parameters</u></b></caption>
+<tbody><tr><th>Parameter name</th>
+            <th>Value</th>
+            <th>Unit</th>
+         </tr>
+         <tr>
+            <td align="Left">SOC_init</td>
+            <td>=0.5</td>
+            <td align="Right">-</td>
+         </tr>
+	   <tr>
+            <td align="Left">p</td>
+            <td>=5</td>
+            <td align="Right">Cells in parallel</td>
+         </tr>
+         <tr>
+            <td align="Left">s</td>
+            <td>=10</td>
+            <td align="Right">Cells in series</td>
+         </tr>   
+         <tr>
+            <td align="Left">heatTransferCoefficient</td>
+            <td>=7.8 * 10 ^ 0.78</td>
+            <td align="Right">W/(m<sup>2</sup> K)</td>
+         </tr>        
+      </tbody></table><br>
+</div><div><div><i><u>Convective Heat Transfer</u></i></div><div>Q<sub>conv</sub>&nbsp;= hA<sub>cool</sub>(T&nbsp;<span style="color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);">−</span>&nbsp;T<sub>0</sub>)</div><div><br></div><div><div><i><u>Radiative Heat Transfer</u></i></div><div>Q<sub>rad</sub>&nbsp;= 0.95A<sub>cool</sub><span style="color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(255, 255, 255);">σ</span>(T<sup>4</sup>&nbsp;<span style="color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);">−</span>&nbsp;(T<sub>0</sub>)<sup>4</sup>)</div></div></div></body></html><hr />Generated at The system cannot accept the date entered.
+Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.24.4 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>

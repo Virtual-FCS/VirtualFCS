@@ -1,4 +1,4 @@
 Traceback (most recent call last):
-  File "Tidy.py", line 4, in <module>
+  File "C:\Users\benjamins\Documents\GitHub\VirtualFCS\VirtualFCS\docs\Tidy.py", line 7, in <module>
     from bs4 import BeautifulSoup
-ImportError: No module named bs4
+ModuleNotFoundError: No module named 'bs4'
