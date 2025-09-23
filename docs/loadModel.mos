@@ -1,0 +1,8 @@
+if loadModel(AixLib) then true else if loadModel(AixLib,languageStandard="2.x") then true else loadModel(AixLib,languageStandard="1.x");getErrorString();
+if loadModel(Buildings) then true else if loadModel(Buildings,languageStandard="2.x") then true else loadModel(Buildings,languageStandard="1.x");getErrorString();
+if loadModel(Complex) then true else if loadModel(Complex,languageStandard="2.x") then true else loadModel(Complex,languageStandard="1.x");getErrorString();
+if loadModel(Modelica) then true else if loadModel(Modelica,languageStandard="2.x") then true else loadModel(Modelica,languageStandard="1.x");getErrorString();
+if loadModel(ModelicaServices) then true else if loadModel(ModelicaServices,languageStandard="2.x") then true else loadModel(ModelicaServices,languageStandard="1.x");getErrorString();
+if loadModel(Modelica_DeviceDrivers) then true else if loadModel(Modelica_DeviceDrivers,languageStandard="2.x") then true else loadModel(Modelica_DeviceDrivers,languageStandard="1.x");getErrorString();
+if loadModel(PowerSystems) then true else if loadModel(PowerSystems,languageStandard="2.x") then true else loadModel(PowerSystems,languageStandard="1.x");getErrorString();
+if loadModel(SDF) then true else if loadModel(SDF,languageStandard="2.x") then true else loadModel(SDF,languageStandard="1.x");getErrorString();

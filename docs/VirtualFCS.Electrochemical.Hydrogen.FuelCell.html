@@ -1,12 +1,97 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Hydrogen.FuelCell</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.<span class="omc-h1">FuelCell</span></h1><h2><a name="info">Information</a></h2><pre>Model for a single PEM fuel cell</pre><h2>Contents</h2>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>VirtualFCS.Electrochemical.Hydrogen.FuelCell</title>
+  </head>
+  <body>
+  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.<span class="omc-h1">FuelCell</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC). The model includes components describing the electrical, fluidic, and thermal properties of the cell.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style="font-family: 'Courier New';">potentialSource.v</span><span style="font-family: 'Courier New'; font-size: 12pt;">,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the cell using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.</div><div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using the&nbsp;<a href="modelica://VirtualFCS.SubSystems.FuelCellSubSystems">FuelCellSubSystems</a>&nbsp;block, or individual&nbsp;<a href="modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen">SubSystemHydrogen</a>,&nbsp;<a href="modelica://VirtualFCS.SubSystems.Air.SubSystemAir">SubSystemAir</a>, and&nbsp;<a href="modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling">SubSystemCooling</a>&nbsp;blocks.<br> 
+<br> 
+
+
+
+
+
+
+<table border="0.9">
+<caption align="Left" style="text-align: left;"> <b><u>Default Parameters</u></b></caption>
+<tbody><tr><th>Parameter name</th>
+            <th>Value</th>
+            <th>Unit</th>
+         </tr>
+         <tr>
+            <td align="Left">mass</td>
+            <td>=1 </td>
+            <td align="Right">kg</td>
+         </tr>
+         
+         <tr>
+            <td align="Left">volume</td>
+            <td>=0.001</td>
+	      <td align="Right">m3</td>
+         </tr>
+         <tr>
+            <td align="Left">Cp</td>
+            <td>=800</td>
+            <td align="Left">J/(kg.K)</td>
+         </tr>
+	   <tr>
+            <td align="Left">N_cell </td>
+            <td>=1</td>
+            <td align="Right">-</td>
+         </tr>
+         
+         <tr>
+            <td align="Left">A_cell </td>
+            <td>=0.0237</td>
+	      <td align="Right">m2</td>
+         </tr>
+         <tr>
+            <td align="Left">i_0</td>
+            <td>=0.0002</td>
+            <td align="Right">A</td>
+         </tr>
+	   <tr>
+            <td align="Left">i_L</td>
+            <td>=520</td>
+            <td align="Right">A</td>
+         </tr>         
+         <tr>
+            <td align="Left">i_x</td>
+            <td>=0.001</td>
+	      <td align="Right"> A </td>
+         </tr>
+         <tr>
+            <td align="Left">b_1</td>
+            <td>=0.025</td>
+            <td align="Right"> V/dec </td>
+         </tr>
+	   <tr>
+            <td align="Left">b_2</td>
+            <td>=0.25</td>
+            <td align="Right">V/dec</td>
+         </tr>
+         
+         <tr>
+            <td align="Left">R_0</td>
+            <td>=0.02</td>
+	      <td align="Right">Ohm</td>
+         </tr>
+         <tr>
+            <td align="Left">R_1</td>
+            <td>=0.01</td>
+            <td align="Right">Ohm</td>
+         </tr>
+	   <tr>
+            <td align="Left">C_1</td>
+            <td>=0.003</td>
+            <td align="Right">F</td>
+         </tr>
+         
+         
+      </tbody></table><br>
+</div><div><div><span style="text-decoration: underline;"><strong>Electrochemical equations:</strong></span></div><div>In the equations below, i<sub>stack</sub>&nbsp;represents the current flowing through the stack, accessible in the code as&nbsp;<font face="Courier New">currentSensor.i</font>.</div><p><i><u>The Nernst equilibrium potential</u></i></p><p>U<sub>FC</sub><sup>Nernst&nbsp;</sup>= (U<sup>0</sup>&nbsp;-((RT)/(2F) ln( 1/(p<sub>H2</sub>&nbsp;(p<sub>O2</sub><sup>0.5</sup>))), U<sup>0&nbsp;</sup>= 1.229 V</p><p><span style="text-decoration: underline;"><i>Activation overpotential</i></span></p><p>η<sup>act&nbsp;</sup>= b<sub>1&nbsp;</sub>ln( 1-(i<sub>cell&nbsp;</sub>+ i<sub>x</sub>) / i<sub>0</sub>)</p><p><u><i>Concentration overpotential</i></u></p><p>η<sup>con&nbsp;</sup>= -b<sub>2&nbsp;</sub>ln( 1-(i<sub>cell&nbsp;</sub>+ i<sub>x</sub>) / i<sub>L</sub>)</p><p><u><i>Cell voltage</i></u></p><p>V<sub>cell</sub>&nbsp;= N<sub>cell</sub>&nbsp;(U<sub>FC</sub><sup>Nernst</sup>&nbsp;- η<sup>act&nbsp;</sup>&nbsp;- i<sub>FC</sub>R<sub>0</sub>&nbsp;- η<sup>con</sup>)</p><p><span style="text-decoration: underline;"><strong>Thermal equations:</strong></span></p><p><i><u>Electrochemical heat generation</u></i></p><p>Q<sub>gen</sub><sup>&nbsp;</sup>= (V<sub>TN</sub>&nbsp;- V<sub><font size="2">cell</font></sub>)i<sub>cell</sub>, V<sub>TN</sub>&nbsp;= 1.481 V</p></div></body></html><h2>Contents</h2>
 <table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCell.Cathode_Medium.html">Cathode_Medium</a></td><td></td></tr>
 <tr><td><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCell.Anode_Medium.html">Anode_Medium</a></td><td></td></tr>
 <tr><td><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCell.Coolant_Medium.html">Coolant_Medium</a></td><td></td></tr>
 </table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.24.4 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>

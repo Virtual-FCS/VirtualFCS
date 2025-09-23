@@ -1,12 +1,109 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Hydrogen.FuelCellStack</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.<span class="omc-h1">FuelCellStack</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC) stack. The model includes components describing the electrical, fluidic, and thermal properties of the stack.<div><br></div><div>The electrical performance is modelled using a simple 1RC equivalent circuit.&nbsp;</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the stack using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 50&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>kg</div><div>volume&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>= 0.001&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>m3</div><div><br></div><div>Cp&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 800&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>J/(kg.K)</div><div>N_cell&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>= 100</div><div>A_cell&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>= 0.0237&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>m2</div><div><br></div><div>i_0&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.0002&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>A</div><div>i_L&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 520&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>A</div><div>i_x <span class="Apple-tab-span" style="white-space:pre">		</span>= 0.001 <span class="Apple-tab-span" style="white-space:pre">	</span>A&nbsp;</div><div>b_1&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.025&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>V/dec</div><div>b_2&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.25&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>V/dec</div><div>R_0&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.02&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>Ohm</div><div>R_1&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.01&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>Ohm</div><div>C_1&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.003&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>F</div><div><br></div></body></html><h2>Contents</h2>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>VirtualFCS.Electrochemical.Hydrogen.FuelCellStack</title>
+  </head>
+  <body>
+  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.<span class="omc-h1">FuelCellStack</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane fuel cell (PEMFC) stack. The model includes components describing the electrical, fluidic, and thermal properties of the stack.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style="font-family: 'Courier New';">potentialSource.v</span><span style="font-family: 'Courier New'; font-size: 12pt;">,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell. Default parameters fit the polarization curve given by Powercell in their Powercellution data sheet, available <a href="https://powercellution.com/p-stack">here</a>.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the stack using Faraday's law.&nbsp;&nbsp;
+</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.<div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using the <a href="modelica://VirtualFCS.SubSystems.FuelCellSubSystems">FuelCellSubSystems</a> block, or individual <a href="modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen">SubSystemHydrogen</a>, <a href="modelica://VirtualFCS.SubSystems.Air.SubSystemAir">SubSystemAir</a>, and <a href="modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling">SubSystemCooling</a> blocks.<br>&nbsp; 
+
+<table border="0.9"><caption style="text-align: left;" align="Left"><strong><u>Default Parameters</u></strong></caption><caption style="text-align: left;" align="Left"><strong><u><br></u></strong></caption>
+<tbody>
+<tr>
+<th>Parameter name</th>
+<th>Value</th>
+<th>Unit</th>
+</tr>
+<tr>
+<td align="Left">m_FC_stack</td>
+<td>=42</td>
+<td align="Right">kg</td>
+</tr>
+<tr>
+<td align="Left">L_FC_stack</td>
+<td>=0.42</td>
+<td align="Right">m</td>
+</tr>
+<tr>
+<td align="Left">W_FC_stack</td>
+<td>=0.582</td>
+<td align="Right">m</td>
+</tr>
+<tr>
+<td align="Left">H_FC_stack</td>
+<td>=0.156</td>
+<td align="Right">m</td>
+</tr>
+<tr>
+<td align="Left">I_rated_FC_stack</td>
+<td>=450</td>
+<td align="Right">A</td>
+</tr>
+<tr>
+<td align="Left">i_L_FC_stack</td>
+<td>=760</td>
+<td align="Right">A</td>
+</tr>
+
+<tr>
+<td align="Left">N_FC_stack</td>
+<td>=455</td>
+<td align="Right">-</td>
+</tr>
+
+<tr>
+<td align="Left">i_0_FC_stack</td>
+<td>=0.0091</td>
+<td align="Right">A</td>
+</tr>
+<tr>
+<td align="Left">i_x_FC_stack</td>
+<td>=0.001</td>
+<td align="Right">A</td>
+</tr>
+<tr>
+<td align="Left">b_1_FC_stack</td>
+<td>=0.0985</td>
+<td align="Right">V/dec</td>
+</tr>
+<tr>
+<td align="Left">b_2_FC_stack</td>
+<td>=0.0985</td>
+<td align="Right">V/dec</td>
+</tr>
+<tr>
+<td align="Left">R_0</td>
+<td>=0.00022*N_FC_stack</td>
+<td align="Right">Ohm</td>
+</tr>
+<tr>
+<td align="Left">Cp</td>
+<td>=1100</td>
+<td align="Left">J/(kg.K)</td>
+</tr>
+
+</tbody>
+</table><br><br><br>
+
+
+
+<div><span style="text-decoration: underline;"><strong>Electrochemical equations: </strong></span></div><div>In the equations below, i<sub>stack</sub>&nbsp;represents the current flowing through the stack, accessible in the code as <font face="Courier New">currentSensor.i</font>.</div>
+<p><i><u>The Nernst equilibrium potential, per cell</u>&nbsp;</i></p>
+<p>U<sub>FC</sub><sup>Nernst </sup>= (U<sup>0</sup> -((RT)/(2F) ln( 1/(p<sub>H2</sub> (p<sub>O2</sub><sup>0.5</sup>))), U<sup>0 </sup>= 1.229 V</p>
+<p><span style="text-decoration: underline;"><i>Activation overpotential, per cell</i></span></p>
+<p>η<sup>act </sup>= b<sub>1 </sub>ln( 1-(i<sub>stack&nbsp;</sub>+ i<sub>x</sub>) / i<sub>0</sub>)</p>
+<p><u><i>Concentration overpotential, per cell</i></u></p>
+<p>η<sup>con </sup>= -b<sub>2 </sub>ln( 1-(i<sub>stack&nbsp;</sub>+ i<sub>x</sub>) / i<sub>L</sub>)</p><p><u><i>Stack voltage</i></u></p><p>V<sub>stack</sub> = N<sub>cell</sub> (U<sub>FC</sub><sup>Nernst</sup>&nbsp;- η<sup>act&nbsp;</sup>&nbsp;- i<sub>FC</sub>R<sub>0</sub> - η<sup>con</sup>)</p>
+<p><span style="text-decoration: underline;"><strong>Thermal equations:</strong> </span></p>
+<p><i><u>Electrochemical heat generation</u></i></p>
+<p>Q<sub>gen</sub><sup>&nbsp;</sup>= (V<sub>TN</sub> - V<sub><font size="2">stack</font></sub>)i<sub>stack</sub>, V<sub>TN</sub> = 1.481 V</p>
+<p><br></p>
+<p>&nbsp;</p>
+
+
+</div></div></body></html><h2>Contents</h2>
 <table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCellStack.Cathode_Medium.html">Cathode_Medium</a></td><td></td></tr>
 <tr><td><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCellStack.Anode_Medium.html">Anode_Medium</a></td><td></td></tr>
 <tr><td><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCellStack.Coolant_Medium.html">Coolant_Medium</a></td><td></td></tr>
 </table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.24.4 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>

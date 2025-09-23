@@ -1,0 +1,8 @@
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <title>VirtualFCS.Control.PumpSpeedControlCooling</title>
+  </head>
+  <body>
+  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Control.html">Control</a>.<span class="omc-h1">PumpSpeedControlCooling</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><div>Control the speed of a <a href="modelica://VirtualFCS.Fluid.PumpElectricDC">Electric Pump DC</a>&nbsp;or <a href="modelica://VirtualFCS.Fluid.RecirculationBlower">Recirculation Blower</a></div><div><br></div><div><b>Description</b></div><div><br></div>This block uses a simple <a href="modelica://Modelica.Blocks.Continuous.LimPID">PID</a> control to set pump speed as a function of mass flow.&nbsp;<div><br></div><div>The block requires that a sensor be placed to measure the mass flow through the pump in question. The measured value for the mass flow is taken in the getMassFlow interface, while the desired mass flow is set in the setMassFlowInterface. Properties of the&nbsp;<a href="modelica://Modelica.Blocks.Continuous.LimPID">PID</a>&nbsp;control can be adjusted in the limPID block, and the resulting control signal is sent to the setPumpSpeed interface.&nbsp;</div></body></html><hr />Generated at The system cannot accept the date entered.
+Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.24.4 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>

@@ -1,7 +1,7 @@
 within VirtualFCS.Utilities.ParameterRecords;
 
 record EVDriveData
-  extends Modelica.Icons.RecordsPackage;
+  extends Modelica.Icons.Record;
   import Modelica.Electrical.Machines.Thermal.convertResistance;
   //Motor
   parameter Modelica.Units.SI.Resistance Ra = convertResistance(motorData.Ra, motorData.TaRef, motorData.alpha20a, motorData.TaNominal) "Armature resistance at nominal temperature" annotation(
