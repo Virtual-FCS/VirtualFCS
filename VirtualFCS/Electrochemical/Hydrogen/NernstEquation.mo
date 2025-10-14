@@ -8,8 +8,8 @@ model NernstEquation
   import Modelica.Constants.F;
   import Modelica.Constants.R;
   
-  parameter Modelica.Units.SI.Voltage U0 = 1.23 "standard potential";
-  parameter Integer n_e = 2 "mol é/mol H2";
+  final parameter Modelica.Units.SI.Voltage U0 = 1.23 "standard potential";
+  final parameter Integer n_e = 2 "mol é/mol H2";
   parameter Integer N_cells = 10 "number of cells in the stack";
   
   final parameter Modelica.Units.SI.Temperature T_ref = 298 "Reference temperature ";
