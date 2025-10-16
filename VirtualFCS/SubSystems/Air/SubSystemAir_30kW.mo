@@ -7,15 +7,14 @@ model SubSystemAir_30kW
   // Medium declaration
   replaceable package Medium = Modelica.Media.Air.MoistAir;
 
-  // Parameter definition
+// Parameter definition
   parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
   parameter Modelica.Units.SI.AbsolutePressure set_air_pressure = 2.4e5 "Set air pressure";
   parameter Integer N_FC_stack = 180 "FC stack number of cells";
   Modelica.Units.SI.Power Power_Compressor_mez "The power consumed by the Compressor";
   Modelica.Units.SI.Power Power_Compressor_electrical "The power consumed by the Compressor";
   Modelica.Units.SI.Efficiency Rendement_compressor "Compressor efficiency";
-  Real t "parameter to cimpute efficiency";
-  
+  Real t "parameter to compute efficiency";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Sources.FixedBoundary airSource(redeclare package Medium = Medium, nPorts = 2) annotation(
@@ -46,7 +45,7 @@ model SubSystemAir_30kW
     Placement(transformation(origin = {0, -12}, extent = {{-100, -52}, {-120, -32}}), iconTransformation(extent = {{-100, -52}, {-120, -32}})));
   Modelica.Fluid.Sensors.Temperature compressorInletSensor(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {-41, 45}, extent = {{-7, -7}, {7, 7}})));
-  Fluid.ThrottleValve_2 throttleValve(m_flow_nominal = 0.5)  annotation(
+  Fluid.ThrottleValve throttleValve(valveDownstream(dp_nominal(displayUnit = "Pa") = 1e4, m_flow_nominal = 0.5))   annotation(
     Placement(transformation(origin = {6, -46}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Math.Gain Current_to_mass_flow(k = 0.02897*1.75/(96485*4*0.21)*N_FC_stack) annotation(
     Placement(transformation(origin = {-66, 76}, extent = {{-12, -12}, {12, 12}})));
@@ -63,7 +62,6 @@ model SubSystemAir_30kW
 equation
   Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((Output.p*0.00001)^0.28) - 1);
   Power_Compressor_electrical = pin_p.i*pin_p.v;
-
   t = max(Power_Compressor_electrical, 1);
   Rendement_compressor = (sen_Air_mflow.m_flow*298.15*1004/(0.9*t))*(((Output.p*0.00001)^0.28) - 1);
 //*** DEFINE CONNECTIONS ***//
