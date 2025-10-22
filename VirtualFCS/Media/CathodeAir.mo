@@ -10,7 +10,7 @@ package CathodeAir "Medium model for cathodic air"
     final reducedX = true,
     final fixedX = false,
     Temperature(min = 273.15, max = 500, start = 333),
-    AbsolutePressure(min = 3E4, max = 3E5, start = 1E5));
+    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5));
 
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
@@ -48,7 +48,7 @@ package CathodeAir "Medium model for cathodic air"
       u = specificInternalEnergy(state);
       
       MM = molarMass(state); // Weighed average for all species, both phases
-      R_s = gasConstant(state); // Gas constant valid only for gas phase      
+      R_s = gasConstant(state); // Gas constant valid only for gas phase
 
       state.p = p;
       state.T = T;
@@ -107,7 +107,7 @@ package CathodeAir "Medium model for cathodic air"
   algorithm
     state.p := p;
     state.Xi := X[1:nXi];
-    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273.15, u_max = 500);
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273.15, u_max = 1000);
   end setState_phX;
   
   redeclare function extends temperature

@@ -1,9 +1,8 @@
 ﻿within VirtualFCS.Electrochemical.Hydrogen;
 model FuelCellSystem
-  // System
+
   outer Modelica.Fluid.System system "System properties";
-  parameter Modelica.Units.SI.Mass m_FC_system = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
-   // Fuel Cell Stack Paramters
+
   parameter Modelica.Units.SI.Mass m_FC_stack = 28.6 "FC stack mass"; // Reference Virtual-FCS D2.1
   parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length";
   parameter Modelica.Units.SI.Breadth W_FC_stack = 0.760 "FC stack width";
@@ -26,85 +25,62 @@ model FuelCellSystem
   Modelica.Units.SI.Efficiency eta_au "Fuel cell utilisation";
 
 
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_nom_FC_stack, L_FC_stack = L_FC_stack, N_FC_stack = N_FC_stack, W_FC_stack = W_FC_stack, i_L_FC_stack = I_rated_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack,
-    A_FC_surf=315)                                                                                                                                                                                                         annotation (
-    Placement(visible = true, transformation(origin = {-1, 10}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.SubSystems.FuelCellSubSystems fuelCellSubSystems(N_FC_stack = N_FC_stack,V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2) annotation (
+  VirtualFCS.SubSystems.FuelCellSubSystems fuelCellSubSystems(N_FC_stack = N_FC_stack, V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2) annotation (
     Placement(visible = true, transformation(origin = {-1, -60}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
-  Modelica.Blocks.Routing.Multiplex2 multiplex2 annotation (
-    Placement(visible = true, transformation(origin = {-54, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
-    Placement(visible = true, transformation(origin = {-98, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation (
-    Placement(visible = true, transformation(origin = {-58, 46}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Blocks.Nonlinear.Limiter limiter(uMax = I_rated_FC_stack, uMin = 0) annotation (
-    Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  VirtualFCS.Electrochemical.Hydrogen.fd1 fd1_1
-    annotation (Placement(transformation(extent={{-212,28},{-164,76}})));
-  Modelica.Blocks.Math.Gain gain(k=1/fuelCellStack.A_FC_surf) annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=180,
-        origin={-168,2})));
+  FuelCell fuelCell(
+    N_FC_stack=N_FC_stack,
+    Cp_FC_stack=4000)
+    annotation (Placement(transformation(origin = {9.23077, -4.61538}, extent = {{-49.2308, -15.3846}, {30.7692, 64.6154}})));
 equation
-  Power_stack = fuelCellStack.pin_n.i*fuelCellStack.pin_p.v;
+  Power_stack = fuelCellStack_woDeg.pin_n.i*fuelCellStack_woDeg.pin_p.v;
   Power_BOP = fuelCellSubSystems.batterySystem.pin_n.i*fuelCellSubSystems.batterySystem.pin_p.v;
   Power_system = Power_stack - Power_BOP;
-  eta_FC_sys = min(max((Power_system)/(242000*(N_FC_stack*(fuelCellStack.pin_n.i + 0.000001)/(2*96485.3321))), 0.001),1);
-  eta_fu= (fuelCellStack.H2_sink.ports[1].m_flow)/max(((fuelCellStack.H2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemHydrogen.valveH2Purge.m_flow)),0.00001);
-  eta_au= (fuelCellStack.O2_sink.ports[1].m_flow)/max(((fuelCellStack.O2_sink.ports[1].m_flow)+(fuelCellSubSystems.subSystemAir.throttleValve.port_a.m_flow)),0.00001);
-  connect(fuelCellStack.port_b_Air, fuelCellSubSystems.air_port_a) annotation (
-    Line(points={{18.0667,-2.13333},{18.0667,-37.5},{16.5,-37.5}},
-                                                          color = {0, 127, 255}));
-  connect(fuelCellSubSystems.air_port_b, fuelCellStack.port_a_Air) annotation (
-    Line(points={{21.5,-37.5},{26,-37.5},{26,22.1333},{18.0667,22.1333}},
-                                                                    color = {0, 127, 255}));
-  connect(fuelCellStack.port_b_H2, fuelCellSubSystems.H2_port_a) annotation (
-    Line(points={{-20.0667,-2.13333},{-18,-2.13333},{-18,-37.5},{-18.5,-37.5}},
-                                                                        color = {0, 127, 255}));
-  connect(fuelCellSubSystems.H2_port_b, fuelCellStack.port_a_H2) annotation (
-    Line(points={{-23.5,-37.5},{-26,-37.5},{-26,22.1333},{-20.0667,22.1333}},
-                                                                        color = {0, 127, 255}));
-  connect(multiplex2.y, fuelCellSubSystems.contolInput) annotation (
-    Line(points = {{-43, -60}, {-31, -60}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(temperatureSensor.T, multiplex2.u2[1]) annotation (
-    Line(points={{-87,-66},{-66,-66}},      color = {0, 0, 127}));
-  connect(fuelCellStack.port_a_Coolant, fuelCellSubSystems.coolant_port_b) annotation (
-    Line(points={{-6.2,-5.6},{-6.2,-6},{-3.5,-6},{-3.5,-37.5}},  color = {0, 127, 255}));
-  connect(fuelCellStack.port_b_Coolant, fuelCellSubSystems.coolant_port_a) annotation (
-    Line(points={{4.2,-5.6},{1.5,-5.6},{1.5,-37.5}},  color = {0, 127, 255}));
-  connect(temperatureSensor.port, fuelCellStack.heatPort) annotation (
-    Line(points={{-108,-66},{-132,-66},{-132,76},{-2,76},{-2,22.1333},{-6.54667,
-          22.1333}},                                                                    color = {191, 0, 0}));
-  connect(currentSensor.i, limiter.u) annotation (
-    Line(points={{-69,46},{-80,46},{-80,12},{-80,12}},          color = {0, 0, 127}));
-  connect(limiter.y, multiplex2.u1[1]) annotation (
-    Line(points={{-80,-11},{-80,-11},{-80,-54},{-66,-54},{-66,-54}},            color = {0, 0, 127}));
-  connect(pin_n, currentSensor.p) annotation (
-    Line(points = {{-40, 96}, {-58, 96}, {-58, 56}, {-58, 56}}, color = {0, 0, 255}));
-  connect(currentSensor.n, fuelCellStack.pin_n) annotation (
-    Line(points={{-58,36},{-58,29.0667},{-14.8667,29.0667}},
-                                                     color = {0, 0, 255}));
-  connect(pin_p, fuelCellStack.pin_p) annotation (
-    Line(points={{46,96},{46,29.0667},{12.8667,29.0667}},
-                                                  color = {0, 0, 255}));
-  connect(temperatureSensor.T, fd1_1.T_FC) annotation (Line(points={{-87,-66},{
-          -82,-66},{-82,-82},{-240,-82},{-240,68.32},{-213.44,68.32}}, color={0,
-          0,127}));
-  connect(fuelCellSubSystems.RH_cathode, fd1_1.RH_ca) annotation (Line(points={
-          {26.5,-66.5},{34,-66.5},{34,-30},{-228,-30},{-228,58.24},{-213.44,
-          58.24}}, color={0,0,127}));
-  connect(fd1_1.FCDeg_new, fuelCellStack.FCDeg_new) annotation (Line(points={{-163.04,
-          52},{-78,52},{-78,20},{-38,20},{-38,-10.4533},{-30.4667,-10.4533}},
-                      color={0,0,127}));
-  connect(gain.y, fd1_1.J_FC) annotation (Line(points={{-179,2},{-216,2},{-216,
-          22},{-222,22},{-222,46.72},{-213.44,46.72}}, color={0,0,127}));
-  connect(currentSensor.i, gain.u) annotation (Line(points={{-69,46},{-80,46},{
-          -80,20},{-148,20},{-148,2},{-156,2}}, color={0,0,127}));
+  eta_FC_sys = if ((Power_system)/(242000*(N_FC_stack*(fuelCellStack_woDeg.pin_n.i + 0.000001)/(2*96485.3321)))) > 1 then 1 elseif ((Power_system)/(242000*(N_FC_stack*(fuelCellStack_woDeg.pin_n.i + 0.000001)/(2*96485.3321)))) < 0.001 then 0 else (Power_system)/(242000*(N_FC_stack*(fuelCellStack_woDeg.pin_n.i + 0.000001)/(2*96485.3321)));
+  eta_fu = (fuelCellStack_woDeg.H2_sink.ports[1].m_flow)/max(((fuelCellStack_woDeg.H2_sink.ports[1].m_flow) + (fuelCellSubSystems.subSystemHydrogen.valveH2Purge.m_flow)), 0.00001);
+  eta_au = (fuelCellStack_woDeg.O2_sink.ports[1].m_flow)/max(((fuelCellStack_woDeg.O2_sink.ports[1].m_flow) + (fuelCellSubSystems.subSystemAir.throttleValve.port_a.m_flow)), 0.00001);
+  connect(fuelCellStack_woDeg.port_b_Air, fuelCellSubSystems.air_port_a) annotation(
+    Line(points = {{13.0667, 3.86667}, {18, 3.86667}, {18, -14}, {16.5, -14}, {16.5, -37.5}}, color = {0, 127, 255}));
+  connect(fuelCellSubSystems.air_port_b, fuelCellStack_woDeg.port_a_Air) annotation(
+    Line(points = {{21.5, -37.5}, {38, -37.5}, {38, 28.1333}, {13.0667, 28.1333}}, color = {0, 127, 255}));
+  connect(fuelCellStack_woDeg.port_b_H2, fuelCellSubSystems.H2_port_a) annotation(
+    Line(points = {{-25.0667, 3.86667}, {-26, 3.86667}, {-26, -30}, {-18.5, -30}, {-18.5, -37.5}}, color = {0, 127, 255}));
+  connect(fuelCellSubSystems.H2_port_b, fuelCellStack_woDeg.port_a_H2) annotation(
+    Line(points = {{-23.5, -37.5}, {-36, -37.5}, {-36, 28.1333}, {-25.0667, 28.1333}}, color = {0, 127, 255}));
+  connect(fuelCellStack_woDeg.port_a_Coolant, fuelCellSubSystems.coolant_port_b) annotation(
+    Line(points = {{-11.2, 0.4}, {-11.2, -30}, {-3.5, -30}, {-3.5, -37.5}}, color = {0, 127, 255}));
+  connect(fuelCellStack_woDeg.port_b_Coolant, fuelCellSubSystems.coolant_port_a) annotation(
+    Line(points = {{-0.8, 0.4}, {-0.8, -30}, {1.5, -30}, {1.5, -37.5}}, color = {0, 127, 255}));
+  connect(temperatureSensor.port, fuelCellStack_woDeg.heatPort) annotation(
+    Line(points = {{-108, -66}, {-112, -66}, {-112, -50}, {-74, -50}, {-74, -30}, {-32, -30}, {-32, 46}, {-11.5467, 46}, {-11.5467, 28.1333}}, color = {191, 0, 0}));
+  connect(currentSensor.i, limiter.u) annotation(
+    Line(points = {{-51, 70}, {-78, 70}, {-78, 12}, {-80, 12}}, color = {0, 0, 127}));
+  connect(pin_n, currentSensor.p) annotation(
+    Line(points = {{-40, 96}, {-40, 80}}, color = {0, 0, 255}));
+  connect(currentSensor.n, fuelCellStack_woDeg.pin_n) annotation(
+    Line(points = {{-58, 36}, {-58, 34}, {-34, 34}, {-34, 48}, {-19.8667, 48}, {-19.8667, 35.0667}}, color = {0, 0, 255}));
+  connect(pin_p, fuelCellStack_woDeg.pin_p) annotation(
+    Line(points = {{46, 96}, {46, 46}, {7.86667, 46}, {7.86667, 35.0667}}, color = {0, 0, 255}));
+  connect(fuelCell.pin_n, currentSensor.n) annotation(
+    Line(points = {{-22, 50}, {-40, 50}, {-40, 60}}, color = {0, 0, 255}));
+  connect(fuelCell.pin_p, pin_p) annotation(
+    Line(points = {{22, 50}, {46, 50}, {46, 96}}, color = {0, 0, 255}));
+  connect(temperatureSensor.port, fuelCell.heatPort) annotation(
+    Line(points = {{-30, -20}, {0, -20}, {0, 2}}, color = {191, 0, 0}));
+  connect(temperatureSensor.T, fuelCellSubSystems.stackTemperature) annotation(
+    Line(points = {{-50, -20}, {-60, -20}, {-60, -50}, {-30, -50}}, color = {0, 0, 127}));
+  connect(limiter.y, fuelCellSubSystems.stackCurrent) annotation(
+    Line(points = {{-80, -10}, {-80, -70}, {-30, -70}}, color = {0, 0, 127}));
+  protected
+  Modelica.Blocks.Nonlinear.Limiter limiter(uMax = I_rated_FC_stack, uMin = 0) annotation (
+    Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
+    Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation (
+    Placement(transformation(origin = {-40, 70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   annotation (
     Icon(graphics={  Text(origin = {-6, -250}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Rectangle(origin = {-55, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {58.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {-40, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-29.8, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-19.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-8.7, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {1.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {12.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {22.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {32.3, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {42.9, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}})}, coordinateSystem(initialScale = 0.1)),
     Documentation(info = "<html><head></head><body>The FuelCellSystem class packages together a <a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a> module and a&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.FuelCellSubSystems\">FuelCellSubSystems</a>&nbsp;module for controlling hydrogen, air, and coolant feeds into and out of the fuel cell.<div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using theblock, or individual&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>,&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, and&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>&nbsp;blocks.</div><div><br></div><div>In addition to the coolant subsystem, it is assumed that the fuel cell stack exchanges heat with its surroundings by convection and radiation.</div><div><br></div><div><div>Default parameters fit the polarization curve given by Powercell in their Powercellution data sheet, available&nbsp;<a href=\"https://powercellution.com/p-stack\">here</a>.</div>&nbsp;<table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><strong><u>Default Parameters</u></strong></caption><caption align=\"Left\" style=\"text-align: left;\"><strong><u><br></u></strong></caption><tbody><tr><th>Parameter name</th><th>Value</th><th>Unit</th></tr><tr><td align=\"Left\">m_FC_stack</td><td>=42</td><td align=\"Right\">kg</td></tr><tr><td align=\"Left\">L_FC_stack</td><td>=0.42</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">W_FC_stack</td><td>=0.582</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">H_FC_stack</td><td>=0.156</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">I_rated_FC_stack</td><td>=450</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">i_L_FC_stack</td><td>=760</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">N_FC_stack</td><td>=455</td><td align=\"Right\">-</td></tr><tr><td align=\"Left\">V_tank_H2</td><td>=0.13</td><td align=\"Right\">m<sup>3</sup></td></tr><tr><td align=\"Left\">p_tank_H2</td><td>=35000000</td><td align=\"Right\">Pa</td></tr>
