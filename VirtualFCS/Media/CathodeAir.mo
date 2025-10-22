@@ -26,11 +26,11 @@ package CathodeAir "Medium model for cathodic air"
     /* To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.
      * Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.
      * If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T).
-     * Since pure boiling water is an extremely rare case in fuel cells, we use the more convenient.
+     * Since pure freezing or boiling water is an extremely rare case in fuel cells, we use the more convenient option.
      */
     AbsolutePressure p "Absolute pressure of medium";
     Temperature T "Temperature of medium";
-    MassFraction[nX] X(start = reference_X) "Mass fractions (= (component mass)/total mass  m_i/m)";
+    MassFraction[nXi] Xi(start = reference_X[1:nXi]) "Independent mass fractions";
   end ThermodynamicState;
 
   redeclare model extends BaseProperties(final standardOrderComponents = true) "Base properties of medium"
@@ -52,7 +52,7 @@ package CathodeAir "Medium model for cathodic air"
 
       state.p = p;
       state.T = T;
-      state.X = X;
+      state.Xi = Xi;
   end BaseProperties;
 
   function saturationPressure "Vapour pressure of water as function of temperature"
@@ -91,7 +91,7 @@ package CathodeAir "Medium model for cathodic air"
   algorithm
     state.p := p;
     state.T := T;
-    state.X := X;
+    state.Xi := X[1:nXi];
   end setState_pTX;
 
   redeclare function extends setState_phX "Set state with pressure, enthalpy, composition"
@@ -106,7 +106,7 @@ package CathodeAir "Medium model for cathodic air"
     end h_offset;
   algorithm
     state.p := p;
-    state.X := X;
+    state.Xi := X[1:nXi];
     state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273.15, u_max = 500);
   end setState_phX;
   
@@ -122,12 +122,15 @@ package CathodeAir "Medium model for cathodic air"
   
   redeclare function extends massFraction
   algorithm
-    Xi := state.X[1:nXi];
+    Xi := state.Xi;
   end massFraction;
   
   redeclare function extends molarMass
+  protected
+    Modelica.Units.SI.MolarMass X[nX];
   algorithm
-    MM := 1 / sum(state.X ./ MMs);
+    X := cat(1, state.Xi, {1-sum(state.Xi)});
+    MM := 1 / sum(X ./ MMs);
   end molarMass;
   
   function liquidMassFraction "Fraction of mass in liquid phase, assumed only water."
@@ -135,7 +138,7 @@ package CathodeAir "Medium model for cathodic air"
     input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.MassFraction X_l "Mass fraction in liquid phase";
   algorithm
-    X_l := max(0.0, state.X[Water] - MMs[Water]/molarMass(state)*saturationPressure(state.T)/state.p);
+    X_l := max(0.0, (1-sum(state.Xi)) - MMs[Water]/molarMass(state)*saturationPressure(state.T)/state.p);
   end liquidMassFraction;
 
   function gasMassFraction "Independent mass fractions in gas phase"
@@ -143,7 +146,7 @@ package CathodeAir "Medium model for cathodic air"
     input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.MassFraction[nXi] Yi "Mass fractions in gas phase";
   algorithm
-    Yi := state.X[Oxygen:Nitrogen] / (1-liquidMassFraction(state));
+    Yi := state.Xi[Oxygen:Nitrogen] / (1-liquidMassFraction(state));
   end gasMassFraction;
 
   function gasConstant "Gas constant for the gas phase"
@@ -238,7 +241,7 @@ end enthalpyOfGas;
     input ThermodynamicState state;
     output Modelica.Units.SI.MoleFraction phi;
   algorithm
-    phi := (state.X[Water]-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
+    phi := ((1-sum(state.Xi))-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
   end relativeHumidity;
 
 
