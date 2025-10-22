@@ -1,4 +1,6 @@
 UsersGuide
+CompressorInterface
+SimpleCompressor
 Compressor
 PressureRegulator
 PumpElectricDC

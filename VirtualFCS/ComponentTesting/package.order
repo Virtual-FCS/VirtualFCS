@@ -22,3 +22,4 @@ ReversiblePotentialTest
 ManifoldTest
 MultiManifoldTest
 FuelCellTest
+SimpleCompressorTest
