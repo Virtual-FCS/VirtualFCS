@@ -10,7 +10,7 @@ model SubSystemHydrogen
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
   parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Integer N_stack = 180 "FC stack number of cells";
+  parameter Integer N_cell = 180 "FC stack number of cells";
   //*** INSTANTIATE COMPONENTS ***//
   // Interfaces and boundaries
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation(
@@ -33,7 +33,7 @@ model SubSystemHydrogen
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 12) annotation(
     Placement(visible = true, transformation(origin = {-60, 116}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   // Control components
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_stack = N_stack, pressure_H2_set = 200000) annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cell = N_cell, pressure_H2_set = 200000) annotation(
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(visible = true, transformation(origin = {-140, 116}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));

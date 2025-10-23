@@ -9,7 +9,7 @@ model SubSystemAir
   constant Modelica.Units.SI.MolarMass MM_air = Modelica.Media.IdealGases.Common.SingleGasesData.Air.MM;
 
   parameter Real lambda = 3 "Air excess ratio";
-  parameter Integer N_stack = 42 "FC stack number of cells";
+  parameter Integer N_cell = 42 "FC stack number of cells";
   parameter Modelica.Units.SI.AbsolutePressure p_set = 200000 "Target cathodic pressure";
 
   Modelica.Fluid.Sources.FixedBoundary source(redeclare package Medium = Medium, nPorts = 1) annotation(
@@ -32,7 +32,7 @@ model SubSystemAir
     Placement(transformation(origin = {80, -20}, extent = {{10, 10}, {-10, -10}})));
   Modelica.Fluid.Sources.FixedBoundary exhaust(redeclare package Medium = Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {-70, -40}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
-  Modelica.Blocks.Math.Gain current_to_mass_flow(k = lambda*MM_air*N_stack/4/F/xO2)  annotation(
+  Modelica.Blocks.Math.Gain current_to_mass_flow(k = lambda*MM_air*N_cell/4/F/xO2)  annotation(
     Placement(transformation(origin = {-70, 72}, extent = {{-12, -12}, {12, 12}})));
   replaceable Fluid.SimpleCompressor compressor(redeclare package Medium = Medium) constrainedby Fluid.CompressorInterface annotation(
     Placement(transformation(origin = {20, 24}, extent = {{-20, -20}, {20, 20}})));
