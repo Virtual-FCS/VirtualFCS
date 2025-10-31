@@ -40,13 +40,13 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
    
   // Reactor geometry parameters
   parameter Integer N = 50 "Number of reactor computational segments";
-  parameter Modelica.Units.SI.Length  H = 12.0 "Reactor height (m)";
+  parameter Modelica.Units.SI.Length  H = 4.0 "Reactor height (m)";
   parameter Modelica.Units.SI.Length L = 1.0 "Reactor length (m)";
   parameter Modelica.Units.SI.Length W = 1.2 "Reactor width (m)";
-  parameter Modelica.Units.SI.Length pitch = 10e-2 "Space separation between tubes (where hot stream flows)";
-  parameter Real z_head = 0.166 "Fraction of reactor length needed as header space at the inflow + outflow of the reactor";
+  parameter Real z_head = 0.166 "Fraction of reactor height needed as header space at the inflow + outflow overhead";
   parameter Modelica.Units.SI.Length D_tubes = 10e-2 "Tubes diameter (m)";
   parameter Modelica.Units.SI.Length t_tubes = 5e-3 "Tubes wall thickness(m)";
+  parameter Modelica.Units.SI.Length pitch = 10e-2 "Space separation between tubes (where hot stream flows)";
   parameter Real W_cat = 4.5 "Mass loading catalyst in reactor (g/m^2)";
   // Flow and thermodynamic parameters
   parameter Modelica.Units.NonSI.Temperature_degC T_in_degC = 550 "Inlet temperature (°C)";
@@ -222,8 +222,8 @@ equation
         
         // Energy balance
         der(T[i]) = 0;
-        Q_r[i] = deltaH*W_cat*A_r/N*r_rxn[i];
-        Q_loss[i] = U_tot * A_s/N * (T_a - T[i]); 
+        Q_r[i] = deltaH * W_cat*A_r/N * nu_NH3*r_rxn[i];
+        Q_loss[i] = U_tot * A_s/N * (T[i] - T_a ); 
         
         
      else
@@ -241,8 +241,8 @@ equation
         
         // Energy balance
         der(T[i]) = 0;
-        Q_r[i] = deltaH*W_cat*A_r/N*r_rxn[i];
-        Q_loss[i] = U_tot * A_s/N * (T_a - T[i]); 
+        Q_r[i] = deltaH * W_cat*A_r/N * nu_NH3*r_rxn[i];
+        Q_loss[i] = U_tot * A_s/N * (T[i] - T_a ); 
         
     end if;
   end for;

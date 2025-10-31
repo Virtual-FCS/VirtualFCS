@@ -19,20 +19,20 @@ model AmmoniaCrackerTest
     redeclare package Medium = HydrogenMedium,
     nPorts = 1, use_p = true, p = P_out, use_T = false, T = T_in) annotation(
     
-    Placement(transformation(origin = {86, 8}, extent = {{10, -10}, {-10, 10}})));
+    Placement(transformation(origin = {86, 10}, extent = {{10, -10}, {-10, 10}})));
   
   
   Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(
   redeclare package Medium = AmmoniaMedium,
   use_m_flow_in = false,
   use_T_in = false,
-  m_flow = 1,
+  m_flow = 0.3,
   nPorts = 1)  annotation(
-    Placement(transformation(origin = {-76, 8}, extent = {{-16, -16}, {16, 16}})));
+    Placement(transformation(origin = {-76, 10}, extent = {{-16, -16}, {16, 16}})));
 
 equation
   connect(ammoniaCracker.outlet_cracked_gas, cracked_gas_sink.ports[1]) annotation(
-    Line(points = {{36, 10}, {54, 10}, {54, 8}, {76, 8}}, color = {0, 127, 255}));
+    Line(points = {{36, 10}, {76, 10}}, color = {0, 127, 255}));
   connect(ammonia_source.ports[1], ammoniaCracker.inlet_nh3_feed) annotation(
-    Line(points = {{-60, 8}, {-36, 8}, {-36, 10}, {-10, 10}}, color = {0, 127, 255}));
+    Line(points = {{-60, 10}, {-10, 10}}, color = {0, 127, 255}));
 end AmmoniaCrackerTest;
