@@ -1,40 +1,45 @@
 within VirtualFCS.Examples.SubsystemExamples;
-
 model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen subsystem."
   extends Modelica.Icons.Example;
-  inner Modelica.Fluid.System system annotation(
+  inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  Modelica.Blocks.Math.Gain gain(k = -0.00202 * 1 / (96485 * 2)) annotation(
+  Modelica.Blocks.Math.Gain gain(k = -0.00202 * 1 / (96485 * 2)) annotation (
     Placement(visible = true, transformation(origin = {-34, 80}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation(
+  SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation (
     Placement(visible = true, transformation(origin = {-0.999964, -0.666637}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
-  Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium = Anode_Medium, nPorts = 1, use_m_flow_in = true)  annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium =
+        Anode_Medium,                                                                       nPorts = 1, use_m_flow_in = true)  annotation (
     Placement(visible = true, transformation(origin = {0, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium = Anode_Medium) annotation(
+  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium =
+        Anode_Medium)                                                                                annotation (
     Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation(
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 27, V_min_bat_pack = 23, V_nom_bat_pack = 25, m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin = {1.9984e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200)  annotation(
+  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200)  annotation (
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(gain.y, boundary.m_flow_in) annotation(
-    Line(points = {{-26, 80}, {-18, 80}, {-18, 92}, {-8, 92}, {-8, 80}}, color = {0, 0, 127}));
-  connect(subSystemHydrogen.port_H2ToStack, teeJunctionIdeal.port_1) annotation(
-    Line(points = {{-12, 24}, {-12, 40}, {-10, 40}}, color = {0, 170, 0}, thickness = 1));
-  connect(subSystemHydrogen.port_StackToH2, teeJunctionIdeal.port_2) annotation(
-    Line(points = {{10, 24}, {12, 24}, {12, 40}, {10, 40}}, color = {0, 170, 0}, thickness = 1));
-  connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation(
+  connect(gain.y, boundary.m_flow_in) annotation (
+    Line(points={{-25.2,80},{-18,80},{-18,92},{-8,92},{-8,80}},          color = {0, 0, 127}));
+  connect(subSystemHydrogen.port_H2ToStack, teeJunctionIdeal.port_1) annotation (
+    Line(points={{-11.8,23.1334},{-11.8,40},{-10,40}},
+                                                     color = {0, 170, 0}, thickness = 1));
+  connect(subSystemHydrogen.port_StackToH2, teeJunctionIdeal.port_2) annotation (
+    Line(points={{9.80004,23.1334},{12,23.1334},{12,40},{10,40}},
+                                                            color = {0, 170, 0}, thickness = 1));
+  connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation (
     Line(points = {{0, 60}, {0, 50}}, color = {0, 170, 0}, thickness = 1));
-  connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation(
-    Line(points = {{8, -40}, {10, -40}, {10, -18}}, color = {0, 0, 255}));
-  connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation(
-    Line(points = {{-8, -40}, {-6, -40}, {-6, -18}}, color = {0, 0, 255}));
-  connect(trapezoid.y, gain.u) annotation(
-    Line(points = {{-64, 80}, {-44, 80}}, color = {0, 0, 127}));
-  connect(trapezoid.y, subSystemHydrogen.control) annotation(
-    Line(points = {{-64, 80}, {-56, 80}, {-56, 12}, {-22, 12}}, color = {0, 0, 127}));
-  annotation(
+  connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation (
+    Line(points={{8.8,-40.8},{9.00004,-40.8},{9.00004,-18.6666}},
+                                                    color = {0, 0, 255}));
+  connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation (
+    Line(points={{-8.8,-40.8},{-6.99996,-40.8},{-6.99996,-18.6666}},
+                                                     color = {0, 0, 255}));
+  connect(trapezoid.y, gain.u) annotation (
+    Line(points={{-65,80},{-43.6,80}},    color = {0, 0, 127}));
+  connect(trapezoid.y, subSystemHydrogen.control) annotation (
+    Line(points={{-65,80},{-56,80},{-56,11.3334},{-23,11.3334}},color = {0, 0, 127}));
+  annotation (
     Diagram,
     Icon,
     Documentation(info = "<html><head></head><body>This example is intended as a means to evaluate the performance of the hydrogen subsystem both for optimization and troubleshooting purposes.<div><br></div><div><b><br></b></div><div><b>Description</b></div><div><p class=\"MsoNormal\">The model has three parts (1) input (includes fuel cell current and its conversion to hydrogen mass flow rate), (2) hydrogen subsystem (includes hydrogen tank, pressure regulator, recirculation blower, purge valve and control system), and (3) power supply (battery system).&nbsp;</p><p class=\"MsoNormal\"><br></p><p class=\"MsoNormal\"><b>References to base model/related packages<o:p></o:p></b></p><p class=\"MsoNormal\"><span lang=\"NO-BOK\" style=\"mso-ansi-language:NO-BOK\"><o:p>&nbsp;</o:p></span><a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl\">Subsystem Hydrogen Control</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">Pressure Regulator</a>,&nbsp;<a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>&nbsp;and <a href=\"modelica://VirtualFCS.Electrochemical.Battery.BatterySystem\">Battery System</a></p><p class=\"MsoNormal\"><span lang=\"NO-BOK\" style=\"mso-ansi-language:NO-BOK\"><o:p>&nbsp;</o:p></span></p><p class=\"MsoNormal\"><br></p><p class=\"MsoListParagraphCxSpFirst\" style=\"text-indent:-18.0pt;mso-list:l0 level1 lfo1\">
@@ -673,28 +678,28 @@ equation
 <style>
  /* Style Definitions */
  table.MsoNormalTable
-	{mso-style-name:\"Table Normal\";
-	mso-tstyle-rowband-size:0;
-	mso-tstyle-colband-size:0;
-	mso-style-noshow:yes;
-	mso-style-priority:99;
-	mso-style-parent:\"\";
-	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
-	mso-para-margin-top:0cm;
-	mso-para-margin-right:0cm;
-	mso-para-margin-bottom:8.0pt;
-	mso-para-margin-left:0cm;
-	line-height:107%;
-	mso-pagination:widow-orphan;
-	font-size:11.0pt;
-	font-family:\"Calibri\",sans-serif;
-	mso-ascii-font-family:Calibri;
-	mso-ascii-theme-font:minor-latin;
-	mso-hansi-font-family:Calibri;
-	mso-hansi-theme-font:minor-latin;
-	mso-bidi-font-family:\"Times New Roman\";
-	mso-bidi-theme-font:minor-bidi;
-	mso-fareast-language:EN-US;}
+        {mso-style-name:\"Table Normal\";
+        mso-tstyle-rowband-size:0;
+        mso-tstyle-colband-size:0;
+        mso-style-noshow:yes;
+        mso-style-priority:99;
+        mso-style-parent:\"\";
+        mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+        mso-para-margin-top:0cm;
+        mso-para-margin-right:0cm;
+        mso-para-margin-bottom:8.0pt;
+        mso-para-margin-left:0cm;
+        line-height:107%;
+        mso-pagination:widow-orphan;
+        font-size:11.0pt;
+        font-family:\"Calibri\",sans-serif;
+        mso-ascii-font-family:Calibri;
+        mso-ascii-theme-font:minor-latin;
+        mso-hansi-font-family:Calibri;
+        mso-hansi-theme-font:minor-latin;
+        mso-bidi-font-family:\"Times New Roman\";
+        mso-bidi-theme-font:minor-bidi;
+        mso-fareast-language:EN-US;}
 </style>
 <![endif]-->
 

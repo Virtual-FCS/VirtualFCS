@@ -47,11 +47,9 @@ model PumpElectricDC
   Modelica.Blocks.Math.Gain gain(k = 9.5493)  annotation(
     Placement(visible = true, transformation(origin = {20, -28}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
   // Power & Efficiency
-  Real eta_PumpElectricDC(unit = "100") "The efficiency of the PumpElectricDC calculated by eta = P_water/P_shaft";
-  Real Power_PumpElectricDC(unit = "W") "The power consumed by the PumpElectricDC";
+  Modelica.Units.SI.Power Power_PumpElectricDC "The power consumed by the PumpElectricDC";
 equation
   torque.tau = -9.5488*pump.W_total/pump.N;
-  eta_PumpElectricDC = (((Output.p - (Input.p))*volumeFlowRate.V_flow)/(max(dcpm.pin_ap.v*dcpm.pin_ap.i, 1e-10))) * 100;
   Power_PumpElectricDC = pin_p.i * pin_p.v;
 //*** DEFINE CONNECTIONS ***//
   connect(multiplex2.y, sensors) annotation(

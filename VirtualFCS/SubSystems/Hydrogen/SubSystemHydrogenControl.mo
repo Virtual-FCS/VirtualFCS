@@ -1,8 +1,8 @@
 within VirtualFCS.SubSystems.Hydrogen;
 
 model SubSystemHydrogenControl
-  parameter Real pressure_H2_set(unit = "Pa") = 200000 "Set H2 Pressure";
-  parameter Real massFlow_H2_set(unit = "kg/s") = 1e-2 "Set H2 Recirculation Mass Flow";
+  parameter Modelica.Units.SI.Pressure pressure_H2_set = 200000 "Set H2 Pressure";
+  parameter Modelica.Units.SI.MassFlowRate massFlow_H2_set = 1e-2 "Set H2 Recirculation Mass Flow";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   Modelica.Blocks.Routing.Multiplex3 multiplexSignalsH2Subsystem annotation(
     Placement(visible = true, transformation(origin = {124, 40}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));

@@ -1,35 +1,36 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 model FuelCellSystem
+  import SI = Modelica.Units.SI;
   // System
   outer Modelica.Fluid.System system "System properties";
-  parameter Real m_FC_system(unit = "kg") = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
+  parameter SI.Mass m_FC_system = fuelCellStack.m_FC_stack + fuelCellSubSystems.m_FC_subsystems;
   // Fuel Cell Stack Paramters
-  parameter Real m_FC_stack(unit = "kg") = 42 "FC stack mass";
-  parameter Real L_FC_stack(unit = "m") = 0.420 "FC stack length";
-  parameter Real W_FC_stack(unit = "m") = 0.582 "FC stack width";
-  parameter Real H_FC_stack(unit = "m") = 0.156 "FC stack height";
-  parameter Real vol_FC_stack(unit = "m3") = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
+  parameter SI.Mass m_FC_stack = 42 "FC stack mass";
+  parameter SI.Length L_FC_stack = 0.420 "FC stack length";
+  parameter SI.Breadth W_FC_stack = 0.582 "FC stack width";
+  parameter SI.Height H_FC_stack = 0.156 "FC stack height";
+  parameter SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume";
   //  parameter Real V_rated_FC_stack(unit="V") = 57.9 "Maximum stack operating voltage";
-  parameter Real I_rated_FC_stack(unit = "A") = 450 "FC stack rated current";
-  parameter Real i_L_FC_stack(unit = "A") = 760 "FC stack cell maximum limiting current";
+  parameter SI.Current I_nom_FC_stack = 300 "FC stack nominal current";
+  parameter SI.Current I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current";
   parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
   // H2 Subsystem Paramters
-  parameter Real V_tank_H2(unit = "m3") = 0.13 "H2 tank volume";
-  parameter Real p_tank_H2(unit = "Pa") = 35000000 "H2 tank initial pressure";
-  parameter Real heatTransferCoefficient(unit = "W/(m2.K)") = 12;
+  parameter SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
+  parameter SI.Pressure p_tank_H2 = 35000000 "H2 tank initial pressure";
+  parameter SI.CoefficientOfHeatTransfer heatTransferCoefficient = 12 "HeatTransferCoefficient (W/(m2.K))";
   // Power and efficiency calculations
-  Real Power_system(unit = "W") "Power delivered from the FC system (Stack - BOP)";
-  Real Power_stack(unit = "W") "Power delivered from the FC stack";
-  Real Power_BOP(unit = "W") "Power consumed by the BOP components";
-  Real eta_FC_sys(unit = "100") "Fuel cell system efficiency";
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_rated_FC_stack, L_FC_stack = L_FC_stack, W_FC_stack = W_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack) annotation(
+  SI.Power Power_system "Power delivered from the FC system (Stack - BOP)";
+  SI.Power Power_stack "Power delivered from the FC stack";
+  SI.Power Power_BOP "Power consumed by the BOP components";
+  SI.Efficiency eta_FC_sys "Fuel cell system efficiency";
+  VirtualFCS.Electrochemical.Hydrogen.FuelCellStack fuelCellStack(H_FC_stack = H_FC_stack, I_rated_FC_stack = I_nom_FC_stack, L_FC_stack = L_FC_stack, N_FC_stack = N_FC_stack, W_FC_stack = W_FC_stack, i_L_FC_stack = I_rated_FC_stack, m_FC_stack = m_FC_stack, vol_FC_stack = vol_FC_stack) annotation(
     Placement(visible = true, transformation(origin = {-1, 10}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(visible = true, transformation(origin = {20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.SubSystems.FuelCellSubSystems fuelCellSubSystems(V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2) annotation(
+  VirtualFCS.SubSystems.FuelCellSubSystems fuelCellSubSystems(N_FC_stack = N_FC_stack,V_tank_H2 = V_tank_H2, p_tank_H2 = p_tank_H2) annotation(
     Placement(visible = true, transformation(origin = {-1, -60}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
   Modelica.Blocks.Routing.Multiplex2 multiplex2 annotation(
     Placement(visible = true, transformation(origin = {-54, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -45,13 +46,13 @@ model FuelCellSystem
     Placement(visible = true, transformation(origin = {52, 42}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 293.15) annotation(
     Placement(visible = true, transformation(origin = {70, 86}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Blocks.Nonlinear.Limiter limiter(uMax = i_L_FC_stack, uMin = 0) annotation(
+  Modelica.Blocks.Nonlinear.Limiter limiter(uMax = I_rated_FC_stack, uMin = 0) annotation(
     Placement(visible = true, transformation(origin = {-80, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
   Power_stack = fuelCellStack.pin_n.i * fuelCellStack.pin_p.v;
   Power_BOP = fuelCellSubSystems.batterySystem.pin_n.i * fuelCellSubSystems.batterySystem.pin_p.v;
   Power_system = Power_stack - Power_BOP;
-  eta_FC_sys = max((Power_system) / (286000 * (N_FC_stack * (fuelCellStack.pin_n.i + 0.000001) / (2 * 96485.3321))), 0.00001) * 100;
+  eta_FC_sys = max((Power_system) / (286000 * (N_FC_stack * (fuelCellStack.pin_n.i + 0.000001) / (2 * 96485.3321))), 0.001);
   connect(pin_p, fuelCellStack.pin_p) annotation(
     Line(points = {{20, 96}, {20, 36}, {9, 36}}, color = {0, 0, 255}));
   connect(fuelCellStack.port_b_Air, fuelCellSubSystems.air_port_a) annotation(

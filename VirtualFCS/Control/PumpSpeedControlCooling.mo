@@ -2,8 +2,8 @@ within VirtualFCS.Control;
 
 block PumpSpeedControlCooling
   parameter Real k = 1 "Control Gain";
-  parameter Real Td = 0.1 "Time Constant of Derivative Block";
-  parameter Real Ti = 0.1 "Time Constant of Integral Block";
+  parameter Modelica.Units.SI.Time Td = 0.1 "Time Constant of Derivative Block";
+  parameter Modelica.Units.SI.Time Ti = 0.1 "Time Constant of Integral Block";
   Modelica.Blocks.Interfaces.RealInput setMassFlow annotation(
     Placement(visible = true, transformation(origin = {-100, 40}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput getMassFlow annotation(

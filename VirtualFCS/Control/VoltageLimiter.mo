@@ -1,8 +1,8 @@
 within VirtualFCS.Control;
 
 model VoltageLimiter "Enforce voltage limits on battery cells."
-  parameter Real upperVoltageLimit(unit = "V") = 3.6 "Upper Voltage Limit";
-  parameter Real lowerVoltageLimit(unit = "V") = 2.0 "Lower Voltage Limit";
+  parameter Modelica.Units.SI.Voltage upperVoltageLimit = 3.6 "Upper Voltage Limit";
+  parameter Modelica.Units.SI.Voltage lowerVoltageLimit = 2.0 "Lower Voltage Limit";
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p_battery annotation(
     Placement(visible = true, transformation(origin = {196, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {110, 190}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n_battery annotation(

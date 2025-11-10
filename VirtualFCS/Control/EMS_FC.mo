@@ -1,7 +1,7 @@
 within VirtualFCS.Control;
 
 block EMS_FC
-  parameter Real ramp_up(unit = "1/s") = 20 "FC stack current ramp up rate";
+  parameter Modelica.Units.SI.TimeAging ramp_up = 20 "FC stack current ramp up rate";
   Modelica.Blocks.Math.Abs abs1 annotation(
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant OFF(k = 0) annotation(

@@ -10,17 +10,17 @@ model BatteryElectricVehicle
     Placement(visible = true, transformation(origin = {60, -3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Vehicles.VehicleProfile vehicleProfile(VN = VirtualFCS.Vehicles.VehicleProfile.vehicle_name.Mirai) annotation(
     Placement(visible = true, transformation(origin = {4.44089e-16, -7.54952e-15}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  Real eta_vehicle(unit = "100") "Vehicle efficiency";
+  Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
 equation
   if vehicleProfile.useRegenerativeBreaking then
     if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (batteryPowerTrain.Power_del_DC_DC * (1 - (batteryPowerTrain.eta_drivetrain * 0.01))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)) * 100, 0);
+      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (batteryPowerTrain.Power_del_DC_DC * (1 - (batteryPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)), 0);
     else
-      eta_vehicle = max(((abs(vehicleProfile.P)) / max(abs(vehicleProfile.P) + (abs(batteryPowerTrain.Power_del_DC_DC) * (1 - (batteryPowerTrain.eta_drivetrain * 0.01))) + (vehicleProfile.F_drag * vehicleProfile.v) + (abs(vehicleProfile.F_accel) * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (abs(vehicleProfile.P) * (1 - vehicleProfile.eff_brake)), 0.00001)) * 100, 0);
+      eta_vehicle = max(((abs(vehicleProfile.P)) / max(abs(vehicleProfile.P) + (abs(batteryPowerTrain.Power_del_DC_DC) * (1 - (batteryPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (abs(vehicleProfile.F_accel) * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (abs(vehicleProfile.P) * (1 - vehicleProfile.eff_brake)), 0.00001)), 0);
     end if;
   else
     if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (batteryPowerTrain.Power_del_DC_DC * (1 - (batteryPowerTrain.eta_drivetrain * 0.01))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)) * 100, 0);
+      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (batteryPowerTrain.Power_del_DC_DC * (1 - (batteryPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)), 0);
     else
       eta_vehicle = 0;
     end if;

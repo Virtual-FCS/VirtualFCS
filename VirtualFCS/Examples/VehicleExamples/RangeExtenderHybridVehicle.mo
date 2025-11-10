@@ -11,8 +11,8 @@ model RangeExtenderHybridVehicle
   VirtualFCS.Vehicles.DriveCycle driveCycle(v = VirtualFCS.Vehicles.DriveCycle.speed_profile.NEDC) annotation(
     Placement(visible = true, transformation(origin = {-60, -6.66134e-16}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   Real fuel_consumption(unit = "kg/100km", start = 0) "The total fuel consumption at the end of simulation";
-  Real hydrogen_mass_init(unit = "kg", start = 0) "Initial value of hydrogen mass in tank";
-  Real eta_vehicle(unit = "100") "Vehicle efficiency";
+  Modelica.Units.SI.Mass hydrogen_mass_init(start = 0) "Initial value of hydrogen mass in tank";
+  Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
 equation
   when time > 0.1 then
     hydrogen_mass_init = rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m;
@@ -22,13 +22,13 @@ equation
   end when;
   if vehicleProfile.useRegenerativeBreaking then
     if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (rangeExtenderPowerTrain.Power_del_DC_DC * (1 - (rangeExtenderPowerTrain.eta_drivetrain * 0.01))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)) * 100,0);
+      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (rangeExtenderPowerTrain.Power_del_DC_DC * (1 - (rangeExtenderPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)),0);
     else
-      eta_vehicle = max(((abs(vehicleProfile.P)) / max(abs(vehicleProfile.P) + (abs(rangeExtenderPowerTrain.Power_del_DC_DC) * (1 - (rangeExtenderPowerTrain.eta_drivetrain * 0.01))) + (vehicleProfile.F_drag * vehicleProfile.v) + (abs(vehicleProfile.F_accel) * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (abs(vehicleProfile.P) * (1 - vehicleProfile.eff_brake)), 0.00001)) * 100, 0);
+      eta_vehicle = max(((abs(vehicleProfile.P)) / max(abs(vehicleProfile.P) + (abs(rangeExtenderPowerTrain.Power_del_DC_DC) * (1 - (rangeExtenderPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (abs(vehicleProfile.F_accel) * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (abs(vehicleProfile.P) * (1 - vehicleProfile.eff_brake)), 0.00001)), 0);
     end if;
   else
     if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (rangeExtenderPowerTrain.Power_del_DC_DC * (1 - (rangeExtenderPowerTrain.eta_drivetrain * 0.01))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)) * 100, 0);
+      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (rangeExtenderPowerTrain.Power_del_DC_DC * (1 - (rangeExtenderPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)), 0);
     else
       eta_vehicle = 0;
     end if;
