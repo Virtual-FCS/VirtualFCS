@@ -5,8 +5,8 @@ model Compressor_30kW
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
   // Medium declaration
-  replaceable package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});
-  
+//  replaceable package Medium = Modelica.Media.Air.MoistAir(reference_X={0.01,0.99});
+  replaceable package Medium = VirtualFCS.Media.CathodeAir;
   // Parameters
   parameter Utilities.ParameterRecords.DriveDataComp driveData(motorData = Utilities.ParameterRecords.DCPMMCompressor_30kW(), JL = 0.15) annotation(
     Placement(transformation(origin = {16, 12}, extent = {{-90, -24}, {-70, -4}})));
