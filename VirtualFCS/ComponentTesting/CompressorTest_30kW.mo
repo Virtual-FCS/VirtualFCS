@@ -44,6 +44,9 @@ connect(compressor.Output, throttleValve.upstream) annotation(
 Line(points = {{32, -6}, {102, -6}, {102, -8}}, color = {0, 127, 255}));
 connect(throttleValve.downstream, AirSink2.ports[1]) annotation(
  Line(points = {{122, -8}, {150, -8}}, color = {0, 127, 255}));
+ connect(pressure.port, throttleValve.upstream) annotation(
+    Line(points = {{112, -40}, {94, -40}, {94, -8}, {102, -8}}, color = {0, 127, 255}));
+
 annotation(
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),
   Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
