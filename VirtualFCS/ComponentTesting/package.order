@@ -12,14 +12,15 @@ ECMS_Experiment_Testing
 RotaryMachine
 PumpsTesting
 HeatSinkTest2
-NewHumidifierTest
-NewHumidifierv2Test
 ChopperTest
 SubSystemAirTest
 CompressorTest_30kW
 CathodeAirTest
+AmmoniaCrackerTest
+HumidifierTest
 ReversiblePotentialTest
 ManifoldTest
 MultiManifoldTest
 FuelCellTest
 SimpleCompressorTest
+SubSystemAirTest_30kW

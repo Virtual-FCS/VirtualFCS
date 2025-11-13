@@ -20,13 +20,13 @@ model SubSystemAir_30kW
   Modelica.Fluid.Sources.FixedBoundary airSource(redeclare package Medium = Medium, nPorts = 2) annotation(
     Placement(transformation(origin = {-80.5, -62.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {94, -47}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {62, 120}, extent = {{-20, -20}, {20, 20}})));
+    Placement(transformation(origin = {104, -47}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {62, 120}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Interfaces.FluidPort_b Output(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {94, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 121}, extent = {{-20, -19}, {20, 19}})));
+    Placement(transformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 121}, extent = {{-20, -19}, {20, 19}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(transformation(origin = {30, 96}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {30, 104}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
-    Placement(transformation(origin = {10, 96}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {10, 104}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Interfaces.RealInput control annotation(
     Placement(visible = true, transformation(origin = {-116, 86}, extent = {{-16, -16}, {16, 16}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Control components
@@ -45,13 +45,13 @@ model SubSystemAir_30kW
     Placement(transformation(origin = {0, -12}, extent = {{-100, -52}, {-120, -32}}), iconTransformation(extent = {{-100, -52}, {-120, -32}})));
   Modelica.Fluid.Sensors.Temperature compressorInletSensor(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {-41, 45}, extent = {{-7, -7}, {7, 7}})));
-  Fluid.ThrottleValve throttleValve(valveDownstream(dp_nominal(displayUnit = "Pa") = 1e4, m_flow_nominal = 0.5))   annotation(
+  Fluid.ThrottleValve throttleValve(valveDownstream(dp_nominal(displayUnit = "Pa") = 1e4, m_flow_nominal = 0.5), redeclare package Medium = Medium)   annotation(
     Placement(transformation(origin = {6, -46}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Math.Gain Current_to_mass_flow(k = 0.02897*1.75/(96485*4*0.21)*N_FC_stack) annotation(
     Placement(transformation(origin = {-66, 76}, extent = {{-12, -12}, {12, 12}})));
   Modelica.Blocks.Continuous.LimPID mass_flow_to_rpm(Td = 1, initType = Modelica.Blocks.Types.Init.InitialOutput, k = compressor.rpm_nom, yMax = compressor.rpm_nom*1.5, yMin = 0) annotation(
     Placement(transformation(origin = {-29, 77}, extent = {{-11, -11}, {11, 11}})));
-  Fluid.Compressor_30kW compressor annotation(
+  Fluid.Compressor_30kW compressor(redeclare package Medium = Medium)  annotation(
     Placement(transformation(origin = {20, 22}, extent = {{-26, -26}, {26, 26}})));
   Buildings.Fluid.Sensors.RelativeHumidityTwoPort senRelHum(redeclare package Medium = Medium, m_flow_nominal = 0.1) annotation(
     Placement(transformation(origin = {-16, 122}, extent = {{74, -90}, {94, -110}}, rotation = -0)));
@@ -67,10 +67,6 @@ equation
 //*** DEFINE CONNECTIONS ***//
   connect(airSource.ports[1], sen_Air_mflow.port_a) annotation(
     Line(points = {{-80.5, -54}, {-82, -54}, {-82, 22}, {-74, 22}}, color = {0, 170, 255}, thickness = 1));
-  connect(Input, throttleValve.port_b) annotation(
-    Line(points = {{94, -47}, {26, -47}}));
-  connect(Inlet_air_pressure.port, throttleValve.port_b) annotation(
-    Line(points = {{42, -34}, {42, -46}, {26, -46}}, color = {0, 127, 255}));
   connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation(
     Line(points = {{31, -24}, {-17, -24}, {-17, -34}}, color = {0, 0, 127}));
   connect(Current_to_mass_flow.y, mass_flow_to_rpm.u_s) annotation(
@@ -86,23 +82,27 @@ equation
   connect(compressor.Input, compressorInletSensor.port) annotation(
     Line(points = {{-9, 22}, {-38.6, 22}, {-38.6, 38}, {-40.6, 38}}, color = {0, 127, 255}));
   connect(compressor.pin_n, pin_n) annotation(
-    Line(points = {{16, 38}, {16, 67}, {10, 67}, {10, 96}}, color = {0, 0, 255}));
+    Line(points = {{16, 38}, {16, 67}, {10, 67}, {10, 104}}, color = {0, 0, 255}));
   connect(pin_p, compressor.pin_p) annotation(
-    Line(points = {{30, 96}, {30, 68}, {25, 68}, {25, 38}}, color = {0, 0, 255}));
+    Line(points = {{30, 104}, {30, 68}, {25, 68}, {25, 38}}, color = {0, 0, 255}));
   connect(setAirPressure.y, throttleValve.FC_pAirOut_P) annotation(
     Line(points = {{-22, -86}, {6, -86}, {6, -48}}, color = {0, 0, 127}));
   connect(compressor.Output, senRelHum.port_a) annotation(
     Line(points = {{49, 22}, {58, 22}}, color = {0, 127, 255}));
   connect(senRelHum.port_b, Output) annotation(
-    Line(points = {{78, 22}, {94, 22}}, color = {0, 127, 255}));
+    Line(points = {{78, 22}, {104, 22}}, color = {0, 127, 255}));
   connect(senRelHum.phi, RH_cathode) annotation(
     Line(points = {{68, 12}, {68, -6}, {-96, -6}, {-96, -54}, {-110, -54}}, color = {0, 0, 127}));
   connect(control, abs.u) annotation(
     Line(points = {{-116, 86}, {-100, 86}, {-100, 76}}, color = {0, 0, 127}));
   connect(abs.y, Current_to_mass_flow.u) annotation(
     Line(points = {{-86, 76}, {-80, 76}}, color = {0, 0, 127}));
-  connect(throttleValve.port_a, airSink.ports[1]) annotation(
+  connect(throttleValve.downstream, Input) annotation(
+    Line(points = {{26, -46}, {104, -46}}, color = {0, 127, 255}));
+  connect(throttleValve.upstream, airSink.ports[1]) annotation(
     Line(points = {{-14, -46}, {-50, -46}, {-50, -56}}, color = {0, 127, 255}));
+  connect(Inlet_air_pressure.port, throttleValve.downstream) annotation(
+    Line(points = {{42, -34}, {42, -46}, {26, -46}}, color = {0, 127, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),
