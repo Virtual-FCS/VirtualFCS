@@ -6,7 +6,6 @@ DCMotorControlPumpElectricDC
 DCMotorControlRecirculationBlower
 EMS_FC
 EnergyManagementSystem
-PumpSpeedControlCooling
 PurgeValveControl
 VoltageLimiter
 ECMS

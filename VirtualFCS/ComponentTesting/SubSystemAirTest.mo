@@ -13,7 +13,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Sources.Trapezoid CurrentFC(amplitude = 2000, rising = 5, width = 20, falling = 5, offset = 1000, period = 50) annotation(
     Placement(transformation(origin = {-70, 10}, extent = {{-10, -10}, {10, 10}})));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1.2e5, V = 1) annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1.2e5, V = 1) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Math.Gain I_to_reactionRate(k = N_cell/2/F) annotation(
     Placement(transformation(origin = {-30, 90}, extent = {{-10, -10}, {10, 10}})));

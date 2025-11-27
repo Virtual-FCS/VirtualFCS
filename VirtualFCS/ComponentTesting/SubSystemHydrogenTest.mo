@@ -1,47 +1,39 @@
-within VirtualFCS.Examples.SubsystemExamples;
-model TestHydrogenSubsystem "Example to evaluate the performance of the hydrogen subsystem."
+within VirtualFCS.ComponentTesting;
+
+model SubSystemHydrogenTest "Example to evaluate the performance of the hydrogen subsystem."
   extends Modelica.Icons.Example;
+  import Modelica.Constants.F;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
-  Modelica.Blocks.Math.Gain gain(k = -0.00202 * 1 / (96485 * 2)) annotation (
+  Modelica.Blocks.Math.Gain reactionRate(k = subSystemHydrogen.N_cell/2/F) annotation (
     Placement(visible = true, transformation(origin = {-34, 80}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-  SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation (
-    Placement(visible = true, transformation(origin = {-0.999964, -0.666637}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
-  Modelica.Fluid.Sources.MassFlowSource_T boundary(redeclare package Medium =
-        Anode_Medium,                                                                       nPorts = 1, use_m_flow_in = true)  annotation (
-    Placement(visible = true, transformation(origin = {0, 70}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package Medium =
-        Anode_Medium)                                                                                annotation (
-    Placement(visible = true, transformation(origin = {0, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(redeclare package Anode_Medium = Anode_Medium)  annotation (
+    Placement(transformation(origin = {0,0}, extent = {{-30, -20}, {30, 20}})));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9,
     V_max_bat_pack=34,
     V_min_bat_pack=30,
     V_nom_bat_pack=32,                                                                                                                          m_bat_pack = 1) annotation (
     Placement(visible = true, transformation(origin = {1.9984e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200)  annotation (
+  Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200, offset = 1)  annotation (
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Anode_Medium, nu = {-1}, MMs = {0.002})  annotation(
+    Placement(transformation(origin = {0, 60}, extent = {{-10, -10}, {10, 10}})));
 equation
-  connect(gain.y, boundary.m_flow_in) annotation (
-    Line(points={{-25.2,80},{-18,80},{-18,92},{-8,92},{-8,80}},          color = {0, 0, 127}));
-  connect(subSystemHydrogen.port_H2ToStack, teeJunctionIdeal.port_1) annotation (
-    Line(points={{-11.8,23.1334},{-11.8,40},{-10,40}},
-                                                     color = {0, 170, 0}, thickness = 1));
-  connect(subSystemHydrogen.port_StackToH2, teeJunctionIdeal.port_2) annotation (
-    Line(points={{9.80004,23.1334},{12,23.1334},{12,40},{10,40}},
-                                                            color = {0, 170, 0}, thickness = 1));
-  connect(boundary.ports[1], teeJunctionIdeal.port_3) annotation (
-    Line(points = {{0, 60}, {0, 50}}, color = {0, 170, 0}, thickness = 1));
-  connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation (
-    Line(points={{8.8,-40.8},{9.00004,-40.8},{9.00004,-18.6666}},
-                                                    color = {0, 0, 255}));
-  connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation (
-    Line(points={{-8.8,-40.8},{-6.99996,-40.8},{-6.99996,-18.6666}},
-                                                     color = {0, 0, 255}));
-  connect(trapezoid.y, gain.u) annotation (
-    Line(points={{-65,80},{-43.6,80}},    color = {0, 0, 127}));
-  connect(trapezoid.y, subSystemHydrogen.control) annotation (
-    Line(points={{-65,80},{-56,80},{-56,11.3334},{-23,11.3334}},color = {0, 0, 127}));
+  connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation(
+    Line(points = {{8.8, -40.8}, {9.00004, -40.8}, {9.00004, -18.6666}}, color = {0, 0, 255}));
+  connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation(
+    Line(points = {{-8.8, -40.8}, {-6.99996, -40.8}, {-6.99996, -18.6666}}, color = {0, 0, 255}));
+  connect(trapezoid.y, reactionRate.u) annotation(
+    Line(points = {{-65, 80}, {-43.6, 80}}, color = {0, 0, 127}));
+  connect(trapezoid.y, subSystemHydrogen.stackCurrent) annotation(
+    Line(points = {{-64, 80}, {-60, 80}, {-60, 0}, {-22, 0}}, color = {0, 0, 127}));
+  connect(subSystemHydrogen.toStack, manifold.port_a) annotation(
+    Line(points = {{-10, 24}, {-10, 60}}, color = {0, 127, 255}));
+  connect(manifold.port_b, subSystemHydrogen.fromStack) annotation(
+    Line(points = {{10, 60}, {10, 24}}, color = {0, 127, 255}));
+  connect(reactionRate.y, manifold.r) annotation(
+    Line(points = {{-26, 80}, {0, 80}, {0, 68}}, color = {0, 0, 127}));
   annotation (
     Diagram,
     Icon,
@@ -769,5 +761,6 @@ auto;text-indent:-108.0pt;mso-text-indent-alt:-9.0pt;mso-list:l0 level3 lfo1\"><
 text-indent:-18.0pt;mso-list:l0 level2 lfo1\"><o:p></o:p></p>
 
 <!--EndFragment--></div></body></html>"),
-    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-06, Interval = 1));
-end TestHydrogenSubsystem;
+    experiment(StartTime = 0, StopTime = 1500, Tolerance = 1e-06, Interval = 0.15));
+
+end SubSystemHydrogenTest;
