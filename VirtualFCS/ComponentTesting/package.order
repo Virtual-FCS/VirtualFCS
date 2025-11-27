@@ -20,6 +20,7 @@ RecirculationBlowerTest
 ReversiblePotentialTest
 RotaryMachine
 SimpleCompressorTest
+SimplePumpTest
 SubSystemAirTest
 SubSystemAirTest_30kW
 SubSystemCoolingTest
