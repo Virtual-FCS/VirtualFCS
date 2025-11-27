@@ -7,14 +7,15 @@ model FuelCellTest
   
   parameter Real lambda = 3;
   parameter Real P_air = 2.5e5;
+  parameter Real P_H2 = P_air;
   parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Modelica.Units.SI.Temperature T_stack = 320 "Stack temperature";
   package cathode_medium = VirtualFCS.Media.CathodeAir;
-  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air) annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air, redeclare VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
-  Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1)  annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
   Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1, p = P_air)  annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
@@ -41,7 +42,7 @@ equation
     Line(points = {{-10, 60}, {-10, 14}}, color = {0, 0, 255}));
   connect(fc.coolant_out, coolant_sink.ports[1]) annotation(
     Line(points = {{4, -12}, {4, -24}, {20, -24}}, color = {0, 127, 255}));
-  connect(fc.anode_in, hydrogen.ports[1]) annotation(
+  connect(fc.anode_in, hydrogen_source.ports[1]) annotation(
     Line(points = {{-14, 10}, {-40, 10}}, color = {0, 127, 255}));
   connect(fc.cathode_out, air_sink.ports[1]) annotation(
     Line(points = {{14, -10}, {56, -10}}, color = {0, 127, 255}));
