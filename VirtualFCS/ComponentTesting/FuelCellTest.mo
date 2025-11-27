@@ -32,8 +32,6 @@ model FuelCellTest
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Celsius.FixedTemperature fixedTemperature(T = 60)  annotation(
-    Placement(transformation(origin = {-10, -50}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250)  annotation(
     Placement(transformation(origin = {50, 76}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
