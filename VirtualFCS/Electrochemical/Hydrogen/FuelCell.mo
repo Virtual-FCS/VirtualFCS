@@ -57,7 +57,6 @@ model FuelCell
   parameter Modelica.Units.SI.Pressure p_stack_start = 2e5 "Initial stack pressure";
   parameter Modelica.Units.SI.Temperature T_start = 333 "Start temperature for fuel cell";
 
-  parameter Modelica.Units.SI.Temperature T_stack=320;
   Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
   Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
     
