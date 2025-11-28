@@ -1,8 +1,6 @@
 AmmoniaCrackerTest
 CathodeAirTest
 ChopperTest
-CompressorTest
-CompressorTest_30kW
 DC_converterTest
 ECMS_Experiment_Testing
 FuelCellTest
@@ -15,14 +13,13 @@ PreHeaterTest
 PressureRegulatorTest
 PressureRegulatorTest_v2
 PumpElectricDCTest
-PumpsTesting
 RecirculationBlowerTest
 ReversiblePotentialTest
-RotaryMachine
 SimpleCompressorTest
-SubSystemAirTest
-SubSystemAirTest_30kW
 SubSystemCoolingTest
 SubSystemHydrogenTest
 SubSystemHydrogenControlTest
 ThrottleValveTest
+CompressorTest
+SubSystemAirTest_2
+SubSystemAirTest

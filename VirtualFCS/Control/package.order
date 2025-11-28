@@ -1,7 +1,6 @@
 UsersGuide
 BatteryManagementSystem
 ChargeCounter
-DCMotorControlCompressor
 DCMotorControlPumpElectricDC
 DCMotorControlRecirculationBlower
 EMS_FC
@@ -9,6 +8,5 @@ EnergyManagementSystem
 PurgeValveControl
 VoltageLimiter
 ECMS
-DCMotorControlCompressor_new
-DCMotorControlRecirculationBlower_mc
 DCMotorControlCompressor_2
+DCMotorControlCompressor

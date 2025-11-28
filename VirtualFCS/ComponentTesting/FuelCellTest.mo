@@ -23,7 +23,7 @@ model FuelCellTest
     Placement(transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 60}, extent = {{10, -10}, {-10, 10}})));
-  inner Modelica.Fluid.System system annotation(
+  inner Modelica.Fluid.System system(p_start = 2e5, p_ambient = 2e5)  annotation(
     Placement(transformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.FixedBoundary coolant_sink(redeclare package Medium = Modelica.Media.Incompressible.Examples.Glycol47, nPorts = 1) annotation(
     Placement(transformation(origin = {25, -25}, extent = {{5, -5}, {-5, 5}})));

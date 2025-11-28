@@ -1,13 +1,12 @@
 UsersGuide
 CompressorInterface
 SimpleCompressor
-Compressor
 PressureRegulator
 PumpElectricDC
 RecirculationBlower
 ThrottleValve
 RecirculationBlower_mc
 AmmoniaCracker
-Compressor_30kW
 Humidifier
 AmmoniaCracker_2
+Compressor
