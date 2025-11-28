@@ -28,7 +28,7 @@ equation
   // heatPort not used
   LossPower = 0;
   // Power is equal volumetric flow times pressure difference
-  medium_out.d * u * (port_b.p-port_a.p) = (pin_p.v - pin_n.v)*(pin_n.i);
+  (u/medium_out.d) * (port_b.p-port_a.p) = (pin_p.v - pin_n.v)*(pin_n.i);
   pin_p.i + pin_n.i = 0;
 
 end SimplePump;
