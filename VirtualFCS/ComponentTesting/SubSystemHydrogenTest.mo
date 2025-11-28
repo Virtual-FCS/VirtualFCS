@@ -10,10 +10,7 @@ model SubSystemHydrogenTest "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {-34, 80}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(redeclare package Anode_Medium = Anode_Medium)  annotation (
     Placement(transformation(origin = {0,0}, extent = {{-30, -20}, {30, 20}})));
-  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9,
-    V_max_bat_pack=34,
-    V_min_bat_pack=30,
-    V_nom_bat_pack=32,                                                                                                                          m_bat_pack = 1) annotation (
+  VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 34, V_min_bat_pack = 30, V_nom_bat_pack = 32, m_bat_pack = 1) annotation(
     Placement(visible = true, transformation(origin = {1.9984e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200, offset = 1)  annotation (
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

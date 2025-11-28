@@ -49,32 +49,29 @@ model FuelCell
 // Physical constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
-  // Initialization values
-  parameter Modelica.Units.SI.Pressure p_stack_start = 2e5 "Initial stack pressure";
-  parameter Modelica.Units.SI.Temperature T_start = 333 "Start temperature for fuel cell";
 
   Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
   Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
     
   
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = T_start, fixed = true))  annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, p_start = p_stack_start, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
+  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{20, -20}, {-20, 20}}, rotation = 90)));
-  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium, p_start = p_stack_start) annotation(
+  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-80, 128}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 2000)  annotation(
     Placement(transformation(origin = {30, -80}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true, T_start = T_start)  annotation(
+  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(mass_transport.n, pin_p) annotation(
     Line(points = {{80, 110}, {100, 110}, {100, 150}, {60, 150}}, color = {0, 0, 255}));
   connect(catalysis.n, mass_transport.p) annotation(
     Line(points = {{40, 110}, {60, 110}}, color = {0, 0, 255}));
-  connect(nernst.p, ohmic.p) annotation(
+  connect(OCV.p, ohmic.p) annotation(
     Line(points = {{-40, 110}, {-20, 110}}, color = {0, 0, 255}));
   connect(anode.port_a, anode_in) annotation(
     Line(points = {{-100, 20}, {-100, 40}, {-150, 40}}, color = {0, 127, 255}));
@@ -100,7 +97,7 @@ equation
     Line(points = {{0, -10}, {0, 19}}, color = {191, 0, 0}));
   connect(multiSensor.nv, pin_n) annotation(
     Line(points = {{-90, 128}, {-90, 150}, {-60, 150}}, color = {0, 0, 255}));
-  connect(nernst.n, multiSensor.nc) annotation(
+  connect(OCV.n, multiSensor.nc) annotation(
     Line(points = {{-60, 110}, {-80, 110}, {-80, 118}}, color = {0, 0, 255}));
   connect(ohmic.n, catalysis.p) annotation(
     Line(points = {{0, 110}, {20, 110}}, color = {0, 0, 255}));

@@ -5,6 +5,7 @@ CompressorTest
 DC_converterTest
 ECMS_Experiment_Testing
 FuelCellTest
+FuelCellSystemTest
 HeatSinkTest
 HeatSinkTest2
 HumidifierTest
