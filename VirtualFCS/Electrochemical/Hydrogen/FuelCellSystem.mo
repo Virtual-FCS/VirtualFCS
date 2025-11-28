@@ -10,7 +10,7 @@ model FuelCellSystem
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure";
   // Power and efficiency calculations
-  Modelica.Units.SI.Power Power_system "Power delivered from the FC system (Stack - BOP)";
+  Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
   Modelica.Units.SI.Power Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
 
@@ -27,8 +27,6 @@ model FuelCellSystem
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
   replaceable VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 34, V_min_bat_pack = 30, V_nom_bat_pack = 32, m_bat_pack = 1) annotation(
     Placement(transformation(origin = {70, -90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Electrical.Analog.Basic.Ground ground annotation(
-    Placement(transformation(origin = {40, -90}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(pin_n, currentSensor.p) annotation(
     Line(points = {{-40, 96}, {-40, 80}}, color = {0, 0, 255}));
@@ -68,8 +66,7 @@ equation
     Line(points = {{74, -80}, {74, -76}, {-90, -76}, {-90, 16}, {-78, 16}}, color = {255, 0, 0}));
   connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation(
     Line(points = {{66, -80}, {66, -70}, {-96, -70}, {-96, 24}, {-78, 24}}));
-  connect(batterySystem.pin_n, ground.p) annotation(
-    Line(points = {{66, -80}, {66, -70}, {40, -70}, {40, -80}}));  protected
+protected
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation (
