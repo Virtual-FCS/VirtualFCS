@@ -10,14 +10,14 @@ model SubSystemHydrogen
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure";
   parameter Integer N_cell = 180 "FC stack number of cells";
 
-  Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, T = system.T_start, nPorts = 1, p = system.p_start, use_T_in = false) annotation(
+  Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, nPorts = 1, p = system.p_ambient, use_T_in = false) annotation(
     Placement(transformation(origin = {-150, -80}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent(unit="A") annotation(
     Placement(transformation(origin = {-163, 0}, extent = {{-13, -13}, {13, 13}}), iconTransformation(origin = {-110, 0}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(transformation(origin = {150, 10}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {150, -10}, extent = {{-10, 10}, {10, -10}}, rotation = -0), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
-    Placement(transformation(origin = {150, -10}, extent = {{10, 10}, {-10, -10}}), iconTransformation(origin = {-30, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {150, 10}, extent = {{10, -10}, {-10, 10}}, rotation = -0), iconTransformation(origin = {-30, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_b toStack(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {152, 60}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-54, 119}, extent = {{-18, -19}, {18, 19}})));
   Modelica.Fluid.Interfaces.FluidPort_a fromStack(redeclare package Medium = Anode_Medium) annotation(
@@ -37,17 +37,16 @@ model SubSystemHydrogen
   Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 1, p_start = p_tank_H2, use_HeatTransfer = true, use_portsData = false) annotation(
     Placement(transformation(origin = {-120, 60}, extent = {{-14, 14}, {14, -14}}, rotation = -90)));
 
-  VirtualFCS.Fluid.RecirculationBlower recirculationBlower annotation(
-    Placement(transformation(origin = {40, 0}, extent = {{20, -20}, {-20, 20}}, rotation = -90)));
-
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
 
   Modelica.Fluid.Valves.ValveCompressible valveH2Purge(redeclare package Medium = Anode_Medium, allowFlowReversal = true, checkValve = true, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, p_nominal = 2.5*100000) annotation(
     Placement(transformation(origin = {-40, -80}, extent = {{10, -10}, {-10, 10}})));
 
-  VirtualFCS.Fluid.PressureRegulator pressureRegulator annotation(
+  VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {-28, 60}, extent = {{-10, 10}, {10, -10}})));
+  Fluid.SimplePump pump(redeclare package Medium = Anode_Medium)  annotation(
+    Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
 equation
   connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
     Line(points = {{-122, 150}, {-122, 150}, {-122, 136}, {-140, 136}, {-140, 126}, {-140, 126}}, color = {191, 0, 0}));
@@ -61,12 +60,6 @@ equation
     Line(points = {{-120, 74}, {-120, 100}, {-100, 100}, {-100, 106}}, color = {191, 0, 0}));
   connect(valveH2Purge.port_b, exhaustHydrogen.ports[1]) annotation(
     Line(points = {{-50, -80}, {-140, -80}}, color = {255, 0, 0}, thickness = 1));
-  connect(recirculationBlower.pin_n, pin_n) annotation(
-    Line(points = {{54, -10}, {150, -10}}, color = {0, 0, 255}));
-  connect(pin_p, recirculationBlower.pin_p) annotation(
-    Line(points = {{150, 10}, {54, 10}}, color = {0, 0, 255}));
-  connect(recirculationBlower.Input, sen_H2_mflow.port_b) annotation(
-    Line(points = {{40, -18}, {40, -30}}, color = {255, 0, 0}, thickness = 0.75));
   connect(tankHydrogen.ports[1], pressureRegulator.Input) annotation(
     Line(points = {{-106, 60}, {-38, 60}}, color = {255, 0, 0}, thickness = 1));
   connect(valveH2Purge.opening, subSystemHydrogenControl.purge_set) annotation(
@@ -77,18 +70,24 @@ equation
     Line(points = {{29, -40}, {-132, -40}, {-132, -26}, {-120, -26}}, color = {0, 0, 127}));
   connect(pressureRegulator.setDownstreamPressure, subSystemHydrogenControl.p_h2_set) annotation(
     Line(points = {{-24, 52}, {-24, 2}, {-76, 2}}, color = {0, 0, 127}));
-  connect(subSystemHydrogenControl.pumpSpeed_set, recirculationBlower.controlInterface) annotation(
-    Line(points = {{-76, -26}, {-20, -26}, {-20, -6}, {26, -6}}, color = {0, 0, 127}));
   connect(pressureRegulator.Output, toStack) annotation(
     Line(points = {{-18, 60}, {152, 60}}, color = {255, 0, 0}, thickness = 1));
-  connect(recirculationBlower.Output, toStack) annotation(
-    Line(points = {{40, 18}, {40, 60}, {152, 60}}, color = {255, 0, 0}, thickness = 0.75));
   connect(fromStack, valveH2Purge.port_a) annotation(
     Line(points = {{150, -80}, {-30, -80}}, color = {255, 0, 0}, thickness = 1));
   connect(sen_H2_mflow.port_a, fromStack) annotation(
     Line(points = {{40, -50}, {40, -80}, {150, -80}}, color = {255, 0, 0}, thickness = 0.75));
+  connect(sen_H2_mflow.port_b, pump.port_a) annotation(
+    Line(points = {{40, -30}, {40, -20}}, color = {255, 0, 0}, thickness = 0.75));
+  connect(pump.port_b, toStack) annotation(
+    Line(points = {{24, 20}, {24, 60}, {152, 60}}, color = {255, 0, 0}, thickness = 0.75));
+  connect(pump.pin_p, pin_p) annotation(
+    Line(points = {{60, -10}, {150, -10}}, color = {0, 0, 255}));
+  connect(pump.pin_n, pin_n) annotation(
+    Line(points = {{60, 10}, {150, 10}}, color = {0, 0, 255}));
+  connect(subSystemHydrogenControl.pumpSpeed_set, pump.u) annotation(
+    Line(points = {{-76, -26}, {0, -26}, {0, 0}, {22, 0}}, color = {0, 0, 127}));
   annotation(
-    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-30, 76}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator"), Text(origin = {62, 18}, extent = {{-14, 4}, {22, -6}}, textString = "Recirculation blower")}),
+    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-30, 76}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator")}),
     Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H2")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Documentation(info = "<html><head></head><body>The hydrogen sub system provides hydrogen to the<a href=\"modelica://\">&nbsp;</a><a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">Fuel Cell Stack</a>.&nbsp;<br><div><br></div><div><br></div><div><div><br></div><div><b>References to base model/related packages</b></div><div><p class=\"MsoNormal\"><o:p></o:p></p><p class=\"MsoNormal\"><a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl\">Subsystem Hydrogen Control</a>, <a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">Pressure Regulator</a>,&nbsp;and <a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a></p><p class=\"MsoNormal\"><br></p>
 
