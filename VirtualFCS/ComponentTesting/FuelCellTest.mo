@@ -6,18 +6,19 @@ model FuelCellTest
   import Modelica.Constants.F;
   
   parameter Real lambda = 3;
-  parameter Real P_air = 2.5e5;
-  parameter Real P_H2 = P_air;
   parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Modelica.Units.SI.Temperature T_stack = 320 "Stack temperature";
-  package cathode_medium = VirtualFCS.Media.CathodeAir;
-  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air, redeclare VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst) annotation(
+  package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
+  package Cathode_Medium = VirtualFCS.Media.CathodeAir;
+  package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
+  
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
-  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1)  annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
-  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1, p = P_air)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p = system.p_ambient)  annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}})));
@@ -25,11 +26,11 @@ model FuelCellTest
     Placement(transformation(origin = {0, 60}, extent = {{10, -10}, {-10, 10}})));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.FixedBoundary coolant_sink(redeclare package Medium = Modelica.Media.Incompressible.Examples.Glycol47, nPorts = 1) annotation(
+  Modelica.Fluid.Sources.FixedBoundary coolant_sink(redeclare package Medium = Coolant_Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {25, -25}, extent = {{5, -5}, {-5, 5}})));
-  Modelica.Fluid.Sources.MassFlowSource_T coolant_source(nPorts = 1, redeclare package Medium = Modelica.Media.Incompressible.Examples.Glycol47, m_flow = 1, T = 323.15) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T coolant_source(nPorts = 1, redeclare package Medium = Coolant_Medium, m_flow = 1, T = 323.15) annotation(
     Placement(transformation(origin = {-14, -26}, extent = {{-6, -6}, {6, 6}})));
-  Modelica.Fluid.Sources.MassFlowSource_T air_source(redeclare package Medium = VirtualFCS.Media.CathodeAir, m_flow = 7.5e-5, nPorts = 1, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T air_source(redeclare package Medium = Cathode_Medium, m_flow = 7.5e-5, nPorts = 1, use_m_flow_in = false) annotation(
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
