@@ -33,8 +33,6 @@ model FuelCellTest
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Thermal.HeatTransfer.Celsius.FixedTemperature fixedTemperature(T = 60)  annotation(
-    Placement(transformation(origin = {-10, -50}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250)  annotation(
     Placement(transformation(origin = {50, 76}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
@@ -58,8 +56,6 @@ equation
     Line(points = {{-4, -12}, {-4, -26}, {-8, -26}}, color = {0, 127, 255}));
   connect(R_values.y, resistor.R) annotation(
     Line(points = {{40, 76}, {0, 76}, {0, 72}}, color = {0, 0, 127}));
-  annotation(
-    experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 0.5),
-  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
-  __OpenModelica_commandLineOptions = "--matchingAlgorithm=PFPlusExt --indexReductionMethod=dynamicStateSelection -d=initialization,NLSanalyticJacobian");
+annotation(
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.1));
 end FuelCellTest;

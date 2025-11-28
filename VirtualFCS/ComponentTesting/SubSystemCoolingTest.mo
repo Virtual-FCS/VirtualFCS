@@ -7,7 +7,7 @@ model SubSystemCoolingTest "Simple model to test the compressor component"
   package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   Modelica.Blocks.Sources.Trapezoid heatInput(amplitude = 5000, rising = 5, width = 20, falling = 5, offset = 7000, period = 50) annotation(
     Placement(transformation(origin = {-90, 10}, extent = {{-10, -10}, {10, 10}})));
-  SubSystems.Cooling.SubSystemCooling subSystemCooling(redeclare package Coolant_Medium = Medium) annotation(
+  SubSystems.Cooling.SubSystemCooling subSystemCooling(redeclare package Coolant_Medium = Medium, PI_stack(Ti = 5)) annotation(
     Placement(transformation(origin = {0, -20}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Electrical.Analog.Sources.ConstantVoltage V_source(V = 24) annotation(
     Placement(transformation(origin = {0, -60}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
@@ -39,7 +39,7 @@ equation
   connect(T_sensor.port, pipe.heatPorts[2]) annotation(
     Line(points = {{-20, 60}, {0, 60}, {0, 44}}, color = {191, 0, 0}));
   annotation(
-    experiment(StopTime = 600, Interval = 0.6, Tolerance = 1e-06, StartTime = 0),
+    experiment(StopTime = 100, Interval = 0.0166667, Tolerance = 1e-06, StartTime = 0),
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
     Icon(coordinateSystem(extent = {{-100, -100}, {100, 80}})),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));

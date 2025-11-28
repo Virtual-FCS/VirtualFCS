@@ -1,4 +1,6 @@
 UsersGuide
+PumpInterface
+SimplePump
 CompressorInterface
 SimpleCompressor
 PressureRegulator

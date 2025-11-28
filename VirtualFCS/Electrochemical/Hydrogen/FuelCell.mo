@@ -7,13 +7,8 @@ model FuelCell
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
   
-replaceable VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst(N_cells = N_cells)
-  constrainedby BaseNernst
-  annotation(choicesAllMatching=true,
-    
-    Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180))
-  );
-
+  replaceable Modelica.Electrical.Analog.Sources.ConstantVoltage OCV(V = 0.9*N_cells)  "Open-circuit voltage" annotation(
+    Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180))) constrainedby OnePort;
   replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = N_cells*r/A) "Internal resistance" annotation(
     Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}}))) constrainedby OnePort;
   replaceable Modelica.Electrical.Analog.Ideal.Short mass_transport annotation(
@@ -58,12 +53,10 @@ replaceable VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst(N_cells = N_
   parameter Modelica.Units.SI.Pressure p_stack_start = 2e5 "Initial stack pressure";
   parameter Modelica.Units.SI.Temperature T_start = 333 "Start temperature for fuel cell";
 
-//*** DECLARE VARIABLES ***//
-  // Fuel cell variables
-  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0);
-  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0);
-  inner parameter Modelica.Units.SI.Temperature T=320;
-      
+  Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
+  Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
+    
+  
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = T_start, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
   replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, p_start = p_stack_start, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
@@ -77,8 +70,6 @@ replaceable VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst(N_cells = N_
   Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true, T_start = T_start)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
-  p_H2 = anode.port_b.p;
-  p_O2 = cathode.port_b.p * cathode.medium.X[1]; 
   connect(mass_transport.n, pin_p) annotation(
     Line(points = {{80, 110}, {100, 110}, {100, 150}, {60, 150}}, color = {0, 0, 255}));
   connect(catalysis.n, mass_transport.p) annotation(
