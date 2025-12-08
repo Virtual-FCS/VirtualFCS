@@ -8,13 +8,13 @@ model FuelCell
   import SI = Modelica.Units.SI;
   
   replaceable Modelica.Electrical.Analog.Sources.ConstantVoltage OCV(V = 0.9*N_cells)  "Open-circuit voltage" annotation(
-    Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180))) constrainedby OnePort;
-  replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = N_cells*r/A) "Internal resistance" annotation(
-    Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}}))) constrainedby OnePort;
+    Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)), choicesAllMatching = true) constrainedby OnePort;
+  replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = 2E-4*N_cells) "Internal resistance" annotation(
+    Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
   replaceable Modelica.Electrical.Analog.Ideal.Short mass_transport annotation(
-    Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}}))) constrainedby OnePort;
+    Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
   replaceable Modelica.Electrical.Analog.Ideal.Short catalysis annotation(
-    Placement(transformation(origin = {30, 110}, extent = {{-10, 10}, {10, -10}}))) constrainedby OnePort;
+    Placement(transformation(origin = {30, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
 
   final constant Integer n = 2 "Electrons exchanged in reaction";
   constant SI.MolarMass M_H2 = Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM "Molar mass of hydrogen";
@@ -22,39 +22,17 @@ model FuelCell
   constant SI.MolarMass M_O2  = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
 
-// Geometric parameters
   parameter Integer N_cells = 42 "Number of cells in the stack";
-  parameter Modelica.Units.SI.Length L_FC = 0.420 "FC stack length";
-  parameter Modelica.Units.SI.Breadth W_FC = 0.582 "FC stack width";
-  parameter Modelica.Units.SI.Height H_FC = 0.156 "FC stack height";
-  parameter Modelica.Units.SI.Volume vol_FC = L_FC*W_FC*H_FC "FC stack volume";
-  parameter Modelica.Units.SI.Area A = 0.1 "Membrane active area";
-    // Fuel Cell Stack Parameters
-  parameter Modelica.Units.SI.Current I_rated = 280 "FC stack rated current";
-  parameter Modelica.Units.SI.CurrentDensity i_L = 1.12e4 "FC stack cell maximum limiting current density A/m2";
-  parameter ArealResistivity r = 0.002 "Areal resistivity of the membrane to proton conduction";
 
-// Electrochemical parameters
-  parameter Modelica.Units.SI.CurrentDensity i_0 = 0.193 "FC stack cell exchange current density A/m2";
-  parameter Modelica.Units.SI.CurrentDensity i_x = 10 "FC stack cell cross-over current density A/m2";
-  parameter Modelica.Units.SI.Resistance R_Ohm = 0.0923 "FC stack cell ohmic resistance";
-  // Thermal parameters
-  parameter Modelica.Units.SI.SpecificHeatCapacity Cp_FC = 110.0 "FC stack specific heat capacity";
-    //;
-  parameter Modelica.Units.SI.CoefficientOfHeatTransfer U_FC = 7.8*10^0.78 "HeatTransferCoefficient (W/(m2.K))";
+  // Physical constants
+  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
+  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F "Faraday constant";
 
-// Declare calculated parameters
-  final parameter Modelica.Units.SI.Area A_cool_FCStack = L_FC*W_FC;
-
-// Physical constants
-  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R;
-  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F;
-
+  // Convenience variables
   Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
   Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
-    
-  
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 1000, T(start = 323.15, fixed = true))  annotation(
+
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
   replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{20, -20}, {-20, 20}}, rotation = 90)));
