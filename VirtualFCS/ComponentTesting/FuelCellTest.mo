@@ -12,7 +12,7 @@ model FuelCellTest
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
   
-  Electrochemical.Hydrogen.FuelCell_2 fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.NernstOCV nernst) annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLoss mass_transport(i_limit = 4), redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
@@ -34,9 +34,11 @@ model FuelCellTest
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250)  annotation(
-    Placement(transformation(origin = {50, 76}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Blocks.Sources.Sine R_values(amplitude = 20, f = 0.05, continuous = true, offset = 30, startTime = 30)  annotation(
+    Placement(transformation(origin = {50, 80}, extent = {{10, -10}, {-10, 10}})));
 equation
+  fc.ohmic.phi = fc.cathode.medium.phi;
+  
   connect(fc.pin_n, ground.p) annotation(
     Line(points = {{-10, 14}, {-10, 80}, {-30, 80}, {-30, 60}}, color = {0, 0, 255}));
   connect(resistor.n, fc.pin_n) annotation(
@@ -55,8 +57,9 @@ equation
     Line(points = {{10, 30}, {10, 14}}, color = {0, 0, 255}));
   connect(fc.coolant_in, coolant_source.ports[1]) annotation(
     Line(points = {{-4, -12}, {-4, -26}, {-8, -26}}, color = {0, 127, 255}));
-  connect(R_values.y, resistor.R) annotation(
-    Line(points = {{40, 76}, {0, 76}, {0, 72}}, color = {0, 0, 127}));
+  connect(resistor.R, R_values.y) annotation(
+    Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
+
 annotation(
-    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.1));
+    experiment(StartTime = 0, StopTime = 100, Tolerance = 1e-06, Interval = 0.1));
 end FuelCellTest;
