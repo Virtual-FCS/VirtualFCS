@@ -1,6 +1,5 @@
 ﻿package VirtualFCS "VirtualFCS - VIRTUAL & physical platform for Fuel Cell System development"
   extends Modelica.Icons.Package;
-  // import Annex60;
   annotation (
     preferredView="info",
     version="5",

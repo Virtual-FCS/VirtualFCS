@@ -7,7 +7,7 @@ model PreHeater
   parameter Modelica.Units.SI.Resistance R_eq = 1.75 "Equivalent Resistance";
   parameter Modelica.Units.SI.Diameter D_pipe = 0.015 "Pipe Diameter";
   parameter Modelica.Units.SI.Length L_pipe = 1 "Pipe Length";
-  parameter Integer N_pipe(unit = "1") = 10 "Number of Parallel Pipes";
+  parameter Integer N_pipe = 10 "Number of Parallel Pipes";
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Fluid.Pipes.DynamicPipe pipe(redeclare package Medium = Medium, diameter = D_pipe, length = L_pipe, modelStructure = Modelica.Fluid.Types.ModelStructure.a_vb, nNodes = 1, nParallel = N_pipe, p_a_start = 102502, use_HeatTransfer = true) annotation (
     Placement(visible = true, transformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

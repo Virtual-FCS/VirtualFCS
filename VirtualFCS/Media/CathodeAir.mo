@@ -1,15 +1,16 @@
 within VirtualFCS.Media;
 
-package CathodeAir "Template for media models"
+package CathodeAir "Medium model for cathodic air"
   extends Modelica.Media.Interfaces.PartialMedium(
-    final mediumName = "Moist_air",
+    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+    final mediumName = "Cathode_air",
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
     final reference_X = {0.23, 0.76, 0.01},  // NB! These are MASS fractions, not molar. Oxygen is heavier, water is lighter.
     final singleState = false,
     final reducedX = true,
     final fixedX = false,
-    Temperature(min = 298, max = 500, start = 333),
-    AbsolutePressure(min = 3E4, max = 3E5, start = 1E5));
+    Temperature(min = 273.15, max = 500, start = 333),
+    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5));
 
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
@@ -25,20 +26,19 @@ package CathodeAir "Template for media models"
     /* To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.
      * Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.
      * If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T).
-     * Since pure boiling water is an extremely rare case in fuel cells, we use the more convenient.
+     * Since pure freezing or boiling water is an extremely rare case in fuel cells, we use the more convenient option.
      */
     AbsolutePressure p "Absolute pressure of medium";
     Temperature T "Temperature of medium";
-    MassFraction[nX] X(start = reference_X) "Mass fractions (= (component mass)/total mass  m_i/m)";
+    MassFraction[nXi] Xi(start = reference_X[1:nXi]) "Independent mass fractions";
   end ThermodynamicState;
 
   redeclare model extends BaseProperties(final standardOrderComponents = true) "Base properties of medium"
-      // I should add: X_l, Y, RH
-      Modelica.Units.SI.MoleFraction RH = relativeHumidity(state) "Relative humidity of gas phase";
+      Modelica.Units.SI.MoleFraction phi = relativeHumidity(state) "Relative humidity of gas phase";
       Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
       Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
       Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T);
-      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Y);
+      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Yi[Oxygen], Yi[Nitrogen]);
       Modelica.Units.SI.SpecificEnthalpy h_liq = enthalpyOfWater(T);
     protected
       Modelica.Units.SI.MassFraction Yi[nXi] = gasMassFraction(state) "Independent gas-phase compositions";
@@ -49,10 +49,10 @@ package CathodeAir "Template for media models"
       
       MM = molarMass(state); // Weighed average for all species, both phases
       R_s = gasConstant(state); // Gas constant valid only for gas phase
-      
+
       state.p = p;
       state.T = T;
-      state.X = X;
+      state.Xi = Xi;
   end BaseProperties;
 
   function saturationPressure "Vapour pressure of water as function of temperature"
@@ -91,8 +91,24 @@ package CathodeAir "Template for media models"
   algorithm
     state.p := p;
     state.T := T;
-    state.X := X;
+    state.Xi := X[1:nXi];
   end setState_pTX;
+
+  redeclare function extends setState_phX "Set state with pressure, enthalpy, composition"
+  protected
+    function h_offset "Solve h = specificEnthalpy_pTX(p, T, X) for T with given h"
+      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+      input AbsolutePressure p "Pressure";
+      input SpecificEnthalpy h "Specific enthalpy";
+      input MassFraction[:] X "Mass fractions of composition";
+    algorithm
+      y := specificEnthalpy_pTX(p, u, X) - h;
+    end h_offset;
+  algorithm
+    state.p := p;
+    state.Xi := X[1:nXi];
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273.15, u_max = 1000);
+  end setState_phX;
   
   redeclare function extends temperature
   algorithm
@@ -106,12 +122,15 @@ package CathodeAir "Template for media models"
   
   redeclare function extends massFraction
   algorithm
-    Xi := state.X[1:nXi];
+    Xi := state.Xi;
   end massFraction;
   
   redeclare function extends molarMass
+  protected
+    Modelica.Units.SI.MolarMass X[nX];
   algorithm
-    MM := 1 / sum(state.X ./ MMs);
+    X := cat(1, state.Xi, {1-sum(state.Xi)});
+    MM := 1 / sum(X ./ MMs);
   end molarMass;
   
   function liquidMassFraction "Fraction of mass in liquid phase, assumed only water."
@@ -119,7 +138,7 @@ package CathodeAir "Template for media models"
     input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.MassFraction X_l "Mass fraction in liquid phase";
   algorithm
-    X_l := max(0.0, state.X[Water] - MMs[Water]/molarMass(state)*saturationPressure(state.T)/state.p);
+    X_l := max(0.0, (1-sum(state.Xi)) - MMs[Water]/molarMass(state)*saturationPressure(state.T)/state.p);
   end liquidMassFraction;
 
   function gasMassFraction "Independent mass fractions in gas phase"
@@ -127,7 +146,7 @@ package CathodeAir "Template for media models"
     input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.MassFraction[nXi] Yi "Mass fractions in gas phase";
   algorithm
-    Yi := state.X[Oxygen:Nitrogen] / (1-liquidMassFraction(state));
+    Yi := state.Xi[Oxygen:Nitrogen] / (1-liquidMassFraction(state));
   end gasMassFraction;
 
   function gasConstant "Gas constant for the gas phase"
@@ -136,11 +155,11 @@ package CathodeAir "Template for media models"
     output Modelica.Units.SI.SpecificHeatCapacity R_s "Gas constant of the gas phase";
   protected
     import Modelica.Constants.R;
-    Modelica.Units.SI.MassFraction[nXi] Y "Independent mass fractions in gas phase";
+    Modelica.Units.SI.MassFraction[nXi] Yi "Independent mass fractions in gas phase";
     Modelica.Units.SI.MolarMass MM_gas "Average molar mass of gas phase";
   algorithm
-    Y := gasMassFraction(state);
-    MM_gas := 1/(sum(Y./MMs[Oxygen:Nitrogen]) + (1-sum(Y))/MMs[Water]);
+    Yi := gasMassFraction(state);
+    MM_gas := 1/(sum(Yi./MMs[Oxygen:Nitrogen]) + (1-sum(Yi))/MMs[Water]);
     R_s := R / MM_gas;
   end gasConstant;
 
@@ -148,62 +167,46 @@ package CathodeAir "Template for media models"
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
     Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] "Full gas-phase compositions";
   algorithm
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
-    Y := cat(1, Yi, {1-sum(Yi)});
-    h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Y);
+    h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Yi[Oxygen], Yi[Nitrogen]);
   end specificEnthalpy;
   
   redeclare function extends specificInternalEnergy
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] "Full gas-phase compositions";
   algorithm
     X_l := liquidMassFraction(state);
-    Yi := gasMassFraction(state);
-    Y := cat(1, Yi, {1-sum(Yi)});
-    u := X_l*(enthalpyOfWater(state.T) - state.p/densityOfWater(state.p, state.T)) +
-        (1-X_l)*(enthalpyOfGas(state.T, Y) - state.p/densityOfGas(state));
+    u := specificEnthalpy(state) - state.p*(X_l/densityOfWater(state.p, state.T) + (1-X_l)/densityOfGas(state));
   end specificInternalEnergy;
   
-  function enthalpyOfWater
+  function enthalpyOfWater "Helper function for enthalpy of liquid water"
     extends Modelica.Icons.Function;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificEnthalpy h_liq;
-  protected
-    Modelica.Units.SI.MolarEnthalpy h_mol;
-    Real t; // T/1000 K;
-    constant Real A = -203.6060;
-    constant Real B = 1523.290;
-    constant Real C = -3196.413;
-    constant Real D = 2474.455;
-    constant Real E = 3.855326;
-    constant Real F = -256.5478;
   algorithm
-    t := T/1000;
-    h_mol := 1000 * (A*t + (B/2)*t^2 + (C/3)*t^3 + (D/4)*t^4 - E/t + F);
-    h_liq := h_mol / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
 end enthalpyOfWater;
   
-  function enthalpyOfGas
-    extends Modelica.Icons.Function;
-    import h_T = Modelica.Media.IdealGases.Common.Functions.h_Tlow; // "Low" is anything below 1000 K
-    import fluids = Modelica.Media.IdealGases.Common.SingleGasesData;
-    import Modelica.Media.Interfaces.Choices.ReferenceEnthalpy;
-    
+  impure function enthalpyOfGas
+    extends Modelica.Icons.Function;    
     input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.MassFraction Y[nX] "Full vapour composition";
+    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
+    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
     output Modelica.Units.SI.SpecificEnthalpy h_gas;
+  protected
+    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
   algorithm
-    h_gas := h_T(fluids.O2,  T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Oxygen] + 
-             h_T(fluids.N2,  T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Nitrogen] + 
-             h_T(fluids.H2O, T, false, ReferenceEnthalpy.ZeroAt25C)*Y[Water];
-  end enthalpyOfGas;
+    h_gas := y_O2 * Shomate.enthalpy(T, Shomate.O2) / MMs[Oxygen] +
+             y_N2 * Shomate.enthalpy(T, Shomate.N2) / MMs[Nitrogen] +
+             (1-y_O2-y_N2) * Shomate.enthalpy(T, Shomate.H2O_G) / MMs[Water];
+  annotation(
+      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
+end enthalpyOfGas;
+  
   
   function densityOfWater
     extends Modelica.Icons.Function;
@@ -225,6 +228,7 @@ end enthalpyOfWater;
   end densityOfGas;
   
   redeclare function extends density
+  extends Modelica.Icons.Function;
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
   algorithm
@@ -235,11 +239,92 @@ end enthalpyOfWater;
   function relativeHumidity
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
-    output Modelica.Units.SI.MoleFraction RH;
+    output Modelica.Units.SI.MoleFraction phi;
   algorithm
-    RH := (state.X[Water]-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
+    phi := ((1-sum(state.Xi))-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
   end relativeHumidity;
+
+
+  function specificHeatCapacityCpOfWater "Helper function for heat capacity of liquid water"
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.Temperature T;
+    output Modelica.Units.SI.SpecificHeatCapacity cp_liq;
+  algorithm
+    cp_liq := Shomate.heat_capacity(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    annotation(
+    Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+  end specificHeatCapacityCpOfWater;
   
+  function specificHeatCapacityCpOfGas
+    extends Modelica.Icons.Function;    
+    input Modelica.Units.SI.Temperature T "Vapour temperature";
+    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
+    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
+    output Modelica.Units.SI.SpecificHeatCapacity cp_gas;
+  protected
+    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+  algorithm
+    cp_gas := y_O2 * Shomate.heat_capacity(T, Shomate.O2) / MMs[Oxygen] +
+              y_N2 * Shomate.heat_capacity(T, Shomate.N2) / MMs[Nitrogen] +
+              (1-y_O2-y_N2) * Shomate.heat_capacity(T, Shomate.H2O_G) / MMs[Water];
+  annotation(
+      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
+  end specificHeatCapacityCpOfGas;
+  
+  redeclare function extends specificHeatCapacityCp
+  protected
+    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
+    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+  algorithm
+    X_l := liquidMassFraction(state);
+    Yi := gasMassFraction(state);
+    cp := specificHeatCapacityCpOfGas(state.T, Yi[Oxygen], Yi[Nitrogen])*(1-X_l) + specificHeatCapacityCpOfWater(state.T)*X_l;
+  end specificHeatCapacityCp;
+  
+  redeclare function extends specificHeatCapacityCv
+  protected
+    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
+    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+  algorithm
+    X_l := liquidMassFraction(state);
+    Yi := gasMassFraction(state);
+    cv := (specificHeatCapacityCpOfGas(state.T, Yi[Oxygen], Yi[Nitrogen])-gasConstant(state))*(1-X_l) + specificHeatCapacityCpOfWater(state.T)*X_l;
+  end specificHeatCapacityCv;
+
+
+  redeclare function extends dynamicViscosity
+      "Return dynamic viscosity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
+  algorithm
+    eta := 1e-6*Modelica.Math.Polynomials.evaluateWithRange(
+        {9.7391102886305869E-15,-3.1353724870333906E-11,4.3004876595642225E-08,
+        -3.8228016291758240E-05,5.0427874367180762E-02,1.7239260139242528E+01},
+        Modelica.Units.Conversions.to_degC(123.15),
+        Modelica.Units.Conversions.to_degC(1273.15),
+        Modelica.Units.Conversions.to_degC(state.T));
+    annotation (smoothOrder=2, Documentation(info="<html>
+  <p>Dynamic viscosity is computed from temperature using a simple polynomial for dry air. Range of validity is from 123.15 K to 1273.15 K. The influence of pressure and moisture is neglected.</p>
+  <p>Source: VDI Waermeatlas, 8th edition.</p>
+  <p>Imported from Modelica.Media.Air.MoistAir, since a variable nitrogen-oxygen ratio will not have a major impact.</p>
+  </html>"));
+  end dynamicViscosity;
+  
+  redeclare function extends thermalConductivity
+      "Return thermal conductivity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
+  algorithm
+    lambda := 1e-3*Modelica.Math.Polynomials.evaluateWithRange(
+        {6.5691470817717812E-15,-3.4025961923050509E-11,5.3279284846303157E-08,
+        -4.5340839289219472E-05,7.6129675309037664E-02,2.4169481088097051E+01},
+        Modelica.Units.Conversions.to_degC(123.15),
+        Modelica.Units.Conversions.to_degC(1273.15),
+        Modelica.Units.Conversions.to_degC(state.T));
+  
+    annotation (smoothOrder=2, Documentation(info="<html>
+  <p>Thermal conductivity is computed from temperature using a simple polynomial for dry air. Range of validity is from 123.15 K to 1273.15 K. The influence of pressure and moisture is neglected.</p>
+  <p>Source: VDI Waermeatlas, 8th edition.</p>
+  <p>Imported from Modelica.Media.Air.MoistAir, since a variable nitrogen-oxygen ratio will not have a major impact.</p>
+  </html>"));
+  end thermalConductivity;
+
   redeclare function extends setSmoothState
     "Return thermodynamic state so that it smoothly approximates: if x > 0 then state_a else state_b"
   algorithm
