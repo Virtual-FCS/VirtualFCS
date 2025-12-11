@@ -7,8 +7,8 @@ model FuelCell
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
   
-  replaceable Modelica.Electrical.Analog.Sources.ConstantVoltage OCV(V = 0.9*N_cells)  "Open-circuit voltage" annotation(
-    Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)), choicesAllMatching = true) constrainedby OnePort;
+  replaceable VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst()  "Open-circuit voltage" annotation(
+    Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseNernst;
   replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = 2E-4*N_cells) "Internal resistance" annotation(
     Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
   replaceable Modelica.Electrical.Analog.Ideal.Short mass_transport annotation(
@@ -22,15 +22,16 @@ model FuelCell
   constant SI.MolarMass M_O2  = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
 
-  parameter Integer N_cells = 42 "Number of cells in the stack";
+  inner parameter Integer N_cells = 42 "Number of cells in the stack";
 
   // Physical constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F "Faraday constant";
 
   // Convenience variables
-  Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
-  Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
+  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
+  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
+  inner Modelica.Units.SI.Temperature T_stack=(cathode.medium.T + anode.medium.T)/2;
 
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
@@ -49,7 +50,7 @@ equation
     Line(points = {{80, 110}, {100, 110}, {100, 150}, {60, 150}}, color = {0, 0, 255}));
   connect(catalysis.n, mass_transport.p) annotation(
     Line(points = {{40, 110}, {60, 110}}, color = {0, 0, 255}));
-  connect(OCV.p, ohmic.p) annotation(
+  connect(nernst.p, ohmic.p) annotation(
     Line(points = {{-40, 110}, {-20, 110}}, color = {0, 0, 255}));
   connect(anode.port_a, anode_in) annotation(
     Line(points = {{-100, 20}, {-100, 40}, {-150, 40}}, color = {0, 127, 255}));
@@ -75,7 +76,7 @@ equation
     Line(points = {{0, -10}, {0, 19}}, color = {191, 0, 0}));
   connect(multiSensor.nv, pin_n) annotation(
     Line(points = {{-90, 128}, {-90, 150}, {-60, 150}}, color = {0, 0, 255}));
-  connect(OCV.n, multiSensor.nc) annotation(
+  connect(nernst.n, multiSensor.nc) annotation(
     Line(points = {{-60, 110}, {-80, 110}, {-80, 118}}, color = {0, 0, 255}));
   connect(ohmic.n, catalysis.p) annotation(
     Line(points = {{0, 110}, {20, 110}}, color = {0, 0, 255}));

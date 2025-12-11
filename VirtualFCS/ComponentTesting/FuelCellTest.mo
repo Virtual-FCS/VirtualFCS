@@ -7,12 +7,11 @@ model FuelCellTest
   
   parameter Real lambda = 3;
   parameter Integer N_cells = 42 "Number of cells in the stack";
-  parameter Modelica.Units.SI.Temperature T_stack = 320 "Stack temperature";
   package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
   
-  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLoss mass_transport(i_limit = 4), redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T)) annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLoss mass_transport(i_limit = 4), redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.NernstSimple nernst) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
@@ -34,7 +33,7 @@ model FuelCellTest
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Sine R_values(amplitude = 20, f = 0.05, continuous = true, offset = 30, startTime = 30)  annotation(
+  Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250) annotation(
     Placement(transformation(origin = {50, 80}, extent = {{10, -10}, {-10, 10}})));
 equation
   fc.ohmic.phi = fc.cathode.medium.phi;
@@ -61,5 +60,5 @@ equation
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
 
 annotation(
-    experiment(StartTime = 0, StopTime = 100, Tolerance = 1e-06, Interval = 0.1));
+    experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 0.1));
 end FuelCellTest;
