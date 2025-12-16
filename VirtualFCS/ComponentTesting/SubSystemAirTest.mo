@@ -7,7 +7,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
   package Medium = Media.CathodeAir;
   Electrochemical.Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {6, -72}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
-  SubSystems.Air.SubSystemAir subSystemAir(set_air_pressure = 2.4e5, redeclare package Medium = Medium) annotation(
+  SubSystems.Air.SubSystemAir subSystemAir(set_air_pressure = 2.4e5, redeclare package Medium = Medium, N_cell = 42, redeclare VirtualFCS.Fluid.Compressor compressor(redeclare package Medium = Medium)) annotation(
     Placement(transformation(origin = {7, -11}, extent = {{-21, -21}, {21, 21}})));
   Modelica.Fluid.Vessels.ClosedVolume FuelCellDummy(V = 1, nPorts = 2, redeclare package Medium = Medium, use_portsData = false) annotation(
     Placement(transformation(origin = {8, 76}, extent = {{-10, -10}, {10, 10}})));
@@ -18,7 +18,7 @@ equation
     Line(points = {{2, -62}, {-4, -62}, {-4, -30}}, color = {0, 0, 255}));
   connect(batterySystem.pin_p, subSystemAir.pin_p) annotation(
     Line(points = {{10, -62}, {18, -62}, {18, -30}}, color = {0, 0, 255}));
-  connect(currentFC.y, subSystemAir.control) annotation(
+  connect(currentFC.y, subSystemAir.stackCurrent) annotation(
     Line(points = {{-59, 0}, {-16, 0}}, color = {0, 0, 127}));
   connect(subSystemAir.toStack, FuelCellDummy.ports[1]) annotation(
     Line(points = {{-6, 14}, {8, 14}, {8, 66}}, color = {0, 127, 255}));

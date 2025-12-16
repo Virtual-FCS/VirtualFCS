@@ -7,7 +7,7 @@ model FuelCellSystemTest
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 30) annotation(
+  Modelica.Blocks.Sources.Step R_values(height = 0.05, offset = 0.05, startTime = 250) annotation(
     Placement(transformation(origin = {50, 60}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-40, 30}, extent = {{-10, -10}, {10, 10}})));
@@ -20,4 +20,6 @@ equation
     Line(points = {{0, 52}, {0, 60}, {39, 60}}, color = {0, 0, 127}));
   connect(ground.p, resistor.n) annotation(
     Line(points = {{-40, 40}, {-10, 40}}, color = {0, 0, 255}));
+annotation(
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.5));
 end FuelCellSystemTest;

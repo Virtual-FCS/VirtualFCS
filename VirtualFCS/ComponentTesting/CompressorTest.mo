@@ -32,20 +32,20 @@ equation
     Line(points = {{6, 42}, {6, 26}, {7, 26}, {7, 10}}, color = {0, 0, 255}));
   connect(compressor.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-4, 10}, {-2, 10}, {-2, 42}}, color = {0, 0, 255}));
-  connect(step.y, compressor.controlInterface) annotation(
+  connect(step.y, compressor.set_control) annotation(
     Line(points = {{-62, 42}, {-46, 42}, {-46, 11}, {-32, 11}}, color = {0, 0, 127}));
-  connect(compressor.Output, temp_out_comp.port) annotation(
+  connect(compressor.port_b, temp_out_comp.port) annotation(
     Line(points = {{33, -7}, {72, -7}, {72, 2}}, color = {0, 127, 255}));
-  connect(AirSink.ports[1], compressor.Input) annotation(
+  connect(AirSink.ports[1], compressor.port_a) annotation(
     Line(points = {{-72, -6}, {-30, -6}}, color = {0, 127, 255}));
-  connect(compressor.Output, throttleValve.upstream) annotation(
+  connect(compressor.port_b, throttleValve.upstream) annotation(
     Line(points = {{32, -6}, {102, -6}, {102, -8}}, color = {0, 127, 255}));
   connect(throttleValve.downstream, AirSink2.ports[1]) annotation(
     Line(points = {{122, -8}, {150, -8}}, color = {0, 127, 255}));
   connect(pressure.port, throttleValve.upstream) annotation(
     Line(points = {{112, -40}, {94, -40}, {94, -8}, {102, -8}}, color = {0, 127, 255}));
   annotation(
-    experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),
+    experiment(StopTime = 20, Interval = 0.5, Tolerance = 1e-6),
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
     Icon(coordinateSystem(extent = {{-100, -100}, {100, 80}})));
  end CompressorTest;

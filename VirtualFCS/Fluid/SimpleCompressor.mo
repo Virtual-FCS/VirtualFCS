@@ -1,7 +1,7 @@
 within VirtualFCS.Fluid;
 
 model SimpleCompressor "A simple isentropic compressor"
-  extends VirtualFCS.Fluid.CompressorInterface(final useHeatPort=false, redeclare Modelica.Blocks.Interfaces.RealInput u(unit="W"));
+  extends VirtualFCS.Fluid.CompressorInterface(final useHeatPort=false, redeclare Modelica.Blocks.Interfaces.RealInput set_control(unit="W"));
   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium "Medium in the component" annotation (choicesAllMatching = true);
   
   Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
@@ -30,14 +30,14 @@ equation
   // Calculate T_in from enthalpy, calculate enthalpy_out
   medium_in.T = Medium.temperature_phX(medium_in.p, inStream(port_a.h_outflow), medium_in.X);
   medium_out.T = Medium.temperature_phX(medium_out.p, port_b.h_outflow, medium_out.X);
-  Hin + Hout + u = 0;
+  Hin + Hout + set_control = 0;
   // Not supposed to be ever used
   port_a.h_outflow = port_b.h_outflow;
   // heatPort not used
   LossPower = 0;
   // Power is equal to energy inflow
-  u = (pin_p.v - pin_n.v)*(pin_n.i);
+  set_control = (pin_p.v - pin_n.v)*(pin_n.i);
   pin_p.i + pin_n.i = 0;
   // Relate work to p ratio
-  u*eta/port_a.m_flow = k*medium_in.R_s*medium_in.T/(k - 1)*((medium_out.p/medium_in.p)^((k - 1)/k) - 1);
+  set_control*eta/port_a.m_flow = k*medium_in.R_s*medium_in.T/(k - 1)*((medium_out.p/medium_in.p)^((k - 1)/k) - 1);
 end SimpleCompressor;

@@ -9,7 +9,7 @@ model SubSystemAirTest_2 "Simple model to test the compressor component"
   parameter Integer N_cell = 42;
   Electrochemical.Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {0, -70}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
-  SubSystems.Air.SubSystemAir_2 subSystemAir(redeclare package Medium = Medium, N_cell = N_cell) annotation(
+  SubSystems.Air.SubSystemAir_2 subSystemAir(redeclare package Medium = Medium, N_cell = N_cell, redeclare VirtualFCS.Fluid.SimpleCompressor compressor(redeclare package Medium = Medium)) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1.2e5, V = 1) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));
