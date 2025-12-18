@@ -31,7 +31,7 @@ model FuelCell
   // Convenience variables
   inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
   inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[1];
-  inner Modelica.Units.SI.Temperature T_stack=(cathode.medium.T + anode.medium.T)/2;
+  inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
 
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
