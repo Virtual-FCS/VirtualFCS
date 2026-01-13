@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
-model NernstSimple
-  extends Electrochemical.Hydrogen.BaseNernst;
+model VSourceNernst
+  extends Electrochemical.Hydrogen.BaseVSource;
   import Modelica.Math.log;
   import Modelica.Constants.F;
   import Modelica.Constants.R;
@@ -18,4 +18,4 @@ equation
   v = N_cells*(U0 + R*T_stack/(n_e*F)*log(p_H2*p_O2^0.5) + delta_S/(n_e*F)*(T_stack - T_ref));
   annotation(
     experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 0.002));
-end NernstSimple;
+end VSourceNernst;

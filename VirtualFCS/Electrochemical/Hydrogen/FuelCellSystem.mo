@@ -18,7 +18,7 @@ model FuelCellSystem
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  FuelCell fuelCell annotation (Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
+  replaceable FuelCell fuelCell annotation (Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
   replaceable SubSystems.Air.SubSystemAir_2 subSystemAir annotation(
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(

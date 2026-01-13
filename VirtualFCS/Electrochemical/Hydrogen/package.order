@@ -6,6 +6,7 @@ FCInterface
 FuelCell
 fd1
 FuelCellSystem
-BaseNernst
-NernstSimple
-NernstOCV
+VSourceShoemate
+BaseVSource
+VSourceNernst
+VSourceConstant
