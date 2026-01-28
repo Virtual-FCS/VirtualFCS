@@ -1,7 +1,7 @@
 within VirtualFCS.Fluid;
 
 model Compressor
-  extends Fluid.CompressorInterface(final useHeatPort = false, redeclare Modelica.Blocks.Interfaces.RealInput set_control(unit = "rpm"));
+  extends Fluid.CompressorInterface(final useHeatPort = false, redeclare Modelica.Blocks.Interfaces.RealInput set_control(unit = "rpm"), port_b(redeclare package Medium = Medium), port_a(redeclare package Medium = Medium));
   // System
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
