@@ -11,7 +11,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
     Placement(transformation(origin = {7, -11}, extent = {{-21, -21}, {21, 21}})));
   Modelica.Fluid.Vessels.ClosedVolume FuelCellDummy(V = 1, nPorts = 2, redeclare package Medium = Medium, use_portsData = false) annotation(
     Placement(transformation(origin = {8, 76}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Step currentFC(height = 1000, offset = 1000, startTime = 10) annotation(
+  Modelica.Blocks.Sources.Step currentFC(height = 6000, offset = 1000, startTime = 10) annotation(
     Placement(transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(batterySystem.pin_n, subSystemAir.pin_n) annotation(

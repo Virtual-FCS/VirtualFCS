@@ -15,7 +15,7 @@ model SubSystemAirTest_2 "Simple model to test the compressor component"
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Math.Gain I_to_reactionRate(k = N_cell/2/F) annotation(
     Placement(transformation(origin = {-30, 90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Step currentFC(height = 1000, offset = 1000, startTime = 10) annotation(
+  Modelica.Blocks.Sources.Step currentFC(height = 6000, offset = 1000, startTime = 10) annotation(
     Placement(transformation(origin = {-70, 10}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(batterySystem.pin_n, subSystemAir.pin_n) annotation(

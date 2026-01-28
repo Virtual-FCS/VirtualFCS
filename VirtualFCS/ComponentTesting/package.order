@@ -21,6 +21,7 @@ SimpleCompressorTest
 SimplePumpTest
 SubSystemAirTest
 SubSystemAirTest_2
+SubSystemAirTest_2_bis
 SubSystemAirWithFuelCellTest
 SubSystemCoolingTest
 SubSystemHydrogenControlTest
