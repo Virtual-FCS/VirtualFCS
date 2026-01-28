@@ -9,9 +9,12 @@ model MassTransportLoss
   
   constant Integer N = 2 "Number of electrons in reaction";
   parameter Modelica.Units.SI.Current i_limit "Limiting current";
+
+protected
+  parameter Modelica.Units.SI.Current i_epsilon = 1E-6 "Very small but positive current";
   
 equation
-  v = R*T/(N*F) * log(i_limit/(i_limit-i));
+  v = R*T/(N*F) * log(i_limit/max(i_limit-i, i_epsilon));
   LossPower = v*i;
 
 annotation(
