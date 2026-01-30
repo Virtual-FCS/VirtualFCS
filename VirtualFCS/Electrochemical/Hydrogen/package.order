@@ -1,6 +1,5 @@
 ReversibleVoltage
 OhmicResistance
-MassTransportLoss
 Manifold
 FCInterface
 FuelCell
@@ -10,3 +9,6 @@ VSourceShoemate
 BaseVSource
 VSourceNernst
 VSourceConstant
+BaseMassTransportLoss
+MassTransportLossSimple
+MassTransferLossNone

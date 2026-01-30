@@ -7,12 +7,12 @@ model FuelCell
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
   
-  replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source()  "Open-circuit voltage" annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source "Open-circuit voltage" annotation(
     Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseVSource;
   replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R = 2E-4*N_cells) "Internal resistance" annotation(
     Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
-  replaceable Modelica.Electrical.Analog.Ideal.Short mass_transport annotation(
-    Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
+  replaceable VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport annotation(
+    Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby BaseMassTransportLoss;
   replaceable Modelica.Electrical.Analog.Ideal.Short catalysis annotation(
     Placement(transformation(origin = {30, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby OnePort;
 

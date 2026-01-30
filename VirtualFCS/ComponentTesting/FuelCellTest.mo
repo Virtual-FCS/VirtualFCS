@@ -11,7 +11,7 @@ model FuelCellTest
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
   
-  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLoss mass_transport(i_limit = 4), redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T)) annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransferLossNone mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
@@ -27,13 +27,13 @@ model FuelCellTest
     Placement(transformation(origin = {70, -70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.FixedBoundary coolant_sink(redeclare package Medium = Coolant_Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {25, -25}, extent = {{5, -5}, {-5, 5}})));
-  Modelica.Fluid.Sources.MassFlowSource_T coolant_source(nPorts = 1, redeclare package Medium = Coolant_Medium, m_flow = 1, T = 323.15) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T coolant_source(nPorts = 1, redeclare package Medium = Coolant_Medium, m_flow = 0.05, T = 323.15) annotation(
     Placement(transformation(origin = {-14, -26}, extent = {{-6, -6}, {6, 6}})));
-  Modelica.Fluid.Sources.MassFlowSource_T air_source(redeclare package Medium = Cathode_Medium, m_flow = 7.5e-5, nPorts = 1, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T air_source(redeclare package Medium = Cathode_Medium, m_flow = 7.5e-4, nPorts = 1, use_m_flow_in = false) annotation(
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250) annotation(
+  Modelica.Blocks.Sources.Step R_values(height = 3, offset = 2, startTime = 250) annotation(
     Placement(transformation(origin = {50, 80}, extent = {{10, -10}, {-10, 10}})));
 equation
   fc.ohmic.phi = fc.cathode.medium.phi;
