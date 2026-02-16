@@ -82,7 +82,7 @@ equation
   connect(error_flow.y, PI_compressor.u) annotation(
     Line(points = {{-42, 70}, {-34, 70}}, color = {0, 0, 127}));
   connect(PI_compressor.y, compressor.set_control) annotation(
-    Line(points = {{-11, 70}, {-5, 70}, {-5, 42}, {-4, 42}}, color = {0, 0, 127}));
+    Line(points = {{-11, 70}, {-11, 42}, {-4, 42}}, color = {0, 0, 127}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),

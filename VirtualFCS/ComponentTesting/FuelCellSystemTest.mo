@@ -1,13 +1,13 @@
 within VirtualFCS.ComponentTesting;
 
 model FuelCellSystemTest
-  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceShoemate v_source))  annotation(
+  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source))  annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Blocks.Sources.Step R_values(height = 0.01, offset = 0.01, startTime = 10) annotation(
+  Modelica.Blocks.Sources.Step R_values(height = 0.1, offset = 0.1, startTime = 10) annotation(
     Placement(transformation(origin = {50, 60}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-40, 30}, extent = {{-10, -10}, {10, 10}})));
