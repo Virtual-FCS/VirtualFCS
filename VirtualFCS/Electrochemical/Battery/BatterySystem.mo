@@ -14,7 +14,7 @@ model BatterySystem
   parameter Modelica.Units.NonSI.ElectricCharge_Ah C_bat_pack = 200 "Battery pack nominal capacity";
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge";
   // Power & efficiencies
-  Modelica.Units.SI.Power Power "Battery delivered power";
+  Modelica.Units.SI.Power Power = pin_p.i*pin_p.v "Battery delivered power";
   Modelica.Units.SI.Efficiency eta_batt "Battery efficiency, calculated by assuming loss in terms of heat";
   VirtualFCS.Control.BatteryManagementSystem batteryManagementSystem(N_s = batteryPack.N_s) annotation (
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
@@ -33,7 +33,6 @@ model BatterySystem
   LiIonBatteryPack_Lumped batteryPack(C_bat_pack = C_bat_pack, Cp_bat_pack = Cp_bat_pack, H_bat_pack = H_bat_pack, L_bat_pack = L_bat_pack, SOC_init = SOC_init, V_max_bat_pack = V_max_bat_pack, V_min_bat_pack = V_min_bat_pack, V_nom_bat_pack = V_nom_bat_pack, W_bat_pack = W_bat_pack, m_bat_pack = m_bat_pack) annotation (
     Placement(visible = true, transformation(origin = {0.369106, -30.5794}, extent = {{-24.8691, -14.9215}, {24.8691, 16.5794}}, rotation = 0)));
 equation
-  Power = pin_n.i*pin_p.v;
   eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)), 0.9);
   connect(pin_n, batteryManagementSystem.pin_n_load) annotation (
     Line(points = {{-44, 96}, {-44, 96}, {-44, 80}, {-10, 80}, {-10, 48}, {-10, 48}}, color = {0, 0, 255}));
