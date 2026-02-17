@@ -2,7 +2,7 @@ within VirtualFCS.ComponentTesting;
 
 model FuelCellSystemTest
   extends Modelica.Icons.Example;
-  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceShoemate v_source))  annotation(
+  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source))  annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));
