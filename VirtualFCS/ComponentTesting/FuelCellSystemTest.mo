@@ -1,6 +1,7 @@
 within VirtualFCS.ComponentTesting;
 
 model FuelCellSystemTest
+  extends Modelica.Icons.Example;
   Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceShoemate v_source))  annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   inner Modelica.Fluid.System system annotation(
@@ -21,5 +22,6 @@ equation
   connect(ground.p, resistor.n) annotation(
     Line(points = {{-40, 40}, {-10, 40}}, color = {0, 0, 255}));
 annotation(
-    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.5));
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.5),
+  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
 end FuelCellSystemTest;

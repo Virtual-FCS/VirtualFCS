@@ -12,7 +12,7 @@ model FuelCellSystem
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
-  Modelica.Units.SI.Power Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
+  Modelica.Units.SI.Power Power_BOP = source.p.i*(source.p.v-source.n.v) "Power consumed by the BOP components";
 
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -25,8 +25,10 @@ model FuelCellSystem
     Placement(transformation(origin = {0, -54}, extent = {{-14, -14}, {14, 14}})));
   replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen annotation(
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
-  replaceable VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.9, V_max_bat_pack = 34, V_min_bat_pack = 30, V_nom_bat_pack = 32, m_bat_pack = 1) annotation(
-    Placement(transformation(origin = {70, -90}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Electrical.Analog.Sources.ConstantVoltage source(V = 36)  annotation(
+    Placement(transformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {60, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(pin_n, currentSensor.p) annotation(
     Line(points = {{-40, 96}, {-40, 80}}, color = {0, 0, 255}));
@@ -54,18 +56,20 @@ equation
     Line(points = {{-50, 70}, {-70, 70}, {-70, 32}}, color = {0, 0, 127}));
   connect(currentSensor.i, subSystemAir.stackCurrent) annotation(
     Line(points = {{-50, 70}, {-70, 70}, {-70, 84}, {65, 84}, {65, 31}}, color = {0, 0, 127}));
-  connect(batterySystem.pin_p, subSystemAir.pin_p) annotation(
-    Line(points = {{74, -80}, {74, -76}, {88, -76}, {88, 16}, {80, 16}}, color = {255, 0, 0}));
-  connect(batterySystem.pin_n, subSystemAir.pin_n) annotation(
-    Line(points = {{66, -80}, {66, -70}, {94, -70}, {94, 26}, {80, 26}}));
-  connect(batterySystem.pin_n, subSystemCooling.pin_n) annotation(
-    Line(points = {{66, -80}, {66, -70}, {-8, -70}, {-8, -66}}));
-  connect(batterySystem.pin_p, subSystemCooling.pin_p) annotation(
-    Line(points = {{74, -80}, {74, -76}, {8, -76}, {8, -66}}, color = {255, 0, 0}));
-  connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation(
-    Line(points = {{74, -80}, {74, -76}, {-90, -76}, {-90, 16}, {-78, 16}}, color = {255, 0, 0}));
-  connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation(
-    Line(points = {{66, -80}, {66, -70}, {-96, -70}, {-96, 24}, {-78, 24}}));
+  connect(source.n, subSystemAir.pin_n) annotation(
+    Line(points = {{60, -90}, {98, -90}, {98, 26}, {80, 26}}));
+  connect(subSystemCooling.pin_n, source.n) annotation(
+    Line(points = {{-8, -66}, {-8, -80}, {60, -80}, {60, -90}}));
+  connect(subSystemHydrogen.pin_n, source.n) annotation(
+    Line(points = {{-78, 24}, {-92, 24}, {-92, -80}, {60, -80}, {60, -90}}));
+  connect(source.p, subSystemHydrogen.pin_p) annotation(
+    Line(points = {{40, -90}, {-86, -90}, {-86, 16}, {-78, 16}}, color = {255, 0, 0}));
+  connect(subSystemCooling.pin_p, source.p) annotation(
+    Line(points = {{8, -66}, {8, -90}, {40, -90}}, color = {255, 0, 0}));
+  connect(subSystemAir.pin_p, source.p) annotation(
+    Line(points = {{80, 16}, {88, 16}, {88, -60}, {40, -60}, {40, -90}}, color = {255, 0, 0}));
+  connect(source.n, ground.p) annotation(
+    Line(points = {{60, -90}, {60, -100}}, color = {0, 0, 255}));
 protected
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
