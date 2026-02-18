@@ -8,7 +8,7 @@ OhmicResistance
 BaseVSource
 VSourceConstant
 VSourceNernst
-VSourceShoemate
+VSourceShomate
 BaseMassTransportLoss
 MassTransferLossNone
 MassTransportLossSimple
