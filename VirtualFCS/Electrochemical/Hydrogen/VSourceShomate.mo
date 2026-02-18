@@ -1,8 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
-model VSourceShoemate
+model VSourceShomate
   extends Electrochemical.Hydrogen.BaseVSource;
-  extends Modelica.Electrical.Analog.Icons.VoltageSource;
   
   import Modelica.Math.log;
   import Modelica.Constants.F;
@@ -17,7 +16,7 @@ model VSourceShoemate
   outer Modelica.Units.SI.AbsolutePressure p_H2 "Hydrogen pressure";
   outer Modelica.Units.SI.AbsolutePressure p_O2 "Oxygen pressure";
   outer Modelica.Units.SI.Temperature T_stack "stack temperature";
-  // Got error when trying to get cathode humidiy from FuelCell using cathode.Medium.BaseProperties.phi
+  // Got error when trying to get cathode humidity from FuelCell using cathode.Medium.BaseProperties.phi
   final parameter Real cathode_phi = 1.0 "cathode humidity";
   
 protected
@@ -26,12 +25,11 @@ protected
   Shomate.Parameters H2O = if cathode_phi < 1 then Shomate.H2O_G else Shomate.H2O_L;
   
 equation
-   
+
   a_H2 = p_H2 / p_reference;
   a_O2 = p_O2 / p_reference;
   a_H2O = max(cathode_phi, Modelica.Constants.eps);
-  
-  //LossPower = -v*i;
+
   DeltaG0 = Shomate.gibbs_free_energy(T_stack, H2O)
           - Shomate.gibbs_free_energy(T_stack, Shomate.H2)
           - 0.5*Shomate.gibbs_free_energy(T_stack, Shomate.O2);
@@ -40,5 +38,5 @@ equation
 
   annotation(
     Icon(graphics = {Text(origin = {-100, -100}, extent = {{0, 0}, {30, 30}}, textString = "A"), Text(origin = {100, -100}, extent = {{-30, 0}, {0, 30}}, textString = "C")}),
-  Documentation(info = "<html><head></head><body>This unit calculates the reversible voltage of a hydrogen fuel cell as a function of temperature (either set directly with <i>T</i>, or through the <i>heatPort</i>) and partial pressures in anode and cathode.<div>In case of relative humidity φ below 100%, the unit automatically switches to using the ΔG<sup>0</sup><sub>f</sub> of water vapour instead of liquid (reducing voltage); also, φ is used as an estimate of water activity, so the reversible voltage will increase with lower humidity (this effect will be weak and more than compensated for by increases ohmic resistance).</div><div>The anode and cathode <i>FluidPort</i>s use the <i>inStream</i> operator to estimate properties on the other side, so care must be taken in connecting them properly, to avoid reading the wrong numbers.</div></body></html>"));
-end VSourceShoemate;
+  Documentation(info = "<html><head></head><body>This unit calculates the reversible voltage of a hydrogen fuel cell as a function of temperature (either set directly with <i>T</i>, or through the <i>heatPort</i>) and partial pressures in anode and cathode.<div>In case of relative humidity φ below 100%, the unit automatically switches to using the ΔG<sup>0</sup><sub>f</sub> of water vapour instead of liquid (reducing voltage); also, φ is used as an estimate of water activity, so the reversible voltage will increase with lower humidity (this effect will be weak and more than compensated for by increases ohmic resistance).</div></body></html>"));
+end VSourceShomate;

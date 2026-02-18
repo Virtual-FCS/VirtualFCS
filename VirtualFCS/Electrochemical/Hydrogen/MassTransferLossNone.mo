@@ -1,8 +1,10 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 model MassTransferLossNone
-extends Electrochemical.Hydrogen.BaseMassTransportLoss;
+  extends Electrochemical.Hydrogen.BaseMassTransportLoss;
 equation
-v = 0;
-
+  v = 0;
+  annotation(
+    Icon(graphics = {Text(textColor = {0, 0, 255}, extent = {{20, -20}, {-20, 20}}, textString = "None")}),
+  Documentation(info = "<html><head></head><body>Trivial implementation of mass transport element with no mass transport losses.<div>Voltage across the item is simply set to zero.</div></body></html>"));
 end MassTransferLossNone;
