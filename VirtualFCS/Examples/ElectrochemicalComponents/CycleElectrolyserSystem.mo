@@ -14,12 +14,12 @@ model CycleElectrolyserSystem
     period=800,
     nperiod=-1,
     startTime=50)
-    annotation (Placement(transformation(extent={{10,50},{-10,70}})));
+    annotation (Placement(transformation(extent = {{10, 50}, {-10, 70}})));
 equation
-  connect(trapezoidCurrent.n, electrolyserSystem.pin_n) annotation (Line(points
-        ={{-10,60},{-14,60},{-14,26},{-11,26},{-11,19.8}}, color={0,0,255}));
-  connect(trapezoidCurrent.p, electrolyserSystem.pin_p) annotation (Line(points
-        ={{10,60},{14,60},{14,28},{11,28},{11,19.8}}, color={0,0,255}));
+ connect(trapezoidCurrent.n, electrolyserSystem.pin_n) annotation(
+    Line(points = {{-10, 60}, {-14, 60}, {-14, 26}, {-11, 26}, {-11, 19.8}}, color = {0, 0, 255}));
+ connect(trapezoidCurrent.p, electrolyserSystem.pin_p) annotation(
+    Line(points = {{10, 60}, {14, 60}, {14, 28}, {11, 28}, {11, 19.8}}, color = {0, 0, 255}));
   annotation (experiment(
       StopTime=650,
       Interval=0.5,

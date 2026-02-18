@@ -1,6 +1,9 @@
 within VirtualFCS.ComponentTesting;
 
 model AmmoniaCrackerTest
+
+  extends Modelica.Icons.Example;
+
   import Modelica.Media.IdealGases.SingleGases;
   
   package AmmoniaMedium_CP = VirtualFCS.Media.NH3_CP;
