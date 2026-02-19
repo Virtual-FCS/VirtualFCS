@@ -4,6 +4,7 @@ ChopperTest
 CompressorTest
 DC_converterTest
 ECMS_Experiment_Testing
+ElectrolyserSystemTest
 FuelCellTest
 FuelCellSystemTest
 HeatSinkTest
