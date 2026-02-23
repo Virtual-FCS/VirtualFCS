@@ -11,7 +11,7 @@ model FuelCellTest
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
   
-  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T)) annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
@@ -33,11 +33,10 @@ model FuelCellTest
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Step R_values(height = 3, offset = 2, startTime = 250) annotation(
+  Modelica.Blocks.Sources.Step R_values(height = 3, offset = 2, startTime = 30) annotation(
     Placement(transformation(origin = {50, 80}, extent = {{10, -10}, {-10, 10}})));
 equation
-  fc.ohmic.phi = fc.cathode.medium.phi;
-  
+ 
   connect(fc.pin_n, ground.p) annotation(
     Line(points = {{-10, 14}, {-10, 80}, {-30, 80}, {-30, 60}}, color = {0, 0, 255}));
   connect(resistor.n, fc.pin_n) annotation(

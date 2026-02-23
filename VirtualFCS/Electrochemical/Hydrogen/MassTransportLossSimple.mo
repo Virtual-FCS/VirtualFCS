@@ -5,7 +5,7 @@ extends Electrochemical.Hydrogen.BaseMassTransportLoss;
   import Modelica.Constants.R;
   import Modelica.Constants.F;
   
-  parameter Modelica.Units.SI.Current i_limit = 15 "Limiting current";
+  parameter Modelica.Units.SI.Current i_limit = 20 * N_cells "Limiting current A";
   
   outer Modelica.Units.SI.Temperature T_stack "stack temperature";
   
