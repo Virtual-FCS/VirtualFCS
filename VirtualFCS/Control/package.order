@@ -10,3 +10,4 @@ VoltageLimiter
 ECMS
 DCMotorControlCompressor_2
 DCMotorControlCompressor
+TwoPhasedPWM
