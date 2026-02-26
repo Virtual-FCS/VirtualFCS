@@ -7,6 +7,7 @@ model FuelCell
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
   
+  // Parameters
   replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceConstant v_source "Open-circuit voltage" annotation(
     Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseVSource;
   replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic() "Internal resistance" annotation(
@@ -15,23 +16,28 @@ model FuelCell
     Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby BaseMassTransportLoss;
   replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossNone activation annotation(
     Placement(transformation(origin = {30, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby BaseActivationLoss;
+  
+  parameter Modelica.Units.SI.Length L_FC_electrode = 0.6 "Length of fuel cell electrode (m)";
+  parameter Modelica.Units.SI.Length W_FC_electrode = 0.5 "Width of fuel cell electrode (m)";
+  parameter Modelica.Units.SI.Length H_FC_electrode = 0.2 "Height of fuel cell electrode (m)";
+  inner parameter Integer N_cells = 42 "Number of cells in the stack";
+
+  // Constants
+  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
+  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F "Faraday constant";
   final constant Integer n = 2 "Electrons exchanged in reaction";
   constant SI.MolarMass M_H2 = Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM "Molar mass of hydrogen";
   constant SI.MolarMass M_N2  = Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM "Molar mass of nitrogen";
   constant SI.MolarMass M_O2  = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
-
-  inner parameter Integer N_cells = 42 "Number of cells in the stack";
-
-  // Physical constants
-  constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
-  constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F "Faraday constant";
+  
 
   // Convenience variables (Used by inner models)
   inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
   inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[Media.CathodeAir.Oxygen];
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
-  inner Real phi = cathode.medium.phi "TO DO: Need to replace by average humidity between anode and cathode";
+  inner Real phi = cathode.medium.phi "check mol/mass fraction";
+  inner Modelica.Units.SI.Area A_el = L_FC_electrode * W_FC_electrode "Area of the fuel cell electrode (m^2)";
 
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));

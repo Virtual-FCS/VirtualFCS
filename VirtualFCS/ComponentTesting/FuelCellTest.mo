@@ -15,7 +15,7 @@ model FuelCellTest
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
-  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1, p = 2e5)  annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
   Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p = system.p_ambient)  annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
@@ -33,7 +33,7 @@ model FuelCellTest
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Step R_values(height = 3, offset = 2, startTime = 30) annotation(
+  Modelica.Blocks.Sources.Step R_values(height = -2.4, offset = 3, startTime = 30) annotation(
     Placement(transformation(origin = {50, 80}, extent = {{10, -10}, {-10, 10}})));
 equation
  
@@ -59,5 +59,5 @@ equation
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
 
 annotation(
-    experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 0.1));
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.5));
 end FuelCellTest;
