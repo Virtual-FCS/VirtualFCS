@@ -32,7 +32,7 @@ model SubSystemCooling
     Placement(transformation(origin = {50, -20}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(from_stack, coolantReservoir.ports[1]) annotation(
-    Line(points = {{-100, -20}, {20, -20}, {20, 20}}, color = {255, 0, 0}));
+    Line(points = {{-100, -20}, {14, -20}, {14, 20}, {20, 20}}, color = {255, 0, 0}));
   connect(P_coolant.y, coolingRate.Q_flow) annotation(
     Line(points = {{-49, 40}, {-40, 40}}, color = {0, 0, 127}));
   connect(coolantTemperature.T, P_coolant.u_m) annotation(
@@ -50,7 +50,7 @@ equation
   connect(pump2.port_b, to_stack) annotation(
     Line(points = {{60, -12}, {120, -12}}, color = {0, 127, 255}));
   connect(pump2.port_a, coolantReservoir.ports[2]) annotation(
-    Line(points = {{40, -20}, {20, -20}, {20, 20}}, color = {0, 127, 255}));
+    Line(points = {{40, -20}, {26, -20}, {26, 20}, {20, 20}}, color = {0, 127, 255}));
   connect(pump2.pin_n, pin_n) annotation(
     Line(points = {{55, -30}, {55, -100}, {80, -100}}, color = {0, 0, 255}));
   connect(pump2.pin_p, pin_p) annotation(
