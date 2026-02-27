@@ -1,4 +1,5 @@
 AmmoniaCrackerTest
+BoostConverterTest
 CathodeAirTest
 ChopperTest
 CompressorTest
@@ -18,7 +19,6 @@ PressureRegulatorTest_v2
 PumpElectricDCTest
 RecirculationBlowerTest
 ReversiblePotentialTest
-BoostConverterTest
 SimpleCompressorTest
 SimplePumpTest
 SubSystemAirTest
