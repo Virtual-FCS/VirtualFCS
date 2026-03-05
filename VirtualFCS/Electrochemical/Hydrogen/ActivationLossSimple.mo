@@ -6,7 +6,7 @@ extends Electrochemical.Hydrogen.BaseActivationLoss;
   import Modelica.Constants.F;
     
   parameter Modelica.Units.SI.CurrentDensity i_0 = 0.03"Exchange current density A/m^2 (Barbir 2005)";
-  parameter Real alpha = 0.3419 "Charge transfer coefficient (-)";
+  parameter Real alpha = 1 "Charge transfer coefficient (-)";
   
   outer Modelica.Units.SI.Temperature T_stack "stack temperature";
   outer Modelica.Units.SI.Area A_el "Area of the fuel cell electrode (m^2)";

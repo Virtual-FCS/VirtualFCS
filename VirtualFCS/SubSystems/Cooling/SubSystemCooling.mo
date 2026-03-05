@@ -2,7 +2,7 @@ within VirtualFCS.SubSystems.Cooling;
 
 model SubSystemCooling
   parameter Modelica.Units.SI.Temperature T_stack_set = 353 "Target stack temperature";
-  parameter Modelica.Units.SI.Temperature T_coolant_set = 333 "Target coolant reservoir temperature";
+  parameter Modelica.Units.SI.Temperature T_coolant_set = 300 "Target coolant reservoir temperature";
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   Modelica.Fluid.Interfaces.FluidPort_b to_stack(redeclare package Medium = Coolant_Medium) annotation(
     Placement(transformation(origin = {120, -12}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 120}, extent = {{-20, -20}, {20, 20}})));
@@ -22,9 +22,9 @@ model SubSystemCooling
     Placement(transformation(origin = {-30, 0}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.RealExpression targetStackT(y = T_stack_set) annotation(
     Placement(transformation(origin = {110, 60}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Blocks.Continuous.LimPID PI_stack(Td = 0, yMin = 0.01, controllerType = Modelica.Blocks.Types.SimpleController.PI, k = -0.1, Ti = 60, yMax = 100, strict = false) annotation(
+  Modelica.Blocks.Continuous.LimPID PI_stack(Td = 0, yMin = 0.01, controllerType = Modelica.Blocks.Types.SimpleController.PI, k = -10, Ti = 60, yMax = 100, strict = false) annotation(
     Placement(transformation(origin = {82, 60}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Blocks.Continuous.LimPID P_coolant(controllerType = Modelica.Blocks.Types.SimpleController.P, yMax = 0, yMin = -10000, k = 1000) annotation(
+  Modelica.Blocks.Continuous.LimPID P_coolant(controllerType = Modelica.Blocks.Types.SimpleController.P, yMax = 0, yMin = -1000000, k = 100000) annotation(
     Placement(transformation(origin = {-60, 40}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.RealExpression targetReservoirT(y = T_coolant_set) annotation(
     Placement(transformation(origin = {-90, 40}, extent = {{-10, -10}, {10, 10}})));

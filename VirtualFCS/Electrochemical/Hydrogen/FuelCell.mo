@@ -6,11 +6,10 @@ model FuelCell
   import Modelica.Constants.F "Faraday constant";
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
-  
   // Parameters
   replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceConstant v_source "Open-circuit voltage" annotation(
     Placement(transformation(origin = {-50, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseVSource;
-  replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic() "Internal resistance" annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic "Internal resistance" annotation(
     Placement(transformation(origin = {-10, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby BaseOhmic;
   replaceable VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport annotation(
     Placement(transformation(origin = {70, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby BaseMassTransportLoss;
@@ -22,7 +21,7 @@ model FuelCell
   parameter Modelica.Units.SI.Length H_FC_electrode = 0.2 "Height of fuel cell electrode (m)";
   inner parameter Integer N_cells = 42 "Number of cells in the stack";
 
-  // Constants
+// Constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F "Faraday constant";
   final constant Integer n = 2 "Electrons exchanged in reaction";
@@ -30,8 +29,6 @@ model FuelCell
   constant SI.MolarMass M_N2  = Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM "Molar mass of nitrogen";
   constant SI.MolarMass M_O2  = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
-  
-
   // Convenience variables (Used by inner models)
   inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
   inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[Media.CathodeAir.Oxygen];
@@ -47,7 +44,7 @@ model FuelCell
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-80, 128}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 2000)  annotation(
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 5000)  annotation(
     Placement(transformation(origin = {30, -80}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
