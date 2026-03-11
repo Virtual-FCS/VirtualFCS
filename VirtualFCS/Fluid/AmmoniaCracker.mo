@@ -1,6 +1,6 @@
 ﻿within VirtualFCS.Fluid;
 
-model AmmoniaCracker "Ammonia cracker model based on a tube and shell configuration with catalyst-covered outer tube walls for ammonia decomposition reaction. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
+model AmmoniaCracker "Ammonia cracker model based on a tube and shell configuration with catalyst-covered inner tube walls for ammonia decomposition reaction (Ammonia flow through the tubes whereas a hot fluid flows on the shell side. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
 
 // Import relevant packages
   // Initialize ideal gas Medium objects for the different species

@@ -32,3 +32,4 @@ SubSystemHydrogenWithFuelCellTest
 SubSystemCoolingWithFuelCellTest
 ThrottleValveTest
 CathodeAirCCTest
+CrackedNH3Test
