@@ -3,9 +3,11 @@ within VirtualFCS.Fluid;
 model Humidifier "Hollow fiber membrane humidifier:
     - Counterflow NTU-based mass exchanger
     - Optional first-order dynamics for moisture transfer
-  Uses only Modelica Standard Library + Buildings."
+  Uses only Modelica Standard Library"
   replaceable package dry_medium = VirtualFCS.Media.CathodeAir;
   replaceable package wet_medium = VirtualFCS.Media.CathodeAir;
+  
+  import SI = Modelica.Units.SI;
 
 
   // Wet (A) and Dry (B) fluid ports
@@ -19,54 +21,57 @@ model Humidifier "Hollow fiber membrane humidifier:
     Placement(transformation(extent = {{100, -70}, {120, -50}}, origin = {210, -60}, rotation = 180)));
   // Define constants
   Real pi = Modelica.Constants.pi;
+  
   // Parameters for NTU model
   //parameter Modelica.Units.SI.Area A_mem = 1.0 "Membrane effective area [m2]";
-  parameter Modelica.Units.SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient [m2/s] (to be calibrated)";
-  parameter Modelica.Units.SI.Time tau_perm = 6.1 "Time constant for moisture transfer [s]";
+  parameter SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient [m2/s] (to be calibrated)";
+  parameter SI.Time tau_perm = 6.1 "Time constant for moisture transfer [s]";
   // Geometric and packing properties
   parameter Integer nFibers = 488 "Number of hollow fibers";
-  parameter Real dFiber_i = 0.9e-3 "Inner fiber diameter [m]";
-  parameter Real dFiber_o = 1.0e-3 "Outer fiber diameter [m]";
-  parameter Real dHousing = 39.2e-3 "Inner diameter of shell [m]";
-  parameter Real L_fiber = 150.8e-3 "Fiber length [m]";
+  parameter SI.Diameter dFiber_i = 0.9e-3 "Inner fiber diameter [m]";
+  parameter SI.Diameter dFiber_o = 1.0e-3 "Outer fiber diameter [m]";
+  parameter SI.Diameter dHousing = 39.2e-3 "Inner diameter of shell [m]";
+  parameter SI.Length L_fiber = 150.8e-3 "Fiber length [m]";
   // Intermediate variables for NTU calculation
-  Real V_dot_a "Volumetric flow A [m3/s]";
-  Real V_dot_b "Volumetric flow B [m3/s]";
-  Real VFR "Volume flow ratio";
-  Real h_conv_a "Convective resistance A [s/m]";
-  Real h_conv_b "Convective resistance B [s/m]";
-  Real R_conv_a "Resistance A [s/m]";
-  Real R_conv_b "Resistance B [s/m]";
-  Real R_mem "Membrane resistance [s/m]";
-  Real beta_eff "Effective mass transfer coeff. [m/s]";
-  Real NTU "Number of transfer units";
-  Real eta "Effectiveness";
-  Real m_perm "Instantaneous permeation mass flow [kg/s]";
-  Real Xi "Normalized permeation state";
-  Real m_perm_state "Dynamic permeation flow [kg/s]";
+  SI.VolumeFlowRate V_dot_a "Volumetric flow A [m3/s]";
+  SI.VolumeFlowRate V_dot_b "Volumetric flow B [m3/s]";
+  SI.DimensionlessRatio VFR "Volume flow ratio";
+  SI.Velocity h_conv_a "Convective resistance A [m/s]"; //Mass transfer velocity
+  SI.Velocity h_conv_b "Convective resistance B [m/s]";
+  SI.SpectralConcentration R_conv_a "Resistance A [s/m3]"; //Correct units, but should be mass transfer resistance
+  SI.SpectralConcentration R_conv_b "Resistance B [s/m3]";
+  SI.SpectralConcentration R_mem "Membrane resistance [s/m3]";
+  SI.Velocity beta_eff "Effective mass transfer coeff. [m/s]";
+  SI.DimensionlessRatio NTU "Number of transfer units";
+  SI.Efficiency eta "Effectiveness";
+  SI.MassFlowRate m_perm "Instantaneous permeation mass flow [kg/s]";
+  SI.DimensionlessRatio Xi "Normalized permeation state";
+  SI.MassFlowRate m_perm_state "Dynamic permeation flow [kg/s]";
   // State for first-order dynamic of permeation
-  Real Xi_state(start = 0) "State variable for normalized moisture transfer";
-  Real portA_out_m_flow "Mass flow port A out";
-  Real portB_out_m_flow "Mass flow port B out";
-  Real portA_out_Xi_oxygen "Species balance port A out";
-  Real portA_out_Xi_nitrogen "Species balance port A out";
-  Real portA_out_Xi_water "Species balance port A out";
-  Real portB_out_Xi_oxygen "Species balance port B out";
-  Real portB_out_Xi_nitrogen "Species balance port B out";
-  Real portB_out_Xi_water "Species balance port B out";
-  Real portA_out_h_outflow "Enthalpy flow port A out";
-  Real portB_out_h_outflow "Enthalpy flow port B out";
+  SI.DimensionlessRatio Xi_state(start = 0) "State variable for normalized moisture transfer";
+  SI.MassFlowRate portA_out_m_flow "Mass flow port A out";
+  SI.MassFlowRate portB_out_m_flow "Mass flow port B out";
+  SI.MassFraction portA_out_Xi_oxygen "Species balance port A out";
+  SI.MassFraction portA_out_Xi_nitrogen "Species balance port A out";
+  SI.MassFraction portA_out_Xi_water "Species balance port A out";
+  SI.MassFraction portB_out_Xi_oxygen "Species balance port B out";
+  SI.MassFraction portB_out_Xi_nitrogen "Species balance port B out";
+  SI.MassFraction portB_out_Xi_water "Species balance port B out";
+  SI.EnthalpyFlowRate portA_out_h_outflow "Enthalpy flow port A out";
+  SI.EnthalpyFlowRate portB_out_h_outflow "Enthalpy flow port B out";
   //----- TEST IMPLEMENTATION OF RESISTANCES
-  Real d_hyd_b "Or some effective shell hydraulic diameter";
-  Real Re_a, Sc_a, Re_b, Sc_b;
-  Real Sh_wet1, Sh_wet2, Sh_wet;
-  Real Phi, Sh_dry, v_a, v_b;
-  Modelica.Units.SI.Area A_c_fibers_in "Cross-section area of fibers inner diameter";
-  Modelica.Units.SI.Area A_c_fibers_out "Cross-section area of fibers outer diameter";
-  Modelica.Units.SI.Area A_mem "Surface area of fibers";
-  Modelica.Units.SI.Area A_c_shell "Cross-section area of humidifier shell";
-  Modelica.Units.SI.Area A_c_shell_gap "Cross-section area of humidifier shell space not occupied by fibers";
-  parameter Real D_H2O_Air = 2.63e-7 "Binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
+  
+  SI.Diameter d_hyd_b "Or some effective shell hydraulic diameter";
+  Real Re_a, Sc_a, Re_b, Sc_b; // Dimensionless number
+  Real Sh_wet1, Sh_wet2, Sh_wet; // Dimensionless number
+  Real Phi, Sh_dry;
+  SI.Velocity v_a, v_b;
+  SI.Area A_c_fibers_in "Cross-section area of fibers inner diameter";
+  SI.Area A_c_fibers_out "Cross-section area of fibers outer diameter";
+  SI.Area A_mem "Surface area of fibers";
+  SI.Area A_c_shell "Cross-section area of humidifier shell";
+  SI.Area A_c_shell_gap "Cross-section area of humidifier shell space not occupied by fibers";
+  parameter SI.DiffusionCoefficient D_H2O_Air = 2.63e-7 "Binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
   
   //---- Define medium states for cleaner implementation
   VirtualFCS.Media.CathodeAir.ThermodynamicState med_state_A_in;
@@ -136,7 +141,7 @@ equation
   A_c_fibers_out = nFibers*pi*(dFiber_o^2)/4;
   A_c_fibers_in = nFibers*pi*(dFiber_i^2)/4;
   A_c_shell_gap = A_c_shell - A_c_fibers_out;
-  A_mem = nFibers*L_fiber*pi*dFiber_o^2;
+  A_mem = nFibers*L_fiber*pi*dFiber_o;
   v_a = V_dot_a/A_c_fibers_in;
   v_b = (portB_in.m_flow/dry_medium.density(med_state_B_in))/A_c_shell_gap;
   
@@ -156,21 +161,20 @@ equation
 // 3. Convective coefficients & resistances
   h_conv_a = Sh_wet*D_H2O_Air/dFiber_i;
   h_conv_b = Sh_dry*D_H2O_Air/d_hyd_b;
-//R_conv_a = 1/h_conv_a;
-//R_conv_b = 1/h_conv_b;
-//----- TEST IMPLEMENTATION OF RESISTANCES
-// FIX THIS:
-//h_conv_a = 1;
-//h_conv_b = 1;
-// 2. Resistances (fill with convective correlation or constants)
-  R_conv_a = 1.0/h_conv_a;
+
+// 2. Resistances (fill with convective correlation or constants) ADDRESS THESE
+
+  R_conv_a = 1.0/(h_conv_a*A_mem);
 // placeholder: h_conv_a = f(velocityA, dFiber_o)
-  R_conv_b = 1.0/h_conv_b;
+  R_conv_b = 1.0/(h_conv_b*A_mem);
 // placeholder: h_conv_b = f(velocityB, dHousing)
-  R_mem = (dFiber_o - dFiber_i)/(D_mem*A_mem);
-  beta_eff = 1/((R_conv_a + R_mem + R_conv_b)*A_mem);
+  R_mem = ((dFiber_o - dFiber_i)/2)/(D_mem*A_mem);
+  
+  beta_eff = 1/((R_conv_a + R_mem + R_conv_b) * A_mem);
+
+
 // 3. NTU and effectiveness
-  NTU = beta_eff*A_mem/V_dot_a;
+  NTU = beta_eff * A_mem/V_dot_a;
   eta = if VFR == 1 then NTU/(1 + NTU) else (1 - exp((VFR - 1)*NTU))/(1 - VFR*exp((VFR - 1)*NTU));
 // 4. Steady permeation rate
   m_perm = eta*((1 - inStream(portA_in.Xi_outflow[1]) - inStream(portA_in.Xi_outflow[2])) - (1 - inStream(portB_in.Xi_outflow[1]) -  inStream(portB_in.Xi_outflow[2]))) * portA_in.m_flow;  
