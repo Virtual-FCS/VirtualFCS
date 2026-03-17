@@ -16,10 +16,9 @@ model FuelCell
   replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossNone activation annotation(
     Placement(transformation(origin = {30, 110}, extent = {{-10, 10}, {10, -10}})), choicesAllMatching = true) constrainedby BaseActivationLoss;
   
-  parameter Modelica.Units.SI.Length L_FC_electrode = 0.6 "Length of fuel cell electrode (m)";
-  parameter Modelica.Units.SI.Length W_FC_electrode = 0.5 "Width of fuel cell electrode (m)";
-  parameter Modelica.Units.SI.Length H_FC_electrode = 0.2 "Height of fuel cell electrode (m)";
   inner parameter Integer N_cells = 42 "Number of cells in the stack";
+  inner parameter Modelica.Units.SI.Area A_el = 0.41 "Area of the fuel cell electrode (m^2)";
+  parameter Modelica.Units.SI.ThermalConductance G_cool = 8000 "Thermal conductance of coolant in FC stack (W/K)";
 
 // Constants
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
@@ -34,8 +33,7 @@ model FuelCell
   inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[Media.CathodeAir.Oxygen];
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   inner Real phi = cathode.medium.phi "check mol/mass fraction";
-  inner Modelica.Units.SI.Area A_el = L_FC_electrode * W_FC_electrode "Area of the fuel cell electrode (m^2)";
-
+  
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
   replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
@@ -44,7 +42,7 @@ model FuelCell
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-80, 128}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
-  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = 5000)  annotation(
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = G_cool)  annotation(
     Placement(transformation(origin = {30, -80}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
