@@ -5,8 +5,6 @@ model FuelCellSystem
   parameter Modelica.Units.SI.AbsolutePressure p_air_set = 200000 "air outlet set pressure";
   parameter Modelica.Units.SI.AbsolutePressure p_H2_set = 200000 "H2 outlet set pressure";
 
-  parameter Modelica.Units.SI.Current I_nom_FC_stack = 280.0 "FC stack nominal current";
-  parameter Modelica.Units.SI.Current I_rated_FC_stack = 320 "FC stack maximum operating current";
   parameter Integer N_cells = 42 "FC stack number of cells";
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
@@ -21,7 +19,7 @@ model FuelCellSystem
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   replaceable FuelCell fuelCell(N_cells = N_cells)  annotation (Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
-  replaceable SubSystems.Air.SubSystemAir_2 subSystemAir annotation(
+  replaceable SubSystems.Air.SubSystemAir_2 subSystemAir(N_cells = N_cells, p_set = p_air_set)  annotation(
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {0, -54}, extent = {{-14, -14}, {14, 14}})));
