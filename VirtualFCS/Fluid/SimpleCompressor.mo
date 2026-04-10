@@ -15,7 +15,9 @@ model SimpleCompressor "A simple isentropic compressor"
   Modelica.Units.SI.EnthalpyFlowRate Hout = port_b.m_flow * port_b.h_outflow;
   
   Modelica.Units.SI.Efficiency eta = 0.8 "Isoentropic efficiency";
+  Modelica.Units.SI.Power Power_Compressor "The power consumed by the Compressor";
 equation
+  Power_Compressor = set_control;
   // All compositions equal to upstream
   medium_in.Xi = port_a.Xi_outflow;
   // Not supposed to ever be used
