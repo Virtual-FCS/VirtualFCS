@@ -36,12 +36,12 @@ model SubSystemAir
   // Sensors
   Modelica.Fluid.Sensors.MassFlowRate sen_Air_mflow(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {-60, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sensors.Temperature compressorOutletSensor(redeclare package Medium = Medium) annotation(
+  Modelica.Fluid.Sensors.Temperature tempCompressorOut(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {51, 39}, extent = {{-7, -7}, {7, 7}})));
   // Valves
   Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {42, -24}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Fluid.Sensors.Temperature compressorInletSensor(redeclare package Medium = Medium) annotation(
+  Modelica.Fluid.Sensors.Temperature tempCompressorIn(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {-41, 45}, extent = {{-7, -7}, {7, 7}})));
   Fluid.ThrottleValve throttleValve(valveDownstream(dp_nominal(displayUnit = "Pa") = 1e4, m_flow_nominal = 0.5), redeclare package Medium = Medium)   annotation(
     Placement(transformation(origin = {6, -46}, extent = {{-20, -20}, {20, 20}})));
@@ -73,9 +73,9 @@ equation
     Line(points = {{-17, 77}, {-17, 38}, {-9, 38}}, color = {0, 0, 127}));
   connect(sen_Air_mflow.port_b, compressor.port_a) annotation(
     Line(points = {{-50, 22}, {-9, 22}}, color = {0, 127, 255}));
-  connect(compressor.port_b, compressorOutletSensor.port) annotation(
+  connect(compressor.port_b, tempCompressorOut.port) annotation(
     Line(points = {{49, 22}, {53, 22}, {53, 32}, {51, 32}}, color = {0, 127, 255}));
-  connect(compressor.port_a, compressorInletSensor.port) annotation(
+  connect(compressor.port_a, tempCompressorIn.port) annotation(
     Line(points = {{-9, 22}, {-38.6, 22}, {-38.6, 38}, {-40.6, 38}}, color = {0, 127, 255}));
   connect(compressor.pin_n, pin_n) annotation(
     Line(points = {{16, 38}, {16, 67}, {10, 67}, {10, 104}}, color = {0, 0, 255}));

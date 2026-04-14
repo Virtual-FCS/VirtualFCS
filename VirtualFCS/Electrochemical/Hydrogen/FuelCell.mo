@@ -33,12 +33,15 @@ model FuelCell
   inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p * cathode.medium.X[Media.CathodeAir.Oxygen];
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   inner Real phi = cathode.medium.phi "check mol/mass fraction";
-  
+  // Outputs
+  Real eta_stack_HHV(unit = "100") "Higher heating value efficiency of fuel cell stack";
+  Real eta_stack_LHV(unit = "100") "Lower heating value efficiency of fuel cell stack";
+    
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 323.15, fixed = true))  annotation(
     Placement(transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
+  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 2.4e5) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{20, -20}, {-20, 20}}, rotation = 90)));
-  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium) annotation(
+  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium, p_start = 2.4e5) annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-80, 128}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
@@ -47,6 +50,8 @@ model FuelCell
   Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
+  eta_stack_HHV = multiSensor.v / N_cells / 1.482 * 100;
+  eta_stack_LHV = multiSensor.v / N_cells / 1.254 * 100;
   connect(mass_transport.n, pin_p) annotation(
     Line(points = {{80, 110}, {100, 110}, {100, 150}, {60, 150}}, color = {0, 0, 255}));
   connect(activation.n, mass_transport.p) annotation(

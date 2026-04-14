@@ -2,15 +2,15 @@ within VirtualFCS.Examples.ElectrochemicalComponents;
 model PolarizeFuelCellStack
   "Generate a polarization curve for a fuel cell stack."
   extends Modelica.Icons.Example;
-  parameter Modelica.Units.SI.Area A_el = 0.02 "Electrode Area (m^2) from I_max = 320A and i_max=16000A/m^2";
-  parameter Modelica.Units.SI.Current I_final = 250 "Final step current [A]";
+  parameter Modelica.Units.SI.Area A_el = 0.03 "Electrode Area (m^2)";
+  parameter Modelica.Units.SI.Current I_final = 370.0 "Final step current [A]";
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
   replaceable package Coolant_Medium =
       Modelica.Media.Water.ConstantPropertyLiquidWater;
   inner Modelica.Fluid.System system(p_ambient(displayUnit = "Pa"))  annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2.4e5, p_H2_set = 2.4e5, N_cells = 180, fuelCell(A_el = A_el))  annotation (
+  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2.4e5, p_H2_set = 2.4e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, A_el = A_el), subSystemAir(compressor(eta = 0.9)))  annotation (
     Placement(transformation(extent = {{-22, -22}, {22, 22}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
@@ -18,7 +18,7 @@ model PolarizeFuelCellStack
     Placement(transformation(origin = {-40, 30}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.RealExpression Resistance(y = fcs.N_cells*0.9/scalar(I_aprox.y))  annotation(
     Placement(transformation(origin = {54, 56}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  Modelica.Blocks.Sources.CombiTimeTable I_aprox(table = [0, 20; 50, 60; 100, I_final], smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments, extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint)  annotation(
+  Modelica.Blocks.Sources.CombiTimeTable I_aprox(table = [0, 20; 50, 100; 100, I_final], smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments, extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint)  annotation(
     Placement(transformation(origin = {94, 56}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
   connect(ground.p, resistor.n) annotation(

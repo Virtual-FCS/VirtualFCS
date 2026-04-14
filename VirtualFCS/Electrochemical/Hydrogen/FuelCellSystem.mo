@@ -2,6 +2,9 @@
 model FuelCellSystem
 
   outer Modelica.Fluid.System system "System properties";
+  constant Modelica.Units.SI.SpecificEnergy H2HHV = 142e6 "(J/kg) Hydrogen low heating value";
+  constant Modelica.Units.SI.SpecificEnergy H2LHV = 120e6 "(J/kg) Hydrogen low heating value";
+  constant Real eta_max = 70. "Maximum system efficiency to avoid spurious peak efficiencies due to current step changes";
   parameter Modelica.Units.SI.AbsolutePressure p_air_set = 200000 "air outlet set pressure";
   parameter Modelica.Units.SI.AbsolutePressure p_H2_set = 200000 "H2 outlet set pressure";
 
@@ -13,6 +16,8 @@ model FuelCellSystem
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
   Modelica.Units.SI.Power Power_BOP = source.p.i*(source.p.v-source.n.v) "Power consumed by the BOP components";
+  Real eta_sys_HHV(unit = "100") "Fuel cell system efficiency High Heating Value";
+  Real eta_sys_LHV(unit = "100") "Fuel cell system efficiency Low Heating Value";
 
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -30,6 +35,8 @@ model FuelCellSystem
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {60, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
+  eta_sys_HHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2HHV)*100, eta_max);
+  eta_sys_LHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2LHV)*100, eta_max);
   connect(pin_n, currentSensor.p) annotation(
     Line(points = {{-40, 96}, {-40, 80}}, color = {0, 0, 255}));
   connect(fuelCell.pin_n, currentSensor.n) annotation(

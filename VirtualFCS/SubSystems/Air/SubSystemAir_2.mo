@@ -35,7 +35,7 @@ model SubSystemAir_2
     Placement(transformation(origin = {-78, 72}, extent = {{-12, -12}, {12, 12}})));
 
 //  Modelica.Blocks.Math.Gain current_to_mass_flow(k = lambda*MM_air*N_cell/4/F/xO2) annotation(
-//    Placement(transformation(origin = {-78, 72}, extent = {{-12, -12}, {12, 12}})));
+  //    Placement(transformation(origin = {-78, 72}, extent = {{-12, -12}, {12, 12}})));
   replaceable Fluid.SimpleCompressor compressor(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {18, 24}, extent = {{-20, -20}, {20, 20}})))constrainedby 
 Fluid.CompressorInterface annotation(choicesAllMatching = true,
@@ -53,6 +53,10 @@ Fluid.CompressorInterface annotation(choicesAllMatching = true,
      Placement(transformation(origin = {30, -10}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Blocks.Nonlinear.Limiter valveInputLimiter(uMax = 1, uMin = 0) annotation(
     Placement(transformation(origin = {0, -10}, extent = {{4, -4}, {-4, 4}}, rotation = -0)));
+  Modelica.Fluid.Sensors.Temperature tempCompressorOut(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {53, 39}, extent = {{-7, -7}, {7, 7}})));
+  Modelica.Fluid.Sensors.Temperature tempCompressorIn(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {-31, 39}, extent = {{-7, -7}, {7, 7}})));
 equation
   connect(source.ports[1], airInflow.port_a) annotation(
     Line(points = {{-76, 24}, {-68, 24}}, color = {0, 170, 255}));
@@ -90,6 +94,10 @@ equation
     Line(points = {{-40, 70}, {-34, 70}}, color = {0, 0, 127}));
   connect(PI_compressor.y, compressor.set_control) annotation(
     Line(points = {{-11, 70}, {-11, 36}, {-4, 36}}, color = {0, 0, 127}));
+  connect(tempCompressorOut.port, compressor.port_b) annotation(
+    Line(points = {{53, 32}, {53, 24}, {42, 24}}, color = {0, 127, 255}));
+  connect(tempCompressorIn.port, compressor.port_a) annotation(
+    Line(points = {{-31, 32}, {-32, 32}, {-32, 24}, {-2, 24}}, color = {0, 127, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),
