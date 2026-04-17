@@ -1,24 +1,18 @@
 within VirtualFCS.Media;
 
-package BaseShoMix
+partial package BaseShoMix
   
   extends Modelica.Media.Interfaces.PartialMedium(
       ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
-      mediumName = "Cathode_air",
-      substanceNames = {"oxygen", "nitrogen", "water"}, 
-      reference_X = {0.23, 0.76, 0.01},  // NB! These are MASS fractions, not molar. Oxygen is heavier, water is lighter.
+      
       final singleState = false,
       final reducedX = true,
       final fixedX = false);
   
-  
-  replaceable constant Shomate.Parameters[nX+1] sh_params= {Shomate.O2, Shomate.N2, Shomate.H2O_G, Shomate.H2O_L};
-  replaceable constant Modelica.Units.SI.MolarMass MMs[nX] = {
-      Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM, 
-      Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, 
-      Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM} "Molar weights of the medium species";
-  replaceable constant Modelica.Units.SI.Temperature T_boil = 373.15 "Boiling temperature at atmospheric pressure of the condensing phase";
-  replaceable constant Modelica.Units.SI.MolarEnergy L = 40700 "Latent heat of condensing phase";
+  replaceable constant Shomate.Parameters[nX+1] sh_params;
+  replaceable constant Modelica.Units.SI.MolarMass MMs[nX] "Molar weights of the medium species";
+  replaceable constant Modelica.Units.SI.Temperature T_boil "Boiling temperature at atmospheric pressure of the condensing phase";
+  replaceable constant Modelica.Units.SI.MolarEnergy L "Latent heat of condensing phase";
     
   redeclare record extends ThermodynamicState "Thermodynamic state variables"
     extends Modelica.Icons.Record;

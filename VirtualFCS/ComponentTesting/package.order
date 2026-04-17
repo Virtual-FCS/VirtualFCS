@@ -28,10 +28,11 @@ ElectrolyserSystemTest_dev
 ElectrolyserSystemTest
 ECMS_Experiment_Testing
 DC_converterTest
-CrackedNH3Test
 CompressorTest
 ChopperTest
 CathodeAirTest
 CathodeAirCCTest
 BoostConverterTest
 AmmoniaCrackerTest
+CathodeAirH2Test
+NH3CrackedTest
