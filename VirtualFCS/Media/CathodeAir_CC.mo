@@ -167,8 +167,8 @@ extends Modelica.Media.Interfaces.PartialMedium(
     Modelica.Units.SI.MolarMass MM_gas "Average molar mass of gas phase";
   algorithm
     Yi := gasMassFraction(state);
-    MM_gas := 1/(sum(Yi./MMs[Oxygen:Nitrogen]) + (1-sum(Yi))/MMs[Water]);
-    R_s := R / MM_gas;
+    MM_gas := sum(Yi./MMs[Oxygen:Nitrogen]) + (1-sum(Yi))/MMs[Water];
+    R_s := R * MM_gas;
   end gasConstant;
 
   redeclare function extends specificEnthalpy

@@ -9,7 +9,7 @@ model SubSystemAir_2_bis
   parameter Real lambda = 3 "Air excess ratio";
   parameter Integer N_cell = 42 "FC stack number of cells";
   parameter Modelica.Units.SI.AbsolutePressure p_set = 200000 "Target cathodic pressure";
-  Modelica.Fluid.Sources.FixedBoundary source(redeclare package Medium = Medium, nPorts = 1) annotation(
+  Modelica.Fluid.Sources.FixedBoundary airSource(redeclare package Medium = Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {-86, 24}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Fluid.Interfaces.FluidPort_a fromStack(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {100, -40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {60, 120}, extent = {{-20, -20}, {20, 20}})));
@@ -27,7 +27,7 @@ model SubSystemAir_2_bis
     Placement(transformation(origin = {-58, 24}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sensors.Pressure inletPressure(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {80, -20}, extent = {{10, 10}, {-10, -10}})));
-  Modelica.Fluid.Sources.FixedBoundary exhaust(redeclare package Medium = Medium, nPorts = 1) annotation(
+  Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 1) annotation(
     Placement(transformation(origin = {-70, -40}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Blocks.Math.Gain current_to_mass_flow(k = lambda*MM_air*N_cell/4/F/xO2) annotation(
     Placement(transformation(origin = {-78, 72}, extent = {{-12, -12}, {12, 12}})));
@@ -46,10 +46,12 @@ model SubSystemAir_2_bis
     Placement(transformation(origin = {0, -10}, extent = {{4, -4}, {-4, 4}}, rotation = -0)));
   Fluid.Compressor compressor(redeclare package Medium = Medium)  annotation(
     Placement(transformation(origin = {23, 27}, extent = {{-25, -25}, {25, 25}})));
+  Modelica.Fluid.Sensors.Temperature compressorOutletSensor(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {71, 45}, extent = {{-7, -7}, {7, 7}})));
 equation
-  connect(source.ports[1], airInflow.port_a) annotation(
+  connect(airSource.ports[1], airInflow.port_a) annotation(
     Line(points = {{-76, 24}, {-68, 24}}, color = {0, 170, 255}));
-  connect(outletValve.port_b, exhaust.ports[1]) annotation(
+  connect(outletValve.port_b, airSink.ports[1]) annotation(
     Line(points = {{-40, -40}, {-60, -40}}, color = {0, 127, 255}));
   connect(outletValve.port_a, fromStack) annotation(
     Line(points = {{-20, -40}, {100, -40}}, color = {0, 127, 255}));
@@ -83,6 +85,8 @@ equation
     Line(points = {{-42, 70}, {-34, 70}}, color = {0, 0, 127}));
   connect(PI_compressor.y, compressor.set_control) annotation(
     Line(points = {{-11, 70}, {-11, 42}, {-4, 42}}, color = {0, 0, 127}));
+  connect(compressorOutletSensor.port, compressor.port_b) annotation(
+    Line(points = {{71, 38}, {70, 38}, {70, 28}, {50, 28}}, color = {0, 127, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),

@@ -23,6 +23,7 @@ HeatSinkTest2
 HeatSinkTest
 FuelCellTest
 FuelCellSystemTest
+FluidCompressorTest
 ElectrolyserSystemTest_dev
 ElectrolyserSystemTest
 ECMS_Experiment_Testing
@@ -31,5 +32,6 @@ CrackedNH3Test
 CompressorTest
 ChopperTest
 CathodeAirTest
+CathodeAirCCTest
 BoostConverterTest
 AmmoniaCrackerTest

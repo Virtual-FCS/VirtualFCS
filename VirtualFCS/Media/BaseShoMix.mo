@@ -37,8 +37,8 @@ package BaseShoMix
       Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
       Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
       Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T, T_boil, L);
-      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Y);
-      Modelica.Units.SI.SpecificEnthalpy h_liq = enthalpyOfLiquid(T);
+      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(state);
+      Modelica.Units.SI.SpecificEnthalpy h_liq = enthalpyOfLiquid(state);
     protected
       Modelica.Units.SI.MassFraction Yi[nXi] = gasMassFraction(state) "Independent gas-phase compositions";
     equation
@@ -146,7 +146,7 @@ package BaseShoMix
     input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.MassFraction X_l "Mass fraction in liquid phase";
     protected
-    //Integer idx_liq = size(state.Xi)+1 "Index condensing substance (last one in the gas mixture list)";
+
     algorithm
     X_l := max(0.0, (1-sum(state.Xi)) - MMs[nX]/molarMass(state)*saturationPressure(state.T, T_boil, L)/state.p);
   end liquidMassFraction;
@@ -156,8 +156,13 @@ function gasMassFraction "Independent mass fractions in gas phase"
   extends Modelica.Icons.Function;
   input ThermodynamicState state "Thermodynamic state record";
   output Modelica.Units.SI.MassFraction[nXi] Yi "Mass fractions in gas phase";
+  protected
+  Real denom;
 algorithm
-  Yi := state.Xi[1:nX-1] / (1-liquidMassFraction(state));
+  denom := 1-liquidMassFraction(state);
+  assert(denom > 1e-8, "Gas phase vanished → model invalid");
+  Yi := state.Xi[1:nX-1] / denom;
+  
 end gasMassFraction;
 
 
@@ -171,40 +176,46 @@ protected
   Modelica.Units.SI.MassFraction[nXi] Yi "Independent mass fractions in gas phase";
   Modelica.Units.SI.MolarMass MM_gas "Average molar mass of gas phase";
 algorithm
-  Yi := gasMassFraction(state);
-  MM_gas := 1/(sum(Yi./MMs[1:nX-1]) + (1-sum(Yi))/MMs[nX]);
-  R_s := R / MM_gas;
-end gasConstant;
+  Yi := gasMassFraction(state); 
+  MM_gas := sum(Yi./MMs[1:nX-1]) + (1-sum(Yi))/MMs[nX];
+  R_s := R * MM_gas;
+  
+  end gasConstant;
 
 
 
-function completeFractions
+function computeComposition
   "Construct full mass/mol/volume-fraction vector from independent fractions"
   input Modelica.Units.SI.MassFraction X[nX-1]
     "Independent gas mass fractions";
   output Modelica.Units.SI.MassFraction X_c[nX]
     "Complete mass fraction vector";
+  //protected
+ // Modelica.Units.SI.MassFraction X_temp[nX] "Temporary placeholder before normalization";
 
 algorithm
   // Copy independent fractions
   X_c[1:nX-1] := X;
 
-  // Compute last fraction
-  X_c[nX] := 1.0 - sum(X);
-end completeFractions;
+  // Compute last fraction, ensuring bounds
+  X_c[nX] := max(0.0, 1.0 - sum(X));
+  
+ 
+end computeComposition;
 
 
  
   redeclare function extends specificEnthalpy
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] = completeFractions(Yi) "Independent gas-phase compositions";
+
   algorithm
     X_l := liquidMassFraction(state);
-    Yi := gasMassFraction(state);    
-    h := X_l*enthalpyOfLiquid(state.T) + (1-X_l)*enthalpyOfGas(state.T, Y);
+    h := X_l*enthalpyOfLiquid(state) + (1-X_l)*enthalpyOfGas(state);
+    
   end specificEnthalpy;
+  
+  
   
   redeclare function extends specificInternalEnergy
   protected
@@ -216,26 +227,30 @@ end completeFractions;
   
   function enthalpyOfLiquid "Helper function for enthalpy of liquid water"
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T;
+    input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.SpecificEnthalpy h_liq;
   algorithm
-    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    h_liq := Shomate.enthalpy(state.T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
 end enthalpyOfLiquid;
   
+  
   impure function enthalpyOfGas
     extends Modelica.Icons.Function;    
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.MassFraction Y[nX] "Gas fraction";
-  
+    input ThermodynamicState state "Thermodynamic state record";
     output Modelica.Units.SI.SpecificEnthalpy h_gas;
-  protected
+    
+    protected
+      Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+      Modelica.Units.SI.MassFraction Y[nX] "Independent gas-phase compositions";
     algorithm
+    Yi := gasMassFraction(state);
+    Y  := computeComposition(Yi);
     h_gas := 0;
   
     for i in 1:nX loop
-      h_gas := h_gas + Y[i] * Shomate.enthalpy(T, sh_params[i]) / MMs[i];
+      h_gas := h_gas + Y[i] * Shomate.enthalpy(state.T, sh_params[i]) / MMs[i];
     end for;
   annotation(
       Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
@@ -290,14 +305,17 @@ end enthalpyOfGas;
   end specificHeatCapacityCpOfLiquid;
   
   function specificHeatCapacityCpOfGas
-    extends Modelica.Icons.Function;    
+    extends Modelica.Icons.Function;  
     input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.MassFraction Y[nX] "Gas fraction";
+    input Modelica.Units.SI.MassFraction Yi[nX-1] "Gas fraction";
     output Modelica.Units.SI.SpecificHeatCapacity cp_gas;
   protected
     constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+     input Modelica.Units.SI.MassFraction Y[nX] "Gas fraction";
   
   algorithm
+    Y := computeComposition(Yi);
+  
     cp_gas := 0;
   
     for i in 1:nX loop
@@ -312,7 +330,7 @@ end enthalpyOfGas;
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
     Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] = completeFractions(Yi) "Independent gas-phase compositions";
+    Modelica.Units.SI.MassFraction Y[nX] = computeComposition(Yi) "Independent gas-phase compositions";
   algorithm
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
@@ -323,7 +341,7 @@ end enthalpyOfGas;
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
     Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] = completeFractions(Yi) "Independent gas-phase compositions";
+    Modelica.Units.SI.MassFraction Y[nX] = computeComposition(Yi) "Independent gas-phase compositions";
   algorithm
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
