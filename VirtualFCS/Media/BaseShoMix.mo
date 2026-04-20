@@ -304,8 +304,7 @@ end enthalpyOfGas;
     input Modelica.Units.SI.MassFraction Yi[nX-1] "Gas fraction";
     output Modelica.Units.SI.SpecificHeatCapacity cp_gas;
   protected
-    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
-     input Modelica.Units.SI.MassFraction Y[nX] "Gas fraction";
+     Modelica.Units.SI.MassFraction Y[nX] "Gas fraction";
   
   algorithm
     Y := computeComposition(Yi);
@@ -328,18 +327,17 @@ end enthalpyOfGas;
   algorithm
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
-    cp := specificHeatCapacityCpOfGas(state.T, Y)*(1-X_l) + specificHeatCapacityCpOfLiquid(state.T)*X_l;
+    cp := specificHeatCapacityCpOfGas(state.T, Yi)*(1-X_l) + specificHeatCapacityCpOfLiquid(state.T)*X_l;
   end specificHeatCapacityCp;
   
   redeclare function extends specificHeatCapacityCv
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
     Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] = computeComposition(Yi) "Independent gas-phase compositions";
   algorithm
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
-    cv := (specificHeatCapacityCpOfGas(state.T, Y)-gasConstant(state))*(1-X_l) + specificHeatCapacityCpOfLiquid(state.T)*X_l;
+    cv := (specificHeatCapacityCpOfGas(state.T, Yi)-gasConstant(state))*(1-X_l) + specificHeatCapacityCpOfLiquid(state.T)*X_l;
   end specificHeatCapacityCv;
 
 
