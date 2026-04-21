@@ -1,9 +1,9 @@
 within VirtualFCS.ComponentTesting;
 
-model ElectrolyserSystemTest_dev
+model ElectrolyserSystemTest_old
 
   extends Modelica.Icons.Example;
-  VirtualFCS.Electrochemical.Hydrogen.Electrolysers_dev.ElectrolyserSystem_dev electrolyserSystem_dev "Switched to dev"
+  VirtualFCS.Electrochemical.Hydrogen.Electrolysers_dev.ElectrolyserSystem_old electrolyserSystem_dev "Switched to dev"
     annotation (Placement(transformation(extent={{-22,-22},{22,22}})));
   inner Modelica.Fluid.System system
     annotation (Placement(transformation(extent={{-100,-100},{-80,-80}})));
@@ -17,4 +17,4 @@ equation
   annotation (experiment(StopTime = 20, Interval = 0.5, __Dymola_Algorithm = "Dassl"),
     Icon(graphics = {Text(origin = {-1, 1}, extent = {{19, 13}, {-19, -13}}, textString = "DEV")}));
 
-end ElectrolyserSystemTest_dev;
+end ElectrolyserSystemTest_old;

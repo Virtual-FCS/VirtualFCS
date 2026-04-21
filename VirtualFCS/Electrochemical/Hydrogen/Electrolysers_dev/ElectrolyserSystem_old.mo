@@ -1,6 +1,6 @@
 within VirtualFCS.Electrochemical.Hydrogen.Electrolysers_dev;
 
-model ElectrolyserSystem_dev
+model ElectrolyserSystem_old
   // System
   outer Modelica.Fluid.System system "System properties";
   //*** DEFINE REPLACEABLE PACKAGES ***//
@@ -39,7 +39,7 @@ model ElectrolyserSystem_dev
     Placement(visible = true, transformation(origin = {20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrolyser_dev electrolyser_dev(m_cell = m_cell, v_cell = v_cell, Cp_cell = Cp_cell, N_cells = N_cells, A_cell = A_cell, i_0 = i_0, i_x = i_x, redeclare package H2O_Medium = H2O_Medium) annotation(
+  Electrolyser_old electrolyser_old(m_cell = m_cell, v_cell = v_cell, Cp_cell = Cp_cell, N_cells = N_cells, A_cell = A_cell, i_0 = i_0, i_x = i_x, redeclare package H2O_Medium = H2O_Medium) annotation(
     Placement(transformation(extent = {{-40, -40}, {40, 40}})));
   Modelica.Fluid.Sources.FixedBoundary H2_tank(redeclare package Medium = H2_Medium, nPorts = 1, p = 3000000) annotation(
     Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -61,17 +61,17 @@ model ElectrolyserSystem_dev
     Placement(transformation(origin = {56, -10}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
   electrolyserPower = pin_n.i*pin_p.v;
-  der(hydrogenProduced) = -electrolyser_dev.H2_IToM.ports[1].m_flow;
-  electricEfficiency = (-electrolyser_dev.H2_IToM.ports[1].m_flow*119.96*10^6)/(max(electrolyserPower, 0.1))*100;
-  connect(electrolyser_dev.H2ToTank, H2_tank.ports[1]) annotation(
+  der(hydrogenProduced) = -electrolyser_old.H2_IToM.ports[1].m_flow;
+  electricEfficiency = (-electrolyser_old.H2_IToM.ports[1].m_flow*119.96*10^6)/(max(electrolyserPower, 0.1))*100;
+  connect(electrolyser_old.H2ToTank, H2_tank.ports[1]) annotation(
     Line(points = {{-28, 11}, {-74, 11}, {-74, 50}, {-80, 50}}, color = {0, 127, 255}));
   connect(thermalManagement.HotWaterOut, teeJunctionVolume.port_1) annotation(
     Line(points = {{43, -78}, {64.3, -78}, {64.3, -87.8}, {86, -87.8}, {86, -80}}, color = {0, 127, 255}));
   connect(teeJunctionVolume.port_3, tankWater.ports[1]) annotation(
     Line(points = {{92, -74}, {92, -20}, {90, -20}}, color = {0, 127, 255}));
-  connect(electrolyser_dev.TStack, gain.u) annotation(
+  connect(electrolyser_old.TStack, gain.u) annotation(
     Line(points = {{-11, -24}, {-11, -93}, {5, -93}}, color = {0, 0, 127}));
-  connect(pin_n, electrolyser_dev.pin_n) annotation(
+  connect(pin_n, electrolyser_old.pin_n) annotation(
     Line(points = {{-20, 96}, {-20, 44}, {-19, 44}, {-19, 28}}, color = {0, 0, 255}));
   connect(ground.p, voltageSource.n) annotation(
     Line(points = {{40, -38}, {52, -38}, {52, -44}}, color = {0, 0, 255}));
@@ -81,19 +81,19 @@ equation
     Line(points = {{72, -44}, {72, -28}, {62, -28}, {62, -20}}, color = {0, 0, 255}));
   connect(teeJunctionVolume.port_2, pump.port_a) annotation(
     Line(points = {{86, -68}, {86, -24}, {66, -24}, {66, -10}}, color = {0, 127, 255}));
-  connect(pump.port_b, electrolyser_dev.H2OToPEMWE) annotation(
+  connect(pump.port_b, electrolyser_old.H2OToPEMWE) annotation(
     Line(points = {{46, -2}, {36, -2}, {36, -18}, {30, -18}}, color = {0, 127, 255}));
   connect(gain.y, pump.u) annotation(
     Line(points = {{16, -92}, {120, -92}, {120, 6}, {56, 6}, {56, 0}}, color = {0, 0, 127}));
-  connect(thermalManagement.HotWaterIn, electrolyser_dev.H2OToTank) annotation(
+  connect(thermalManagement.HotWaterIn, electrolyser_old.H2OToTank) annotation(
     Line(points = {{22, -62}, {22, -30}}, color = {0, 127, 255}));
-  connect(O2_atm.ports[1], electrolyser_dev.O2ToTank) annotation(
+  connect(O2_atm.ports[1], electrolyser_old.O2ToTank) annotation(
     Line(points = {{80, 50}, {56, 50}, {56, 16}, {30, 16}, {30, 14}}, color = {0, 127, 255}));
-  connect(pin_p, electrolyser_dev.pin_p) annotation(
+  connect(pin_p, electrolyser_old.pin_p) annotation(
     Line(points = {{20, 96}, {20, 63}, {22, 63}, {22, 30}}, color = {0, 0, 255}));
   annotation(
     Icon(graphics = {Text(origin = {-6, -250}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Rectangle(origin = {-55, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {58.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {-40, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-29.8, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-19.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-8.7, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {1.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {12.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {22.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {32.3, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {42.9, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Text(origin = {0, -78}, textColor = {255, 255, 255}, extent = {{-34, 16}, {34, -16}}, textString = "Dev")}, coordinateSystem(initialScale = 0.1)),
     Documentation(info = "<html><head></head><body>The FuelCellSystem class packages together a <a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a> module and a&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.FuelCellSubSystems\">FuelCellSubSystems</a>&nbsp;module for controlling hydrogen, air, and coolant feeds into and out of the fuel cell.<div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using theblock, or individual&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>,&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, and&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>&nbsp;blocks.</div><div><br></div><div>In addition to the coolant subsystem, it is assumed that the fuel cell stack exchanges heat with its surroundings by convection and radiation.</div><div><br></div><div><div>Default parameters fit the polarization curve given by Powercell in their Powercellution data sheet, available&nbsp;<a href=\"https://powercellution.com/p-stack\">here</a>.</div>&nbsp;<table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><strong><u>Default Parameters</u></strong></caption><caption align=\"Left\" style=\"text-align: left;\"><strong><u><br></u></strong></caption><tbody><tr><th>Parameter name</th><th>Value</th><th>Unit</th></tr><tr><td align=\"Left\">m_FC_stack</td><td>=42</td><td align=\"Right\">kg</td></tr><tr><td align=\"Left\">L_FC_stack</td><td>=0.42</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">W_FC_stack</td><td>=0.582</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">H_FC_stack</td><td>=0.156</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">I_rated_FC_stack</td><td>=450</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">i_L_FC_stack</td><td>=760</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">N_FC_stack</td><td>=455</td><td align=\"Right\">-</td></tr><tr><td align=\"Left\">V_tank_H2</td><td>=0.13</td><td align=\"Right\">m<sup>3</sup></td></tr><tr><td align=\"Left\">p_tank_H2</td><td>=35000000</td><td align=\"Right\">Pa</td></tr>
   <tr><td align=\"Left\">heatTransferCoefficient</td><td>=12</td><td align=\"Right\">W/(m<sup>2</sup> K)</td></tr><tr><td align=\"Left\"><br><u><b>Equations</b></u></td><td><br></td><td align=\"Right\"><br></td></tr></tbody></table><div><i><u>Convective Heat Transfer</u></i></div><div>Q<sub>conv</sub>&nbsp;= hA<sub>cool</sub>(T&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;T<sub>0</sub>); T<sub>0</sub>&nbsp;= 293 K</div><div><br></div><div><div><i><u>Radiative Heat Transfer</u></i></div><div>Q<sub>rad</sub>&nbsp;= 0.95A<sub>cool</sub><span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(255, 255, 255);\">σ</span>(T<sup>4</sup>&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;T<sub>0</sub><sup>4</sup>), T<sub>0</sub> = 293 K</div></div></div></body></html>"),
     Diagram);
-end ElectrolyserSystem_dev;
+end ElectrolyserSystem_old;

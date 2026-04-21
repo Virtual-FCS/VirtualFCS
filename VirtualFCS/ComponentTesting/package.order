@@ -22,7 +22,6 @@ HeatSinkTest
 FuelCellTest
 FuelCellSystemTest
 FluidCompressorTest
-ElectrolyserSystemTest_dev
 ElectrolyserSystemTest
 ECMS_Experiment_Testing
 DC_converterTest
@@ -36,3 +35,4 @@ CathodeAirH2Test
 NH3CrackedTest
 SubSystemAirTest_old
 SubSystemAirTest
+ElectrolyserSystemTest_old
