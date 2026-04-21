@@ -6,8 +6,6 @@ SubSystemCoolingWithFuelCellTest
 SubSystemCoolingTest
 SubSystemAirWithFuelCellTest
 SubSystemAirTest_2_bis
-SubSystemAirTest_2
-SubSystemAirTest
 SimplePumpTest
 SimpleCompressorTest
 ReversiblePotentialTest
@@ -36,3 +34,5 @@ BoostConverterTest
 AmmoniaCrackerTest
 CathodeAirH2Test
 NH3CrackedTest
+SubSystemAirTest_old
+SubSystemAirTest
