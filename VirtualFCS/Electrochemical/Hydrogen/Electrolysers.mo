@@ -18,9 +18,7 @@ package Electrolysers
       Placement(visible = true, transformation(origin = {86, 114}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     replaceable  MassTransportLossElec massTransport annotation(
       Placement(visible = true, transformation(origin = {124, 114}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  
-    
-    //*** DECLARE PARAMETERS ***//
+  //*** DECLARE PARAMETERS ***//
     // Physical parameters from https://nelhydrogen.com/product/c10-c20-c30/ and 10.1016/j.ijhydene.2020.01.228; 10.1016/j.enconman.2022.116622
     parameter Modelica.Units.SI.Mass m_cell = 1 "Mass of the Cell";
     //NA
@@ -119,33 +117,33 @@ package Electrolysers
     Modelica.Fluid.Sensors.TemperatureTwoPort Water_Temp_Out(redeclare package Medium = H2O_Medium) annotation(
       Placement(transformation(origin = {118, -52}, extent = {{-10, -10}, {10, 10}})));
     equation
-  //*** DEFINE EQUATIONS ***//
-  // Redeclare variables
+//*** DEFINE EQUATIONS ***//
+// Redeclare variables
     p_H2 = H2ToTank.p;
     p_O2 = O2ToTank.p;
     p_H2O = H2OToPEMWE.p;
     j = currentSensor.i/A_cell;
-  // Thermodynamics equations
-  // ELECTROCHEMICAL EQUATIONS //
+// Thermodynamics equations
+// ELECTROCHEMICAL EQUATIONS //
     E_rev = 1.5184 - (1.5421e-3*T_stack) + (9.523e-5*T_stack*log(T_stack)) + (9.84e-8*(T_stack)^2);
-  //reversible voltage at T and 1 atm;
+//reversible voltage at T and 1 atm;
     E_tn = 1.485 - (1.49e-4*(T_stack - 273.15)) - (9.84e-8*(T_stack - 273.15)^2);
-  // Thermoneutral voltage at T and 1 atm
-  // Calculate the ovepotentials
-  // Calculate the voltage of the cell
+// Thermoneutral voltage at T and 1 atm
+// Calculate the ovepotentials
+// Calculate the voltage of the cell
     E_cell = E_rev + activation.E_act + ohmic.E_ohm + massTransport.E_diff;
-  // Electrical power  needed
+// Electrical power  needed
     P_el = potentialSource.v*currentSensor.i;
-  // THERMAL EQUATIONS //
+// THERMAL EQUATIONS //
     P_th = (E_cell - E_tn)*abs(currentSensor.i)*N_cells;
     Q_rev = (E_tn - E_rev)*abs(currentSensor.i);
     Q_irr = (E_cell - E_rev)*abs(currentSensor.i);
-  // Assign the thermal power value to the heat flow component
+// Assign the thermal power value to the heat flow component
     prescribedHeatFlow.Q_flow = P_th;
     T_water_in = Water_Temp_In.T;
     T_stack = max(TSStack.T, 288);
-  // Stack shouldn't have temperatures below ambient (TSStack has numerical issues when running FMU)
-  //*** DEFINE CONNECTIONS ***//
+// Stack shouldn't have temperatures below ambient (TSStack has numerical issues when running FMU)
+//*** DEFINE CONNECTIONS ***//
     connect(pin_n, potentialSource.n) annotation(
       Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
     connect(potentialSource.p, currentSensor.p) annotation(
@@ -293,7 +291,7 @@ package Electrolysers
   end Electrolyser;
   
   model ElectrolyserSystem
-   // System
+  // System
     outer Modelica.Fluid.System system "System properties";
     //*** DEFINE REPLACEABLE PACKAGES ***//
     // Medium models
@@ -312,19 +310,13 @@ package Electrolysers
     parameter Modelica.Units.SI.SpecificHeatCapacity Cp_cell = 1100 "Specific Specific Heat Capacity";
     //NA
     // Stack design parameters
-    parameter Real N_cell(unit = "1") = 65 "Number of Cells";
+    parameter Real N_cells(unit = "1") = 65 "Number of Cells";
     parameter Modelica.Units.SI.Area A_cell = 0.0214 "Active Area of the Cell";
     // Electrochemical parameters
     parameter Modelica.Units.SI.CurrentDensity i_0 = 1.7e-6 "Exchange Current density";
     parameter Modelica.Units.SI.CurrentDensity i_L = 6 "Maximum Current Limit density";
     parameter Modelica.Units.SI.CurrentDensity i_x = 0.001 "Cross-over Current density";
     //NA
-    parameter Real a_C = 0.5 "Charge Transfer coefficient";
-    parameter Real a_A = 0.5 "Charge Transfer coefficient";
-    parameter Real lambda = 22 "Number of water molecules per sulfonic acid site";
-    parameter Modelica.Units.SI.Thickness t_mem = 180e-6 "Membrane thickness";
-    parameter Modelica.Units.SI.Thickness t_ele = 1e-3 "Electrode thickness";
-    parameter Modelica.Units.SI.Resistivity rho_ele = 7.5e-5 "Electrode resistivity";
     //*** DECLARE VARIABLES ***//
     // Physical constants
     final constant Real R(final unit = "J/(mol.K)") = 8.3144598 "Molar gas constant";
@@ -337,7 +329,7 @@ package Electrolysers
       Placement(visible = true, transformation(origin = {20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
       Placement(visible = true, transformation(origin = {-20, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Electrolyser electrolyser(m_cell = m_cell, v_cell = v_cell, Cp_cell = Cp_cell, N_cell = N_cell, A_cell = A_cell, i_0 = i_0, i_L = i_L, i_x = i_x, a_C = a_C, a_A = a_A, lambda = lambda, t_mem = t_mem, t_ele = t_ele, rho_ele = rho_ele, redeclare package H2O_Medium = H2O_Medium) annotation(
+    Electrolyser electrolyser(m_cell = m_cell, v_cell = v_cell, Cp_cell = Cp_cell, N_cells = N_cells, A_cell = A_cell, i_0 = i_0, i_x = i_x, redeclare package H2O_Medium = H2O_Medium) annotation(
       Placement(transformation(extent = {{-40, -40}, {40, 40}})));
     Modelica.Fluid.Sources.FixedBoundary H2_tank(redeclare package Medium = H2_Medium, nPorts = 1, p = 3000000) annotation(
       Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -349,7 +341,7 @@ package Electrolysers
       Placement(transformation(origin = {-6, -20}, extent = {{28, -60}, {48, -40}})));
     Modelica.Fluid.Fittings.TeeJunctionVolume teeJunctionVolume(redeclare package Medium = H2O_Medium, V = 0.01) annotation(
       Placement(transformation(origin = {86, -74}, extent = {{-6, 6}, {6, -6}}, rotation = 90)));
-    Modelica.Blocks.Math.Gain gain(k = 10*(0.01801528/(96485*2))*N_cell*100) annotation(
+    Modelica.Blocks.Math.Gain gain(k = 10*(0.01801528/(96485*2))*N_cells*100) annotation(
       Placement(transformation(origin = {-10, -12}, extent = {{16, -86}, {26, -76}}, rotation = -0)));
     Modelica.Electrical.Analog.Sources.ConstantVoltage voltageSource(V = 48) annotation(
       Placement(transformation(origin = {62, -44}, extent = {{-10, -10}, {10, 10}}, rotation = -180)));
@@ -394,7 +386,5 @@ package Electrolysers
       Documentation(info = "<html><head></head><body>The FuelCellSystem class packages together a <a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a> module and a&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.FuelCellSubSystems\">FuelCellSubSystems</a>&nbsp;module for controlling hydrogen, air, and coolant feeds into and out of the fuel cell.<div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using theblock, or individual&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>,&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, and&nbsp;<a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>&nbsp;blocks.</div><div><br></div><div>In addition to the coolant subsystem, it is assumed that the fuel cell stack exchanges heat with its surroundings by convection and radiation.</div><div><br></div><div><div>Default parameters fit the polarization curve given by Powercell in their Powercellution data sheet, available&nbsp;<a href=\"https://powercellution.com/p-stack\">here</a>.</div>&nbsp;<table border=\"0.9\"><caption align=\"Left\" style=\"text-align: left;\"><strong><u>Default Parameters</u></strong></caption><caption align=\"Left\" style=\"text-align: left;\"><strong><u><br></u></strong></caption><tbody><tr><th>Parameter name</th><th>Value</th><th>Unit</th></tr><tr><td align=\"Left\">m_FC_stack</td><td>=42</td><td align=\"Right\">kg</td></tr><tr><td align=\"Left\">L_FC_stack</td><td>=0.42</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">W_FC_stack</td><td>=0.582</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">H_FC_stack</td><td>=0.156</td><td align=\"Right\">m</td></tr><tr><td align=\"Left\">I_rated_FC_stack</td><td>=450</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">i_L_FC_stack</td><td>=760</td><td align=\"Right\">A</td></tr><tr><td align=\"Left\">N_FC_stack</td><td>=455</td><td align=\"Right\">-</td></tr><tr><td align=\"Left\">V_tank_H2</td><td>=0.13</td><td align=\"Right\">m<sup>3</sup></td></tr><tr><td align=\"Left\">p_tank_H2</td><td>=35000000</td><td align=\"Right\">Pa</td></tr>
     <tr><td align=\"Left\">heatTransferCoefficient</td><td>=12</td><td align=\"Right\">W/(m<sup>2</sup> K)</td></tr><tr><td align=\"Left\"><br><u><b>Equations</b></u></td><td><br></td><td align=\"Right\"><br></td></tr></tbody></table><div><i><u>Convective Heat Transfer</u></i></div><div>Q<sub>conv</sub>&nbsp;= hA<sub>cool</sub>(T&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;T<sub>0</sub>); T<sub>0</sub>&nbsp;= 293 K</div><div><br></div><div><div><i><u>Radiative Heat Transfer</u></i></div><div>Q<sub>rad</sub>&nbsp;= 0.95A<sub>cool</sub><span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(255, 255, 255);\">σ</span>(T<sup>4</sup>&nbsp;<span style=\"color: rgb(32, 33, 34); font-family: sans-serif; orphans: 2; widows: 2; background-color: rgb(253, 253, 253);\">−</span>&nbsp;T<sub>0</sub><sup>4</sup>), T<sub>0</sub> = 293 K</div></div></div></body></html>"),
       Diagram);
-  
-  
   end ElectrolyserSystem;
 end Electrolysers;
