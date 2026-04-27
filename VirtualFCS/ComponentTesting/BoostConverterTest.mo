@@ -12,7 +12,7 @@ model BoostConverterTest
     Placement(transformation(origin = {-50, 12}, extent = {{10, -10}, {-10, 10}}, rotation = -180)));
   Modelica.Electrical.Analog.Sources.ConstantVoltage source(V = 100)  annotation(
     Placement(transformation(origin = {-66, -2}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Sine sine(amplitude = .2, f = 10, offset = .3)  annotation(
+  Modelica.Blocks.Sources.Sine sine(amplitude = .4, f = 10, offset = .5)  annotation(
     Placement(transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-80, -30}, extent = {{-10, -10}, {10, 10}})));
