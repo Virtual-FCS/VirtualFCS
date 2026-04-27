@@ -2,7 +2,7 @@ within VirtualFCS.Electrical;
 
 model Commutator
   extends VirtualFCS.Electrical.AbstractCommutator;
-  Modelica.Electrical.Analog.Ideal.IdealOpeningSwitch gate(Ron = 3E-3/4) annotation(
+  Modelica.Electrical.Analog.Ideal.IdealClosingSwitch gate(Ron = 3E-3/4) annotation(
     Placement(transformation(origin = {-20, 0}, extent = {{20, 20}, {-20, -20}}, rotation = -90)));
   Modelica.Electrical.Analog.Semiconductors.Diode diode_gate(useHeatPort = useHeatPort) annotation(
     Placement(transformation(origin = {20, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
