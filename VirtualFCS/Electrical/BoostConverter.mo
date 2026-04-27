@@ -1,7 +1,8 @@
 within VirtualFCS.Electrical;
 
 model BoostConverter
-  extends VirtualFCS.Electrical.AbstractBoostConverter(redeclare Commutator commutator_A, redeclare Commutator commutator_B);
+  extends VirtualFCS.Electrical.AbstractBoostConverter(redeclare Commutator commutator_A(useHeatPort=useHeatPort),
+                                                       redeclare Commutator commutator_B(useHeatPort=useHeatPort));
   extends Modelica.Electrical.PowerConverters.Interfaces.Enable.Enable2;
 equation
   connect(andCondition_p.y, commutator_B.fire) annotation(
