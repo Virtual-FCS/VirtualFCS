@@ -24,7 +24,9 @@ equation
   connect(p1, p2) annotation(
     Line(points = {{-100, 100}, {100, 100}}, color = {0, 0, 255}));
   connect(gate.n, p1) annotation(
-    Line(points = {{-20, 20}, {-20, 60}, {0, 60}, {0, 100}, {-100, 100}}, color = {0, 0, 255}));
+    Line(points = {{-20, 20}, {-20, 40}, {0, 40}, {0, 100}, {-100, 100}}, color = {0, 0, 255}));
   connect(diode_gate.n, p2) annotation(
-    Line(points = {{20, 20}, {20, 60}, {0, 60}, {0, 100}, {100, 100}}, color = {0, 0, 255}));
+    Line(points = {{20, 20}, {20, 40}, {0, 40}, {0, 100}, {100, 100}}, color = {0, 0, 255}));
+annotation(
+    Documentation(info = "<html><head></head><body>A full-blown commutator with a PWM-controlled gate. The unit is realised completely graphically.</body></html>"));
 end Commutator;

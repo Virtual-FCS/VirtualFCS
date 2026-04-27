@@ -19,7 +19,7 @@ partial model AbstractBoostConverter
   Modelica.Electrical.Analog.Semiconductors.Diode diode_A(useHeatPort = useHeatPort)  annotation(
     Placement(transformation(origin = {40, 60}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Semiconductors.Diode diode_B(useHeatPort = useHeatPort)  annotation(
-    Placement(transformation(origin = {38, 0}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {40, 0}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor current_A annotation(
     Placement(transformation(origin = {-70, 60}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor current_B annotation(
@@ -54,9 +54,9 @@ equation
   connect(dc_n1, dc_n2) annotation(
     Line(points = {{-100, -60}, {100, -60}}, color = {0, 0, 255}));
   connect(diode_A.n, dc_p2) annotation(
-    Line(points = {{52, 60}, {100, 60}}, color = {0, 0, 255}));
+    Line(points = {{50, 60}, {100, 60}}, color = {0, 0, 255}));
   connect(dc_p2, diode_B.n) annotation(
-    Line(points = {{100, 60}, {66, 60}, {66, 0}, {48, 0}}, color = {0, 0, 255}));
+    Line(points = {{100, 60}, {66, 60}, {66, 0}, {50, 0}}, color = {0, 0, 255}));
   connect(current_A.p, dc_p1) annotation(
     Line(points = {{-80, 60}, {-100, 60}}, color = {0, 0, 255}));
   connect(dc_n1, capacitor_in_n.n) annotation(
@@ -94,7 +94,7 @@ equation
   connect(commutator_A.n, dc_n2) annotation(
     Line(points = {{16, 40}, {16, -60}, {100, -60}}, color = {0, 0, 255}));
   connect(commutator_B.p2, diode_B.p) annotation(
-    Line(points = {{18, 0}, {28, 0}}, color = {0, 0, 255}));
+    Line(points = {{18, 0}, {30, 0}}, color = {0, 0, 255}));
   connect(commutator_B.p1, inductor_B.n) annotation(
     Line(points = {{-2, 0}, {-6, 0}}, color = {0, 0, 255}));
   connect(commutator_B.n, dc_n2) annotation(
@@ -115,4 +115,10 @@ equation
   else
     LossPower = 0;
   end if;
+  connect(diode_B.heatPort, heatPort) annotation(
+    Line(points = {{0, -100}, {40, -100}, {40, -10}}, color = {191, 0, 0}));
+  connect(commutator_B.heatPort, heatPort) annotation(
+    Line(points = {{12, -10}, {20, -10}, {20, -100}, {0, -100}}, color = {191, 0, 0}));
+annotation(
+    Documentation(info = "<html><head></head><body>This is a class representing a generic DC-DC architecture with coupled inductors.<div>The abstract commutators can be specialised to actual switches, allowing study at short time scales, or to averaged components allowing integration within fuel-cell system models.</div><div><br></div><h3>Stability note</h3><div>Consistently with specifications, this model does <i>not</i>&nbsp;have an <b>input capacitor</b>, but this may be necessary to numerically stabilise the model into which this unit is integrated.</div></body></html>"));
 end AbstractBoostConverter;
