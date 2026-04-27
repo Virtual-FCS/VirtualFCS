@@ -6,7 +6,7 @@ model AveragedCommutator
     Placement(transformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}}), iconTransformation(origin = {-100, 0}, extent = {{-20, -20}, {20, 20}})));
 equation
   p1.v - n.v = (1-D)*(p2.v - n.v);
-  p1.i+p2.i+n.i = 0;
-  p2.i = -D*p1.i;
+  p1.i+p2.i+n.i = 0; // Charge balance
+  n.i = -D*p1.i; // Current fraction going straight back to source
   LossPower = 0;
 end AveragedCommutator;
