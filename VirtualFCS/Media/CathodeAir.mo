@@ -331,7 +331,7 @@ end enthalpyOfGas;
     state := ThermodynamicState(
           p=Media.Common.smoothStep(x, state_a.p, state_b.p, x_small),
           T=Media.Common.smoothStep(x, state_a.T, state_b.T, x_small),
-          X=Media.Common.smoothStep(x, state_a.X, state_b.X, x_small));
+          Xi=Media.Common.smoothStep(x, state_a.Xi, state_b.Xi, x_small));
   end setSmoothState;
 
   annotation(
