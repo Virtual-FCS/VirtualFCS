@@ -16,8 +16,7 @@ model Electrolyser_dev
   replaceable  MassTransportLossElec massTransport annotation(
     Placement(visible = true, transformation(origin = {124, 114}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 
-  
-  //*** DECLARE PARAMETERS ***//
+//*** DECLARE PARAMETERS ***//
   // Physical parameters from https://nelhydrogen.com/product/c10-c20-c30/ and 10.1016/j.ijhydene.2020.01.228; 10.1016/j.enconman.2022.116622
   parameter Modelica.Units.SI.Mass m_cell = 1 "Mass of the Cell";
   //NA
@@ -36,6 +35,8 @@ model Electrolyser_dev
   inner constant Real a_A = 0.5 "Charge Transfer coefficient";
   parameter Modelica.Units.SI.Resistivity rho_ele = 7.5e-5 "Electrode resistivity";
   //*** DECLARE VARIABLES ***//
+  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = H2ToTank.p;
+  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = O2ToTank.p;
   // Physical constants
   final constant Real R(final unit = "J/(mol.K)") = 8.3144598 "Molar gas constant";
   final constant Modelica.Units.SI.FaradayConstant F = 9.648533289e4 "Faraday constant, C/mol";
@@ -47,8 +48,6 @@ model Electrolyser_dev
   Modelica.Units.SI.CurrentDensity j;
   Modelica.Units.SI.Power P_th;
   Modelica.Units.SI.Power P_el;
-  Modelica.Units.SI.Pressure p_H2;
-  Modelica.Units.SI.Pressure p_O2;
   Modelica.Units.SI.Pressure p_H2O;
   Modelica.Units.SI.Heat Q_rev;
   Modelica.Units.SI.Heat Q_irr;
@@ -61,8 +60,6 @@ model Electrolyser_dev
     Placement(visible = true, transformation(origin = {60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {80, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(visible = true, transformation(origin = {-60, 150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-80, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Sources.SignalVoltage potentialSource annotation(
-    Placement(visible = true, transformation(origin = {-60, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(visible = true, transformation(origin = {2, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
@@ -98,8 +95,6 @@ model Electrolyser_dev
   // Other Components
   Modelica.Blocks.Math.Gain H2_mflow(k = 0.00201588/(96485*2)*N_cells) annotation(
     Placement(visible = true, transformation(origin = {-28, 53}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression CellPotential(y = (E_rev + (R*TSStack.T)/(2*F)*(log((p_H2/p_H2O)*(p_O2/p_H2O)^0.5)) + activation.E_act + massTransport.E_diff + abs(ohmic.E_ohm/N_cells))*N_cells) annotation(
-    Placement(visible = true, transformation(origin = {-94, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Calculate the Nernst equilibrium potential
   Modelica.Blocks.Math.Gain O2_mflow(k = 0.0319988/(96485*4)*N_cells) annotation(
     Placement(visible = true, transformation(origin = {0, -29}, extent = {{8, -8}, {-8, 8}}, rotation = 90)));
@@ -115,11 +110,10 @@ model Electrolyser_dev
     Placement(transformation(origin = {126, 26}, extent = {{-8, 8}, {8, -8}})));
   Modelica.Fluid.Sensors.TemperatureTwoPort Water_Temp_Out(redeclare package Medium = H2O_Medium) annotation(
     Placement(transformation(origin = {118, -52}, extent = {{-10, -10}, {10, 10}})));
-  equation
+  VSourceNernst potentialSource annotation(
+    Placement(transformation(origin = {-40, 100}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));  equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
-  p_H2 = H2ToTank.p;
-  p_O2 = O2ToTank.p;
   p_H2O = H2OToPEMWE.p;
   j = currentSensor.i/A_cell;
 // Thermodynamics equations
@@ -143,16 +137,10 @@ model Electrolyser_dev
   T_stack = max(TSStack.T, 288);
 // Stack shouldn't have temperatures below ambient (TSStack has numerical issues when running FMU)
 //*** DEFINE CONNECTIONS ***//
-  connect(pin_n, potentialSource.n) annotation(
-    Line(points = {{-60, 150}, {-60, 150}, {-60, 130}, {-60, 130}}, color = {0, 0, 255}));
-  connect(potentialSource.p, currentSensor.p) annotation(
-    Line(points = {{-60, 110}, {-31, 110}, {-31, 100}, {-8, 100}}, color = {0, 0, 255}));
   connect(currentSensor.i, H2_mflow.u) annotation(
     Line(points = {{2, 89}, {-9.2, 89}, {-9.2, 53}, {-18.4, 53}}, color = {0, 0, 127}));
   connect(pin_n, ground.p) annotation(
     Line(points = {{-60, 150}, {-144, 150}}, color = {0, 0, 255}));
-  connect(CellPotential.y, potentialSource.v) annotation(
-    Line(points = {{-83, 120}, {-72, 120}}, color = {0, 0, 127}));
   connect(currentSensor.i, H2O_mflow_con.u) annotation(
     Line(points = {{2, 89}, {9.2, 89}, {9.2, 53}, {18.4, 53}}, color = {0, 0, 127}));
   connect(currentSensor.i, O2_mflow.u) annotation(
@@ -197,10 +185,14 @@ model Electrolyser_dev
     Line(points = {{12, 100}, {36, 100}, {36, 114}, {44, 114}}, color = {0, 0, 255}));
   connect(ohmic.n, activation.p) annotation(
     Line(points = {{64, 114}, {64, 101}, {76, 101}, {76, 114}}, color = {0, 0, 255}));
-connect(activation.n, massTransport.p) annotation(
+  connect(activation.n, massTransport.p) annotation(
     Line(points = {{96, 114}, {114, 114}}, color = {0, 0, 255}));
-connect(massTransport.n, pin_p) annotation(
+  connect(massTransport.n, pin_p) annotation(
     Line(points = {{134, 114}, {140, 114}, {140, 150}, {60, 150}}, color = {0, 0, 255}));
+  connect(pin_n, potentialSource.n) annotation(
+    Line(points = {{-60, 150}, {-60, 100}, {-50, 100}}, color = {0, 0, 255}));
+  connect(potentialSource.p, currentSensor.p) annotation(
+    Line(points = {{-30, 100}, {-8, 100}}, color = {0, 0, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {0, -88}, extent = {{-14, 16}, {14, -16}}, textString = "Stack"), Text(origin = {46, -110}, extent = {{-14, 16}, {14, -16}}, textString = "CoolOut", horizontalAlignment = TextAlignment.Left), Text(origin = {-3, 9}, extent = {{-45, 45}, {45, -45}}, textString = "Dev")}),
