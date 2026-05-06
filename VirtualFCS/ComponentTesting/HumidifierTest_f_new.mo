@@ -4,9 +4,9 @@ model HumidifierTest_f_new
 extends Modelica.Icons.Example;
   replaceable package dry_medium = VirtualFCS.Media.CathodeAir;
   replaceable package wet_medium = VirtualFCS.Media.CathodeAir;
-  Modelica.Fluid.Sources.MassFlowSource_T dry_air_source(redeclare package Medium = dry_medium, m_flow = 0.4e-3, nPorts = 1, X = {0.245, 0.75, 0.005}) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T dry_air_source(redeclare package Medium = dry_medium, m_flow = 0.4e-3, nPorts = 1, X = {0.245, 0.75, 0.005}, T = 353.15) annotation(
     Placement(transformation(origin = {32, 0}, extent = {{-120, -10}, {-100, 10}})));
-  Modelica.Fluid.Sources.MassFlowSource_T wet_air_source(redeclare package Medium = wet_medium, m_flow = 0.4e-3, nPorts = 1, X = {0.24, 0.75, 0.01}) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T wet_air_source(redeclare package Medium = wet_medium, m_flow = 0.4e-3, nPorts = 1, X = {0.24, 0.75, 0.01}, T = 333.15) annotation(
     Placement(transformation(origin = {0, 56}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
   Modelica.Fluid.Sources.FixedBoundary dry_air_sink(redeclare package Medium = dry_medium, nPorts = 1, p = 1.5e5) annotation(
     Placement(transformation(origin = {76, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
