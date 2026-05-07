@@ -4,8 +4,9 @@ model SimplePump "A simple isentropic compressor"
   extends Fluid.PumpInterface(final useHeatPort = false, redeclare Modelica.Blocks.Interfaces.RealInput u(unit = "kg/s"));
   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium "Medium in the component" annotation(
     choicesAllMatching = true);
+  parameter Real eta_is = 0.8 "Isentropic efficiency of the pump";
   Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
-
+  Modelica.Units.SI.Power power "The power consumed by the pump";
 equation
   // All compositions are equal 
   medium_in.Xi = port_a.Xi_outflow;
@@ -28,7 +29,8 @@ equation
   // heatPort not used
   LossPower = 0;
   // Power is equal volumetric flow times pressure difference
-  (u/medium_out.d) * (port_b.p-port_a.p) = (pin_p.v - pin_n.v)*(pin_n.i);
+  power = (pin_p.v - pin_n.v)*(pin_n.i);
+  power = (u/medium_out.d) * (port_b.p-port_a.p) / eta_is;
   pin_p.i + pin_n.i = 0;
 
 end SimplePump;

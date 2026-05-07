@@ -1,100 +1,103 @@
 within VirtualFCS.SubSystems.Air;
 
 model SubSystemAir
-  // System
   outer Modelica.Fluid.System system "System properties";
-  //*** DEFINE REPLACEABLE PACKAGES ***//
-  // Medium declaration
   replaceable package Medium = Media.CathodeAir;
-
-// Parameter definition
-  parameter Modelica.Units.SI.Mass m_system_air = 61 "Air system mass";
-  parameter Modelica.Units.SI.AbsolutePressure set_air_pressure = 2.4e5 "Set air pressure";
-  parameter Integer N_cell = 180 "FC stack number of cells";
-  Modelica.Units.SI.Power Power_Compressor_mez "The power consumed by the Compressor";
-  Modelica.Units.SI.Power Power_Compressor_electrical "The power consumed by the Compressor";
-  Modelica.Units.SI.Efficiency Rendement_compressor "Compressor efficiency";
-  Real t "parameter to compute efficiency";
-  //*** INSTANTIATE COMPONENTS ***//
-  // Interfaces and boundaries
-  Modelica.Fluid.Sources.FixedBoundary airSource(redeclare package Medium = Medium, nPorts = 2) annotation(
-    Placement(transformation(origin = {-90.5, 21.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = 180)));
+  import Modelica.Constants.F;
+  constant Modelica.Units.SI.MoleFraction xO2 = 0.21 "Standard molar fraction of oxygen in air";
+  constant Modelica.Units.SI.MolarMass MM_O2 = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "(kg O2 / mol O2) Molar mass molecular oxygen";
+  constant Integer n_O2 = 4 "(mol é / mol O2)";
+  parameter Integer N_cells = 42 "Number of cells in the stack";
+  parameter Real lambda = 3 "Air excess ratio";
+  parameter Modelica.Units.SI.AbsolutePressure p_set = 200000 "Target cathodic pressure";
+  Modelica.Fluid.Sources.FixedBoundary source(redeclare package Medium = Medium, nPorts = 1) annotation(
+    Placement(transformation(origin = {-86, 24}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Fluid.Interfaces.FluidPort_a fromStack(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {104, -47}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {62, 120}, extent = {{-20, -20}, {20, 20}})));
+    Placement(transformation(origin = {100, -40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {60, 120}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Interfaces.FluidPort_b toStack(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 121}, extent = {{-20, -19}, {20, 19}})));
+    Placement(transformation(origin = {100, 24}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 120}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(transformation(origin = {30, 104}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {28, 100}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
-    Placement(transformation(origin = {10, 104}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Interfaces.RealInput stackCurrent annotation(
-    Placement(visible = true, transformation(origin = {-116, 86}, extent = {{-16, -16}, {16, 16}}, rotation = 0), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  // Control components
-  Modelica.Blocks.Sources.RealExpression setAirPressure(y = set_air_pressure) annotation(
-    Placement(transformation(origin = {-34, -86}, extent = {{-10, -10}, {10, 10}})));
-  // Machines
-  // Sensors
-  Modelica.Fluid.Sensors.MassFlowRate sen_Air_mflow(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {-60, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sensors.Temperature compressorOutletSensor(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {51, 39}, extent = {{-7, -7}, {7, 7}})));
-  // Valves
-  Modelica.Fluid.Sensors.Pressure Inlet_air_pressure(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {42, -24}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Fluid.Sensors.Temperature compressorInletSensor(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {-41, 45}, extent = {{-7, -7}, {7, 7}})));
-  Fluid.ThrottleValve throttleValve(valveDownstream(dp_nominal(displayUnit = "Pa") = 1e4, m_flow_nominal = 0.5), redeclare package Medium = Medium)   annotation(
-    Placement(transformation(origin = {6, -46}, extent = {{-20, -20}, {20, 20}})));
-  Modelica.Blocks.Math.Gain Current_to_mass_flow(k = 0.02897*3/(96485*4*0.21)*N_cell) annotation(
-    Placement(transformation(origin = {-66, 76}, extent = {{-12, -12}, {12, 12}})));
-  Modelica.Blocks.Continuous.LimPID mass_flow_to_rpm(Td = 1, initType = Modelica.Blocks.Types.Init.InitialOutput, k = compressor.rpm_nom, yMax = compressor.rpm_nom*1.5, yMin = 0) annotation(
-    Placement(transformation(origin = {-29, 77}, extent = {{-11, -11}, {11, 11}})));
-  replaceable Fluid.Compressor compressor(redeclare package Medium = Medium) constrainedby Fluid.CompressorInterface  annotation(choicesAllMatching = true,
-    Placement(transformation(origin = {20, 22}, extent = {{-26, -26}, {26, 26}})));
-  Modelica.Blocks.Math.Abs abs annotation(
-    Placement(transformation(origin = {-92, 76}, extent = {{-6, -6}, {6, 6}})));
-  Modelica.Fluid.Sources.FixedBoundary airSink(redeclare package Medium = Medium, nPorts = 1) annotation(
-    Placement(transformation(origin = {-88.5, -46.5}, extent = {{8.5, -8.5}, {-8.5, 8.5}}, rotation = 180)));
+    Placement(transformation(origin = {16, 100}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Blocks.Interfaces.RealInput stackCurrent(unit = "A") annotation(
+    Placement(transformation(origin = {-110, 72}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Blocks.Sources.RealExpression setPressure(y = p_set) annotation(
+    Placement(transformation(origin = {80, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Fluid.Sensors.MassFlowRate airInflow(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {-58, 24}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Fluid.Sensors.Pressure inletPressure(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {80, -20}, extent = {{10, 10}, {-10, -10}})));
+  Modelica.Fluid.Sources.FixedBoundary exhaust(redeclare package Medium = Medium, nPorts = 1) annotation(
+    Placement(transformation(origin = {-70, -40}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
+  //I /F * n_O2 / MM_O2 / xO2 * lambda
+  Modelica.Blocks.Math.Gain current_to_mass_flow(k = N_cells*lambda*MM_O2/n_O2/F/xO2) annotation(
+    Placement(transformation(origin = {-78, 72}, extent = {{-12, -12}, {12, 12}})));
+
+//  Modelica.Blocks.Math.Gain current_to_mass_flow(k = lambda*MM_air*N_cell/4/F/xO2) annotation(
+  //    Placement(transformation(origin = {-78, 72}, extent = {{-12, -12}, {12, 12}})));
+  replaceable Fluid.SimpleCompressor compressor(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {18, 24}, extent = {{-20, -20}, {20, 20}})))constrainedby 
+Fluid.CompressorInterface annotation(choicesAllMatching = true,
+     Placement(transformation(origin = {20, 24}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Math.Add error_flow(k2 = -1) annotation(
+    Placement(transformation(origin = {-44, 70}, extent = {{-4, -4}, {4, 4}})));
+  replaceable Modelica.Blocks.Continuous.PI PI_compressor(k = 1e6, T = 2, initType = Modelica.Blocks.Types.Init.SteadyState) annotation(
+    Placement(transformation(origin = {-22, 70}, extent = {{-10, -10}, {10, 10}})))constrainedby Modelica.Blocks.Interfaces.SISO annotation(
+     Placement(transformation(origin = {10, 70}, extent = {{-10, -10}, {10, 10}})));
+  replaceable Modelica.Fluid.Valves.ValveCompressible outletValve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0), p_nominal = 2.5e5) annotation(
+    Placement(transformation(origin = {-30, -40}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
+  Modelica.Blocks.Math.Add error_pressure(k2 = -1) annotation(
+    Placement(transformation(origin = {54, -10}, extent = {{6, -6}, {-6, 6}})));
+  replaceable Modelica.Blocks.Continuous.PI PI_valve(T = 10, k = -1e-4) constrainedby Modelica.Blocks.Interfaces.SISO annotation(
+     Placement(transformation(origin = {30, -10}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Blocks.Nonlinear.Limiter valveInputLimiter(uMax = 1, uMin = 0) annotation(
+    Placement(transformation(origin = {0, -10}, extent = {{4, -4}, {-4, 4}}, rotation = -0)));
+  Modelica.Fluid.Sensors.Temperature tempCompressorOut(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {53, 39}, extent = {{-7, -7}, {7, 7}})));
+  Modelica.Fluid.Sensors.Temperature tempCompressorIn(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {-31, 39}, extent = {{-7, -7}, {7, 7}})));
 equation
-  Power_Compressor_mez = (sen_Air_mflow.m_flow*298.15*1004/(1*0.8))*(((toStack.p*0.00001)^0.28) - 1);
-  Power_Compressor_electrical = pin_p.i*pin_p.v;
-  t = max(Power_Compressor_electrical, 1);
-  Rendement_compressor = (sen_Air_mflow.m_flow*298.15*1004/(0.9*t))*(((toStack.p*0.00001)^0.28) - 1);
-//*** DEFINE CONNECTIONS ***//
-  connect(airSource.ports[1], sen_Air_mflow.port_a) annotation(
-    Line(points = {{-82, 21.5}, {-83.25, 21.5}, {-83.25, 22}, {-70, 22}}, color = {0, 170, 255}, thickness = 1));
-  connect(Inlet_air_pressure.p, throttleValve.Measured_inlet_Air_pressure) annotation(
-    Line(points = {{31, -24}, {-17, -24}, {-17, -34}}, color = {0, 0, 127}));
-  connect(Current_to_mass_flow.y, mass_flow_to_rpm.u_s) annotation(
-    Line(points = {{-53, 76}, {-47.5, 76}, {-47.5, 77}, {-42, 77}}, color = {0, 0, 127}));
-  connect(sen_Air_mflow.m_flow, mass_flow_to_rpm.u_m) annotation(
-    Line(points = {{-60, 33}, {-60, 58}, {-29, 58}, {-29, 64}}, color = {0, 0, 127}));
-  connect(mass_flow_to_rpm.y, compressor.set_control) annotation(
-    Line(points = {{-17, 77}, {-17, 38}, {-9, 38}}, color = {0, 0, 127}));
-  connect(sen_Air_mflow.port_b, compressor.port_a) annotation(
-    Line(points = {{-50, 22}, {-9, 22}}, color = {0, 127, 255}));
-  connect(compressor.port_b, compressorOutletSensor.port) annotation(
-    Line(points = {{49, 22}, {53, 22}, {53, 32}, {51, 32}}, color = {0, 127, 255}));
-  connect(compressor.port_a, compressorInletSensor.port) annotation(
-    Line(points = {{-9, 22}, {-38.6, 22}, {-38.6, 38}, {-40.6, 38}}, color = {0, 127, 255}));
+  connect(source.ports[1], airInflow.port_a) annotation(
+    Line(points = {{-76, 24}, {-68, 24}}, color = {0, 170, 255}));
+  connect(inletPressure.port, toStack) annotation(
+    Line(points = {{80, -10}, {80, -12}, {100, -12}, {100, 24}}, color = {0, 127, 255}));
+  connect(current_to_mass_flow.y, error_flow.u1) annotation(
+    Line(points = {{-64.8, 72}, {-48.8, 72}}, color = {0, 0, 127}));
+  connect(outletValve.port_b, exhaust.ports[1]) annotation(
+    Line(points = {{-40, -40}, {-60, -40}}, color = {0, 127, 255}));
+  connect(outletValve.port_a, fromStack) annotation(
+    Line(points = {{-20, -40}, {100, -40}}, color = {0, 127, 255}));
+  connect(PI_valve.u, error_pressure.y) annotation(
+    Line(points = {{42, -10}, {47, -10}}, color = {0, 0, 127}));
+  connect(inletPressure.p, error_pressure.u2) annotation(
+    Line(points = {{69, -20}, {66, -20}, {66, -14}, {62, -14}}, color = {0, 0, 127}));
+  connect(setPressure.y, error_pressure.u1) annotation(
+    Line(points = {{70, 0}, {66, 0}, {66, -6}, {62, -6}}, color = {0, 0, 127}));
+  connect(airInflow.m_flow, error_flow.u2) annotation(
+    Line(points = {{-58, 35}, {-58, 68}, {-49, 68}}, color = {0, 0, 127}));
+  connect(stackCurrent, current_to_mass_flow.u) annotation(
+    Line(points = {{-110, 72}, {-92, 72}}, color = {0, 0, 127}));
+  connect(PI_valve.y, valveInputLimiter.u) annotation(
+    Line(points = {{19, -10}, {4, -10}}, color = {0, 0, 127}));
+  connect(valveInputLimiter.y, outletValve.opening) annotation(
+    Line(points = {{-4, -10}, {-30, -10}, {-30, -32}}, color = {0, 0, 127}));
+  connect(airInflow.port_b, compressor.port_a) annotation(
+    Line(points = {{-48, 24}, {-4, 24}}, color = {0, 127, 255}));
+  connect(compressor.port_b, toStack) annotation(
+    Line(points = {{40, 24}, {100, 24}}, color = {0, 127, 255}));
+  connect(compressor.pin_p, pin_p) annotation(
+    Line(points = {{22, 35}, {22, 98}, {28, 98}, {28, 100}}, color = {0, 0, 255}));
   connect(compressor.pin_n, pin_n) annotation(
-    Line(points = {{16, 38}, {16, 67}, {10, 67}, {10, 104}}, color = {0, 0, 255}));
-  connect(pin_p, compressor.pin_p) annotation(
-    Line(points = {{30, 104}, {30, 68}, {25, 68}, {25, 38}}, color = {0, 0, 255}));
-  connect(setAirPressure.y, throttleValve.FC_pAirOut_P) annotation(
-    Line(points = {{-22, -86}, {6, -86}, {6, -48}}, color = {0, 0, 127}));
-  connect(stackCurrent, abs.u) annotation(
-    Line(points = {{-116, 86}, {-100, 86}, {-100, 76}}, color = {0, 0, 127}));
-  connect(abs.y, Current_to_mass_flow.u) annotation(
-    Line(points = {{-86, 76}, {-80, 76}}, color = {0, 0, 127}));
-  connect(throttleValve.downstream, fromStack) annotation(
-    Line(points = {{26, -46}, {104, -46}}, color = {0, 127, 255}));
-  connect(throttleValve.upstream, airSink.ports[1]) annotation(
-    Line(points = {{-14, -46}, {-14, -46.5}, {-80, -46.5}}, color = {0, 127, 255}));
-  connect(Inlet_air_pressure.port, throttleValve.downstream) annotation(
-    Line(points = {{42, -34}, {42, -46}, {26, -46}}, color = {0, 127, 255}));
-  connect(toStack, compressor.port_b) annotation(
-    Line(points = {{104, 22}, {48, 22}}));
+    Line(points = {{16, 35}, {16, 100}}, color = {0, 0, 255}));
+  connect(error_flow.y, PI_compressor.u) annotation(
+    Line(points = {{-40, 70}, {-34, 70}}, color = {0, 0, 127}));
+  connect(PI_compressor.y, compressor.set_control) annotation(
+    Line(points = {{-11, 70}, {-11, 36}, {-4, 36}}, color = {0, 0, 127}));
+  connect(tempCompressorOut.port, compressor.port_b) annotation(
+    Line(points = {{53, 32}, {53, 24}, {42, 24}}, color = {0, 127, 255}));
+  connect(tempCompressorIn.port, compressor.port_a) annotation(
+    Line(points = {{-31, 32}, {-32, 32}, {-32, 24}, {-2, 24}}, color = {0, 127, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),

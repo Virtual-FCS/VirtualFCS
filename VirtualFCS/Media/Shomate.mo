@@ -83,6 +83,19 @@ package Shomate
       G = 172.707974, 
       H = 0.0);
   
+   /* Validity range 298 K - 1400 K. Original data Chase et al. (1998)
+   * https://webbook.nist.gov/cgi/cbook.cgi?ID=C7664417&Units=SI&Mask=1#Thermo-Gas
+   */
+  constant Parameters NH3_G(
+      A = 19.99563	, 
+      B = 49.77119	, 
+      C = -15.37599, 
+      D = 1.921168, 
+      E = 0.189174, 
+      F = -53.30667, 
+      G = 203.8591, 
+      H = -45.89806);
+  
   function heat_capacity "Molar constant-pressure heat capacity"
     extends Modelica.Icons.Function;
     

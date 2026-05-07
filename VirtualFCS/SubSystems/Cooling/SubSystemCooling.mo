@@ -18,7 +18,7 @@ model SubSystemCooling
     Placement(transformation(origin = {20, 40}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow coolingRate annotation(
     Placement(transformation(origin = {-30, 40}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor coolantTemperature annotation(
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor tempCoolantIn annotation(
     Placement(transformation(origin = {-30, 0}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.RealExpression targetStackT(y = T_stack_set) annotation(
     Placement(transformation(origin = {110, 60}, extent = {{10, -10}, {-10, 10}})));
@@ -30,12 +30,14 @@ model SubSystemCooling
     Placement(transformation(origin = {-90, 40}, extent = {{-10, -10}, {10, 10}})));
   replaceable Fluid.SimplePump pump2(redeclare package Medium = Coolant_Medium) annotation(
     Placement(transformation(origin = {50, -20}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Fluid.Sensors.Temperature tempCoolantOut(redeclare package Medium = Coolant_Medium)  annotation(
+    Placement(transformation(origin = {-48, -42}, extent = {{-10, 10}, {10, -10}}, rotation = -0)));
 equation
   connect(from_stack, coolantReservoir.ports[1]) annotation(
     Line(points = {{-100, -20}, {14, -20}, {14, 20}, {20, 20}}, color = {255, 0, 0}));
   connect(P_coolant.y, coolingRate.Q_flow) annotation(
     Line(points = {{-49, 40}, {-40, 40}}, color = {0, 0, 127}));
-  connect(coolantTemperature.T, P_coolant.u_m) annotation(
+  connect(tempCoolantIn.T, P_coolant.u_m) annotation(
     Line(points = {{-41, 0}, {-60, 0}, {-60, 28}}, color = {0, 0, 127}));
   connect(PI_stack.u_m, stackTemperature) annotation(
     Line(points = {{82, 48}, {82, 30}, {130, 30}}, color = {0, 0, 127}));
@@ -43,7 +45,7 @@ equation
     Line(points = {{94, 60}, {100, 60}}, color = {0, 0, 127}));
   connect(coolingRate.port, coolantReservoir.heatPort) annotation(
     Line(points = {{-20, 40}, {0, 40}}, color = {191, 0, 0}));
-  connect(coolantTemperature.port, coolantReservoir.heatPort) annotation(
+  connect(tempCoolantIn.port, coolantReservoir.heatPort) annotation(
     Line(points = {{-20, 0}, {-10, 0}, {-10, 40}, {0, 40}}, color = {191, 0, 0}));
   connect(targetReservoirT.y, P_coolant.u_s) annotation(
     Line(points = {{-79, 40}, {-73, 40}}, color = {0, 0, 127}));
@@ -57,6 +59,8 @@ equation
     Line(points = {{45, -30}, {45, -100}, {20, -100}}, color = {0, 0, 255}));
   connect(PI_stack.y, pump2.u) annotation(
     Line(points = {{72, 60}, {50, 60}, {50, -10}}, color = {0, 0, 127}));
+  connect(tempCoolantOut.port, from_stack) annotation(
+    Line(points = {{-48, -32}, {-48, -20}, {-100, -20}}, color = {0, 127, 255}));
   annotation(
     Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
     experiment(StopTime = 600, Interval = 0.1, Tolerance = 1e-06, StartTime = 0),

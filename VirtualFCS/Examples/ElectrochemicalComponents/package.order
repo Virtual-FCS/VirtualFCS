@@ -3,5 +3,3 @@ CycleBatteryPack_Composite
 CycleBatteryPack_Lumped
 CycleElectrolyserSystem
 PolarizeFuelCellStack
-PolarizeFuelCellStack_woDeg
-VaryingLoadFuelCellStack

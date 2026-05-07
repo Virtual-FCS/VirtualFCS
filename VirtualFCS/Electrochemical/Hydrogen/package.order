@@ -1,8 +1,11 @@
 fd1
+ActivationLossAnCa
 ActivationLossNone
 ActivationLossSimple
+MassTransportLossElec
 MassTransferLossNone
 MassTransportLossSimple
+OhmicNafion
 OhmicResistance
 VSourceConstant
 VSourceNernst
@@ -11,8 +14,9 @@ Manifold
 FuelCellSystem
 FuelCell
 FCInterface
-Electrolysers
 BaseActivationLoss
 BaseMassTransportLoss
 BaseOhmic
 BaseVSource
+Electrolysers
+Electrolysers_dev

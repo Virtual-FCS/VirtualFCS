@@ -46,7 +46,7 @@ model SubSystemHydrogen
 
   VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {-28, 60}, extent = {{-10, 10}, {10, -10}})));
-  Fluid.SimplePump pump(redeclare package Medium = Anode_Medium)  annotation(
+  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
 equation
   connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
@@ -77,15 +77,15 @@ equation
     Line(points = {{150, -80}, {-30, -80}}, color = {255, 0, 0}, thickness = 1));
   connect(sen_H2_mflow.port_a, fromStack) annotation(
     Line(points = {{40, -50}, {40, -80}, {150, -80}}, color = {255, 0, 0}, thickness = 0.75));
-  connect(sen_H2_mflow.port_b, pump.port_a) annotation(
+  connect(sen_H2_mflow.port_b, HRB.port_a) annotation(
     Line(points = {{40, -30}, {40, -20}}, color = {255, 0, 0}, thickness = 0.75));
-  connect(pump.port_b, toStack) annotation(
+  connect(HRB.port_b, toStack) annotation(
     Line(points = {{24, 20}, {24, 60}, {152, 60}}, color = {255, 0, 0}, thickness = 0.75));
-  connect(pump.pin_p, pin_p) annotation(
+  connect(HRB.pin_p, pin_p) annotation(
     Line(points = {{60, -10}, {150, -10}}, color = {0, 0, 255}));
-  connect(pump.pin_n, pin_n) annotation(
+  connect(HRB.pin_n, pin_n) annotation(
     Line(points = {{60, 10}, {150, 10}}, color = {0, 0, 255}));
-  connect(subSystemHydrogenControl.pumpSpeed_set, pump.u) annotation(
+  connect(subSystemHydrogenControl.pumpSpeed_set, HRB.u) annotation(
     Line(points = {{-76, -26}, {0, -26}, {0, 0}, {22, 0}}, color = {0, 0, 127}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-30, 76}, extent = {{-14, 4}, {22, -6}}, textString = "Pressure regulator")}),

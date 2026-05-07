@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 model Manifold "Fuel cell manifold"
-  extends Modelica.Fluid.Interfaces.PartialLumpedVolume(mXi(each stateSelect = StateSelect.always));
+  extends Modelica.Fluid.Interfaces.PartialLumpedVolume(mXi(each stateSelect = StateSelect.always), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial);
   extends Modelica.Fluid.Interfaces.PartialTwoPort(showDesignFlowDirection=false);
   extends Modelica.Electrical.Analog.Interfaces.ConditionalHeatPort;
   

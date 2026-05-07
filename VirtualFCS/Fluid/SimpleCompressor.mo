@@ -4,6 +4,8 @@ model SimpleCompressor "A simple isentropic compressor"
   extends VirtualFCS.Fluid.CompressorInterface(final useHeatPort=false, redeclare Modelica.Blocks.Interfaces.RealInput set_control(unit="W"));
   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium "Medium in the component" annotation (choicesAllMatching = true);
   
+  parameter Modelica.Units.SI.Efficiency eta = 0.8 "Isoentropic efficiency";
+
   Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
   
   Real k = cp/cv "Heat capacity ratio, measured at inlet";
@@ -14,8 +16,9 @@ model SimpleCompressor "A simple isentropic compressor"
   Modelica.Units.SI.EnthalpyFlowRate Hin = port_a.m_flow * inStream(port_a.h_outflow);
   Modelica.Units.SI.EnthalpyFlowRate Hout = port_b.m_flow * port_b.h_outflow;
   
-  Modelica.Units.SI.Efficiency eta = 0.8 "Isoentropic efficiency";
+    Modelica.Units.SI.Power Power_Compressor "The power consumed by the Compressor";
 equation
+  Power_Compressor = set_control;
   // All compositions equal to upstream
   medium_in.Xi = port_a.Xi_outflow;
   // Not supposed to ever be used

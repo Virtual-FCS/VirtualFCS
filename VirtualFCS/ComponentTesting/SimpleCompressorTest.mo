@@ -4,7 +4,7 @@ model SimpleCompressorTest
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable package Medium = VirtualFCS.Media.CathodeAir;
+  replaceable package Medium = VirtualFCS.Media.CathodeAir_CC;
   Modelica.Fluid.Sources.FixedBoundary source(redeclare package Medium = Medium, nPorts = 1, X = {0.2, 0.8, 0}) annotation(
     Placement(transformation(origin = {-72, 0}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
   Modelica.Blocks.Sources.Step power(height = 30000, offset = 100, startTime = 10) annotation(

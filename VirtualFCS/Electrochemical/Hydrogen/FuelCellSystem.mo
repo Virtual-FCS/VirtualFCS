@@ -2,11 +2,12 @@
 model FuelCellSystem
 
   outer Modelica.Fluid.System system "System properties";
+  constant Modelica.Units.SI.SpecificEnergy H2HHV = 142e6 "(J/kg) Hydrogen low heating value";
+  constant Modelica.Units.SI.SpecificEnergy H2LHV = 120e6 "(J/kg) Hydrogen low heating value";
+  constant Real eta_max = 70. "Maximum system efficiency to avoid spurious peak efficiencies due to current step changes";
   parameter Modelica.Units.SI.AbsolutePressure p_air_set = 200000 "air outlet set pressure";
   parameter Modelica.Units.SI.AbsolutePressure p_H2_set = 200000 "H2 outlet set pressure";
 
-  parameter Modelica.Units.SI.Current I_nom_FC_stack = 280.0 "FC stack nominal current";
-  parameter Modelica.Units.SI.Current I_rated_FC_stack = 320 "FC stack maximum operating current";
   parameter Integer N_cells = 42 "FC stack number of cells";
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
@@ -15,13 +16,15 @@ model FuelCellSystem
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
   Modelica.Units.SI.Power Power_BOP = source.p.i*(source.p.v-source.n.v) "Power consumed by the BOP components";
+  Real eta_sys_HHV(unit = "100") "Fuel cell system efficiency High Heating Value";
+  Real eta_sys_LHV(unit = "100") "Fuel cell system efficiency Low Heating Value";
 
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   replaceable FuelCell fuelCell(N_cells = N_cells)  annotation (Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
-  replaceable SubSystems.Air.SubSystemAir_2 subSystemAir annotation(
+  replaceable SubSystems.Air.SubSystemAir subSystemAir(N_cells = N_cells, p_set = p_air_set)  annotation(
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {0, -54}, extent = {{-14, -14}, {14, 14}})));
@@ -32,6 +35,8 @@ model FuelCellSystem
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {60, -110}, extent = {{-10, -10}, {10, 10}})));
 equation
+  eta_sys_HHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2HHV)*100, eta_max);
+  eta_sys_LHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2LHV)*100, eta_max);
   connect(pin_n, currentSensor.p) annotation(
     Line(points = {{-40, 96}, {-40, 80}}, color = {0, 0, 255}));
   connect(fuelCell.pin_n, currentSensor.n) annotation(
