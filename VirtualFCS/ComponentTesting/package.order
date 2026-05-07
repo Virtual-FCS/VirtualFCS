@@ -31,9 +31,3 @@ ChopperTest
 CathodeAirTest
 BoostConverterTest
 AmmoniaCrackerTest
-HumidifierTest_f_old
-HumidifierTest_f_new
-HumidifierValidation_1_f_old
-HumidifierValidation_1_f_new
-HumidifierValidation_2_f_old
-HumidifierValidation_2_f_new

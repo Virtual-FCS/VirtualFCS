@@ -28,44 +28,47 @@ model Humidifier "Hollow fiber membrane humidifier:
   parameter SI.Diameter dFiber_o = 1.0e-3 "Outer fiber diameter [m]";
   parameter SI.Diameter dHousing = 39.2e-3 "Inner diameter of shell [m]";
   parameter SI.Length L_fiber = 150.8e-3 "Fiber length [m]";
+  // Reference values
+  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp";
+  SI.Pressure atm_P = 101325 "Aussumed baseline pressure";SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Referece binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
+  // Numerical stability
+  Real eps = 1e-9 "Small number to avoide div by zero";
+  SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";
   // Volumetric flow
   SI.VolumeFlowRate V_dot_a, V_dot_b "Volumetric flow rates [m3/s]";
   SI.DimensionlessRatio VFR "Volume flow ratio";
   // Mass transfer velocity
+  SI.Velocity v_a, v_b "Flow through fibers [m/s]";
   SI.Velocity h_conv_a, h_conv_b "Convective resistances [m/s]";
-  //Correct units, but should be mass transfer resistance
+  // Geometry-derived variables
+  SI.Diameter d_hyd_b "Effective shell hydraulic diameter";
+  SI.Area A_mem "Surface area of fibers";
+  SI.Area A_c_fibers_in "Cross-section area of fibers inner diameter";
+  SI.Area A_c_fibers_out "Cross-section area of fibers outer diameter";
+  SI.Area A_c_shell "Cross-section area of humidifier shell";
+  SI.Area A_c_shell_gap "Cross-section area of humidifier shell space not occupied by fibers";
+  // Transport and dimentionless numbers
+  Real Re_a, Sc_a, Re_b, Sc_b;
+  Real Sh_wet1, Sh_wet2, Sh_wet;
+  SI.DiffusionCoefficient D_H2O_Air "Temperature and pressure dependent binary diffusion coefficient of H2O in air [m2/s]";
+  Real Phi, Sh_dry;
+  // Mass transfer model
   SI.SpectralConcentration R_conv_a, R_conv_b, R_mem "Resistance [s/m3]";
   SI.VolumeFlowRate beta_eff_a "Effective mass transfer coeff. [m3/s]";
   SI.DimensionlessRatio NTU "Number of transfer units";
   SI.Efficiency eta "Effectiveness";
+  // Moisture transfer and dynamics 
   SI.MassFlowRate m_perm "Instantaneous permeation mass flow [kg/s]";
-  SI.MoleFraction phi_A_out "Relative humidity of wet gas out";
-  SI.MoleFraction phi_B_out "Relative humidity of dry gas out";
   SI.DimensionlessRatio Xi "Normalized permeation state";
   SI.MassFlowRate m_perm_state "Dynamic permeation flow [kg/s]";
-  // State for first-order dynamic of permeation
   SI.DimensionlessRatio Xi_state(start = 0, fixed = true) "State variable for normalized moisture transfer";
+  // Thermodynamics and energy varaibles
   SI.SpecificEnthalpy portA_out_h_outflow, portB_out_h_outflow "Specific enthalpy for the ports";
   SI.EnthalpyFlowRate perm_enthalpy_flow "The enthalpy flow rate for mass transfer";
-  SI.Diameter d_hyd_b "Effective shell hydraulic diameter";
-  Real Re_a, Sc_a, Re_b, Sc_b;
-  // Dimensionless number
-  Real Sh_wet1, Sh_wet2, Sh_wet;
-  // Dimensionless number
-  Real eps = 1e-9 "Small number to avoide div by zero";
-  SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";
-  Real Phi, Sh_dry;
-  SI.Velocity v_a, v_b;
-  SI.Area A_c_fibers_in "Cross-section area of fibers inner diameter";
-  SI.Area A_c_fibers_out "Cross-section area of fibers outer diameter";
-  SI.Area A_mem "Surface area of fibers";
-  SI.Area A_c_shell "Cross-section area of humidifier shell";
-  SI.Area A_c_shell_gap "Cross-section area of humidifier shell space not occupied by fibers";
-  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Referece binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
-  SI.DiffusionCoefficient D_H2O_Air "Temperature and pressure dependent binary diffusion coefficient of H2O in air [m2/s]";
-  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp";
-  SI.Pressure atm_P = 101325 "Aussumed baseline pressure";
-  //---- Define medium states for cleaner implementation
+  // Output /diagnostics
+  SI.MoleFraction phi_A_out "Relative humidity of wet gas out";
+  SI.MoleFraction phi_B_out "Relative humidity of dry gas out";
+  // Medium states  
   wet_medium.ThermodynamicState med_state_A_in;
   wet_medium.ThermodynamicState med_state_A_out;
   dry_medium.ThermodynamicState med_state_B_in;
