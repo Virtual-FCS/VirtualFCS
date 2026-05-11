@@ -15,9 +15,9 @@ model FuelCellTest
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
 
 
-  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1, p = 2.1e5)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1, p = 3e5)  annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
-  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p (displayUnit = "bar")= 2e5)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p (displayUnit = "bar")= 2.5e5)  annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}})));
@@ -29,7 +29,7 @@ model FuelCellTest
     Placement(transformation(origin = {25, -25}, extent = {{5, -5}, {-5, 5}})));
   Modelica.Fluid.Sources.MassFlowSource_T coolant_source(nPorts = 1, redeclare package Medium = Coolant_Medium, m_flow = 0.05, T = 323.15) annotation(
     Placement(transformation(origin = {-14, -26}, extent = {{-6, -6}, {6, 6}})));
-  Modelica.Fluid.Sources.MassFlowSource_T air_source(redeclare package Medium = Cathode_Medium, m_flow = 7.5e-4, nPorts = 1, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T air_source(redeclare package Medium = Cathode_Medium, m_flow = 3e-3, nPorts = 1, use_m_flow_in = false) annotation(
     Placement(transformation(origin = {46, 10}, extent = {{6, -6}, {-6, 6}})));
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation(
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
