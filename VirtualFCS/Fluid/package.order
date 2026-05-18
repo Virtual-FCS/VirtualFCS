@@ -3,15 +3,15 @@ AmmoniaCracker_2
 Compressor
 CompressorInterface
 FluidCompressor
+SimpleCompressor
 Humidifier
 PipeInterface
 PressureRegulator
 PumpElectricDC
 PumpInterface
+SimplePump
 RecirculationBlower
 RecirculationBlower_mc
 simplePipe
-SimplePump
-SimpleCompressor
 ThrottleValve
 UsersGuide
