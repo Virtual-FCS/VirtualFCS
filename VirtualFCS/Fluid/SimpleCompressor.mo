@@ -27,7 +27,11 @@ protected
   Modelica.Mechanics.Rotational.Components.Damper damper(final d=P_nom / from_rpm(RPM_nom)^2)  annotation(
     Placement(transformation(origin = {-30, 0}, extent = {{10, -10}, {-10, 10}})));
 
+
 equation
+  // No reverse flow admissible
+  assert(port_a.m_flow >= 0, "Reverse flow in compressor.");
+
   // All compositions equal to upstream (no reaction)
   medium_in.Xi = inStream(port_a.Xi_outflow);
   medium_out.Xi = medium_in.Xi;
