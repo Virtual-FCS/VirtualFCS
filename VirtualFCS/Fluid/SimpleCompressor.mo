@@ -1,7 +1,7 @@
 within VirtualFCS.Fluid;
 
-model SimpleCompressor "A simple isentropic compressor"
-  extends VirtualFCS.Fluid.CompressorInterface; // FIXME Sure we don't want the heat port?
+model SimpleCompressor "Compressor with constant polytropic efficiency"
+  extends VirtualFCS.Fluid.CompressorInterface(useHeatPort=true);
 
   import Modelica.Units.Conversions.from_rpm;
 
@@ -53,10 +53,10 @@ equation
   port_a.Xi_outflow = medium_in.Xi;
   
   // Energy balance (enthalpy in, enthalpy out(will have correct sign), mechanical power in, heat out)
-  Hin + Hout + P - LossPower = 0;
+  Hin + Hout + P - lossPower = 0;
   
-  // Use average temperature as representative for heatPort
-  T_heatPort = (medium_in.T + medium_out.T)/2;
+  // Heat port temperature set at outlet temperature
+  TheatPort = medium_out.T;
   
   // Relate power to flow and pressure ratio
   P*eta/port_a.m_flow = k*medium_in.R_s*medium_in.T/(k - 1)*((medium_out.p/medium_in.p)^((k - 1)/k) - 1);
