@@ -67,4 +67,6 @@ equation
     Line(points = {{-100, 0}, {-80, 0}}));
   connect(inertia.flange_a, damper.flange_b) annotation(
     Line(points = {{-60, 0}, {-40, 0}}));
+annotation(
+    Documentation(info = "<html><head></head><body>Given a set efficiency, nominal power and RPM, this compressor will assume a linear relationship between shaft torque and RPM and implement a polytropic relation based on the specific heats of the entering fluid.<div>The unit does not implement any holdup, but has an adjustable <tt>inertia.J</tt>.</div><div><br></div><div>Outlet pressure is calculated with the polytropic&nbsp;<br><div><br></div><div><br></div><div><li>if&nbsp;<tt>heatport</tt>&nbsp;is&nbsp;<tt>true</tt>&nbsp;(default), the heat port can either be connected or not:</li><ul><li>Without any connection, adiabatic operation is assumed; this is usually what you want.</li><li>Connection are possible to e.g. thermal capacitors or radiators; in this case note that the reference temperature is the&nbsp;<i>outlet</i>'s.</li></ul><li>otherwise, the&nbsp;<i>outlet</i>&nbsp;temperature will be set to a constant value given by&nbsp;<tt>T</tt>.</li></div></div></body></html>"));
 end SimpleCompressor;
