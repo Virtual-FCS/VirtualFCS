@@ -186,7 +186,7 @@ package CathodeAir "Medium model for cathodic air"
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificEnthalpy h_liq;
   algorithm
-    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / MMs[Water];
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
 end enthalpyOfWater;
@@ -250,7 +250,7 @@ end enthalpyOfGas;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificHeatCapacity cp_liq;
   algorithm
-    cp_liq := Shomate.heat_capacity(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    cp_liq := Shomate.heat_capacity(T, Shomate.H2O_L) / MMs[Water];
     annotation(
     Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
   end specificHeatCapacityCpOfWater;
