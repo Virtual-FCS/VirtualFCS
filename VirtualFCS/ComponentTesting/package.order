@@ -25,7 +25,6 @@ PressureRegulatorTest_v2
 PumpElectricDCTest
 RecirculationBlowerTest
 ReversiblePotentialTest
-SimpleCompressorTest
 SimplePumpTest
 SubSystemAirTest
 SubSystemAirTest_2_bis

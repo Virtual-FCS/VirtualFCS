@@ -1,9 +1,8 @@
 AmmoniaCracker
 AmmoniaCracker_2
-Compressor
 CompressorInterface
+Compressor
 FluidCompressor
-SimpleCompressor
 Humidifier
 PipeInterface
 PressureRegulator
@@ -15,3 +14,4 @@ RecirculationBlower_mc
 simplePipe
 ThrottleValve
 UsersGuide
+Old_Compressor
