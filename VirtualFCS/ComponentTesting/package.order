@@ -10,7 +10,6 @@ DC_converterTest
 ECMS_Experiment_Testing
 ElectrolyserSystemTest
 ElectrolyserSystemTest_dev
-FluidCompressorTest
 FuelCellSystemTest
 FuelCellTest
 HeatSinkTest
