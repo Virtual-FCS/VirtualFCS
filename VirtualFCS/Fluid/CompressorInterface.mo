@@ -6,9 +6,9 @@ partial model CompressorInterface
   import Modelica.Media.Interfaces.PartialMedium;
   
   replaceable package Medium = PartialMedium "Medium in the component" constrainedby PartialMedium annotation (choicesAllMatching = true);
-  Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium)  annotation(
+  Modelica.Fluid.Interfaces.FluidPort_a inlet(redeclare package Medium = Medium)  annotation(
     Placement(transformation(origin = {-100, 100}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium = Medium)  annotation(
+  Modelica.Fluid.Interfaces.FluidPort_b outlet(redeclare package Medium = Medium)  annotation(
     Placement(transformation(origin = {100, 40}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Mechanics.Rotational.Interfaces.Flange_a flange annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}})));

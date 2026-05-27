@@ -36,13 +36,13 @@ model SubSystemAir
     Placement(transformation(origin = {-80, 70}, extent = {{-10, -10}, {10, 10}})));
   replaceable Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0), p_nominal = 2.5e5) annotation(
     Placement(transformation(origin = {-30, -80}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
-  replaceable Fluid.Compressor compressor(redeclare package Medium = Medium) annotation(
+  replaceable Fluid.Compressor compressor(redeclare package Medium = Medium, RPM_nom = motor.wNominal) annotation(
     Placement(transformation(origin = {40, 10}, extent = {{-20, 20}, {20, -20}})));
-  Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet motor(IaNominal = 30, Jr = 0.15, Js = 0.29, La(displayUnit = "mH") = 0.0015, Ra = 0.05, TaNominal = 293.15, TaOperational = 293.15, TaRef = 293.15, VaNominal = 100, wMechanical(displayUnit = "rpm"), wNominal(displayUnit = "rpm") = 125.66370614359174, alpha20a = 0) annotation(
+  replaceable Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet motor(IaNominal = 100, Jr = 0.15, Js = 0.29, La(displayUnit = "mH") = 0.0015, Ra = 0.05, TaNominal = 293.15, TaOperational = 293.15, TaRef = 293.15, VaNominal = 100, wMechanical(displayUnit = "rpm"), wNominal(displayUnit = "rpm") = 1256.6370614359173, alpha20a = 0) annotation(
     Placement(transformation(origin = {-10, 10}, extent = {{-10, -10}, {10, 10}})));
   replaceable Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.IdealDcDc converter(Td(displayUnit = "ms") = 0.001, Ti(displayUnit = "us"))  annotation(
     Placement(transformation(origin = {-10, 70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Continuous.LimPID PID_compressor(controllerType = Modelica.Blocks.Types.SimpleController.PI, k = 1e6, Ti = 2, yMax = 100, yMin = 0) annotation(
+  Modelica.Blocks.Continuous.LimPID PID_compressor(controllerType = Modelica.Blocks.Types.SimpleController.PI, k = 1e4, Ti = 2, yMax = 300, yMin = 0) annotation(
     Placement(transformation(origin = {-50, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Continuous.LimPID PID_valve(controllerType = Modelica.Blocks.Types.SimpleController.PI, yMax = 1, yMin = 0, k = -1e-4, Ti = 10)  annotation(
     Placement(transformation(origin = {10, -30}, extent = {{10, -10}, {-10, 10}})));
@@ -51,9 +51,9 @@ equation
     Line(points = {{-20, -80}, {100, -80}}, color = {0, 127, 255}));
   connect(stackCurrent, current_to_mass_flow.u) annotation(
     Line(points = {{-110, 70}, {-92, 70}}, color = {0, 0, 127}));
-  connect(compressor.port_b, toStack) annotation(
+  connect(compressor.outlet, toStack) annotation(
     Line(points = {{60, 2}, {100, 2}}, color = {0, 127, 255}));
-  connect(compressor.port_a, airInflow.port_b) annotation(
+  connect(compressor.inlet, airInflow.port_b) annotation(
     Line(points = {{20, -10}, {-40, -10}}, color = {0, 127, 255}));
   connect(motor.flange, compressor.flange) annotation(
     Line(points = {{0, 10}, {20, 10}}));
@@ -73,7 +73,7 @@ equation
     Line(points = {{-50, 1}, {-50, 58}}, color = {0, 0, 127}));
   connect(converter.pin_nMot, motor.pin_an) annotation(
     Line(points = {{-20, 60}, {-20, 40}, {-16, 40}, {-16, 20}}));
-  connect(inletPressure.port, compressor.port_b) annotation(
+  connect(inletPressure.port, compressor.outlet) annotation(
     Line(points = {{66, -50}, {66, 2}, {60, 2}}, color = {0, 127, 255}));
   connect(valve.opening, PID_valve.y) annotation(
     Line(points = {{-30, -72}, {-30, -30}, {-1, -30}}, color = {0, 0, 127}));
