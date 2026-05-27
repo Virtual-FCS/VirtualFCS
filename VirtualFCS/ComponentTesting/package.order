@@ -26,8 +26,6 @@ RecirculationBlowerTest
 ReversiblePotentialTest
 SimplePumpTest
 SubSystemAirTest
-SubSystemAirTest_2_bis
-SubSystemAirTest_old
 SubSystemAirWithFuelCellTest
 SubSystemCoolingTest
 SubSystemCoolingWithFuelCellTest
