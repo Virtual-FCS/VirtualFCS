@@ -7,7 +7,7 @@ model CompressorTest
   replaceable package Medium = VirtualFCS.Media.CathodeAir_CC;
   Modelica.Fluid.Sources.FixedBoundary source(redeclare package Medium = Medium, nPorts = 2, X = {0.2, 0.8, 0}) annotation(
     Placement(transformation(origin = {-20, 50}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
-  Fluid.Compressor compressor(redeclare package Medium = VirtualFCS.Media.CathodeAir, inertia(J = 0.015))  annotation(
+  Fluid.Compressor compressor(redeclare package Medium = VirtualFCS.Media.CathodeAir)  annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
     Placement(transformation(origin = {-50, 0}, extent = {{-10, -10}, {10, 10}})));
@@ -28,5 +28,5 @@ equation
     Line(points = {{-20, 20}, {-20, 40}}, color = {0, 127, 255}));
 
 annotation(
-    experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
+    experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 0.02));
 end CompressorTest;
