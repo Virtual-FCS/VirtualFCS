@@ -4,6 +4,9 @@ model Humidifier "Hollow fiber membrane humidifier:
     - Counterflow NTU-based mass exchanger
     - Includes optional first-order dynamics for moisture transfer
     - Based on Pollak et al. (2023)"
+  
+  extends VirtualFCS.Fluid.HumidifierInterface(redeclare package wet_medium=wet_medium, redeclare package dry_medium=dry_medium);
+      
   // Tested with VirtualFCS.Media.CathodeAir -> Still hardcoded with order and number of species in the medium. Can be improved later.
   replaceable package dry_medium = Modelica.Media.Interfaces.PartialMedium "Dry gas (shell side)" annotation(
     choicesAllMatching = true);
@@ -11,14 +14,6 @@ model Humidifier "Hollow fiber membrane humidifier:
     choicesAllMatching = true);
   import SI = Modelica.Units.SI;
   // Wet (A) and Dry (B) fluid ports
-  Modelica.Fluid.Interfaces.FluidPort_a portA_in(redeclare package Medium = wet_medium) "Wet side inlet" annotation(
-    Placement(transformation(extent = {{-10, 90}, {10, 110}})));
-  Modelica.Fluid.Interfaces.FluidPort_b portA_out(redeclare package Medium = wet_medium) "Wet side outlet" annotation(
-    Placement(transformation(extent = {{100, 50}, {120, 70}}, origin = {110, -40}, rotation = 180)));
-  Modelica.Fluid.Interfaces.FluidPort_a portB_in(redeclare package Medium = dry_medium) "Dry side inlet" annotation(
-    Placement(transformation(extent = {{-110, -10}, {-90, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b portB_out(redeclare package Medium = dry_medium) "Dry side outlet" annotation(
-    Placement(transformation(extent = {{100, -70}, {120, -50}}, origin = {210, -60}, rotation = 180)));
   // Model parameters
   parameter SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient [m2/s] (to be calibrated)";
   parameter SI.Time tau_perm = 6.1 "Time constant for moisture transfer [s] (to be calibrated)";
@@ -30,7 +25,8 @@ model Humidifier "Hollow fiber membrane humidifier:
   parameter SI.Length L_fiber = 150.8e-3 "Fiber length [m]";
   // Reference values
   SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp";
-  SI.Pressure atm_P = 101325 "Aussumed baseline pressure";SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Referece binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
+  SI.Pressure atm_P = 101325 "Aussumed baseline pressure";
+  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Referece binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
   // Numerical stability
   Real eps = 1e-9 "Small number to avoide div by zero";
   SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";
@@ -57,7 +53,7 @@ model Humidifier "Hollow fiber membrane humidifier:
   SI.VolumeFlowRate beta_eff_a "Effective mass transfer coeff. [m3/s]";
   SI.DimensionlessRatio NTU "Number of transfer units";
   SI.Efficiency eta "Effectiveness";
-  // Moisture transfer and dynamics 
+  // Moisture transfer and dynamics
   SI.MassFlowRate m_perm "Instantaneous permeation mass flow [kg/s]";
   SI.DimensionlessRatio Xi "Normalized permeation state";
   SI.MassFlowRate m_perm_state "Dynamic permeation flow [kg/s]";
@@ -68,7 +64,7 @@ model Humidifier "Hollow fiber membrane humidifier:
   // Output /diagnostics
   SI.MoleFraction phi_A_out "Relative humidity of wet gas out";
   SI.MoleFraction phi_B_out "Relative humidity of dry gas out";
-  // Medium states  
+  // Medium states
   wet_medium.ThermodynamicState med_state_A_in;
   wet_medium.ThermodynamicState med_state_A_out;
   dry_medium.ThermodynamicState med_state_B_in;
@@ -129,15 +125,15 @@ equation
   der(Xi_state) = (Xi - Xi_state)/tau_perm;
   m_perm_state = Xi_state*min(portA_in.m_flow, portB_in.m_flow);
 // Mass and pressure balances
-  portA_out.m_flow = portA_in.m_flow - m_perm_state;
-  portB_out.m_flow = portB_in.m_flow + m_perm_state;
+  portA_in.m_flow + portA_out.m_flow = m_perm_state;
+  portB_in.m_flow + portB_out.m_flow = -m_perm_state;
   portA_in.p = portA_out.p;
   portB_in.p = portB_out.p;
 // Species balances
 // To avoide div by zero
   if abs(portA_out.m_flow) > m_flow_min then
-    XiA_out[1] = (portA_in.m_flow*inStream(portA_in.Xi_outflow[1]))/portA_out.m_flow;
-    XiA_out[2] = (portA_in.m_flow*inStream(portA_in.Xi_outflow[2]))/portA_out.m_flow;
+    XiA_out[1] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[1]))/abs(portA_out.m_flow);
+    XiA_out[2] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[2]))/abs(portA_out.m_flow);
     XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
   else
     XiA_out[1] = inStream(portA_in.Xi_outflow[1]);
@@ -145,8 +141,8 @@ equation
     XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
   end if;
   if abs(portB_out.m_flow) > m_flow_min then
-    XiB_out[1] = (portB_in.m_flow*inStream(portB_in.Xi_outflow[1]))/portB_out.m_flow;
-    XiB_out[2] = (portB_in.m_flow*inStream(portB_in.Xi_outflow[2]))/portB_out.m_flow;
+    XiB_out[1] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[1]))/abs(portB_out.m_flow);
+    XiB_out[2] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[2]))/abs(portB_out.m_flow);
     XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
   else
     XiB_out[1] = inStream(portB_in.Xi_outflow[1]);
@@ -160,12 +156,12 @@ equation
     perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_B_in.T, Media.Shomate.H2O_G)/dry_medium.MMs[3])*m_perm_state;
   end if;
   if abs(portA_out.m_flow) > m_flow_min then
-    portA_out_h_outflow = (portA_in.m_flow*inStream(portA_in.h_outflow) - perm_enthalpy_flow)/portA_out.m_flow;
+    portA_out_h_outflow = (abs(portA_in.m_flow)*inStream(portA_in.h_outflow) - perm_enthalpy_flow)/abs(portA_out.m_flow);
   else
     portA_out_h_outflow = inStream(portA_in.h_outflow);
   end if;
   if abs(portB_out.m_flow) > m_flow_min then
-    portB_out_h_outflow = (portB_in.m_flow*inStream(portB_in.h_outflow) + perm_enthalpy_flow)/portB_out.m_flow;
+    portB_out_h_outflow = (abs(portB_in.m_flow)*inStream(portB_in.h_outflow) + perm_enthalpy_flow)/abs(portB_out.m_flow);
   else
     portB_out_h_outflow = inStream(portB_in.h_outflow);
   end if;
@@ -183,7 +179,7 @@ equation
   phi_A_out = wet_medium.relativeHumidity(med_state_A_out);
   phi_B_out = dry_medium.relativeHumidity(med_state_B_out);
   annotation(
-    Icon(coordinateSystem(preserveAspectRatio = false), graphics = {Rectangle(fillColor = {189, 189, 189}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}, radius = 30), Rectangle(origin = {-62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Rectangle(origin = {62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Line(origin = {0.2, 56}, points = {{-56, 0}, {56, 0}}), Line(origin = {0.2, -56}, points = {{-56, 0}, {56, 0}})}),
+    Icon(coordinateSystem(preserveAspectRatio = false)),
     Diagram,
     Documentation(info = "<html><head></head><body><h1>Hollow Fiber Membrane Humidifier Model</h1>
 
