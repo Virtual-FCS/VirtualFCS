@@ -3,22 +3,26 @@ within VirtualFCS.Fluid;
 model Compressor "Compressor with constant polytropic efficiency"
   extends VirtualFCS.Fluid.CompressorInterface(useHeatPort=true);
 
-  import Modelica.Units.Conversions.from_rpm;
   import Modelica.Constants.eps;
 
-  parameter Modelica.Units.SI.Efficiency eta = 0.8 "Fixed isoentropic efficiency";
+  parameter Modelica.Units.SI.Efficiency eta = 0.8 "Isoentropic efficiency";
   parameter Modelica.Units.SI.Power P_nom(displayUnit="kW") = 40000 "Nominal compressor power";
-  parameter Modelica.Units.NonSI.AngularVelocity_rpm RPM_nom = 80000 "Nominal rounds per minute";
+  parameter Modelica.Units.SI.AngularVelocity RPM_nom(displayUnit="rpm") = 8377.580409572781 "Nominal rounds per minute";
 
   Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
 
-  Modelica.Units.SI.EnthalpyFlowRate Hin  = inlet.m_flow * inStream(inlet.h_outflow);
-  Modelica.Units.SI.EnthalpyFlowRate Hout = outlet.m_flow * outlet.h_outflow;
+  Modelica.Units.SI.EnthalpyFlowRate Hin  = inlet.m_flow * inStream(inlet.h_outflow) "Enthalpy inflow at inlet";
+  Modelica.Units.SI.EnthalpyFlowRate Hout = outlet.m_flow * outlet.h_outflow "Enthalpy inflow at outlet (mind the sign)";
   
   Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 1e-4)  annotation(
     Placement(transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Mechanics.Rotational.Sensors.MultiSensor sensor annotation(
     Placement(transformation(origin = {-28, 0}, extent = {{-10, -10}, {10, 10}})));
+protected
+  Modelica.Mechanics.Rotational.Components.Damper damper(final d = P_nom/RPM_nom^2, w_rel(start = 0.01*RPM_nom)) annotation(
+    Placement(transformation(origin = {10, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Mechanics.Rotational.Components.Fixed fixed annotation(
+    Placement(transformation(origin = {50, 0}, extent = {{-10, -10}, {10, 10}})));
 equation
   assert(inlet.m_flow >= -eps, "Reverse flow in compressor.") "No reverse flow admissible";
   inlet.m_flow + outlet.m_flow = 0 "No-holdup model - what goes in leaves immediately";
@@ -43,11 +47,6 @@ equation
     Line(points = {{20, 0}, {50, 0}}));
   connect(damper.flange_b, sensor.flange_b) annotation(
     Line(points = {{0, 0}, {-18, 0}}));
-  protected
-  Modelica.Mechanics.Rotational.Components.Damper damper(d = P_nom/(RPM_nom)^2, w_rel(start = 0.01*RPM_nom))  annotation(
-    Placement(transformation(origin = {10, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  Modelica.Mechanics.Rotational.Components.Fixed fixed annotation(
-    Placement(transformation(origin = {50, 0}, extent = {{-10, -10}, {10, 10}})));
   annotation(
-    Documentation(info = "<html><head></head><body>Given a set efficiency, nominal power and RPM, this compressor will assume a linear relationship between shaft torque and RPM and implement a polytropic relation based on the specific heats of the entering fluid.<div>The unit does not implement any holdup, but has an adjustable <tt>inertia.J</tt>.</div><div><br></div><div>Outlet pressure is calculated with the polytropic&nbsp;<br><div><br></div><div><br></div><div><li>if&nbsp;<tt>heatport</tt>&nbsp;is&nbsp;<tt>true</tt>&nbsp;(default), the heat port can either be connected or not:</li><ul><li>Without any connection, adiabatic operation is assumed; this is usually what you want.</li><li>Connection are possible to e.g. thermal capacitors or radiators; in this case note that the reference temperature is the&nbsp;<i>outlet</i>'s.</li></ul><li>otherwise, the&nbsp;<i>outlet</i>&nbsp;temperature will be set to a constant value given by&nbsp;<tt>T</tt>.</li></div></div></body></html>"));
+    Documentation(info = "<html><head></head><body>This compressor model takes a set isentropic efficiency, nominal power and RPM, and calculates the change in flow properties from inlet to outlet.<div>The unit does not implement any fluid holdup, but has an adjustable mechanical&nbsp;<tt>inertia.J</tt>.</div><div><br></div><div>Outlet conditions are calculated using the <tt>isentropicEnthalpy</tt> function of the Medium, which will need to have been implemented: this allows to handle non-ideal gases (e.g. water vapour, ammonia, or any gases at high pressures).</div><div><br></div><div>By default, <tt>heatport</tt>&nbsp;is enabled, which will result in an adiabatic compressor if nothing is connected to it; this is usually the normal case.</div><div>If&nbsp;<tt>heatport</tt>&nbsp;is not enabled, the outlet of the compressor will be set at parameter <tt>T</tt>, which may simulate e.g. an ideal cooler downstream a compressor, whose duty will be given by <tt>lossPower</tt>.</div><div><br></div><h3>Potential numerical issues</h3><div>The numerous nonlinearities can make initialisation difficult: for this reason, the internal virtual damper's rotational speed is by default initialised to 1% of the rated speed, so that it is clear to the algorithm which way the flow is supposed to go.</div><div>Slightly increasing downstream pressure by as little as 100 Pa can also help proper initialisation in some cases.</div></body></html>"));
 end Compressor;
