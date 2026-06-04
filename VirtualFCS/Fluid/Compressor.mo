@@ -31,8 +31,8 @@ equation
   port_b.Xi_outflow = medium_out.Xi "Compositions do not change";
   medium_in.p = port_a.p "Bind inlet pressures to medium";
   medium_out.p = port_b.p "Bind outlet pressures to medium";
-  medium_in.T = Medium.temperature_phX(medium_in.p, inStream(port_a.h_outflow), medium_in.X) "Inlet temperature from specific enthalpy";
-  medium_out.T = Medium.temperature_phX(medium_out.p, port_b.h_outflow, medium_out.X) "Outlet temperature from specific enthalpy";
+  medium_in.h = inStream(port_a.h_outflow) "Inlet specific enthalpy from upstream";
+  medium_out.h = port_b.h_outflow "Outlet specific enthalpy bound to port_b";
   port_a.h_outflow = inStream(port_a.h_outflow) "Not supposed to be used, but must be set to balance equations";
   
   if noEvent(port_a.m_flow > eps) then

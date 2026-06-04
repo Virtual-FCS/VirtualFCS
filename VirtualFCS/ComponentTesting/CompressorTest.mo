@@ -25,7 +25,7 @@ equation
   connect(constant_tau.y, torque.tau) annotation(
     Line(points = {{-79, 0}, {-62, 0}}, color = {0, 0, 127}));
   connect(environment.ports[1], compressor.port_a) annotation(
-    Line(points = {{-40, 50}, {-20, 50}, {-20, 20}}, color = {0, 127, 255}));
+    Line(points = {{-40, 50}, {-40, 8}, {-20, 8}}, color = {0, 127, 255}));
   connect(orifice.port_b, environment.ports[2]) annotation(
     Line(points = {{80, 8}, {80, 50}, {-40, 50}}, color = {0, 127, 255}));
   connect(compressor.port_b, manifold.port_a) annotation(
