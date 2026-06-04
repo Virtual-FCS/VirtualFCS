@@ -20,15 +20,15 @@ model CompressorTest
   Modelica.Blocks.Sources.Constant reaction_rate(k = 1) annotation(
     Placement(transformation(origin = {10, 70}, extent = {{-10, -10}, {10, 10}})));
 equation
-  connect(torque.flange, compressor.flange) annotation(
+  connect(torque.flange, compressor.flange_a) annotation(
     Line(points = {{-40, 0}, {-20, 0}}));
   connect(constant_tau.y, torque.tau) annotation(
     Line(points = {{-79, 0}, {-62, 0}}, color = {0, 0, 127}));
-  connect(environment.ports[1], compressor.inlet) annotation(
+  connect(environment.ports[1], compressor.port_a) annotation(
     Line(points = {{-40, 50}, {-20, 50}, {-20, 20}}, color = {0, 127, 255}));
   connect(orifice.port_b, environment.ports[2]) annotation(
     Line(points = {{80, 8}, {80, 50}, {-40, 50}}, color = {0, 127, 255}));
-  connect(compressor.outlet, manifold.port_a) annotation(
+  connect(compressor.port_b, manifold.port_a) annotation(
     Line(points = {{20, 8}, {30, 8}}, color = {0, 127, 255}));
   connect(manifold.port_b, orifice.port_a) annotation(
     Line(points = {{50, 8}, {60, 8}}, color = {0, 127, 255}));
