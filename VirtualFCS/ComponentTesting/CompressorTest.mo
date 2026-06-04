@@ -15,7 +15,7 @@ model CompressorTest
     Placement(transformation(origin = {70, 8}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant constant_tau(k = 2) annotation(
     Placement(transformation(origin = {-90, 0}, extent = {{-10, -10}, {10, 10}})));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, useHeatPort = false, MMs = {0.032, 0.028, 0.018}, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = system.p_ambient*1.01, T = 353.15)  annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, useHeatPort = false, MMs = {0.032, 0.028, 0.018}, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, T = 353.15)  annotation(
     Placement(transformation(origin = {40, 8}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant reaction_rate(k = 1) annotation(
     Placement(transformation(origin = {10, 70}, extent = {{-10, -10}, {10, 10}})));
@@ -36,5 +36,5 @@ equation
     Line(points = {{22, 70}, {40, 70}, {40, 16}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 0.06),
-  Documentation(info = "<html><head></head><body>This test verifies the operation of a Compressor object in combination with an applied constant torque applied on its shaft, a manifold with mass and energy hold-up at the outlet where a FC cathodic reaction occurs, and an orifice leading air back to the environment.<div><br></div><div>Note how the manifold's <tt>p_start</tt> needs to be set to 1% above ambient pressure in order to avoid matrix singularity at initialisation.</div><div><br></div><div>Note that the compressor is using its heatPort to simulate adiabatic operation, whereas the manifold does not, since the presence of the reaction without corresponding energy balance would make the temperature diverge (it is possible to operate the manifold adiabatically if the reaction rate is set to zero).</div></body></html>"));
+  Documentation(info = "<html><head></head><body>This test verifies the operation of a Compressor object in combination with an applied constant torque applied on its shaft, a manifold with mass and energy hold-up at the outlet where a FC cathodic reaction occurs, and an orifice leading air back to the environment to realise a pressure drop.<div><br></div><div>Note that the compressor is using its heatPort to simulate adiabatic operation, whereas the manifold does not, since the presence of the reaction without corresponding energy balance would make the temperature diverge (it is possible to operate the manifold adiabatically by activating its heatPort, but only if the reaction rate is set to zero).</div></body></html>"));
 end CompressorTest;
