@@ -32,4 +32,3 @@ SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemHydrogenWithFuelCellTest
-ThrottleValveTest
