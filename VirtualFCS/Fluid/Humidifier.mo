@@ -28,7 +28,7 @@ model Humidifier "Hollow fiber membrane humidifier:
   SI.Pressure atm_P = 101325 "Aussumed baseline pressure";
   SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Referece binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
   // Numerical stability
-  Real eps = 1e-9 "Small number to avoide div by zero";
+  Real eps = 1e-4 "Small number to avoide div by zero";
   SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";
   // Volumetric flow
   SI.VolumeFlowRate V_dot_a, V_dot_b "Volumetric flow rates [m3/s]";
@@ -81,8 +81,8 @@ equation
   med_state_A_in = wet_medium.setState_phX(portA_in.p, inStream(portA_in.h_outflow), inStream(portA_in.Xi_outflow));
   med_state_B_in = dry_medium.setState_phX(portB_in.p, inStream(portB_in.h_outflow), inStream(portB_in.Xi_outflow));
 // Compute volumetric flows and ratio of volumetric flow
-  V_dot_a = portA_in.m_flow/wet_medium.density(med_state_A_in);
-  V_dot_b = portB_in.m_flow/dry_medium.density(med_state_B_in);
+  V_dot_a = abs(portA_in.m_flow)/wet_medium.density(med_state_A_in);
+  V_dot_b = abs(portB_in.m_flow)/dry_medium.density(med_state_B_in);
   VFR = V_dot_a/max(V_dot_b, eps);
 // Compute various geometry features of the humidifier
   d_hyd_b = 4*(dHousing^2 - nFibers*(dFiber_o^2)/4)/(Modelica.Constants.pi*nFibers*dFiber_o);
@@ -93,7 +93,7 @@ equation
   A_mem = nFibers*L_fiber*Modelica.Constants.pi*dFiber_o;
 // Compute velocities
   v_a = V_dot_a/A_c_fibers_in;
-  v_b = (portB_in.m_flow/dry_medium.density(med_state_B_in))/A_c_shell_gap;
+  v_b = (abs(portB_in.m_flow)/dry_medium.density(med_state_B_in))/A_c_shell_gap;
 // We compute some dimentionless numbers that are used for Sherwood number correlations
   Re_a = wet_medium.density(med_state_A_in)*v_a*dFiber_i/wet_medium.dynamicViscosity(med_state_A_in);
   Sc_a = wet_medium.dynamicViscosity(med_state_A_in)/(wet_medium.density(med_state_A_in)*D_H2O_Air);
@@ -121,9 +121,9 @@ equation
 // Permation rate, based on Fick's law
   m_perm = wet_medium.MMs[3]*eta*(wet_medium.density(med_state_A_in)*(1 - inStream(portA_in.Xi_outflow[1]) - inStream(portA_in.Xi_outflow[2]))/wet_medium.MMs[3] - dry_medium.density(med_state_B_in)*(1 - inStream(portB_in.Xi_outflow[1]) - inStream(portB_in.Xi_outflow[2]))/dry_medium.MMs[3])*V_dot_a;
 // First-order dynamics
-  Xi = m_perm/max(min(portA_in.m_flow, portB_in.m_flow), eps);
+  Xi = m_perm/max(min(abs(portA_in.m_flow), abs(portB_in.m_flow)), eps);
   der(Xi_state) = (Xi - Xi_state)/tau_perm;
-  m_perm_state = Xi_state*min(portA_in.m_flow, portB_in.m_flow);
+  m_perm_state = Xi_state*min(abs(portA_in.m_flow), abs(portB_in.m_flow));
 // Mass and pressure balances
   portA_in.m_flow + portA_out.m_flow = m_perm_state;
   portB_in.m_flow + portB_out.m_flow = -m_perm_state;

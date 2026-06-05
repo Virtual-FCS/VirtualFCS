@@ -22,15 +22,13 @@ model HumidifierTest
     Placement(transformation(origin = {-54, 58}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Step step_H2O(height = 0.069, startTime = 300)  annotation(
     Placement(transformation(origin = {-54, 28}, extent = {{-10, -10}, {10, 10}})));
+  Fluid.RelativeHumiditySensor sensorDrySink(redeclare package Medium = dry_medium, m_flow_nominal = 0.01)  annotation(
+    Placement(transformation(origin = {42, 0}, extent = {{-10, -10}, {10, 10}})));
+  VirtualFCS.Fluid.RelativeHumiditySensor sensorWetSink(redeclare package Medium = wet_medium, m_flow_nominal = 0.01) annotation(
+    Placement(transformation(origin = {0, -40}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
   connect(dry_air_source.ports[1], humidifier.portB_in) annotation(
     Line(points = {{-68, 0}, {-18, 0}}, color = {0, 127, 255}, thickness = 0.75));
-  connect(wet_air_source.ports[1], humidifier.portA_in) annotation(
-    Line(points = {{0, 30}, {0, 16}}, color = {0, 127, 255}, thickness = 0.75));
-  connect(humidifier.portB_out, dry_air_sink.ports[1]) annotation(
-    Line(points = {{18, 0}, {66, 0}}, color = {0, 127, 255}));
-  connect(humidifier.portA_out, wet_air_sink.ports[1]) annotation(
-    Line(points = {{0, -18}, {0, -68}}, color = {0, 127, 255}));
   connect(step_m_flow.y, wet_air_source.m_flow_in) annotation(
     Line(points = {{38, 88}, {8, 88}, {8, 50}}, color = {0, 0, 127}));
   connect(step_O2.y, wet_air_source.X_in[1]) annotation(
@@ -39,6 +37,16 @@ equation
     Line(points = {{-42, 58}, {-4, 58}, {-4, 52}}, color = {0, 0, 127}));
   connect(step_H2O.y, wet_air_source.X_in[3]) annotation(
     Line(points = {{-42, 28}, {-4, 28}, {-4, 52}}, color = {0, 0, 127}));
+  connect(wet_air_source.ports[1], humidifier.portA_in) annotation(
+    Line(points = {{0, 30}, {0, 8}}, color = {0, 127, 255}));
+  connect(humidifier.portB_out, sensorDrySink.port_a) annotation(
+    Line(points = {{18, 0}, {32, 0}}, color = {0, 127, 255}));
+  connect(sensorDrySink.port_b, dry_air_sink.ports[1]) annotation(
+    Line(points = {{52, 0}, {66, 0}}, color = {0, 127, 255}));
+  connect(humidifier.portA_out, sensorWetSink.port_a) annotation(
+    Line(points = {{0, -12}, {0, -30}}, color = {0, 127, 255}));
+  connect(sensorWetSink.port_b, wet_air_sink.ports[1]) annotation(
+    Line(points = {{0, -50}, {0, -68}}, color = {0, 127, 255}));
   annotation(
     experiment(StopTime = 400, StartTime = 0, Tolerance = 1e-06, Interval = 0.1));
 end HumidifierTest;
