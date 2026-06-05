@@ -45,7 +45,7 @@ Fluid.CompressorInterface annotation(choicesAllMatching = true,
   replaceable Modelica.Blocks.Continuous.PI PI_compressor(k = 1e6, T = 2, initType = Modelica.Blocks.Types.Init.SteadyState) annotation(
     Placement(transformation(origin = {-22, 70}, extent = {{-10, -10}, {10, 10}})))constrainedby Modelica.Blocks.Interfaces.SISO annotation(
      Placement(transformation(origin = {10, 70}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Modelica.Fluid.Valves.ValveCompressible outletValve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0), p_nominal = 2.5e5) annotation(
+  replaceable Modelica.Fluid.Valves.ValveCompressible outletValve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1e4, m_flow_nominal = 1, opening(start = 0), p_nominal = 2.5e5) annotation(
     Placement(transformation(origin = {-30, -40}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
   Modelica.Blocks.Math.Add error_pressure(k2 = -1) annotation(
     Placement(transformation(origin = {54, -10}, extent = {{6, -6}, {-6, 6}})));
@@ -90,14 +90,14 @@ equation
     Line(points = {{22, 35}, {22, 98}, {28, 98}, {28, 100}}, color = {0, 0, 255}));
   connect(compressor.pin_n, pin_n) annotation(
     Line(points = {{16, 35}, {16, 100}}, color = {0, 0, 255}));
-  connect(error_flow.y, PI_compressor.u) annotation(
-    Line(points = {{-40, 70}, {-34, 70}}, color = {0, 0, 127}));
-  connect(PI_compressor.y, compressor.set_control) annotation(
-    Line(points = {{-11, 70}, {-11, 36}, {-4, 36}}, color = {0, 0, 127}));
   connect(tempCompressorOut.port, compressor.port_b) annotation(
     Line(points = {{53, 32}, {53, 24}, {42, 24}}, color = {0, 127, 255}));
   connect(tempCompressorIn.port, compressor.port_a) annotation(
     Line(points = {{-31, 32}, {-32, 32}, {-32, 24}, {-2, 24}}, color = {0, 127, 255}));
+  connect(error_flow.y, PI_compressor.u) annotation(
+    Line(points = {{-40, 70}, {-2, 70}}, color = {0, 0, 127}));
+  connect(PI_compressor.y, compressor.set_control) annotation(
+    Line(points = {{22, 70}, {32, 70}, {32, 53}, {-2, 53}, {-2, 36}}, color = {0, 0, 127}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),
