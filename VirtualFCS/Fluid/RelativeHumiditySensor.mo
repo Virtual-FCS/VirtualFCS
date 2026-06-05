@@ -30,5 +30,11 @@ equation
   end if;
   Phi = p;
 annotation(
-    Icon(graphics = {Text(extent = {{160, 120}, {0, 90}}, textString = "Phi")}));
+    Icon(graphics = {Text(extent = {{160, 120}, {0, 90}}, textString = "Phi")}), Documentation(info="<html>
+<p>
+This component monitors the relative humidity of the fluid passing its port.
+The sensor is ideal, i.e., it does not influence the fluid.
+</p>
+
+</html>"));
 end RelativeHumiditySensor;

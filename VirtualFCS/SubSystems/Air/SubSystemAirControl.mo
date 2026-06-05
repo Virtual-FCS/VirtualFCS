@@ -80,6 +80,33 @@ equation
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={Text(origin = {-9, 240}, textColor = {0, 0, 255}, extent = {{-137, 34}, {137, -34}}, textString = "%name"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 2, extent = {{-200, 200}, {200, -200}}, radius = 50), Text(  textColor = {255, 0, 0},extent = {{-200, 100}, {200, -100}}, textString = "Air
 Control")}),
-    Documentation(info = "<html><head></head><body>TO BE UPDATED</body></html>"));
+    Documentation(info = "<html>
+<p>
+<b>SubSystemAirControl</b> controls the cathode air system of the fuel cell stack. The block
+calculates the required air flow from the stack current and air excess ratio, and adjusts the
+compressor setpoint to achieve the desired flow.
+</p>
+
+<p>
+The inlet humidity is controlled by regulating the humidifier and bypass valves, while the
+cathode pressure is controlled through the outlet valve.
+</p>
+
+<p>
+<b>Inputs:</b> stack current, compressor air flow feedback, inlet humidity feedback, and stack pressure feedback.
+</p>
+
+<p>
+<b>Outputs:</b> compressor setpoint, humidifier valve opening, bypass valve opening, and outlet valve opening.
+</p>
+
+<p>
+The controller parameters may require retuning for different system configurations, operating
+conditions, and component sizes.
+</p>
+</html>
+
+"));
 
 end SubSystemAirControl;
+
