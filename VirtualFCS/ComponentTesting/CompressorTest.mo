@@ -15,7 +15,7 @@ model CompressorTest
     Placement(transformation(origin = {70, 8}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant constant_tau(k = 2) annotation(
     Placement(transformation(origin = {-90, 0}, extent = {{-10, -10}, {10, 10}})));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, useHeatPort = false, MMs = {0.032, 0.028, 0.018}, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, T = 353.15)  annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, useHeatPort = false, MMs = {0.032, 0.028, 0.018}, V = 1, T = 353.15)  annotation(
     Placement(transformation(origin = {40, 8}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant reaction_rate(k = 1) annotation(
     Placement(transformation(origin = {10, 70}, extent = {{-10, -10}, {10, 10}})));

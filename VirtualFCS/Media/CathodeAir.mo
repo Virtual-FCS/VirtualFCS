@@ -107,7 +107,7 @@ package CathodeAir "Medium model for cathodic air"
   algorithm
     state.p := p;
     state.Xi := X[1:nXi];
-    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273, u_max = 1000);
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 200, u_max = 1000);
   end setState_phX;
   
   redeclare function extends temperature

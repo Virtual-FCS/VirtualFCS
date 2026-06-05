@@ -35,7 +35,7 @@ equation
   medium_out.h = port_b.h_outflow "Outlet specific enthalpy bound to port_b";
   port_a.h_outflow = inStream(port_a.h_outflow) "Not supposed to be used, but must be set to balance equations";
   
-  if noEvent(port_a.m_flow > eps) then
+  if noEvent(abs(port_a.m_flow) > eps) then
     Hin + Hout + sensor.power - lossPower = 0 "Energy balance, lossPower uses opposite sign convention";
   else
     port_b.h_outflow = port_a.h_outflow "Handle case of no flow, or Hout definition will not be invertible";
