@@ -37,3 +37,4 @@ SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemHydrogenWithFuelCellTest
 ThrottleValveTest
+AmmoniaCrackerTest_2
