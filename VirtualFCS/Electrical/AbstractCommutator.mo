@@ -2,8 +2,8 @@ within VirtualFCS.Electrical;
 
 partial model AbstractCommutator
   extends Modelica.Electrical.Analog.Interfaces.ConditionalHeatPort annotation(
-    IconMap(extent = {{-75, -47}, {125, 153}}),
-    DiagramMap(extent = {{-50, -47}, {150, 153}}));
+    IconMap(extent = {{-73.75, -47.5}, {126.25, 152.5}}),
+    DiagramMap(extent = {{-47.5, -47.5}, {152.5, 152.5}}));
   Modelica.Electrical.Analog.Interfaces.PositivePin p1 annotation(
     Placement(transformation(origin = {-100, 100}, extent = {{10, 10}, {-10, -10}}), iconTransformation(origin = {-100, 100}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin p2 annotation(

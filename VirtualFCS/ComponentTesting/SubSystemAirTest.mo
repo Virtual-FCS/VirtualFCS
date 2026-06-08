@@ -9,7 +9,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
   parameter Integer N_cells = 42;
   SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, V = 1E-3, useHeatPort = true, use_T_start = true, T = 353.15, T_start (displayUnit = "K")) annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, V = 1E-3, useHeatPort = true, use_T_start = true) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Step currentFC(height = 60, offset = 10, startTime = 10) annotation(
     Placement(transformation(origin = {-70, 10}, extent = {{-10, -10}, {10, 10}})));

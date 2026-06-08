@@ -12,3 +12,6 @@ RecirculationBlower
 RecirculationBlower_mc
 simplePipe
 UsersGuide
+HumidifierInterface
+HumidifierDummy
+RelativeHumiditySensor
