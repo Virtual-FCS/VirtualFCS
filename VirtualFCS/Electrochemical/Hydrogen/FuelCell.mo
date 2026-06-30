@@ -47,7 +47,7 @@ model FuelCell
     Placement(transformation(origin = {-80, 128}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = G_cool)  annotation(
     Placement(transformation(origin = {30, -80}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 10, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true)  annotation(
+  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true)  annotation(
     Placement(transformation(origin = {30, -110}, extent = {{-10, -10}, {10, 10}})));
 protected
   Modelica.Blocks.Math.Gain minus(k = -1)  annotation(
