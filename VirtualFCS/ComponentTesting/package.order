@@ -27,9 +27,9 @@ ReversiblePotentialTest
 SimplePumpTest
 SubSystemAirTest
 SubSystemAirWithFuelCellTest
+SubsystemAir_wHumidifierTest
 SubSystemCoolingTest
 SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemHydrogenWithFuelCellTest
-SubsystemAir_wHumidifierTest
