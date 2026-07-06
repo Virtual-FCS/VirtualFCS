@@ -6,7 +6,7 @@ model AmmoniaCrackerTest
 
   import Modelica.Media.IdealGases.SingleGases;
   
-  package CrackedNH3Medium = VirtualFCS.Media.CrackedNH3;
+  //package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
   package AmmoniaMedium = SingleGases.NH3;
   package HydrogenMedium = SingleGases.H2;
   

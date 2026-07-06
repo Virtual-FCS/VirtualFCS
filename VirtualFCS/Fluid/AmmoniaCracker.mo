@@ -8,7 +8,8 @@ model AmmoniaCracker "Ammonia cracker model based on a tube and shell configurat
 
 // Define media types
   //package CrackedNH3 = VirtualFCS.Media.CrackedNH3;
-  package AmmoniaMedium = SingleGases.NH3;
+  replaceable package AmmoniaMedium = SingleGases.NH3;
+  //replaceable package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
 

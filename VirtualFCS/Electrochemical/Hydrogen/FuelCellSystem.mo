@@ -15,7 +15,7 @@ model FuelCellSystem
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
-  Modelica.Units.SI.Power Power_BOP = source.p.i*(source.p.v-source.n.v) "Power consumed by the BOP components";
+  Modelica.Units.SI.Power Power_BOP = batterySystem.pin_p.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
   Real eta_sys_HHV(unit = "100") "Fuel cell system efficiency High Heating Value";
   Real eta_sys_LHV(unit = "100") "Fuel cell system efficiency Low Heating Value";
 
@@ -27,13 +27,11 @@ model FuelCellSystem
   replaceable SubSystems.Air.SubSystemAir subSystemAir(N_cells = N_cells, p_set = p_air_set)  annotation(
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
-    Placement(transformation(origin = {0, -54}, extent = {{-14, -14}, {14, 14}})));
+    Placement(transformation(origin = {1, -47}, extent = {{-11, -11}, {11, 11}})));
   replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(p_H2_set = p_H2_set)  annotation(
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
-  Modelica.Electrical.Analog.Sources.ConstantVoltage source(V = 36)  annotation(
-    Placement(transformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Electrical.Analog.Basic.Ground ground annotation(
-    Placement(transformation(origin = {60, -110}, extent = {{-10, -10}, {10, 10}})));
+  Battery.BatterySystem batterySystem annotation(
+    Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
   eta_sys_HHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2HHV)*100, eta_max);
   eta_sys_LHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2LHV)*100, eta_max);
@@ -46,11 +44,11 @@ equation
   connect(temperatureSensor.port, fuelCell.heatPort) annotation(
     Line(points = {{-30, -20}, {0, -20}, {0, 2}}, color = {191, 0, 0}));
   connect(temperatureSensor.T, subSystemCooling.stackTemperature) annotation(
-    Line(points = {{-50, -20}, {-60, -20}, {-60, -47}, {-15, -47}}, color = {0, 0, 127}));
+    Line(points = {{-50, -20}, {-60, -20}, {-60, -41.5}, {-11, -41.5}}, color = {0, 0, 127}));
   connect(fuelCell.coolant_out, subSystemCooling.from_stack) annotation(
-    Line(points = {{8, -3}, {8, -37}}, color = {0, 127, 255}));
+    Line(points = {{8, -3}, {8, -34}}, color = {0, 127, 255}));
   connect(fuelCell.coolant_in, subSystemCooling.to_stack) annotation(
-    Line(points = {{-8, -3}, {-8, -37}}, color = {0, 127, 255}));
+    Line(points = {{-8, -3}, {-8, -18}, {-6, -18}, {-6, -34}}, color = {0, 127, 255}));
   connect(subSystemHydrogen.toStack, fuelCell.anode_in) annotation(
     Line(points = {{-58, 26}, {-40, 26}, {-40, 40}, {-29, 40}}, color = {0, 127, 255}));
   connect(subSystemHydrogen.fromStack, fuelCell.anode_out) annotation(
@@ -63,20 +61,18 @@ equation
     Line(points = {{-50, 70}, {-70, 70}, {-70, 32}}, color = {0, 0, 127}));
   connect(currentSensor.i, subSystemAir.stackCurrent) annotation(
     Line(points = {{-50, 70}, {-70, 70}, {-70, 84}, {65, 84}, {65, 31}}, color = {0, 0, 127}));
-  connect(source.n, subSystemAir.pin_n) annotation(
-    Line(points = {{60, -90}, {98, -90}, {98, 26}, {80, 26}}));
-  connect(subSystemCooling.pin_n, source.n) annotation(
-    Line(points = {{-8, -66}, {-8, -80}, {60, -80}, {60, -90}}));
-  connect(subSystemHydrogen.pin_n, source.n) annotation(
-    Line(points = {{-78, 24}, {-92, 24}, {-92, -80}, {60, -80}, {60, -90}}));
-  connect(source.p, subSystemHydrogen.pin_p) annotation(
-    Line(points = {{40, -90}, {-86, -90}, {-86, 16}, {-78, 16}}, color = {255, 0, 0}));
-  connect(subSystemCooling.pin_p, source.p) annotation(
-    Line(points = {{8, -66}, {8, -90}, {40, -90}}, color = {255, 0, 0}));
-  connect(subSystemAir.pin_p, source.p) annotation(
-    Line(points = {{80, 16}, {88, 16}, {88, -60}, {40, -60}, {40, -90}}, color = {255, 0, 0}));
-  connect(source.n, ground.p) annotation(
-    Line(points = {{60, -90}, {60, -100}}, color = {0, 0, 255}));
+  connect(subSystemAir.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{80, 16}, {92, 16}, {92, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
+  connect(subSystemAir.pin_n, batterySystem.pin_n) annotation(
+    Line(points = {{80, 26}, {96, 26}, {96, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
+  connect(subSystemCooling.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{6, -56}, {6, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
+  connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
+    Line(points = {{-4, -56}, {-4, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
+  connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
+  connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
+    Line(points = {{-78, 24}, {-92, 24}, {-92, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
 protected
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
