@@ -28,8 +28,8 @@ RecirculationBlowerTest
 ReversiblePotentialTest
 SimplePumpTest
 SubSystemAirTest
+SubSystemAir_humidifierTest
 SubSystemAirWithFuelCellTest
-SubsystemAir_wHumidifierTest
 SubSystemCoolingTest
 SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenControlTest
