@@ -3,54 +3,41 @@ within VirtualFCS.ComponentTesting;
 model SubSystemAirTest "Simple model to test the compressor component"
   extends Modelica.Icons.Example;
   import Modelica.Constants.F;
-  inner Modelica.Fluid.System system(T_start = 300, p_start = 101325, m_flow_start = 0) annotation(
-    Placement(transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}})));
+  inner Modelica.Fluid.System system(T_start = 300, p_start = 101325, m_flow_start = 1e-4) annotation(
+    Placement(transformation(origin = {90, -90}, extent = {{-10, -10}, {10, 10}})));
   package Medium = Media.CathodeAir;
   parameter Integer N_cells = 42;
-  Electrochemical.Battery.BatterySystem batterySystem annotation(
-    Placement(transformation(origin = {0, -70}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
-  SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells, redeclare VirtualFCS.Fluid.SimpleCompressor compressor(redeclare package Medium = Medium)) annotation(
+  replaceable SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1.2e5, V = 0.001, useHeatPort = true) annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, V = 1E-3, useHeatPort = true, use_T_start = true) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Math.Gain I_to_reactionRate(k = N_cells/2/F) annotation(
-    Placement(transformation(origin = {-30, 90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Step currentFC(height = 4000, offset = 14, startTime = 10) annotation(
+  Modelica.Blocks.Sources.Step currentFC(height = 60, offset = 10, startTime = 10) annotation(
     Placement(transformation(origin = {-70, 10}, extent = {{-10, -10}, {10, 10}})));
-
-//Logging, delete later
-  Modelica.Units.SI.MassFraction Xi_in_manifold[Medium.nXi];
-  Modelica.Units.SI.MassFraction Xi_out_manifold[Medium.nXi];
-  Real Xi_in_manifold_3;
-  Real Xi_out_manifold_3;
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T = 353.15) annotation(
-    Placement(transformation(origin = {66, 60}, extent = {{10, -10}, {-10, 10}})));
+  Modelica.Electrical.Analog.Sources.ConstantVoltage battery(V = 24) annotation(
+    Placement(transformation(origin = {0, -60}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-30, -70}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Blocks.Sources.Constant reaction_rate(k = 0) annotation(
+    Placement(transformation(origin = {-50, 80}, extent = {{-10, -10}, {10, 10}})));
 equation
-  
-  Xi_in_manifold = actualStream(manifold.port_a.Xi_outflow);
-  Xi_out_manifold = actualStream(manifold.port_b.Xi_outflow);
-  Xi_in_manifold_3 = 1 - actualStream(manifold.port_a.Xi_outflow[1]) - actualStream(manifold.port_a.Xi_outflow[2]);
-  Xi_out_manifold_3 = 1- actualStream(manifold.port_b.Xi_outflow[1]) - actualStream(manifold.port_b.Xi_outflow[2]);
-//test = inStream(manifold.port_a.Xi_outflow[1]);
-  connect(batterySystem.pin_n, subSystemAir.pin_n) annotation(
-    Line(points = {{-4, -60}, {-8.75, -60}, {-8.75, -18}, {-10, -18}}, color = {0, 0, 255}));
-  connect(batterySystem.pin_p, subSystemAir.pin_p) annotation(
-    Line(points = {{4, -60}, {10, -60}, {10, -18}}, color = {0, 0, 255}));
   connect(subSystemAir.toStack, manifold.port_a) annotation(
     Line(points = {{-12, 24}, {-12, 70}, {-10, 70}}, color = {0, 127, 255}));
   connect(manifold.port_b, subSystemAir.fromStack) annotation(
     Line(points = {{10, 70}, {12, 70}, {12, 24}}, color = {0, 127, 255}));
-  connect(I_to_reactionRate.y, manifold.r) annotation(
-    Line(points = {{-18, 90}, {0, 90}, {0, 77}}, color = {0, 0, 127}));
   connect(currentFC.y, subSystemAir.stackCurrent) annotation(
     Line(points = {{-58, 10}, {-22, 10}}, color = {0, 0, 127}));
-  connect(currentFC.y, I_to_reactionRate.u) annotation(
-    Line(points = {{-58, 10}, {-50, 10}, {-50, 90}, {-42, 90}}, color = {0, 0, 127}));
-  connect(manifold.heatPort, fixedTemperature.port) annotation(
-    Line(points = {{0, 60}, {56, 60}}, color = {191, 0, 0}));
+  connect(battery.p, subSystemAir.pin_p) annotation(
+    Line(points = {{10, -60}, {10, -18}}, color = {0, 0, 255}));
+  connect(battery.n, subSystemAir.pin_n) annotation(
+    Line(points = {{-10, -60}, {-10, -18}}, color = {0, 0, 255}));
+  connect(ground.p, battery.n) annotation(
+    Line(points = {{-30, -60}, {-10, -60}}, color = {0, 0, 255}));
+  connect(reaction_rate.y, manifold.r) annotation(
+    Line(points = {{-39, 80}, {0, 80}, {0, 78}}, color = {0, 0, 127}));
   annotation(
-    experiment(StopTime = 40, Interval = 0.01, Tolerance = 1e-06, StartTime = 0),
+    experiment(StopTime = 20, Interval = 0.02, Tolerance = 1e-06, StartTime = 0),
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
     Icon(coordinateSystem(extent = {{-100, -100}, {100, 80}})),
-    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+  Documentation(info = "<html><head></head><body>This test case tests the operation of the air subsystem against a simple manifold.<div>Note that, if you set a reaction rate larger than zero, you <i>must</i>&nbsp;deactivate the manifold's heat port, or connect it to some constant or prescribed temperature source.</div><div>This is because the reaction makes matter \"disappear\" without changing the enthalpy content, and therefore the enthalpy balance will become nonsensical; this balance works only when multiple manifolds (e.g. cathode and anode) with matching stoichiometric coefficients are connected.</div></body></html>"));
 end SubSystemAirTest;

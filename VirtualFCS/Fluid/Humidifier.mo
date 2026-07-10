@@ -24,9 +24,9 @@ model Humidifier "Hollow fiber membrane humidifier:
   parameter SI.Diameter dHousing = 39.2e-3 "Inner diameter of shell [m]";
   parameter SI.Length L_fiber = 150.8e-3 "Fiber length [m]";
   // Reference values
-  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp";
-  SI.Pressure atm_P = 101325 "Aussumed baseline pressure";
-  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Referece binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
+  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp"; // FIXME - should we be using system.T_ambient?
+  SI.Pressure atm_P = 101325 "Assumed baseline pressure"; // FIXME - should we be using system.p_ambient?
+  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Reference binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm"; // NOTE should this be a variable or a parameter?
   // Numerical stability
   Real eps = 1e-4 "Small number to avoide div by zero";
   SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";

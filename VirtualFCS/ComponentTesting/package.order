@@ -12,7 +12,6 @@ DC_converterTest
 ECMS_Experiment_Testing
 ElectrolyserSystemTest
 ElectrolyserSystemTest_dev
-FluidCompressorTest
 FuelCellSystemTest
 FuelCellTest
 HeatSinkTest
@@ -27,16 +26,12 @@ PressureRegulatorTest_v2
 PumpElectricDCTest
 RecirculationBlowerTest
 ReversiblePotentialTest
-SimpleCompressorTest
 SimplePumpTest
 SubSystemAirTest
-SubSystemAirTest_2_bis
-SubSystemAirTest_old
+SubSystemAir_humidifierTest
 SubSystemAirWithFuelCellTest
 SubSystemCoolingTest
 SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemHydrogenWithFuelCellTest
-ThrottleValveTest
-SubsystemAir_wHumidifierTest

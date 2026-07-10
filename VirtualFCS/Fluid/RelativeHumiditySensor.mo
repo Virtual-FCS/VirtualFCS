@@ -1,40 +1,19 @@
 within VirtualFCS.Fluid;
 
 model RelativeHumiditySensor
-  extends Modelica.Fluid.Sensors.BaseClasses.PartialFlowSensor(m_flow_small=1e-9);
+  extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(redeclare package Medium = Media.CathodeAir);
   extends Modelica.Icons.RoundSensor;
-  Modelica.Blocks.Interfaces.RealOutput Phi(final quantity="RelativeHumidity",
-                                               final unit="1")
-    "Volume flow rate from port_a to port_b"
-    annotation (Placement(transformation(
-        origin={0,110},
-        extent={{10,-10},{-10,10}},
-        rotation=270)));
-protected
-  
-  Modelica.Units.SI.MoleFraction phi_a_inflow "Relative humidity of inflowing fluid at port_a";
-  Modelica.Units.SI.MoleFraction phi_b_inflow "Relative humidity of inflowing fluid at port_b or phi_a_inflow, if uni-directional flow";
-  Modelica.Units.SI.MoleFraction p;
-  
-  
 
+  Modelica.Blocks.Interfaces.RealOutput phi(final quantity="MoleFraction", final unit="1") annotation(
+    Placement(transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}})));
 equation
-  if allowFlowReversal then
-     phi_a_inflow = Medium.relativeHumidity(Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow));
-     phi_b_inflow = Medium.relativeHumidity(Medium.setState_phX(port_a.p, port_a.h_outflow, port_a.Xi_outflow));
-     p = Modelica.Fluid.Utilities.regStep(port_a.m_flow, phi_a_inflow, phi_b_inflow, m_flow_small);
-  else
-     p = Medium.relativeHumidity(Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow));
-     phi_a_inflow = p;
-     phi_b_inflow = p;
-  end if;
-  Phi = p;
+  phi = Medium.relativeHumidity(Medium.setState_phX(port.p, port.h_outflow, port.Xi_outflow));
 annotation(
-    Icon(graphics = {Text(extent = {{160, 120}, {0, 90}}, textString = "Phi")}), Documentation(info="<html>
-<p>
-This component monitors the relative humidity of the fluid passing its port.
-The sensor is ideal, i.e., it does not influence the fluid.
-</p>
+    Icon(graphics = {Text(origin = {70, -142}, extent = {{60, 136}, {0, 102}}, textString = "φ"), Text(extent={{-150,80},{150,120}}, textString="%name", textColor={0,0,255}), Line(rotation = 90,points = {{-100, 0}, {-70, 0}}, color = {0, 127, 255}, thickness = 1), Line( rotation = 180, points = {{-100, 0}, {-70, 0}}, color = {0, 0, 127}, thickness = 0.5), Ellipse(origin = {0, -38}, lineColor = {0, 127, 255}, fillColor = {0, 127, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-10, 10}, {10, -10}}, startAngle = -30, endAngle = 210, closure = EllipseClosure.Chord), Polygon(origin = {0, -22}, fillColor = {0, 127, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-8.66, -11}, {8.66, -11}, {0, 0}, {-8.66, -11}})}),
+    Documentation(info = "<html><head></head><body><p>
+This sensor indicates the relative humidity (as mole fraction) of the component it is connected to.
+</p><p>The medium must provide a Medium.relativeHumidity function taking the medium state as argument.</p>
 
-</html>"));
+</body></html>"),
+  Diagram(graphics));
 end RelativeHumiditySensor;

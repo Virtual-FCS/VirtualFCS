@@ -1,7 +1,8 @@
 within VirtualFCS.Electrochemical.Hydrogen;
 
 model Manifold "Fuel cell manifold"
-  extends Modelica.Fluid.Interfaces.PartialLumpedVolume(mXi(each stateSelect = StateSelect.always), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial);
+  extends Modelica.Fluid.Interfaces.PartialLumpedVolume(mXi(each stateSelect = StateSelect.always), U(stateSelect = StateSelect.prefer), 
+    medium(h(stateSelect = StateSelect.avoid), T(stateSelect = StateSelect.avoid)), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial);
   extends Modelica.Fluid.Interfaces.PartialTwoPort(showDesignFlowDirection=false);
   extends Modelica.Electrical.Analog.Interfaces.ConditionalHeatPort;
   
@@ -15,12 +16,15 @@ model Manifold "Fuel cell manifold"
   
 equation
   fluidVolume = V;
-  mbXi_flow = port_a.m_flow*actualStream(port_a.Xi_outflow) + port_b.m_flow*actualStream(port_b.Xi_outflow) + productions[1:Medium.nXi];
+  mbXi_flow = semiLinear(port_a.m_flow, inStream(port_a.Xi_outflow), port_a.Xi_outflow)
+          + semiLinear(port_b.m_flow, inStream(port_b.Xi_outflow), port_b.Xi_outflow)
+          + productions[1:Medium.nXi];
   mb_flow = port_a.m_flow + port_b.m_flow + sum(productions);
   
   Wb_flow = 0; // No work exchanged
   Qb_flow = -LossPower;
-  Hb_flow = port_a.m_flow*actualStream(port_a.h_outflow) + port_b.m_flow*actualStream(port_b.h_outflow);
+  Hb_flow = semiLinear(port_a.m_flow, inStream(port_a.h_outflow), port_a.h_outflow)
+        + semiLinear(port_b.m_flow, inStream(port_b.h_outflow), port_b.h_outflow);
   
   port_a.p = port_b.p; // No pressure drop
   port_a.p = medium.p;
