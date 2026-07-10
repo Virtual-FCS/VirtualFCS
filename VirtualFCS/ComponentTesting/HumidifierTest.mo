@@ -35,7 +35,7 @@ protected
   Modelica.Units.SI.MoleFraction X_mol[3] "Molar fraction in feed, helper variable";
 
 equation
-  X_mol[Water] = saturationPressure(temperature.y)/101325;
+  X_mol[Water] = humidity.y * saturationPressure(temperature.y)/wet_sink.p;
   X_mol[Oxygen] = 0.21 * (1-X_mol[Water]);
   X_mol[Nitrogen] = 0.79 * (1-X_mol[Water]);
   wet_source.X_in = MMs .* X_mol / (MMs*X_mol);
