@@ -10,7 +10,7 @@ package Electrolysers
     // Medium models
     replaceable package H2_Medium = Modelica.Media.IdealGases.SingleGases.H2;
     replaceable package O2_Medium = Modelica.Media.IdealGases.SingleGases.O2;
-    replaceable package H2O_Medium = AixLib.Media.Water;
+    replaceable package H2O_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
     //*** DECLARE PARAMETERS ***//
     // Physical parameters from https://nelhydrogen.com/product/c10-c20-c30/ and 10.1016/j.ijhydene.2020.01.228; 10.1016/j.enconman.2022.116622
     parameter Modelica.Units.SI.Mass m_cell = 1 "Mass of the Cell";
@@ -320,7 +320,6 @@ package Electrolysers
     // Medium models
     replaceable package H2_Medium = Modelica.Media.IdealGases.SingleGases.H2;
     replaceable package O2_Medium = Modelica.Media.IdealGases.SingleGases.O2;
-    // replaceable package H2O_Medium = AixLib.Media.Water;
     replaceable package H2O_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
     //constrainedby Modelica.Media.Interfaces.PartialMedium;
     //*** DECLARE PARAMETERS ***//
