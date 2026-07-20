@@ -13,5 +13,7 @@ simplePipe
 HumidifierInterface
 HumidifierDummy
 RelativeHumiditySensor
+HeatExchangerInterface
+HeatExchanger_Simple
 MixingVolume
 UsersGuide
