@@ -18,6 +18,7 @@ HeatSinkTest
 HeatSinkTest2
 HumidifierTest
 ManifoldTest
+MixingVolumeTest
 MultiManifoldTest
 NH3CrackedTest
 PreHeaterTest
