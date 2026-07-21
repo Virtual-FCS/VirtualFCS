@@ -3,13 +3,13 @@ within VirtualFCS.Fluid;
 partial model HeatExchangerInterface
   import Modelica.Media.Interfaces.PartialMedium;
   
-  replaceable package Medium_a = PartialMedium constrainedby PartialMedium "Medium for exchanged side A";
-  replaceable package Medium_b = PartialMedium constrainedby PartialMedium "Medium for exchanged side B";
+  replaceable package Medium_a = PartialMedium "Medium for exchanged side A" annotation(choicesAllMatching = true);
+  replaceable package Medium_b = PartialMedium "Medium for exchanged side B" annotation(choicesAllMatching = true);
   
   Modelica.Fluid.Interfaces.FluidPort_a port_a1(redeclare package Medium = Medium_a) annotation(
     Placement(transformation(origin = {-100, 50}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_b port_a2(redeclare package Medium = Medium_a) annotation(
-    Placement(transformation(origin = {100, 50}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {98, 0}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {100, 50}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_a port_b1(redeclare package Medium = Medium_b) annotation(
     Placement(transformation(origin = {-100, -50}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare package Medium = Medium_b) annotation(
