@@ -17,6 +17,7 @@ FuelCellTest
 HeatSinkTest
 HeatSinkTest2
 HumidifierTest
+HumidifierTest_2
 ManifoldTest
 MultiManifoldTest
 NH3CrackedTest
