@@ -84,6 +84,8 @@ Dr. Yash Raka, 		SINTEF Industry, Trondheim, Norway<br/>
 ### Projects
 - [Virtual-FCS](http://www.virtual-fcs.eu/); Grant Agreement No 875087.
 - [BeBoP](https://bebop-hydrogen.eu/); Grant Agreement No 101192365.
+- [MiNaMi](https://minami-project.eu/); Grant Agreement No 101250260. 
+- [SURFER](https://h2surfer.eu/); Grant Agreement No 101250344. 
 
 ### Acknowledgements
-  This code repository is part of a project that has received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under Grant Agreements No 875087 and 101192365. This Joint Undertaking receives support from the European Union’s Horizon 2020 Research and Innovation programme, Hydrogen Europe and Hydrogen Europe Research.
+  This code repository is part of a project that has received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under Grant Agreements No 875087, 101192365, 101250260, and 101250344. This Joint Undertaking receives support from the European Union’s Horizon 2020 Research and Innovation programme, Hydrogen Europe and Hydrogen Europe Research.
