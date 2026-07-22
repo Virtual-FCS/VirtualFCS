@@ -12,7 +12,7 @@ model HeatExchangerTest
     Placement(transformation(origin = {80, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Fluid.Sources.Boundary_pT sink_2(nPorts = 1, redeclare package Medium = Modelica.Media.Air.SimpleAir)  annotation(
     Placement(transformation(origin = {0, -70}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Fluid.HeatExchanger_Simple hex(redeclare package Medium_1 = Modelica.Media.Water.StandardWater, redeclare package Medium_2 = Modelica.Media.Air.SimpleAir)  annotation(
+  Fluid.HeatExchanger hex(redeclare package Medium_1 = Modelica.Media.Water.StandardWater, redeclare package Medium_2 = Modelica.Media.Air.SimpleAir, n = 20, counterCurrent = false)  annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
 equation
   connect(source_1.ports[1], hex.port_a1) annotation(
@@ -21,6 +21,8 @@ equation
     Line(points = {{20, 0}, {70, 0}}, color = {0, 127, 255}));
   connect(source_2.ports[1], hex.port_a2) annotation(
     Line(points = {{0, 52}, {0, 20}}, color = {0, 127, 255}));
-  connect(sink_2.ports[1], hex.port_b2) annotation(
-    Line(points = {{0, -60}, {0, -20}}, color = {0, 127, 255}));
+  connect(hex.port_b2, sink_2.ports[1]) annotation(
+    Line(points = {{0, -20}, {0, -60}}, color = {0, 127, 255}));
+annotation(
+    experiment(StartTime = 0, StopTime = 2, Tolerance = 1e-06, Interval = 0.004));
 end HeatExchangerTest;
