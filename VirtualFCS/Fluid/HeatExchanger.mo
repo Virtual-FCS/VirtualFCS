@@ -22,6 +22,10 @@ model HeatExchanger
   Modelica.Units.SI.HeatFlowRate Q_flows[n] = {conductors[i].Q_flow for i in 1:n} "Heat flow profile";
   Modelica.Units.SI.HeatFlowRate Q_flow = sum(Q_flows) "Total heat exchanged";
 
+protected
+  Modelica.Fluid.Fittings.SimpleGenericOrifice orifices_1[n](each use_zeta=false, each m_flow_nominal=1, each dp_nominal=1, each diameter=1, each zeta=1, redeclare each final package Medium = Medium_1) if not seriesArrangement_1;
+  Modelica.Fluid.Fittings.SimpleGenericOrifice orifices_2[n](each use_zeta=false, each m_flow_nominal=1, each dp_nominal=1, each diameter=1, each zeta=1, redeclare each final package Medium = Medium_2) if not seriesArrangement_2;
+
 equation
   if seriesArrangement_1 then
     for i in 1:(n-1) loop
@@ -32,7 +36,8 @@ equation
   else
     for i in 1:n loop
       connect(mixvols_1[i].port_a, port_a1);
-      connect(mixvols_1[i].port_b, port_b1);
+      connect(mixvols_1[i].port_b, orifices_1[i].port_a);
+      connect(orifices_1[i].port_b, port_b1);
     end for;
   end if;
 
@@ -50,7 +55,8 @@ equation
   else
     for i in 1:n loop
       connect(mixvols_2[i].port_a, port_a2);
-      connect(mixvols_2[i].port_b, port_b2);
+      connect(mixvols_2[i].port_b, orifices_2[i].port_a);
+      connect(orifices_2[i].port_b, port_b2);
     end for;
   end if;
 
