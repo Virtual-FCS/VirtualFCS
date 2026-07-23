@@ -15,7 +15,7 @@ model ThermalManagement
   parameter Modelica.Units.SI.MassFlowRate m1_flow_nominal = 0.01 "Nominal mass flow rate medium 1";
   parameter Modelica.Units.SI.MassFlowRate m2_flow_nominal = m1_flow_nominal*(T_a1_nominal - T_b1_nominal)/(T_b2_nominal - T_a2_nominal) "Nominal mass flow rate medium 2";
   Buildings.Fluid.Sources.Boundary_pT CoolantSink(redeclare package Medium = Cool_Medium, nPorts = 1, p(displayUnit = "Pa"), use_p_in = false) annotation(
-    Placement(transformation(origin = {-58, 0}, extent = {{-52, 10}, {-32, 30}})));
+    Placement(transformation(origin = {-58, 100}, extent = {{-52, 10}, {-32, 30}})));
   Buildings.Fluid.Sources.Boundary_pT CoolantSource(redeclare package Medium = Cool_Medium, T = T_a2_nominal, nPorts = 1, p(displayUnit = "bar"), use_T_in = false, use_p_in = false) annotation(
     Placement(transformation(origin = {70, 0}, extent = {{140, 10}, {120, 30}})));
   Modelica.Fluid.Interfaces.FluidPort_a HotWaterIn(redeclare package Medium = H2O_Medium) annotation(
@@ -27,9 +27,7 @@ model ThermalManagement
   Modelica.Fluid.Sensors.TemperatureTwoPort THotOut(redeclare package Medium = H2O_Medium) annotation(
     Placement(transformation(origin = {36, 60}, extent = {{-8, -8}, {8, 8}})));
   Modelica.Fluid.Sensors.TemperatureTwoPort TColdOut(redeclare package Medium = Cool_Medium) annotation(
-    Placement(transformation(origin = {-68, 20}, extent = {{8, -8}, {-8, 8}})));
-  Buildings.Fluid.HeatExchangers.PlateHeatExchangerEffectivenessNTU hex(redeclare package Medium1 = H2O_Medium, redeclare package Medium2 = Cool_Medium, configuration = Buildings.Fluid.Types.HeatExchangerConfiguration.CounterFlow, dp1_nominal(displayUnit = "Pa") = 0, dp2_nominal(displayUnit = "Pa") = 0, eps_nominal = 0.5, m1_flow_nominal = m1_flow_nominal, m2_flow_nominal = m2_flow_nominal, show_T = true, use_Q_flow_nominal = false, use_dynamicFlowRegime = true) annotation(
-    Placement(transformation(origin = {-16, 40}, extent = {{-32, -34}, {32, 34}})));
+    Placement(transformation(origin = {-68, 120}, extent = {{8, -8}, {-8, 8}})));
   Modelica.Blocks.Sources.Constant T_setpoint(k = 273.15 + 55) annotation(
     Placement(transformation(origin = {150, -10}, extent = {{-10, -10}, {10, 10}})));
   Fluid.SimplePump pump_coolant(redeclare package Medium = Cool_Medium) annotation(
@@ -44,23 +42,17 @@ model ThermalManagement
     Placement(transformation(origin = {140, 40}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Nonlinear.Limiter limiter(uMax = 0.5, uMin = 0.2) annotation(
     Placement(transformation(origin = {80, 40}, extent = {{10, -10}, {-10, 10}})));
+  Fluid.HeatExchanger hex(redeclare package Medium_2 = Cool_Medium, redeclare package Medium_1 = H2O_Medium)  annotation(
+    Placement(transformation(origin = {-20, 60}, extent = {{-20, 20}, {20, -20}})));
 equation
   connect(TColdOut.port_b, CoolantSink.ports[1]) annotation(
-    Line(points = {{-76, 20}, {-90, 20}}, color = {0, 127, 255}));
+    Line(points = {{-76, 120}, {-90, 120}}, color = {0, 127, 255}));
   connect(THotOut.port_b, HotWaterOut) annotation(
     Line(points = {{44, 60}, {200, 60}}, color = {0, 127, 255}));
-  connect(hex.port_a1, THotIn.port_b) annotation(
-    Line(points = {{-48, 60}, {-48, 59.6}, {-58, 59.6}, {-58, 60}}, color = {0, 127, 255}));
-  connect(hex.port_b1, THotOut.port_a) annotation(
-    Line(points = {{16, 60}, {16, 60.4}, {28, 60.4}}, color = {0, 127, 255}));
-  connect(hex.port_b2, TColdOut.port_a) annotation(
-    Line(points = {{-48, 20}, {-60, 20}, {-60, 19.6}}, color = {0, 127, 255}));
   connect(THotIn.port_a, HotWaterIn) annotation(
     Line(points = {{-74, 60}, {-100, 60}}, color = {0, 127, 255}));
   connect(pump_coolant.port_a, CoolantSource.ports[1]) annotation(
     Line(points = {{60, 20}, {190, 20}}, color = {0, 127, 255}));
-  connect(pump_coolant.port_b, hex.port_a2) annotation(
-    Line(points = {{40, 28}, {30, 28}, {30, 20}, {16, 20}}, color = {0, 127, 255}));
   connect(voltageSource.n, ground.p) annotation(
     Line(points = {{40, -20}, {30, -20}}, color = {0, 0, 255}));
   connect(voltageSource.n, pump_coolant.pin_n) annotation(
@@ -77,6 +69,14 @@ equation
     Line(points = {{99, 40}, {91, 40}}, color = {0, 0, 127}));
   connect(error_flow.u2, T_setpoint.y) annotation(
     Line(points = {{152, 34}, {170, 34}, {170, -10}, {162, -10}}, color = {0, 0, 127}));
+  connect(THotIn.port_b, hex.port_a1) annotation(
+    Line(points = {{-58, 60}, {-40, 60}}, color = {0, 127, 255}));
+  connect(hex.port_b1, THotOut.port_a) annotation(
+    Line(points = {{0, 60}, {28, 60}}, color = {0, 127, 255}));
+  connect(pump_coolant.port_b, hex.port_a2) annotation(
+    Line(points = {{40, 28}, {-20, 28}, {-20, 40}}, color = {0, 127, 255}));
+  connect(TColdOut.port_a, hex.port_b2) annotation(
+    Line(points = {{-60, 120}, {-20, 120}, {-20, 80}}, color = {0, 127, 255}));
   annotation(
     Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {200, 200}})),
     experiment(Tolerance = 1e-6, StopTime = 100),
