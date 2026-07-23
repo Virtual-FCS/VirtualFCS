@@ -15,7 +15,6 @@ partial model HeatExchangerInterface
   Modelica.Fluid.Interfaces.FluidPort_b port_b2(redeclare final package Medium = Medium_2) annotation(
     Placement(transformation(origin = {100, -50}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}})));
   annotation(
-    Icon(graphics = {Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 3, extent = {{-100, 100}, {100, -100}}), Line(origin = {6, 0}, points = {{-106, 0}, {-66, 0}, {-36, 60}, {24, -60}, {54, 0}, {94, 0}}, thickness = 3), Text(extent={{-150,-100},{150,-150}}, textColor={0,0,255}, textString="%name")}));
-    
-        
+    Icon(graphics = {Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 3, extent = {{-100, 100}, {100, -100}}), Line(points = {{-100, 0}, {-40, 0}, {-20, 40}, {22, -40}, {40, 0}, {100, 0}}, thickness = 3), Text(origin = {-80, -80}, rotation = -45, textColor = {0, 0, 255}, extent = {{-60, 20}, {60, -20}}, textString = "%name"), Text(origin = {-100, 0}, extent = {{0, 40}, {40, 0}}, textString = "1"), Text(origin = {100, 0}, extent = {{-40, 0}, {0, -40}}, textString = "1"), Text(origin = {0, -100}, extent = {{-40, 40}, {0, 0}}, textString = "2"), Text(origin = {0, 100}, extent = {{0, 0}, {40, -40}}, textString = "2")}),
+  Diagram(graphics));
 end HeatExchangerInterface;
