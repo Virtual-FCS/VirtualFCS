@@ -1,22 +1,14 @@
 within VirtualFCS.SubSystems.Cooling;
 
 model ThermalManagement
-  // System
   outer Modelica.Fluid.System system "System properties";
-  // Medium models
+
   replaceable package H2O_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  //replaceable package Cool_Medium = Buildings.Media.Antifreeze.EthyleneGlycolWater(property_T=300, X_a=0.4);
   replaceable package Cool_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
-  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 1 "Nominal mass flow rate";
-  parameter Modelica.Units.SI.Temperature T_a1_nominal = 25 + 273.15 "Temperature at nominal conditions as port a1";
-  parameter Modelica.Units.SI.Temperature T_b1_nominal = 20 + 273.15 "Temperature at nominal conditions as port b1";
-  parameter Modelica.Units.SI.Temperature T_a2_nominal = 20 + 273.15 "Temperature at nominal conditions as port a2";
-  parameter Modelica.Units.SI.Temperature T_b2_nominal = 25 + 273.15 "Temperature at nominal conditions as port b2";
-  parameter Modelica.Units.SI.MassFlowRate m1_flow_nominal = 0.01 "Nominal mass flow rate medium 1";
-  parameter Modelica.Units.SI.MassFlowRate m2_flow_nominal = m1_flow_nominal*(T_a1_nominal - T_b1_nominal)/(T_b2_nominal - T_a2_nominal) "Nominal mass flow rate medium 2";
-  Buildings.Fluid.Sources.Boundary_pT CoolantSink(redeclare package Medium = Cool_Medium, nPorts = 1, p(displayUnit = "Pa"), use_p_in = false) annotation(
+
+  Modelica.Fluid.Sources.Boundary_pT CoolantSink(redeclare package Medium = Cool_Medium, nPorts = 1, p(displayUnit = "Pa"), use_p_in = false) annotation(
     Placement(transformation(origin = {-58, 100}, extent = {{-52, 10}, {-32, 30}})));
-  Buildings.Fluid.Sources.Boundary_pT CoolantSource(redeclare package Medium = Cool_Medium, T = T_a2_nominal, nPorts = 1, p(displayUnit = "bar"), use_T_in = false, use_p_in = false) annotation(
+  Modelica.Fluid.Sources.Boundary_pT CoolantSource(redeclare package Medium = Cool_Medium, T = 293, nPorts = 1, p(displayUnit = "bar"), use_T_in = false, use_p_in = false) annotation(
     Placement(transformation(origin = {70, 0}, extent = {{140, 10}, {120, 30}})));
   Modelica.Fluid.Interfaces.FluidPort_a HotWaterIn(redeclare package Medium = H2O_Medium) annotation(
     Placement(transformation(origin = {-100, 60}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-106, 70}, extent = {{-12, -12}, {12, 12}})));
@@ -80,7 +72,6 @@ equation
   annotation(
     Diagram(coordinateSystem(preserveAspectRatio = true, extent = {{-100, -100}, {200, 200}})),
     experiment(Tolerance = 1e-6, StopTime = 100),
-    uses(Modelica(version = "4.0.0"), Buildings(version = "11.0.0")),
     Icon(graphics = {Rectangle(origin = {0, -1}, fillColor = {85, 0, 255}, fillPattern = FillPattern.HorizontalCylinder, lineThickness = 4, extent = {{-98, 99}, {98, -99}}), Text(origin = {0, 1}, textColor = {255, 255, 255}, extent = {{-76, 65}, {76, -65}}, textString = "Thermal Sub-System")}, coordinateSystem(extent = {{-100, -100}, {100, 100}})),
     version = "1",
     conversion(noneFromVersion = ""));
