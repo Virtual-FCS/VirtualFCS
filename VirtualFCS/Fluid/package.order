@@ -15,6 +15,5 @@ HumidifierDummy
 RelativeHumiditySensor
 HeatExchangerInterface
 HeatExchanger
-HeatExchanger_Simple
 MixingVolume
 UsersGuide
