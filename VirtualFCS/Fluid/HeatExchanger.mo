@@ -2,13 +2,15 @@ within VirtualFCS.Fluid;
 
 model HeatExchanger
   extends VirtualFCS.Fluid.HeatExchangerInterface;
+
+  type Configuration = enumeration(counterCurrent, coCurrent);
   
   parameter Integer n = 5 "Discretisation steps";
   parameter Modelica.Units.SI.Volume V_1 = 1E-3 "Total volume of side 1";
   parameter Modelica.Units.SI.Volume V_2 = V_1 "Total volume of side 2";
-  parameter Modelica.Units.SI.ThermalConductance UA = 1000 "Thermal conductance between sides";
+  parameter Modelica.Units.SI.ThermalConductance UA = 1000 "Thermal conductance";
   
-  parameter Boolean counterCurrent = true "Flow arrangement";
+  parameter Configuration flow_c = Configuration.counterCurrent "Flow configuration";
   
   MixingVolume mixvols_1[n](each final V=V_1/n, each useHeatPort=true, redeclare each package Medium = Medium_1) "Mixing volumes on side 1";
   MixingVolume mixvols_2[n](each final V=V_2/n, each useHeatPort=true, redeclare each package Medium = Medium_2) "Mixing volumes on side 2";
@@ -30,7 +32,7 @@ equation
   for i in 1:(n-1) loop
     connect(mixvols_2[i].port_b, mixvols_2[i+1].port_a);
   end for;
-  if counterCurrent then
+  if flow_c == Configuration.counterCurrent then
     connect(mixvols_2[1].port_a, port_b2);
     connect(mixvols_2[n].port_b, port_a2);
   else
