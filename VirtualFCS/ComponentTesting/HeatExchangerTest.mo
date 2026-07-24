@@ -8,11 +8,11 @@ model HeatExchangerTest
     Placement(transformation(origin = {0, 62}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.Boundary_pT sink_1(nPorts = 1, redeclare package Medium = Modelica.Media.Water.StandardWater)  annotation(
+  Modelica.Fluid.Sources.Boundary_pT sink_1(nPorts = 1, redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)  annotation(
     Placement(transformation(origin = {80, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Fluid.Sources.Boundary_pT sink_2(nPorts = 1, redeclare package Medium = Modelica.Media.Air.SimpleAir)  annotation(
     Placement(transformation(origin = {0, -70}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Fluid.HeatExchanger hex(redeclare package Medium_1 = Modelica.Media.Water.StandardWater, redeclare package Medium_2 = Modelica.Media.Air.SimpleAir, n = 20)  annotation(
+  Fluid.HeatExchanger hex(redeclare package Medium_1 = Modelica.Media.Water.ConstantPropertyLiquidWater, redeclare package Medium_2 = Modelica.Media.Air.SimpleAir, n = 50)  annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
 equation
   connect(source_1.ports[1], hex.port_a1) annotation(
