@@ -2,6 +2,8 @@ AmmoniaCracker
 AmmoniaCracker_2
 CompressorInterface
 Compressor
+ElectricCompressorInterface
+ElectricCompressor
 Humidifier
 PipeInterface
 PressureRegulator

@@ -10,6 +10,7 @@ ChopperTest
 CompressorTest
 DC_converterTest
 ECMS_Experiment_Testing
+ElectricCompressorTest
 ElectrolyserSystemTest
 ElectrolyserSystemTest_dev
 FuelCellSystemTest
