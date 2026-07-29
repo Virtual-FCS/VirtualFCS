@@ -8,6 +8,8 @@ model Compressor "Compressor with constant polytropic efficiency"
   parameter Modelica.Units.SI.Efficiency eta = 0.8 "Isoentropic efficiency";
   parameter Modelica.Units.SI.Power P_nom(displayUnit="kW") = 40000 "Nominal compressor power";
   parameter Modelica.Units.SI.AngularVelocity RPM_nom(displayUnit="rpm") = 8377.580409572781 "Nominal rounds per minute";
+  
+  Modelica.Units.SI.AngularVelocity RPM(displayUnit="rpm") "Actual rounds per minute";
 
   Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
 
@@ -25,6 +27,7 @@ protected
     Placement(transformation(origin = {50, -20}, extent = {{-10, -10}, {10, 10}})));
 equation
   port_a.m_flow + port_b.m_flow = 0 "No-holdup model - what goes in leaves immediately";
+  RPM = RPM_nom * sensor.power/P_nom;
   port_a.Xi_outflow = inStream(port_a.Xi_outflow) "Compositions do not change";
   medium_in.Xi = port_a.Xi_outflow "Compositions do not change";
   medium_out.Xi = medium_in.Xi "Compositions do not change";

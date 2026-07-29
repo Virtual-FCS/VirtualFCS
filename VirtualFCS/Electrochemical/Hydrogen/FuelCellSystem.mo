@@ -15,7 +15,7 @@ model FuelCellSystem
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
-  Modelica.Units.SI.Power Power_BOP = batterySystem.pin_p.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
+  Modelica.Units.SI.Power Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
   Real eta_sys_HHV(unit = "100") "Fuel cell system efficiency High Heating Value";
   Real eta_sys_LHV(unit = "100") "Fuel cell system efficiency Low Heating Value";
 

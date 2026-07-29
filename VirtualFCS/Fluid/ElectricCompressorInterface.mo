@@ -13,7 +13,7 @@ partial model ElectricCompressorInterface
     Placement(transformation(origin = {60, 100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-90, 100}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(transformation(origin = {-60, 100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-50, 100}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Interfaces.RealInput massflow annotation(
+  Modelica.Blocks.Interfaces.RealInput set_mass_flow annotation(
     Placement(transformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}), iconTransformation(origin = {-120, 50}, extent = {{-20, -20}, {20, 20}})));
   annotation(
     Diagram(graphics),
