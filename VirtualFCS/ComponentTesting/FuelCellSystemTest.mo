@@ -2,7 +2,8 @@ within VirtualFCS.ComponentTesting;
 
 model FuelCellSystemTest
   extends Modelica.Icons.Example;
-  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, cathode(R_flow = 1), anode(R_flow = 1)), subSystemAir(PID_compressor(k = 1e3, Ti = 1))) annotation(
+  replaceable package Medium = Media.CathodeAir;
+  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, cathode(R_flow = 0), anode(R_flow = 0))) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));
