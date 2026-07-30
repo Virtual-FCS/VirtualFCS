@@ -33,7 +33,7 @@ model SubSystemAir "Ssubsystem regulating pressure and flowrate of air to a fuel
   Modelica.Blocks.Sources.Constant pressure_set_point(k = p_set) annotation(
     Placement(transformation(origin = {50, -30}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   replaceable Fluid.ElectricCompressor compressor(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {2, 44}, extent = {{-30, -30}, {30, 30}})));
+    Placement(transformation(origin = {2, 44}, extent = {{-30, -30}, {30, 30}})), choicesAllMatching = true) constrainedby Fluid.ElectricCompressorInterface;
   Modelica.Fluid.Sensors.Temperature tempCompressorOut(redeclare package Medium = Medium)  annotation(
     Placement(transformation(origin = {52, 67}, extent = {{-10, -9}, {10, 9}})));
 equation

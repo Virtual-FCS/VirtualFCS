@@ -2,6 +2,7 @@ AmmoniaCracker
 AmmoniaCracker_2
 CompressorInterface
 Compressor
+CompressorSimple
 ElectricCompressorInterface
 ElectricCompressor
 Humidifier
@@ -17,4 +18,3 @@ UsersGuide
 HumidifierInterface
 HumidifierDummy
 RelativeHumiditySensor
-CompressorSimple

@@ -13,78 +13,62 @@ outer Modelica.Fluid.System system "System properties";
   Modelica.Fluid.Sources.FixedBoundary environment(redeclare package Medium = Medium, nPorts = 2, p = system.p_ambient, T = system.T_ambient) annotation(
     Placement(transformation(origin = {-90, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Fluid.Interfaces.FluidPort_a fromStack(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {100, -80}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {60, 120}, extent = {{-20, -20}, {20, 20}})));
+    Placement(transformation(origin = {100, -68}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {60, 120}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Interfaces.FluidPort_b toStack(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {100, -100}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 120}, extent = {{-20, -20}, {20, 20}})));
+    Placement(transformation(origin = {100, -92}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-60, 120}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(transformation(origin = {0, 100}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
     Placement(transformation(origin = {-20, 100}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent(unit = "A") annotation(
     Placement(transformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sensors.MassFlowRate airInflow(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {-50, -10}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sensors.Pressure pressureSensor(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {100, -50}, extent = {{10, -10}, {-10, 10}})));
+    Placement(transformation(origin = {97, -47}, extent = {{7, -7}, {-7, 7}})));
   Modelica.Blocks.Math.Gain current_to_mass_flow(k = N_cells*lambda*MM_O2/n_O2/F/xO2) annotation(
     Placement(transformation(origin = {-80, 70}, extent = {{-10, -10}, {10, 10}})));
   replaceable Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0), p_nominal = 2.5e5) annotation(
-    Placement(transformation(origin = {-50, -80}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
-  replaceable Fluid.Compressor compressor(redeclare package Medium = Medium, RPM_nom = motor.wNominal) annotation(
-    Placement(transformation(origin = {40, 8}, extent = {{-20, 20}, {20, -20}})));
-  replaceable Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet motor(IaNominal = 30, Jr = 0.15, Js = 0.29, La(displayUnit = "mH") = 0.0015, Ra(displayUnit = "mOhm") = 0.05, TaNominal = 293.15, TaOperational = 293.15, TaRef = 293.15, VaNominal = 100, wMechanical(displayUnit = "rpm"), wNominal(displayUnit = "rpm") = 125.66370614359174, alpha20a = 0) annotation(
-    Placement(transformation(origin = {-10, 8}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.IdealDcDc converter(Td(displayUnit = "ms") = 0.001, Ti(displayUnit = "ms") = 0.001) annotation(
-    Placement(transformation(origin = {-10, 70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Continuous.LimPID PID_compressor(controllerType = Modelica.Blocks.Types.SimpleController.PI, k = 2e3, Ti = 0.1, yMax = 300, yMin = 0) annotation(
-    Placement(transformation(origin = {-50, 70}, extent = {{-10, -10}, {10, 10}})));
+    Placement(transformation(origin = {-50, -68}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
   Modelica.Blocks.Continuous.LimPID PID_valve(controllerType = Modelica.Blocks.Types.SimpleController.PI, yMax = 1, yMin = 0, k = -1e-4, Ti = 2) annotation(
     Placement(transformation(origin = {-30, -30}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.Constant pressure_set_point(k = p_set) annotation(
     Placement(transformation(origin = {10, -30}, extent = {{10, -10}, {-10, 10}})));
   Fluid.Humidifier humidifier(redeclare package dry_medium = Medium, redeclare package wet_medium = Medium) annotation(
-    Placement(transformation(origin = {60, -80}, extent = {{20, -20}, {-20, 20}}, rotation = -0)));
+    Placement(transformation(origin = {36, -68}, extent = {{20, -20}, {-20, 20}})));
+  Fluid.RelativeHumiditySensor phi_to_stack annotation(
+    Placement(transformation(origin = {69, -81}, extent = {{-7, -7}, {7, 7}})));
+  replaceable Fluid.ElectricCompressor compressor(redeclare package Medium = Medium)  annotation(
+    Placement(transformation(origin = {-1, 47}, extent = {{-29, -29}, {29, 29}})), choicesAllMatching = true) constrainedby Fluid.ElectricCompressorInterface;
 equation
   connect(stackCurrent, current_to_mass_flow.u) annotation(
     Line(points = {{-110, 70}, {-92, 70}}, color = {0, 0, 127}));
-  connect(converter.pin_pMot, motor.pin_ap) annotation(
-    Line(points = {{0, 60}, {0, 40}, {-4, 40}, {-4, 18}}, color = {255, 0, 0}));
-  connect(pin_p, converter.pin_pBat) annotation(
-    Line(points = {{0, 100}, {0, 80}}, color = {255, 0, 0}));
-  connect(pin_n, converter.pin_nBat) annotation(
-    Line(points = {{-20, 100}, {-20, 80}}));
-  connect(environment.ports[1], airInflow.port_a) annotation(
-    Line(points = {{-80, -30}, {-74, -30}, {-74, -10}, {-60, -10}}, color = {0, 127, 255}));
-  connect(environment.ports[2], valve.port_b) annotation(
-    Line(points = {{-80, -30}, {-74, -30}, {-74, -80}, {-60, -80}}, color = {0, 127, 255}));
-  connect(current_to_mass_flow.y, PID_compressor.u_s) annotation(
-    Line(points = {{-69, 70}, {-62, 70}}, color = {0, 0, 127}));
-  connect(airInflow.m_flow, PID_compressor.u_m) annotation(
-    Line(points = {{-50, 1}, {-50, 58}}, color = {0, 0, 127}));
-  connect(converter.pin_nMot, motor.pin_an) annotation(
-    Line(points = {{-20, 60}, {-20, 40}, {-16, 40}, {-16, 18}}));
+  connect(environment.ports[1], valve.port_b) annotation(
+    Line(points = {{-80, -30}, {-74, -30}, {-74, -68}, {-60, -68}}, color = {0, 127, 255}));
   connect(valve.opening, PID_valve.y) annotation(
-    Line(points = {{-50, -72}, {-50, -30}, {-41, -30}}, color = {0, 0, 127}));
+    Line(points = {{-50, -60}, {-50, -30}, {-41, -30}}, color = {0, 0, 127}));
   connect(pressureSensor.p, PID_valve.u_m) annotation(
-    Line(points = {{89, -50}, {-30, -50}, {-30, -42}}, color = {0, 0, 127}));
-  connect(PID_compressor.y, converter.vRef) annotation(
-    Line(points = {{-38, 70}, {-22, 70}}, color = {0, 0, 127}));
-  connect(motor.flange, compressor.flange_a) annotation(
-    Line(points = {{0, 8}, {20, 8}}));
-  connect(airInflow.port_b, compressor.port_a) annotation(
-    Line(points = {{-40, -10}, {10, -10}, {10, 0}, {20, 0}}, color = {0, 127, 255}));
+    Line(points = {{89, -47}, {-30, -47}, {-30, -42}}, color = {0, 0, 127}));
   connect(pressure_set_point.y, PID_valve.u_s) annotation(
     Line(points = {{-1, -30}, {-18, -30}}, color = {0, 0, 127}));
   connect(fromStack, humidifier.portB_in) annotation(
-    Line(points = {{100, -80}, {80, -80}}));
+    Line(points = {{100, -68}, {56, -68}}));
   connect(humidifier.portB_out, valve.port_a) annotation(
-    Line(points = {{40, -80}, {-40, -80}}, color = {0, 127, 255}));
+    Line(points = {{16, -68}, {-40, -68}}, color = {0, 127, 255}));
   connect(pressureSensor.port, fromStack) annotation(
-    Line(points = {{100, -60}, {100, -80}}, color = {0, 127, 255}));
-  connect(compressor.port_b, humidifier.portA_in) annotation(
-    Line(points = {{60, 0}, {60, -68}}, color = {0, 127, 255}));
+    Line(points = {{97, -54}, {97, -65}, {100, -65}, {100, -68}}, color = {0, 127, 255}));
   connect(humidifier.portA_out, toStack) annotation(
-    Line(points = {{60, -92}, {60, -100}, {100, -100}}, color = {0, 127, 255}));
+    Line(points = {{36, -80}, {36, -92}, {100, -92}}, color = {0, 127, 255}));
+  connect(phi_to_stack.port, humidifier.portA_out) annotation(
+    Line(points = {{70, -88}, {68, -88}, {68, -92}, {36, -92}, {36, -80}}, color = {0, 127, 255}));
+  connect(current_to_mass_flow.y, compressor.set_mass_flow) annotation(
+    Line(points = {{-68, 70}, {-62, 70}, {-62, 64}, {-36, 64}, {-36, 62}}, color = {0, 0, 127}));
+  connect(pin_p, compressor.pin_p) annotation(
+    Line(points = {{0, 100}, {2, 100}, {2, 88}, {-28, 88}, {-28, 76}}, color = {0, 0, 255}));
+  connect(pin_n, compressor.pin_n) annotation(
+    Line(points = {{-20, 100}, {-20, 84}, {-16, 84}, {-16, 76}}, color = {0, 0, 255}));
+  connect(environment.ports[2], compressor.port_a) annotation(
+    Line(points = {{-80, -30}, {-68, -30}, {-68, 20}, {-10, 20}, {-10, 58}, {-6, 58}}, color = {0, 127, 255}));
+  connect(compressor.port_b, humidifier.portA_in) annotation(
+    Line(points = {{28, 48}, {36, 48}, {36, -56}}, color = {0, 127, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),

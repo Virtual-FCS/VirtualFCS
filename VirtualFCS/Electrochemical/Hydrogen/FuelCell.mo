@@ -7,13 +7,13 @@ model FuelCell
   import SI = Modelica.Units.SI;
   // Parameters
   replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceConstant v_source "Open-circuit voltage" annotation(
-    Placement(transformation(origin = {-46, 110}, extent = {{-18, -18}, {18, 18}}, rotation = 180))) constrainedby BaseVSource;
+    Placement(transformation(origin = {-46, 110}, extent = {{-18, -18}, {18, 18}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseVSource;
   replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic "Internal resistance" annotation(
-    Placement(transformation(origin = {48, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseOhmic;
+    Placement(transformation(origin = {48, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseOhmic;
   replaceable VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport annotation(
-    Placement(transformation(origin = {102, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseMassTransportLoss;
+    Placement(transformation(origin = {102, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseMassTransportLoss;
   replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossNone activation annotation(
-    Placement(transformation(origin = {2, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseActivationLoss;
+    Placement(transformation(origin = {2, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseActivationLoss;
   inner parameter Integer N_cells = 42 "Number of cells in the stack";
   inner parameter Modelica.Units.SI.Area A_el = 0.41 "Area of the fuel cell electrode (m^2)";
   parameter Modelica.Units.SI.ThermalConductance G_cool = 8000 "Thermal conductance of coolant in FC stack (W/K)";

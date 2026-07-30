@@ -38,7 +38,7 @@ equation
   // Not supposed to be ever used
   port_a.h_outflow = port_b.h_outflow;
   // heatPort not used
-//  LossPower = 0;
+  lossPower = 0;
   // Power is equal to energy inflow
   power = (pin_p.v - pin_n.v)*(pin_n.i);
   pin_p.i + pin_n.i = 0;
