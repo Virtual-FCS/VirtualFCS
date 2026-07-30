@@ -10,7 +10,7 @@ model PolarizeFuelCellStack
       Modelica.Media.Water.ConstantPropertyLiquidWater;
   inner Modelica.Fluid.System system(p_ambient(displayUnit = "Pa"))  annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2.4e5, p_H2_set = 2.4e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, A_el = A_el), subSystemAir(compressor(eta = 0.9)))  annotation (
+  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2.4e5, p_H2_set = 2.4e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, A_el = A_el), subSystemAir(compressor(compressor(eta = 0.9))))  annotation (
     Placement(transformation(extent = {{-22, -22}, {22, 22}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
