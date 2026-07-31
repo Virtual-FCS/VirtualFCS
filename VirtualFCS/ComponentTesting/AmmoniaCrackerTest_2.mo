@@ -21,9 +21,12 @@ model AmmoniaCrackerTest_2
     nPorts = 1, use_p = true, p = P_out, use_T = false, T = T_in) annotation(
     
     Placement(transformation(origin = {86, 10}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Media.Examples.Utilities.FixedMassFlowRate ammonia_source(redeclare package Medium = AmmoniaMedium, m_flow = 0.3, X_ambient = {0.01, 0.01, 0.98})  annotation(
-    Placement(transformation(origin = {-72, 10}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, use_m_flow_in = false, m_flow = 0.3, nPorts = 1, X = {0, 0, 1})  annotation(
+    Placement(transformation(origin = {-68, 10}, extent = {{-10, -10}, {10, 10}})));
 equation
+
   connect(ammoniaCracker.outlet_cracked_gas, cracked_gas_sink.ports[1]) annotation(
     Line(points = {{32, 10}, {76, 10}}, color = {0, 127, 255}));
+  connect(ammoniaCracker.inlet_nh3_feed, ammonia_source.ports[1]) annotation(
+    Line(points = {{-14, 10}, {-58, 10}}, color = {0, 127, 255}));
 end AmmoniaCrackerTest_2;
