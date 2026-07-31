@@ -15,7 +15,7 @@ model FuelCellSystem
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
-  Modelica.Units.SI.Power Power_BOP = batterySystem.pin_p.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
+  Modelica.Units.SI.Power Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
   Real eta_sys_HHV(unit = "100") "Fuel cell system efficiency High Heating Value";
   Real eta_sys_LHV(unit = "100") "Fuel cell system efficiency Low Heating Value";
 
@@ -28,7 +28,7 @@ model FuelCellSystem
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {1, -47}, extent = {{-11, -11}, {11, 11}})));
-  replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(p_H2_set = p_H2_set)  annotation(
+  replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(subSystemHydrogenControl(pressure_H2_set = p_H2_set))  annotation(
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));

@@ -7,13 +7,13 @@ model FuelCell
   import SI = Modelica.Units.SI;
   // Parameters
   replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceConstant v_source "Open-circuit voltage" annotation(
-    Placement(transformation(origin = {-46, 110}, extent = {{-18, -18}, {18, 18}}, rotation = 180))) constrainedby BaseVSource;
+    Placement(transformation(origin = {-46, 110}, extent = {{-18, -18}, {18, 18}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseVSource;
   replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic "Internal resistance" annotation(
-    Placement(transformation(origin = {48, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseOhmic;
+    Placement(transformation(origin = {48, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseOhmic;
   replaceable VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport annotation(
-    Placement(transformation(origin = {102, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseMassTransportLoss;
+    Placement(transformation(origin = {102, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseMassTransportLoss;
   replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossNone activation annotation(
-    Placement(transformation(origin = {2, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseActivationLoss;
+    Placement(transformation(origin = {2, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseActivationLoss;
   inner parameter Integer N_cells = 42 "Number of cells in the stack";
   inner parameter Modelica.Units.SI.Area A_el = 0.41 "Area of the fuel cell electrode (m^2)";
   parameter Modelica.Units.SI.ThermalConductance G_cool = 8000 "Thermal conductance of coolant in FC stack (W/K)";
@@ -33,7 +33,7 @@ model FuelCell
   // Outputs
   Real eta_stack_HHV(unit = "100") "Higher heating value efficiency of fuel cell stack";
   Real eta_stack_LHV(unit = "100") "Lower heating value efficiency of fuel cell stack";
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 292.15, fixed = true)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 293.15, fixed = true)) annotation(
     Placement(transformation(origin = {-47, -57}, extent = {{-17, -17}, {17, 17}})));
   replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{28, -28}, {-28, 28}}, rotation = 90)));

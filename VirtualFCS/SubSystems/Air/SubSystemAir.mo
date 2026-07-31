@@ -11,7 +11,7 @@ model SubSystemAir "Ssubsystem regulating pressure and flowrate of air to a fuel
   parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Real lambda = 3 "Air excess ratio";
   parameter Modelica.Units.SI.AbsolutePressure p_set = 200000 "Target cathodic pressure";
-  
+
   Modelica.Fluid.Sources.FixedBoundary environment(redeclare package Medium = Medium, nPorts = 2, p = system.p_ambient, T = system.T_ambient) annotation(
     Placement(transformation(origin = {-90, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Fluid.Interfaces.FluidPort_a fromStack(redeclare package Medium = Medium) annotation(
@@ -24,63 +24,47 @@ model SubSystemAir "Ssubsystem regulating pressure and flowrate of air to a fuel
     Placement(transformation(origin = {-20, 100}, extent = {{10, -10}, {-10, 10}}), iconTransformation(origin = {-50, -90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent(unit = "A") annotation(
     Placement(transformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, 50}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sensors.MassFlowRate airInflow(redeclare package Medium = Medium) annotation(
-    Placement(transformation(origin = {-50, -10}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sensors.Pressure pressureSensor(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {30, -60}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Math.Gain current_to_mass_flow(k = N_cells*lambda*MM_O2/n_O2/F/xO2) annotation(
     Placement(transformation(origin = {-80, 70}, extent = {{-10, -10}, {10, 10}})));
   replaceable Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0), p_nominal = 2.5e5) annotation(
     Placement(transformation(origin = {-30, -80}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
-  replaceable Fluid.Compressor compressor(redeclare package Medium = Medium, RPM_nom = motor.wNominal) annotation(
-    Placement(transformation(origin = {40, 8}, extent = {{-20, 20}, {20, -20}})));
-  replaceable Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet motor(IaNominal = 30, Jr = 0.15, Js = 0.29, La(displayUnit = "mH") = 0.0015, Ra(displayUnit = "mOhm") = 0.05, TaNominal = 293.15, TaOperational = 293.15, TaRef = 293.15, VaNominal = 100, wMechanical(displayUnit = "rpm"), wNominal(displayUnit = "rpm") = 125.66370614359174, alpha20a = 0) annotation(
-    Placement(transformation(origin = {-10, 8}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.IdealDcDc converter(Td(displayUnit = "ms") = 0.001, Ti(displayUnit = "ms") = 0.001) annotation(
-    Placement(transformation(origin = {-10, 70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Continuous.LimPID PID_compressor(controllerType = Modelica.Blocks.Types.SimpleController.PI, k = 2e3, Ti = 0.1, yMax = 300, yMin = 0) annotation(
-    Placement(transformation(origin = {-50, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Continuous.LimPID PID_valve(controllerType = Modelica.Blocks.Types.SimpleController.PI, yMax = 1, yMin = 0, k = -1e-4, Ti = 2) annotation(
     Placement(transformation(origin = {10, -30}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.Constant pressure_set_point(k = p_set) annotation(
     Placement(transformation(origin = {50, -30}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  replaceable Fluid.ElectricCompressor compressor(redeclare package Medium = Medium) annotation(
+    Placement(transformation(origin = {2, 44}, extent = {{-30, -30}, {30, 30}})), choicesAllMatching = true) constrainedby Fluid.ElectricCompressorInterface;
+  Modelica.Fluid.Sensors.Temperature tempCompressorOut(redeclare package Medium = Medium)  annotation(
+    Placement(transformation(origin = {52, 67}, extent = {{-10, -9}, {10, 9}})));
 equation
   connect(valve.port_a, fromStack) annotation(
     Line(points = {{-20, -80}, {100, -80}}, color = {0, 127, 255}));
   connect(stackCurrent, current_to_mass_flow.u) annotation(
     Line(points = {{-110, 70}, {-92, 70}}, color = {0, 0, 127}));
-  connect(converter.pin_pMot, motor.pin_ap) annotation(
-    Line(points = {{0, 60}, {0, 40}, {-4, 40}, {-4, 18}}, color = {255, 0, 0}));
-  connect(pin_p, converter.pin_pBat) annotation(
-    Line(points = {{0, 100}, {0, 80}}, color = {255, 0, 0}));
-  connect(pin_n, converter.pin_nBat) annotation(
-    Line(points = {{-20, 100}, {-20, 80}}));
-  connect(environment.ports[1], airInflow.port_a) annotation(
-    Line(points = {{-80, -30}, {-74, -30}, {-74, -10}, {-60, -10}}, color = {0, 127, 255}));
-  connect(environment.ports[2], valve.port_b) annotation(
+  connect(environment.ports[1], valve.port_b) annotation(
     Line(points = {{-80, -30}, {-74, -30}, {-74, -80}, {-40, -80}}, color = {0, 127, 255}));
-  connect(current_to_mass_flow.y, PID_compressor.u_s) annotation(
-    Line(points = {{-69, 70}, {-62, 70}}, color = {0, 0, 127}));
-  connect(airInflow.m_flow, PID_compressor.u_m) annotation(
-    Line(points = {{-50, 1}, {-50, 58}}, color = {0, 0, 127}));
-  connect(converter.pin_nMot, motor.pin_an) annotation(
-    Line(points = {{-20, 60}, {-20, 40}, {-16, 40}, {-16, 18}}));
   connect(valve.opening, PID_valve.y) annotation(
     Line(points = {{-30, -72}, {-30, -30}, {-1, -30}}, color = {0, 0, 127}));
   connect(pressureSensor.p, PID_valve.u_m) annotation(
     Line(points = {{19, -60}, {10, -60}, {10, -42}}, color = {0, 0, 127}));
-  connect(PID_compressor.y, converter.vRef) annotation(
-    Line(points = {{-38, 70}, {-22, 70}}, color = {0, 0, 127}));
-  connect(motor.flange, compressor.flange_a) annotation(
-    Line(points = {{0, 8}, {20, 8}}));
-  connect(airInflow.port_b, compressor.port_a) annotation(
-    Line(points = {{-40, -10}, {10, -10}, {10, 0}, {20, 0}}, color = {0, 127, 255}));
-  connect(compressor.port_b, toStack) annotation(
-    Line(points = {{60, 0}, {100, 0}}, color = {0, 127, 255}));
   connect(valve.port_a, pressureSensor.port) annotation(
     Line(points = {{-20, -80}, {30, -80}, {30, -70}}, color = {0, 127, 255}));
   connect(pressure_set_point.y, PID_valve.u_s) annotation(
     Line(points = {{39, -30}, {22, -30}}, color = {0, 0, 127}));
+  connect(current_to_mass_flow.y, compressor.set_mass_flow) annotation(
+    Line(points = {{-68, 70}, {-56, 70}, {-56, 60}, {-34, 60}}, color = {0, 0, 127}));
+  connect(environment.ports[2], compressor.port_a) annotation(
+    Line(points = {{-80, -30}, {-52, -30}, {-52, 10}, {-8, 10}, {-8, 56}, {-4, 56}}, color = {0, 127, 255}));
+  connect(compressor.port_b, toStack) annotation(
+    Line(points = {{32, 44}, {66, 44}, {66, 0}, {100, 0}}, color = {0, 127, 255}));
+  connect(tempCompressorOut.port, compressor.port_b) annotation(
+    Line(points = {{52, 58}, {50, 58}, {50, 44}, {32, 44}}, color = {0, 127, 255}));
+  connect(pin_p, compressor.pin_p) annotation(
+    Line(points = {{0, 100}, {0, 88}, {-24, 88}, {-24, 74}}, color = {0, 0, 255}));
+  connect(pin_n, compressor.pin_n) annotation(
+    Line(points = {{-20, 100}, {-18, 100}, {-18, 84}, {-12, 84}, {-12, 74}}, color = {0, 0, 255}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)),

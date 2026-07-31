@@ -10,6 +10,7 @@ ChopperTest
 CompressorTest
 DC_converterTest
 ECMS_Experiment_Testing
+ElectricCompressorTest
 ElectrolyserSystemTest
 ElectrolyserSystemTest_dev
 FuelCellSystemTest
@@ -18,6 +19,7 @@ HeatExchangerTest
 HeatSinkTest
 HeatSinkTest2
 HumidifierTest
+HumidifierTest_2
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest

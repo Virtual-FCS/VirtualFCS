@@ -17,7 +17,7 @@ model CompressorTest
     Placement(transformation(origin = {-90, 0}, extent = {{-10, -10}, {10, 10}})));
   Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, useHeatPort = false, MMs = {0.032, 0.028, 0.018}, V = 1, T = 353.15)  annotation(
     Placement(transformation(origin = {40, 8}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Constant reaction_rate(k = 1) annotation(
+  Modelica.Blocks.Sources.Constant reaction_rate(k = 0) annotation(
     Placement(transformation(origin = {10, 70}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(torque.flange, compressor.flange_a) annotation(
