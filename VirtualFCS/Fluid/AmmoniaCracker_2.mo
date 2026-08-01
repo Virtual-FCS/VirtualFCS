@@ -5,7 +5,7 @@ model AmmoniaCracker_2 "Ammonia cracker model based on a tube and shell configur
   // Initialize ideal gas Medium objects for the different species
   import Modelica.Media.IdealGases.SingleGases;
   // Define media types
-  package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
+  replaceable package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
   
@@ -204,10 +204,12 @@ equation
   mf_NH3 = inlet_nh3_feed.m_flow;
   inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   inlet_nh3_feed.p = P_tot[1];
+  inlet_nh3_feed.Xi_outflow = {mol_frac_N2[1], mol_frac_H2[1]};
+  
   outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   outlet_cracked_gas.p = P_out;
   outlet_cracked_gas.m_flow = mf_NH3;
-  outlet_cracked_gas.Xi_outflow = {mol_flow_N2[N], mol_flow_H2[N]};
+  outlet_cracked_gas.Xi_outflow = {mol_frac_H2[N], mol_frac_H2[N]};
 // outlet.Xi_outflow is the vector of independent mass fractions (length = Medium.nXi = nX-1)
 //outlet_cracked_gas.Xi_outflow = X_full[1:Medium.nXi];
 // this component is the state-setter for pressure:

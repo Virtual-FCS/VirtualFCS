@@ -16,7 +16,7 @@ extends BaseShoMix(
       L = 23400 "Latent heat of condensing phase (ammonia)"
 );
 
-  function densityOfLiquid
+ redeclare function densityOfLiquid
     extends Modelica.Icons.Function;
     input Modelica.Units.SI.AbsolutePressure p;
     input Modelica.Units.SI.Temperature T;
@@ -36,7 +36,7 @@ Modelica source.
 </p>
 </html>"));
 
-function enthalpyOfLiquid "Helper function for enthalpy of liquid water"
+redeclare function enthalpyOfLiquid "Helper function for enthalpy of liquid water"
   extends Modelica.Icons.Function;
   input ThermodynamicState state "Thermodynamic state record";
   output Modelica.Units.SI.SpecificEnthalpy h_liq;
@@ -44,23 +44,22 @@ algorithm
   h_liq := -16e6; // J/kg
 end enthalpyOfLiquid;
 
-function specificHeatCapacityCpOfLiquid "Helper function for heat capacity of liquid ammonia"
+redeclare function specificHeatCapacityCpOfLiquid "Helper function for heat capacity of liquid ammonia"
     extends Modelica.Icons.Function;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificHeatCapacity cp_liq;
   algorithm
     cp_liq := 4700; // J/(kg*K)
 
-  end specificHeatCapacityCpOfLiquid;
+end specificHeatCapacityCpOfLiquid;
 
-function extends dynamicViscosity
-      "Return dynamic viscosity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
-  algorithm
-    eta := 3e-5;  // 
+//redeclare function extends dynamicViscosity
+//      "Return dynamic viscosity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
+//  algorithm
+//    eta := 3e-5;
+//  end dynamicViscosity;
 
-  end dynamicViscosity;
-
-function extends thermalConductivity
+redeclare function extends thermalConductivity
       "Return thermal conductivity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
   algorithm
     lambda :=0.09;
