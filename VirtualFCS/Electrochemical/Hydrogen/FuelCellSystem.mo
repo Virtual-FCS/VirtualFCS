@@ -28,7 +28,7 @@ model FuelCellSystem
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {1, -47}, extent = {{-11, -11}, {11, 11}})));
-  replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(p_H2_set = p_H2_set)  annotation(
+  replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(subSystemHydrogenControl(pressure_H2_set = p_H2_set))  annotation(
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));

@@ -7,7 +7,6 @@ model ElectrolyserSystem_dev
   // Medium models
   replaceable package H2_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package O2_Medium = Modelica.Media.IdealGases.SingleGases.O2;
-  // replaceable package H2O_Medium = AixLib.Media.Water;
   replaceable package H2O_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   //constrainedby Modelica.Media.Interfaces.PartialMedium;
   //*** DECLARE PARAMETERS ***//

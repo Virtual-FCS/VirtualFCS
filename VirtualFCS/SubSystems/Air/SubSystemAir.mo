@@ -7,9 +7,11 @@ model SubSystemAir "Ssubsystem regulating pressure and flowrate of air to a fuel
   constant Modelica.Units.SI.MoleFraction xO2 = 0.21 "Standard molar fraction of oxygen in air";
   constant Modelica.Units.SI.MolarMass MM_O2 = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "(kg O2 / mol O2) Molar mass molecular oxygen";
   constant Integer n_O2 = 4 "Exchanged electrons per oxygen molecule";
+  
   parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Real lambda = 3 "Air excess ratio";
-  parameter Modelica.Units.SI.AbsolutePressure p_set = 2e5 "Target cathodic pressure";
+  parameter Modelica.Units.SI.AbsolutePressure p_set = 200000 "Target cathodic pressure";
+
   Modelica.Fluid.Sources.FixedBoundary environment(redeclare package Medium = Medium, nPorts = 2, p = system.p_ambient, T = system.T_ambient) annotation(
     Placement(transformation(origin = {-90, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Fluid.Interfaces.FluidPort_a fromStack(redeclare package Medium = Medium) annotation(

@@ -3,12 +3,9 @@ within VirtualFCS.SubSystems.Hydrogen;
 model SubSystemHydrogen
   outer Modelica.Fluid.System system "System properties";
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
-  parameter Modelica.Units.SI.Mass m_system_H2 = 61 "H2 system mass";
-  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume";
   parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
-  parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 35000000 "H2 tank initial pressure";
-  parameter Modelica.Units.SI.AbsolutePressure p_H2_set = 2000000 "H2 outlet set pressure";
-  parameter Integer N_cell = 180 "FC stack number of cells";
+  parameter Integer N_cells = 180 "FC stack number of cells";
+  
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, nPorts = 1, p = system.p_ambient, use_T_in = false) annotation(
     Placement(transformation(origin = {-150, -80}, extent = {{-14, -14}, {14, 14}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent(unit = "A") annotation(
@@ -27,11 +24,11 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-66, 106}, extent = {{18, -18}, {-18, 18}}, rotation = -90)));
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 12) annotation(
     Placement(transformation(origin = {25, 106}, extent = {{24, -14}, {-24, 14}})));
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cell = N_cell, pressure_H2_set = p_H2_set) annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 2000000) annotation(
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-125, 107}, extent = {{17, -17}, {-17, 17}}, rotation = -90)));
-  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 1, p_start = p_tank_H2, use_HeatTransfer = true, use_portsData = false) annotation(
+  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = 0.13, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 1, p_start = 35000000, use_HeatTransfer = true, use_portsData = false) annotation(
     Placement(transformation(origin = {-98, 50}, extent = {{-20, 20}, {20, -20}}, rotation = -90)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -50}, extent = {{13, 14}, {-13, -14}}, rotation = -90)));

@@ -7,7 +7,7 @@ model SubSystemHydrogenControl
 
   parameter Modelica.Units.SI.AbsolutePressure pressure_H2_set = 200000 "Set H2 Pressure";
   parameter Real RR = 1.3 "Hydrogen recirculation ratio (recirculated/consumed)";
-  parameter Integer N_cell = 180 "Number of cells in stack";
+  parameter Integer N_cells = 180 "Number of cells in stack";
   parameter Modelica.Units.SI.MassFlowRate minimumFlow = 1.22e-05 "minimum hydrogen flow";
   
   VirtualFCS.Control.PurgeValveControl purgeValveControl annotation (
@@ -28,7 +28,7 @@ model SubSystemHydrogenControl
     Placement(transformation(origin = {-50, -60}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant minFlow(k = minimumFlow)  annotation(
     Placement(transformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}})));
-  Modelica.Blocks.Math.Gain currentToFlow(k = M_H2*RR/F/2*N_cell)  annotation(
+  Modelica.Blocks.Math.Gain currentToFlow(k = M_H2*RR/F/2*N_cells)  annotation(
     Placement(transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Interfaces.RealInput pumpSpeed_measured annotation(
     Placement(transformation(origin = {-220, -140}, extent = {{-20, -20}, {20, 20}})));

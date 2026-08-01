@@ -12,9 +12,11 @@ PumpElectricDC
 PumpInterface
 SimplePump
 RecirculationBlower
-RecirculationBlower_mc
 simplePipe
-UsersGuide
 HumidifierInterface
 HumidifierDummy
 RelativeHumiditySensor
+HeatExchangerInterface
+HeatExchanger
+MixingVolume
+UsersGuide

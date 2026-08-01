@@ -15,11 +15,13 @@ ElectrolyserSystemTest
 ElectrolyserSystemTest_dev
 FuelCellSystemTest
 FuelCellTest
+HeatExchangerTest
 HeatSinkTest
 HeatSinkTest2
 HumidifierTest
 HumidifierTest_2
 ManifoldTest
+MixingVolumeTest
 MultiManifoldTest
 NH3CrackedTest
 PreHeaterTest
