@@ -7,9 +7,9 @@ model MultiManifoldTest
   parameter Real lambda = 3 "Reactant excess ratio";
   parameter Modelica.Units.SI.Voltage V_cell = 0.7 "Single-cell voltage";
 
-  Electrochemical.Hydrogen.Manifold cathode(useHeatPort = true, redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, MMs = VirtualFCS.Media.CathodeAir.MMs, V = 1E-2)  annotation(
+  Electrochemical.Hydrogen.Manifold cathode(useHeatPort = true, redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, MMs = VirtualFCS.Media.CathodeAir.MMs, V = 1E-2, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial)  annotation(
     Placement(transformation(origin = {30, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Electrochemical.Hydrogen.Manifold anode(useHeatPort = true, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nu = {-1}, MMs = {0.002}, V = 1E-2)  annotation(
+  Electrochemical.Hydrogen.Manifold anode(useHeatPort = true, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nu = {-1}, MMs = {0.002}, V = 1E-2, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial)  annotation(
     Placement(transformation(origin = {-30, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow extractedPower annotation(
     Placement(transformation(origin = {0, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -60,4 +60,6 @@ equation
     Line(points = {{0, 20}, {0, 44}}, color = {0, 0, 127}));
   connect(power_gain.u, reactionRate.y) annotation(
     Line(points = {{0, 58}, {0, 80}, {-59, 80}}, color = {0, 0, 127}));
+annotation(
+    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
 end MultiManifoldTest;

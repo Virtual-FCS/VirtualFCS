@@ -2,22 +2,17 @@ within VirtualFCS.ComponentTesting;
 
 model FuelCellTest
   extends Modelica.Icons.Example;
-  
   import Modelica.Constants.F;
-  
   parameter Real lambda = 3;
   parameter Integer N_cells = 42 "Number of cells in the stack";
   package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
-  
-  Electrochemical.Hydrogen.FuelCell fc(N_cells=N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, cathode(p_start = air_sink.p), anode(p_start = hydrogen_source.p)) annotation(
+  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, cathode(p_start = air_sink.p), anode(p_start = hydrogen_source.p)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
-
-
-  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1, p = 3e5)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1, p = 3e5) annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
-  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p (displayUnit = "bar")= 2.5e5)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p(displayUnit = "bar") = 2.5e5) annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}})));
@@ -36,7 +31,6 @@ model FuelCellTest
   Modelica.Blocks.Sources.Step R_values(height = -2.4, offset = 3, startTime = 30) annotation(
     Placement(transformation(origin = {50, 80}, extent = {{10, -10}, {-10, 10}})));
 equation
- 
   connect(fc.pin_n, ground.p) annotation(
     Line(points = {{-10, 14}, {-10, 80}, {-30, 80}, {-30, 60}}, color = {0, 0, 255}));
   connect(resistor.n, fc.pin_n) annotation(
@@ -57,8 +51,6 @@ equation
     Line(points = {{-4, -12}, {-4, -26}, {-8, -26}}, color = {0, 127, 255}));
   connect(resistor.R, R_values.y) annotation(
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
-
-
-annotation(
-    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.5));
+  annotation(
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03));
 end FuelCellTest;
