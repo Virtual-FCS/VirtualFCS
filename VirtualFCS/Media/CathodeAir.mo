@@ -107,7 +107,7 @@ package CathodeAir "Medium model for cathodic air"
   algorithm
     state.p := p;
     state.Xi := X[1:nXi];
-    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 273.15, u_max = 1000);
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 200, u_max = 1000);
   end setState_phX;
   
   redeclare function extends temperature
@@ -173,25 +173,17 @@ package CathodeAir "Medium model for cathodic air"
     h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Yi[Oxygen], Yi[Nitrogen]);
   end specificEnthalpy;
   
-  redeclare function extends specificInternalEnergy
-  protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-  algorithm
-    X_l := liquidMassFraction(state);
-    u := specificEnthalpy(state) - state.p*(X_l/densityOfWater(state.p, state.T) + (1-X_l)/densityOfGas(state));
-  end specificInternalEnergy;
-  
   function enthalpyOfWater "Helper function for enthalpy of liquid water"
     extends Modelica.Icons.Function;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificEnthalpy h_liq;
   algorithm
-    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / MMs[Water];
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
-end enthalpyOfWater;
-  
-  impure function enthalpyOfGas
+  end enthalpyOfWater;
+
+  function enthalpyOfGas
     extends Modelica.Icons.Function;    
     input Modelica.Units.SI.Temperature T "Vapour temperature";
     input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
@@ -206,8 +198,78 @@ end enthalpyOfWater;
   annotation(
       Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
 end enthalpyOfGas;
+
+  redeclare function extends specificEntropy
+  protected
+    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
+    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+  algorithm
+    X_l := liquidMassFraction(state);
+    Yi := gasMassFraction(state);
+    s := X_l*entropyOfWater(state.T) + (1-X_l)*entropyOfGas(state.T, state.p, Yi[Oxygen], Yi[Nitrogen]);
+  end specificEntropy;
   
+  function entropyOfWater "Helper function for entropy of liquid water"
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.Temperature T;
+    output Modelica.Units.SI.SpecificEntropy s_liq;
+  algorithm
+    s_liq := Shomate.entropy(T, Shomate.H2O_L) / MMs[Water];
+  annotation(
+      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+  end entropyOfWater;
   
+  function entropyOfGas
+    extends Modelica.Icons.Function;
+    import Modelica.Constants.R;
+    import Modelica.Constants.eps;
+    
+    input Modelica.Units.SI.Temperature T "Gas temperature";
+    input Modelica.Units.SI.Pressure p "Gas pressure";
+    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
+    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
+    output Modelica.Units.SI.SpecificEntropy s_gas;
+  protected
+    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    Modelica.Units.SI.MassFraction[nX] Y = {y_O2, y_N2, 1-y_O2-y_N2};
+  algorithm
+    s_gas := Y*{Shomate.entropy(T, parameters[i])/MMs[i] for i in 1:nX}
+           - R*(Y./MMs)*{log(max(Y[i], eps))+log(p/reference_p) for i in 1:nX};
+  annotation(
+      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
+  end entropyOfGas;
+
+  redeclare function extends isentropicEnthalpy
+  protected
+    function s_offset "Find offset from isoentropic conditions, u is h_out"
+      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+      input Modelica.Units.SI.SpecificEntropy s_in;
+      input Modelica.Units.SI.Pressure p_out;
+      input Modelica.Units.SI.MassFraction[nXi] Xi;
+    protected
+      Modelica.Units.SI.SpecificEntropy s_out;
+    algorithm
+      s_out := specificEntropy(setState_phX(p_out, u, Xi));
+      y := s_out - s_in;
+    end s_offset;
+
+    Modelica.Units.SI.SpecificEntropy s_ref;
+    Modelica.Units.SI.SpecificEnthalpy h_min, h_max;
+  algorithm
+    h_min := specificEnthalpy(setState_pTX(refState.p, 273.15, refState.Xi));
+    h_max := specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
+    s_ref := specificEntropy(refState);
+    h_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = h_min, u_max = h_max);
+  end isentropicEnthalpy;
+  
+  redeclare function extends specificInternalEnergy
+  protected
+    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
+  algorithm
+    X_l := liquidMassFraction(state);
+    u := specificEnthalpy(state) - state.p*(X_l/densityOfWater(state.p, state.T) + (1-X_l)/densityOfGas(state));
+  end specificInternalEnergy;
+
   function densityOfWater
     extends Modelica.Icons.Function;
     import Modelica.Media.Water.IF97_Utilities.rho_pT;
@@ -250,7 +312,7 @@ end enthalpyOfGas;
     input Modelica.Units.SI.Temperature T;
     output Modelica.Units.SI.SpecificHeatCapacity cp_liq;
   algorithm
-    cp_liq := Shomate.heat_capacity(T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+    cp_liq := Shomate.heat_capacity(T, Shomate.H2O_L) / MMs[Water];
     annotation(
     Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
   end specificHeatCapacityCpOfWater;
@@ -331,17 +393,11 @@ end enthalpyOfGas;
     state := ThermodynamicState(
           p=Media.Common.smoothStep(x, state_a.p, state_b.p, x_small),
           T=Media.Common.smoothStep(x, state_a.T, state_b.T, x_small),
-          X=Media.Common.smoothStep(x, state_a.X, state_b.X, x_small));
+          Xi=Media.Common.smoothStep(x, state_a.Xi, state_b.Xi, x_small));
   end setSmoothState;
 
   annotation(
-    Documentation(info = "<html>
-<p>
-This package is a <strong>template</strong> for <strong>new medium</strong> models. For a new
-medium model just make a copy of this package, remove the
-\"partial\" keyword from the package and provide
-the information that is requested in the comments of the
-Modelica source.
-</p>
-</html>"));
+    Documentation(info = "<html><head></head><body><p>
+This medium models air in fuel cells. This includes separate accounts of oxygen and nitrogen, in addition to tracking humidity and condensation.</p>
+</body></html>"));
 end CathodeAir;

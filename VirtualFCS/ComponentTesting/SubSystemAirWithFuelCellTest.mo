@@ -3,12 +3,10 @@ within VirtualFCS.ComponentTesting;
 model SubSystemAirWithFuelCellTest
   extends Modelica.Icons.Example;
   import Modelica.Constants.F;
-  parameter Real lambda = 3;
-  parameter Real P_air = 2.5e5;
+
   parameter Integer N_cells = 42 "Number of cells in the stack";
-  parameter Modelica.Units.SI.Temperature T_stack = 320 "Stack temperature";
-  package cathode_medium = Media.CathodeAir;
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air) annotation(
+  
+  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1) annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
@@ -26,7 +24,7 @@ model SubSystemAirWithFuelCellTest
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
   Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250) annotation(
     Placement(transformation(origin = {50, 76}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  SubSystems.Air.SubSystemAir subSystemAir annotation(
+  SubSystems.Air.SubSystemAir subSystemAir(environment(redeclare package Medium = Media.CathodeAir))  annotation(
     Placement(transformation(origin = {50, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sources.ConstantVoltage V_source(V = 24) annotation(
     Placement(transformation(origin = {80, 0}, extent = {{-6, 6}, {6, -6}}, rotation = 90)));
@@ -51,14 +49,14 @@ equation
     Line(points = {{14, -10}, {26, -10}, {26, -6}, {38, -6}}, color = {0, 127, 255}));
   connect(fc.cathode_in, subSystemAir.toStack) annotation(
     Line(points = {{14, 10}, {28, 10}, {28, 6}, {38, 6}}, color = {0, 127, 255}));
-  connect(currentSensor.i, subSystemAir.stackCurrent) annotation(
-    Line(points = {{22, 40}, {46, 40}, {46, 12}}, color = {0, 0, 127}));
   connect(subSystemAir.pin_p, V_source.p) annotation(
     Line(points = {{60, -4}, {59.25, -4}, {59.25, -6}, {80, -6}}, color = {0, 0, 255}));
   connect(subSystemAir.pin_n, V_source.n) annotation(
     Line(points = {{60, 6}, {80, 6}}, color = {0, 0, 255}));
   connect(V_source.n, ground.p) annotation(
     Line(points = {{80, 6}, {80, 100}, {-30, 100}, {-30, 60}}, color = {0, 0, 255}));
-annotation(
+  connect(subSystemAir.stackCurrent, currentSensor.i) annotation(
+    Line(points = {{46, 12}, {46, 40}, {22, 40}}, color = {0, 0, 127}));
+  annotation(
     experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
 end SubSystemAirWithFuelCellTest;

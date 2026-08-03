@@ -155,7 +155,7 @@ function gasMassFraction "Independent mass fractions in gas phase"
 algorithm
   denom := 1-liquidMassFraction(state);
   assert(denom > 1e-8, "Gas phase vanished → model invalid");
-  Yi := state.Xi[1:nX-1] / denom;
+  Yi := state.Xi[1:nXi] / denom;
   
 end gasMassFraction;
 
@@ -175,28 +175,6 @@ algorithm
   R_s := R * MM_gas;
   
   end gasConstant;
-
-
-
-function computeComposition
-  "Construct full mass/mol/volume-fraction vector from independent fractions"
-  input Modelica.Units.SI.MassFraction X[nX-1]
-    "Independent gas mass fractions";
-  output Modelica.Units.SI.MassFraction X_c[nX]
-    "Complete mass fraction vector";
-  //protected
- // Modelica.Units.SI.MassFraction X_temp[nX] "Temporary placeholder before normalization";
-
-algorithm
-  // Copy independent fractions
-  X_c[1:nX-1] := X;
-
-  // Compute last fraction, ensuring bounds
-  X_c[nX] := max(0.0, 1.0 - sum(X));
-  
- 
-end computeComposition;
-
 
  
   redeclare function extends specificEnthalpy
@@ -240,7 +218,7 @@ end enthalpyOfLiquid;
       Modelica.Units.SI.MassFraction Y[nX] "Independent gas-phase compositions";
     algorithm
     Yi := gasMassFraction(state);
-    Y  := computeComposition(Yi);
+    Y := cat(1, Yi, {1 - sum(Yi)});
     h_gas := 0;
   
     for i in 1:nX loop
@@ -307,7 +285,7 @@ end enthalpyOfGas;
      Modelica.Units.SI.MassFraction Y[nX] "Gas fraction";
   
   algorithm
-    Y := computeComposition(Yi);
+    Y := cat(1, Yi, {1 - sum(Yi)});
   
     cp_gas := 0;
   
@@ -323,8 +301,10 @@ end enthalpyOfGas;
   protected
     Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
     Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-    Modelica.Units.SI.MassFraction Y[nX] = computeComposition(Yi) "Independent gas-phase compositions";
+    Modelica.Units.SI.MassFraction Y[nX] "Independent gas-phase compositions";
+    
   algorithm
+    Y := cat(1, Yi, {1 - sum(Yi)});
     X_l := liquidMassFraction(state);
     Yi := gasMassFraction(state);
     cp := specificHeatCapacityCpOfGas(state.T, Yi)*(1-X_l) + specificHeatCapacityCpOfLiquid(state.T)*X_l;

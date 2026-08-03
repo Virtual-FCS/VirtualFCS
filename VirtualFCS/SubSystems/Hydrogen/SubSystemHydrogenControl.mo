@@ -7,7 +7,7 @@ model SubSystemHydrogenControl
 
   parameter Modelica.Units.SI.AbsolutePressure pressure_H2_set = 200000 "Set H2 Pressure";
   parameter Real RR = 1.3 "Hydrogen recirculation ratio (recirculated/consumed)";
-  parameter Integer N_cell = 180 "Number of cells in stack";
+  parameter Integer N_cells = 180 "Number of cells in stack";
   parameter Modelica.Units.SI.MassFlowRate minimumFlow = 1.22e-05 "minimum hydrogen flow";
   
   VirtualFCS.Control.PurgeValveControl purgeValveControl annotation (
@@ -28,7 +28,7 @@ model SubSystemHydrogenControl
     Placement(transformation(origin = {-50, -60}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant minFlow(k = minimumFlow)  annotation(
     Placement(transformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}})));
-  Modelica.Blocks.Math.Gain currentToFlow(k = M_H2*RR/F/2*N_cell)  annotation(
+  Modelica.Blocks.Math.Gain currentToFlow(k = M_H2*RR/F/2*N_cells)  annotation(
     Placement(transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Interfaces.RealInput pumpSpeed_measured annotation(
     Placement(transformation(origin = {-220, -140}, extent = {{-20, -20}, {20, 20}})));
@@ -53,7 +53,7 @@ equation
     Line(points = {{-220, -140}, {0, -140}, {0, -84}}, color = {0, 0, 127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
-    Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={Text(origin = {-9, 240}, textColor = {0, 0, 255}, extent = {{-137, 34}, {137, -34}}, textString = "%name"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 2, extent = {{-200, 200}, {200, -200}}, radius = 50), Text(  textColor = {255, 0, 0},extent = {{-200, 100}, {200, -100}}, textString = "H₂
+    Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={Text(origin = {-8, 257}, textColor = {0, 0, 255}, extent = {{-264, 69}, {264, -69}}, textString = "%name"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 2, extent = {{-200, 200}, {200, -200}}, radius = 50), Text(  textColor = {255, 0, 0},extent = {{-200, 100}, {200, -100}}, textString = "H₂
 Control")}),
     Documentation(info = "<html><head></head><body>The hydrogen sub system control governs the flow and pressure of hydrogen, based on fuel cell current.&nbsp;<br><div><br></div><div><div><br></div><div><b>Description</b></div><div><p class=\"MsoNormal\"><o:p></o:p></p><p class=\"MsoNormal\">The fuel cell interface (output current value) and hydrogen interface (mass flow rate set value) signals are inputs to the&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>&nbsp;and&nbsp;<a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>&nbsp;blocks. Other inputs include hydrogen feed pressure (from hydrogen tank to the fuel cell) and mass flow rate and are set to a constant value. The output signal is concatenated with three values, (1) Hydrogen Feed Pressure input to&nbsp;<a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">Pressure Regulator</a>, (2) Control Signal to&nbsp;<a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>&nbsp;and (3) Set Speed to&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a>. &nbsp;The&nbsp;<a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>&nbsp;blocks uses&nbsp;<span style=\"font-size: 12px;\">simple PID control to set</span>&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a><span style=\"font-size: 12px;\">&nbsp;speed as a function of mass flow and</span>,&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>&nbsp;uses logical conditions<span style=\"font-size: 12px;\">&nbsp;to control&nbsp;</span><a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>.&nbsp;</p><p class=\"MsoNormal\"><b><br></b></p><p class=\"MsoNormal\"><b>List of components</b></p><p class=\"MsoNormal\">The model comprises <a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>,&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>, <a href=\"modelica://Modelica.Blocks.Routing.DeMultiplex2\">DeMultipex2</a>, <a href=\"modelica://Modelica.Blocks.Routing.Multiplex3\">Multiplex3</a>. The subsystem features multiple interface connections all of them are control port.&nbsp;</p></div></div></body></html>"));
 end SubSystemHydrogenControl;

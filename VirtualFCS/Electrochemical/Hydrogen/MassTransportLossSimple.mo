@@ -14,7 +14,7 @@ extends Electrochemical.Hydrogen.BaseMassTransportLoss;
   
 protected
   constant Integer N = 2 "Number of electrons in reaction";
-  parameter Modelica.Units.SI.Current i_epsilon = 1E-39*i_limit "Very small positive current";
+  parameter Modelica.Units.SI.CurrentDensity i_epsilon = 1E-39*i_limit "Very small positive current density";
   
    
 equation

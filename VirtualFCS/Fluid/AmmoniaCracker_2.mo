@@ -5,15 +5,14 @@ model AmmoniaCracker_2 "Ammonia cracker model based on a tube and shell configur
   // Initialize ideal gas Medium objects for the different species
   import Modelica.Media.IdealGases.SingleGases;
   // Define media types
-  package AmmoniaMedium_CP = Media.NH3_CP;
-  //package CrackedNH3 = VirtualFCS.Media.CrackedNH3;
-  package AmmoniaMedium = SingleGases.NH3;
+  replaceable package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
+  
   // Define interface
-  Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium_CP) annotation(
+  Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b outlet_cracked_gas(redeclare package Medium = AmmoniaMedium_CP) annotation(
+  Modelica.Fluid.Interfaces.FluidPort_b outlet_cracked_gas(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}})));
   // Define constant parameters
   constant Real M_NH3 = 17 "Molar mass g/mol";
@@ -85,21 +84,17 @@ model AmmoniaCracker_2 "Ammonia cracker model based on a tube and shell configur
   Modelica.Units.SI.Velocity v_gas[N] "Gas mixture velocity (m/s)";
   // Declare medium state records and thermodynamic properties
   AmmoniaMedium.ThermodynamicState state_NH3;
-  AmmoniaMedium_CP.ThermodynamicState state_NH3_CP;
   HydrogenMedium.ThermodynamicState state_H2;
   NitrogenMedium.ThermodynamicState state_N2;
   Modelica.Units.SI.Density rho_NH3(start = rho_NH3_start) "Density ammonia 30 bar 600degC";
-  Modelica.Units.SI.Density rho_NH3_CP(start = rho_NH3_start) "Density ammonia 30 bar 600degC";
   Modelica.Units.SI.Density rho_H2;
   Modelica.Units.SI.Density rho_N2;
   Modelica.Units.SI.Density rho_mix[N](start = fill(rho_NH3_start, N));
   Modelica.Units.SI.DynamicViscosity mu_NH3(start = 2.6e-5) "Dynamic viscosity ammonia 30 bar 600degC";
-  Modelica.Units.SI.DynamicViscosity mu_NH3_CP(start = 2.6e-5) "Dynamic viscosity ammonia 30 bar 600degC";
   Modelica.Units.SI.DynamicViscosity mu_H2;
   Modelica.Units.SI.DynamicViscosity mu_N2;
   Modelica.Units.SI.DynamicViscosity mu_mix[N];
   Modelica.Units.SI.SpecificHeatCapacity cp_NH3 "Heat capacity ammonia";
-  Modelica.Units.SI.SpecificHeatCapacity cp_NH3_CP "Heat capacity ammonia";
   Modelica.Units.SI.SpecificHeatCapacity cp_H2;
   Modelica.Units.SI.SpecificHeatCapacity cp_N2;
   // Reaction rate
@@ -148,23 +143,19 @@ model AmmoniaCracker_2 "Ammonia cracker model based on a tube and shell configur
 equation
   g_catalyst_mol_flow_NH3 = W_cat*A_r/(mf_NH3*1000/M_NH3/3600);
 // Calculate the different relevant thermodynamic properties
-  state_NH3 = AmmoniaMedium.setState_pT(P_out, T_in);
-  state_NH3_CP = AmmoniaMedium_CP.setState_pT(P_out, T_in);
+  state_NH3 = AmmoniaMedium.setState_pTX(P_out, T_in);
   state_H2 = HydrogenMedium.setState_pT(P_out, T_in);
   state_N2 = NitrogenMedium.setState_pT(P_out, T_in);
 // Densities
   rho_NH3 = AmmoniaMedium.density(state_NH3);
-  rho_NH3_CP = AmmoniaMedium_CP.density(state_NH3_CP);
   rho_H2 = HydrogenMedium.density(state_H2);
   rho_N2 = NitrogenMedium.density(state_N2);
 // Dynamic viscosities
   mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);
-  mu_NH3_CP = AmmoniaMedium_CP.dynamicViscosity(state_NH3_CP);
   mu_H2 = HydrogenMedium.dynamicViscosity(state_H2);
   mu_N2 = NitrogenMedium.dynamicViscosity(state_N2);
 // Heat capacities at constant pressure
   cp_NH3 = AmmoniaMedium.specificHeatCapacityCp(state_NH3);
-  cp_NH3_CP = AmmoniaMedium_CP.specificHeatCapacityCp(state_NH3_CP);
   cp_H2 = HydrogenMedium.specificHeatCapacityCp(state_H2);
   cp_N2 = NitrogenMedium.specificHeatCapacityCp(state_N2);
 // Compute variables along reactor length
@@ -211,11 +202,14 @@ equation
   end for;
 // Connect fluid interfaces
   mf_NH3 = inlet_nh3_feed.m_flow;
-  inlet_nh3_feed.h_outflow = AmmoniaMedium_CP.specificEnthalpy(state_NH3_CP);
+  inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   inlet_nh3_feed.p = P_tot[1];
-  outlet_cracked_gas.h_outflow = HydrogenMedium.specificEnthalpy(state_H2);
+  inlet_nh3_feed.Xi_outflow = {mol_frac_N2[1], mol_frac_H2[1]};
+  
+  outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   outlet_cracked_gas.p = P_out;
   outlet_cracked_gas.m_flow = mf_NH3;
+  outlet_cracked_gas.Xi_outflow = {mol_frac_H2[N], mol_frac_H2[N]};
 // outlet.Xi_outflow is the vector of independent mass fractions (length = Medium.nXi = nX-1)
 //outlet_cracked_gas.Xi_outflow = X_full[1:Medium.nXi];
 // this component is the state-setter for pressure:
