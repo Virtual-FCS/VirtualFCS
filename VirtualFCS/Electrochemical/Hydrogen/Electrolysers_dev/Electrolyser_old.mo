@@ -18,7 +18,7 @@ model Electrolyser_old
     parameter Modelica.Units.SI.SpecificHeatCapacity Cp_cell = 1100 "Specific Specific Heat Capacity";
     //NA
     // Stack design parameters
-    parameter Real N_cell(unit = "1") = 65 "Number of Cells";
+    parameter Real N_cells(unit = "1") = 65 "Number of Cells";
     parameter Modelica.Units.SI.Area A_cell = 0.0214 "Active Area of the Cell";
     // Electrochemical parameters
     parameter Modelica.Units.SI.CurrentDensity i_0 = 1.7e-6 "Exchange Current density";
@@ -105,16 +105,16 @@ model Electrolyser_old
     Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a HPStack annotation(
       Placement(visible = true, transformation(origin = {-150, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-2, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     // Other Components
-    Modelica.Blocks.Math.Gain H2_mflow(k = 0.00201588/(96485*2)*N_cell) annotation(
+    Modelica.Blocks.Math.Gain H2_mflow(k = 0.00201588/(96485*2)*N_cells) annotation(
       Placement(visible = true, transformation(origin = {-28, 53}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
-    Modelica.Blocks.Sources.RealExpression CellPotential(y = (E_rev + (R*TSStack.T)/(2*F)*(log((p_H2/p_H2O)*(p_O2/p_H2O)^0.5)) + E_act + E_diff + abs(R_ohmic.v/N_cell))*N_cell) annotation(
+    Modelica.Blocks.Sources.RealExpression CellPotential(y = (E_rev + (R*TSStack.T)/(2*F)*(log((p_H2/p_H2O)*(p_O2/p_H2O)^0.5)) + E_act + E_diff + abs(R_ohmic.v/N_cells))*N_cells) annotation(
       Placement(visible = true, transformation(origin = {-94, 120}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     // Calculate the Nernst equilibrium potential
-    Modelica.Blocks.Math.Gain O2_mflow(k = 0.0319988/(96485*4)*N_cell) annotation(
+    Modelica.Blocks.Math.Gain O2_mflow(k = 0.0319988/(96485*4)*N_cells) annotation(
       Placement(visible = true, transformation(origin = {0, -29}, extent = {{8, -8}, {-8, 8}}, rotation = 90)));
-    Modelica.Blocks.Math.Gain H2O_mflow_con(k = -0.01801528/(96485*2)*N_cell) annotation(
+    Modelica.Blocks.Math.Gain H2O_mflow_con(k = -0.01801528/(96485*2)*N_cells) annotation(
       Placement(visible = true, transformation(origin = {28, 53}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-    Modelica.Blocks.Sources.RealExpression MEA(y = (R_ohm_mem + R_ohm_ele)*N_cell) annotation(
+    Modelica.Blocks.Sources.RealExpression MEA(y = (R_ohm_mem + R_ohm_ele)*N_cells) annotation(
       Placement(visible = true, transformation(origin = {104, 124}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     Modelica.Blocks.Interfaces.RealOutput I_PEMWE annotation(
       Placement(visible = true, transformation(origin = {-160, 76}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-110, -70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -156,7 +156,7 @@ model Electrolyser_old
   // Electrical power  needed
     P_el = potentialSource.v*currentSensor.i;
   // THERMAL EQUATIONS //
-    P_th = (E_cell - E_tn)*abs(currentSensor.i)*N_cell;
+    P_th = (E_cell - E_tn)*abs(currentSensor.i)*N_cells;
     Q_rev = (E_tn - E_rev)*abs(currentSensor.i);
     Q_irr = (E_cell - E_rev)*abs(currentSensor.i);
   // Assign the thermal power value to the heat flow component
@@ -250,7 +250,7 @@ model Electrolyser_old
                   <td align=\"Left\">J/(kg.K)</td>
                </tr>
                  <tr>
-                  <td align=\"Left\">N_cell </td>
+                  <td align=\"Left\">N_cells </td>
                   <td>=1</td>
                   <td align=\"Right\">-</td>
                </tr>
