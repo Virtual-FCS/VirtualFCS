@@ -26,8 +26,8 @@ model FuelCell
   constant SI.MolarMass M_O2 = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
   // Convenience variables (Used by inner models)
-  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
-  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p*cathode.medium.X[Media.CathodeAir.Oxygen];
+  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = (anode.port_a.p + anode.port_b.p)/2;
+  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = (cathode.port_a.p + cathode.port_b.p)/2*cathode.medium.X[Media.CathodeAir.Oxygen];
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   inner Real phi = cathode.medium.phi "check mol/mass fraction";
   // Outputs
@@ -43,7 +43,7 @@ model FuelCell
     Placement(transformation(origin = {-100, 120}, extent = {{18, 18}, {-18, -18}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = G_cool) annotation(
     Placement(transformation(origin = {30, -72}, extent = {{-16, -16}, {16, 16}}, rotation = -90)));
-  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 100, length = 50, diameter(displayUnit = "mm") = 0.002, use_HeatTransfer = true) annotation(
     Placement(transformation(origin = {30, -112}, extent = {{-16, -16}, {16, 16}})));
 protected
   Modelica.Blocks.Math.Gain minus(k = -1) annotation(

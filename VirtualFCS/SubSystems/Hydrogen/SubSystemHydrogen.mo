@@ -36,7 +36,7 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-36, -80}, extent = {{14, -14}, {-14, 14}})));
   VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-28, 50}, extent = {{-10, 10}, {10, -10}})));
-  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium) annotation(
+  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium, eta_is = 0.35) annotation(
     Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
 equation
   connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
