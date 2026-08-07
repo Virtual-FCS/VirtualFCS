@@ -10,7 +10,7 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   inner Modelica.Fluid.System system(p_ambient(displayUnit = "Pa")) annotation(
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2e5, p_H2_set = 2e5, N_cells = 180, fuelCell(A_el = A_el, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation(i_0 = 0.005), anode(R_flow = 4e7), cathode(R_flow = 1e6), redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source), subSystemAir(compressor(compressor(eta = 0.9)), lambda = 1.7)) annotation(
+  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2e5, p_H2_set = 2e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation(i_0 = 0.005), A_el = A_el, G_cool = 1500, cathode(R_flow = 1e6), anode(R_flow = 4e7)), subSystemAir(compressor(compressor(eta = 0.9)), lambda = 1.7), subSystemHydrogen(V_flow_HRB_min = 6e-4, RR = 1.3)) annotation(
     Placement(transformation(extent = {{-22, -22}, {22, 22}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
@@ -18,7 +18,7 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
     Placement(transformation(origin = {-40, 30}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.RealExpression Resistance(y = fcs.N_cells*0.9/scalar(I_aprox.y)) annotation(
     Placement(transformation(origin = {54, 56}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  Modelica.Blocks.Sources.CombiTimeTable I_aprox(table = [0, 20; 50, 100; 100, I_final], smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments, extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint) annotation(
+  Modelica.Blocks.Sources.CombiTimeTable I_aprox(table = [0, 20; 50, 150; 100, I_final], smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments, extrapolation = Modelica.Blocks.Types.Extrapolation.HoldLastPoint) annotation(
     Placement(transformation(origin = {94, 56}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
   connect(ground.p, resistor.n) annotation(
@@ -32,5 +32,5 @@ equation
   annotation(
     Icon,
     Documentation(info = "<html><head></head><body>This example demonstrates the setup for a fuel cell system to generate a polarization curve. The fuel cell stack is connected to subsystems for hydrogen, air, and cooling. The electrical load is provided by a ramp voltage source that sweeps the current domain over a period of 500 seconds.&nbsp;</body></html>"),
-    experiment(StopTime = 150, Interval = 1, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
+    experiment(StopTime = 150, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
 end PolarizeFuelCellStack;

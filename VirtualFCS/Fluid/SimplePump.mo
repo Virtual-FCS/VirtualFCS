@@ -29,7 +29,7 @@ equation
   // heatPort not used
   LossPower = 0;
   // Power is equal volumetric flow times pressure difference
-  power = (pin_p.v - pin_n.v)*(pin_n.i);
+  power = (pin_p.v - pin_n.v)*(pin_p.i);
   power = (u/medium_out.d) * (port_b.p-port_a.p) / eta_is;
   pin_p.i + pin_n.i = 0;
 
