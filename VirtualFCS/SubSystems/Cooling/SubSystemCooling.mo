@@ -22,7 +22,7 @@ model SubSystemCooling
     Placement(transformation(origin = {-30, 0}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.RealExpression targetStackT(y = T_stack_set) annotation(
     Placement(transformation(origin = {110, 60}, extent = {{10, -10}, {-10, 10}})));
-  Modelica.Blocks.Continuous.LimPID PI_stack(Td = 0, yMin = 0.01, controllerType = Modelica.Blocks.Types.SimpleController.PI, k = -10, Ti = 60, yMax = 100, strict = false) annotation(
+  Modelica.Blocks.Continuous.LimPID PI_stack(Td = 0, yMin = 0.0001, controllerType = Modelica.Blocks.Types.SimpleController.PI, k = -10, Ti = 60, yMax = 0.35, strict = false) annotation(
     Placement(transformation(origin = {82, 60}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Continuous.LimPID P_coolant(controllerType = Modelica.Blocks.Types.SimpleController.P, yMax = 0, yMin = -1000000, k = 100000) annotation(
     Placement(transformation(origin = {-60, 40}, extent = {{-10, -10}, {10, 10}})));

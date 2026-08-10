@@ -7,13 +7,13 @@ model FuelCell
   import SI = Modelica.Units.SI;
   // Parameters
   replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceConstant v_source "Open-circuit voltage" annotation(
-    Placement(transformation(origin = {-46, 110}, extent = {{-18, -18}, {18, 18}}, rotation = 180))) constrainedby BaseVSource;
+    Placement(transformation(origin = {-46, 110}, extent = {{-18, -18}, {18, 18}}, rotation = 180)), choicesAllMatching = true) constrainedby BaseVSource;
   replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic "Internal resistance" annotation(
-    Placement(transformation(origin = {48, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseOhmic;
+    Placement(transformation(origin = {48, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseOhmic;
   replaceable VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport annotation(
-    Placement(transformation(origin = {102, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseMassTransportLoss;
+    Placement(transformation(origin = {102, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseMassTransportLoss;
   replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossNone activation annotation(
-    Placement(transformation(origin = {2, 110}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseActivationLoss;
+    Placement(transformation(origin = {2, 110}, extent = {{-18, 18}, {18, -18}})), choicesAllMatching = true) constrainedby BaseActivationLoss;
   inner parameter Integer N_cells = 42 "Number of cells in the stack";
   inner parameter Modelica.Units.SI.Area A_el = 0.41 "Area of the fuel cell electrode (m^2)";
   parameter Modelica.Units.SI.ThermalConductance G_cool = 8000 "Thermal conductance of coolant in FC stack (W/K)";
@@ -26,14 +26,14 @@ model FuelCell
   constant SI.MolarMass M_O2 = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "Molar mass of oxygen";
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
   // Convenience variables (Used by inner models)
-  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = anode.port_b.p;
-  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = cathode.port_b.p*cathode.medium.X[Media.CathodeAir.Oxygen];
+  inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = (anode.port_a.p + anode.port_b.p)/2;
+  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = (cathode.port_a.p + cathode.port_b.p)/2*cathode.medium.X[Media.CathodeAir.Oxygen];
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   inner Real phi = cathode.medium.phi "check mol/mass fraction";
   // Outputs
   Real eta_stack_HHV(unit = "100") "Higher heating value efficiency of fuel cell stack";
   Real eta_stack_LHV(unit = "100") "Lower heating value efficiency of fuel cell stack";
-  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 292.15, fixed = true)) annotation(
+  Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 293.15, fixed = true)) annotation(
     Placement(transformation(origin = {-47, -57}, extent = {{-17, -17}, {17, 17}})));
   replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{28, -28}, {-28, 28}}, rotation = 90)));
@@ -43,7 +43,7 @@ model FuelCell
     Placement(transformation(origin = {-100, 120}, extent = {{18, 18}, {-18, -18}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalConductor(G = G_cool) annotation(
     Placement(transformation(origin = {30, -72}, extent = {{-16, -16}, {16, 16}}, rotation = -90)));
-  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 500, length = 1, diameter(displayUnit = "mm") = 0.003, use_HeatTransfer = true) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe coolantPipe(redeclare package Medium = Coolant_Medium, nParallel = 100, length = 13, diameter(displayUnit = "mm") = 0.002, use_HeatTransfer = true) annotation(
     Placement(transformation(origin = {30, -112}, extent = {{-16, -16}, {16, 16}})));
 protected
   Modelica.Blocks.Math.Gain minus(k = -1) annotation(
