@@ -3,9 +3,9 @@ within VirtualFCS.Media;
 partial model PartialCondensingMixture
   extends Modelica.Media.Interfaces.PartialMedium(
     final singleState=false,
-    final reducedX = true,
-    final fixedX = false,
-    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX
+    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
+    reducedX = true,
+    fixedX = false
   );
   
   constant Modelica.Units.SI.MolarMass MMX[nS] "Molar masses of substances";
@@ -26,26 +26,27 @@ partial model PartialCondensingMixture
     state.T = T,
     state.Xi = Xi
     ) "Base properties of medium"
-    // TODO add g/l compositions for monitoring? RR's beta?
+    Modelica.Units.SI.MassFraction beta = vaporisationRatio(state) "Mass vaporisation rate";
+    Modelica.Units.SI.MassFraction X_liq[nX] = liquidMassFractions(state) "Liquid mass fractions";
+    Modelica.Units.SI.MassFraction X_gas[nX] = gasMassFractions(state) "Gas mass fractions";
+    // TODO place molar properties in protected section to reduce overhead? Too much back & forth mass-molar going on...
   end BaseProperties;
   
   function moleToMassFractions "Return mass fractions X from mole fractions"
     extends Modelica.Icons.Function;
-    input SI.MoleFraction moleFractions[:] "Mole fractions of mixture";
-    output SI.MassFraction X[size(moleFractions, 1)] "Mass fractions of mixture";
+    input SI.MoleFraction Xmol[nX] "Mole fractions of mixture";
+    output SI.MassFraction X[nX] "Mass fractions of mixture";
   algorithm
-    X := moleFractions.*MMX/(moleFractions*MMX);
+    X := Xmol.*MMX/(Xmol*MMX);
     annotation (smoothOrder=5);
   end moleToMassFractions;
 
   function massToMoleFractions "Return mole fractions from mass fractions X"
     extends Modelica.Icons.Function;
-    input SI.MassFraction X[:] "Mass fractions of mixture";
-    output SI.MoleFraction moleFractions[size(X, 1)] "Mole fractions of mixture";
-  protected
-    SI.MolarMass Mmix = 1 / (X*(1 ./MMX)) "Molar mass of mixture";
+    input SI.MassFraction X[nX] "Mass fractions of mixture";
+    output SI.MoleFraction Xmol[nX] "Mole fractions of mixture";
   algorithm
-    moleFractions := Mmix*(X./MMX);
+    Xmol := (X./MMX)/(X*(1./MMX));
     annotation (smoothOrder=5);
   end massToMoleFractions;
   
@@ -66,7 +67,7 @@ partial model PartialCondensingMixture
 
   redeclare function extends molarMass
   protected
-    Modelica.Units.SI.MolarMass X[nX];
+    Modelica.Units.SI.MassFraction X[nX];
   algorithm
     X  := cat(1, state.Xi, {1-sum(state.Xi)});
     MM := 1 / sum(X ./ MMX);
@@ -114,6 +115,7 @@ partial model PartialCondensingMixture
     algorithm
       offset := sum({X[i]*(1-iK[i])/(iK[i] + beta*(1-iK[i])) for i in 1:nX});
     end rachford_rice;
+  
   algorithm
     beta_max := max(iK)/(max(iK)-1);
     beta_min := min(iK)/(min(iK)-1);
@@ -126,6 +128,89 @@ partial model PartialCondensingMixture
     input ThermodynamicState state;
     output Real iK[nX];
   end invEquilibria;
+  
+  function gasMolarFractions
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.MoleFraction beta "Vaporisation ratio";
+    input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
+    input Real[nX] iK "Inverted equilibrium constants";
+    output Modelica.Units.SI.MoleFraction[nX] Xmol_G "Gas molar compositions";
+  algorithm
+    if beta < 0 then
+      Xmol_G := Xmol./iK /sum(Xmol./iK);
+    elseif beta > 1 then
+      Xmol_G := Xmol;
+    else
+      Xmol_G := Xmol ./ (iK + beta*(-iK.+1));
+    end if;
+  end gasMolarFractions;
+  
+  function gasMassFractions
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state;
+    output Modelica.Units.SI.MassFraction[nX] X_gas;
+  protected
+    Real iK = invEquilibria(state);
+    Modelica.Units.SI.MassFraction X = cat(1, state.Xi, {1-sum(state.Xi)});
+    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(X);
+    Modelica.Units.SI.MoleFraction beta = flashBeta(Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_gas = gasMolarFractions(beta, Xmol, iK);
+  algorithm
+    X_gas := moleToMassFractions(Xmol_gas);
+  end gasMassFractions;
+  
+  function liquidMolarFractions
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.MoleFraction beta "Vaporisation ratio";
+    input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
+    input Real[nX] iK "Inverted equilibrium constants";
+    output Modelica.Units.SI.MoleFraction[nX] Xmol_L "Liquid molar compositions";
+  algorithm
+    if beta < 0 then
+      Xmol_G := Xmol;
+    elseif beta > 1 then
+      Xmol_G := Xmol*iK /(Xmol*iK);
+    else
+      Xmol_G := (iK.*Xmol) ./ (iK + beta*(-iK.+1));
+    end if;
+  end liquidMolarFractions;
+  
+  function liquidMassFractions
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state;
+    output Modelica.Units.SI.MassFraction[nX] X_liq;
+  protected
+    Real iK = invEquilibria(state);
+    Modelica.Units.SI.MassFraction X = cat(1, state.Xi, {1-sum(state.Xi)});
+    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(X);
+    Modelica.Units.SI.MoleFraction beta = flashBeta(Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_liq = liquidMolarFractions(beta, Xmol, iK);
+  algorithm
+    X_liq := moleToMassFractions(Xmol_liq);
+  end liquidMassFractions;
+
+  function vaporisationRatio
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state;
+    output Modelica.Units.SI.MassFraction beta_mass;
+  protected
+    Modelica.Units.SI.MassFraction[nX] X = cat(1, state.Xi, {1-sum(state.Xi)});
+    Modelica.Units.SI.MoleFraction[nX] Xmol = massToMoleFractions(X);
+    Real iK[nX] = invEquilibria(state);
+    Modelica.Units.SI.MoleFraction beta_mol = flashBeta(Xmol, iK);
+    Modelica.Units.SI.MoleFraction[nX] Xmol_G;
+    Modelica.Units.SI.MolarMass MMG "Molar mass for gas phase";
+  algorithm
+    if beta_mol <= 0 then
+      beta_mass := 0;
+    elseif beta_mol >= 1 then
+      beta_mass := 1;
+    else
+      Xmol_G := gasMolarFractions(beta_mol, Xmol, iK);
+      MMG := Xmol_G*MMX;
+      beta_mass := beta_mol * MMG/molarMass(state);
+    end if;
+  end vaporisationRatio;
   
   partial function specificHeatCapacityCpofGas
     extends Modelica.Icons.Function;
