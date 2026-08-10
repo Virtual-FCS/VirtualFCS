@@ -127,7 +127,7 @@ package CathodeAir "Medium model for cathodic air"
   
   redeclare function extends molarMass
   protected
-    Modelica.Units.SI.MolarMass X[nX];
+    Modelica.Units.SI.MassFraction X[nX];
   algorithm
     X := cat(1, state.Xi, {1-sum(state.Xi)});
     MM := 1 / sum(X ./ MMs);
