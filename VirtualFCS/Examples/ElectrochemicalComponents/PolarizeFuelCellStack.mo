@@ -5,12 +5,14 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
   parameter Modelica.Units.SI.Area A_el = 0.03 "Electrode Area (m^2)";
   parameter Modelica.Units.SI.Current I_final = 370.0 "Final step current [A]" annotation(
     Placement(visible = false, transformation(extent = {{0, 0}, {0, 0}})));
+  
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
-  replaceable package Cathode_Medium = Modelica.Media.Air.MoistAir;
+  replaceable package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
+  
   inner Modelica.Fluid.System system(p_ambient(displayUnit = "Pa")) annotation(
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2e5, p_H2_set = 2e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation(i_0 = 0.005), A_el = A_el, G_cool = 1500, cathode(R_flow = 1e6), anode(R_flow = 4e7)), subSystemAir(compressor(compressor(eta = 0.9)), lambda = 1.7), subSystemHydrogen(V_flow_HRB_min = 6e-4, RR = 1.3)) annotation(
+  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2e5, p_H2_set = 2e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation(i_0 = 0.005), A_el = A_el, G_cool = 1500, cathode(R_flow = 1e6), anode(R_flow = 4e7)), subSystemAir(lambda = 1.7), subSystemHydrogen(V_flow_HRB_min = 6e-4, RR = 1.3), redeclare package Cathode_Medium = Cathode_Medium) annotation(
     Placement(transformation(extent = {{-22, -22}, {22, 22}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
