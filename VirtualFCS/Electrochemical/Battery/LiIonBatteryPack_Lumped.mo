@@ -19,6 +19,7 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   // Coefficients for open-circuit voltage calculation
   // LFP
   parameter Modelica.Units.SI.Voltage V_chem_max = 3.65;
+  Real C_rate = pin_p.i / C_bat_pack "Cycle rate";
   Modelica.Units.SI.Voltage a1 = 3.25;
   Real b1 = -1e-4; // Should be V/degC
   Modelica.Units.SI.Voltage c1 = -0.08;

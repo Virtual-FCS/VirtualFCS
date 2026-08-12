@@ -18,6 +18,9 @@ model FuelCell
   inner parameter Modelica.Units.SI.Area A_el = 0.41 "Area of the fuel cell electrode (m^2)";
   parameter Modelica.Units.SI.ThermalConductance G_cool = 8000 "Thermal conductance of coolant in FC stack (W/K)";
   // Constants
+  constant Modelica.Units.SI.SpecificEnergy H2HHV = 142e6 "(J/kg) Hydrogen low heating value";
+  constant Modelica.Units.SI.SpecificEnergy H2LHV = 120e6 "(J/kg) Hydrogen low heating value";
+  constant Real eta_max = 70. "Maximum system efficiency to avoid spurious peak efficiencies due to current step changes";
   constant Modelica.Units.SI.MolarHeatCapacity R = Modelica.Constants.R "Universal gas constant";
   constant Modelica.Units.SI.FaradayConstant F = Modelica.Constants.F "Faraday constant";
   final constant Integer n = 2 "Electrons exchanged in reaction";
@@ -53,8 +56,9 @@ protected
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow electricPower annotation(
     Placement(transformation(origin = {0, -28}, extent = {{-18, -18}, {18, 18}}, rotation = -90)));
 equation
-  eta_stack_HHV = multiSensor.v/N_cells/1.482*100;
-  eta_stack_LHV = multiSensor.v/N_cells/1.254*100;
+  eta_stack_HHV = min(multiSensor.power / (max((anode_in.m_flow + anode_out.m_flow), 1e-10) * H2HHV)*100, eta_max);
+  eta_stack_LHV = min(multiSensor.power / (max((anode_in.m_flow + anode_out.m_flow), 1e-10) * H2LHV)*100, eta_max);
+
   connect(mass_transport.n, pin_p) annotation(
     Line(points = {{120, 110}, {120, 150}, {60, 150}}, color = {0, 0, 255}));
   connect(anode.port_a, anode_in) annotation(
