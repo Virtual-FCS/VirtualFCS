@@ -1,6 +1,6 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Electrochemical.Hydrogen.AmmoniaCracker;
 
-model AmmoniaCrackerTest
+model AmmoniaCrackerTestOld
 
   extends Modelica.Icons.Example;
 
@@ -13,7 +13,7 @@ model AmmoniaCrackerTest
   parameter Modelica.Units.SI.Temperature T_in_degC = 550 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Temperature T_in = T_in_degC + 273.15 "Inlet temperature (K)";
 
-  Fluid.AmmoniaCracker ammoniaCracker(T_in_degC = T_in_degC)  annotation(
+  Electrochemical.Hydrogen.AmmoniaCracker.AmmoniaCrackerOld ammoniaCracker(T_in_degC = T_in_degC)  annotation(
     Placement(transformation(origin = {13, 5}, extent = {{-23, -23}, {23, 23}})));
 
   Modelica.Fluid.Sources.FixedBoundary cracked_gas_sink (
@@ -36,4 +36,4 @@ equation
     Line(points = {{36, 10}, {76, 10}}, color = {0, 127, 255}));
   connect(ammonia_source.ports[1], ammoniaCracker.inlet_nh3_feed) annotation(
     Line(points = {{-60, 10}, {-10, 10}}, color = {0, 127, 255}));
-end AmmoniaCrackerTest;
+end AmmoniaCrackerTestOld;

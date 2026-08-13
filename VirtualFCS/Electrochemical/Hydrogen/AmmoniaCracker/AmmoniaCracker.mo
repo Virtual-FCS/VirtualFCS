@@ -1,14 +1,13 @@
-within VirtualFCS.Fluid;
+within VirtualFCS.Electrochemical.Hydrogen.AmmoniaCracker;
 
-model AmmoniaCracker_2 "Ammonia cracker model based on a tube and shell configuration with catalyst-covered outer tube walls for ammonia decomposition reaction. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
+model AmmoniaCracker "Ammonia cracker model based on a tube and shell configuration with catalyst-covered outer tube walls for ammonia decomposition reaction. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
   // Import relevant packages
   // Initialize ideal gas Medium objects for the different species
   import Modelica.Media.IdealGases.SingleGases;
   // Define media types
-  replaceable package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
+  replaceable package AmmoniaMedium = Media.NH3Cracked;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
-  
   // Define interface
   Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}})));
@@ -205,7 +204,6 @@ equation
   inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   inlet_nh3_feed.p = P_tot[1];
   inlet_nh3_feed.Xi_outflow = {mol_frac_N2[1], mol_frac_H2[1]};
-  
   outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   outlet_cracked_gas.p = P_out;
   outlet_cracked_gas.m_flow = mf_NH3;
@@ -213,4 +211,4 @@ equation
 // outlet.Xi_outflow is the vector of independent mass fractions (length = Medium.nXi = nX-1)
 //outlet_cracked_gas.Xi_outflow = X_full[1:Medium.nXi];
 // this component is the state-setter for pressure:
-end AmmoniaCracker_2;
+end AmmoniaCracker;

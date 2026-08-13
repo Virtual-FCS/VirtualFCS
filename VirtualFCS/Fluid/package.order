@@ -1,5 +1,3 @@
-AmmoniaCracker
-AmmoniaCracker_2
 CompressorInterface
 Compressor
 CompressorSimple
@@ -20,3 +18,5 @@ HeatExchangerInterface
 HeatExchanger
 MixingVolume
 UsersGuide
+PSAInterface
+PSASimple
