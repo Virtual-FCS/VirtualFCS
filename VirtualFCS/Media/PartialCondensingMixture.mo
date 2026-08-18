@@ -17,25 +17,42 @@ partial model PartialCondensingMixture
   end ThermodynamicState;
   
   redeclare model extends BaseProperties(final standardOrderComponents = true,
-    d = density(state),
-    h = specificEnthalpy(state),
-    u = specificInternalEnergy(state),
+    d = 1/(beta/d_gas + (1-beta)/d_liq),
+    h = beta*h_gas + (1-beta)*h_liq,
+    u = beta*u_gas + (1-beta)*u_liq,
     MM = molarMass(state),
-    R_s = gasConstant(state),
+    R_s = Modelica.Constants.R / MM_gas,
     state.p = p,
     state.T = T,
     state.Xi = Xi
     ) "Base properties of medium"
-    Modelica.Units.SI.MassFraction beta = vaporisationRatio(state) "Mass vaporisation rate";
-    Modelica.Units.SI.MassFraction X_liq[nX] = liquidMassFractions(state) "Liquid mass fractions";
-    Modelica.Units.SI.MassFraction X_gas[nX] = gasMassFractions(state) "Gas mass fractions";
-    // TODO place molar properties in protected section to reduce overhead? Too much back & forth mass-molar going on...
-  end BaseProperties;
+    Modelica.Units.SI.MassFraction beta = beta_mol * MM_gas/MM "Mass vaporisation rate";
+    Modelica.Units.SI.MassFraction X_liq[nX] = moleToMassFractions(Xmol_liq) "Liquid mass fractions";
+    Modelica.Units.SI.MassFraction X_gas[nX] = moleToMassFractions(Xmol_gas) "Gas mass fractions";
+    Modelica.Units.SI.MolarMass MM_liq = MMX*Xmol_liq "Molar mass of liquid phase";
+    Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas "Molar mass of gas phase";
+
+    // The following functions are specific to the fluid and need to be specified in child classes
+    Modelica.Units.SI.Density d_liq = liquidDensity(state) "Density of liquid phase";
+    Modelica.Units.SI.Density d_gas = gasDensity(state) "Density of gas phase";
+    Modelica.Units.SI.SpecificEnthalpy h_liq = liquidSpecificEnthalpy(state) "Specific enthalpy of liquid phase";
+    Modelica.Units.SI.SpecificEnthalpy h_gas = gasSpecificEnthalpy(state) "Specific enthalpy of gas phase";
+    Modelica.Units.SI.SpecificEnergy u_liq = liquidSpecificInternalEnergy(state) "Specific internal energy of liquid phase";
+    Modelica.Units.SI.SpecificEnergy u_gas = gasSpecificInternalEnergy(state) "Specific internal energy of gas phase";
   
+  protected // These helper variables are hidden to avoid cluttering the model
+    Real iK[nX] = invertedKs(state) "Inverted equilibrium constants";
+    Modelica.Units.SI.MoleFraction beta_mol = flashVaporisation(state.X, iK) "Generalised vaporisation ratio";
+    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(X);
+    Modelica.Units.SI.MoleFraction Xmol_liq = liquidMolarFractions(beta_mol, Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_gas = gasMolarFractions(beta_mol, Xmol, iK);
+  end BaseProperties;
+
+
   function moleToMassFractions "Return mass fractions X from mole fractions"
     extends Modelica.Icons.Function;
-    input SI.MoleFraction Xmol[nX] "Mole fractions of mixture";
-    output SI.MassFraction X[nX] "Mass fractions of mixture";
+    input Modelica.Units.SI.MoleFraction Xmol[nX] "Mole fractions of mixture";
+    output Modelica.Units.SI.MassFraction X[nX] "Mass fractions of mixture";
   algorithm
     X := Xmol.*MMX/(Xmol*MMX);
     annotation (smoothOrder=5);
@@ -43,13 +60,14 @@ partial model PartialCondensingMixture
 
   function massToMoleFractions "Return mole fractions from mass fractions X"
     extends Modelica.Icons.Function;
-    input SI.MassFraction X[nX] "Mass fractions of mixture";
-    output SI.MoleFraction Xmol[nX] "Mole fractions of mixture";
+    input Modelica.Units.SI.MassFraction X[nX] "Mass fractions of mixture";
+    output Modelica.Units.SI.MoleFraction Xmol[nX] "Mole fractions of mixture";
   algorithm
-    Xmol := (X./MMX)/(X*(1./MMX));
+    Xmol := (X./MMX)/(X*(1.0./MMX));
     annotation (smoothOrder=5);
   end massToMoleFractions;
-  
+
+
   redeclare function extends temperature
   algorithm
     T := state.T;
@@ -72,7 +90,8 @@ partial model PartialCondensingMixture
     X  := cat(1, state.Xi, {1-sum(state.Xi)});
     MM := 1 / sum(X ./ MMX);
   end molarMass;
-  
+
+
   redeclare function extends setState_pTX "Set state with pressure, temperature, composition"
   algorithm
     state.p := p;
@@ -95,165 +114,273 @@ partial model PartialCondensingMixture
     state.Xi := X[1:nXi];
     state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 200, u_max = 1000);
   end setState_phX;
-  
-  function flashBeta
+
+
+  function flashVaporisation
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.MoleFraction X[nX] "Mole Fractions";
+    input Modelica.Units.SI.MoleFraction X_mol[nX] "Mole Fractions";
     input Real iK[nX] "Inverted equilibrium constants, XL[i] = iK[i]*XG[i]";
-    output Real beta "Generalised gas fraction";
+    output Real beta_mol "Generalised gas fraction";
   protected
     Real beta_max "Upper bound for Rachford-Rice";
     Real beta_min "Lower bound for Rachford-Rice";
     Real beta_eps "Numerical assistance";
 
     function rachford_rice
-      extends Modelica.Icons.Function;
-      input Real beta "Generalised gas fraction";
-      input Modelica.Units.SI.MoleFraction X[nX] "Mole Fractions";
-      input Real iK[nX] "Inverted equilibrium constants, XL[i] = iK[i]*XG[i]";
-      output Real offset;
+      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+      input Modelica.Units.SI.MoleFraction X_mol[nX] "Mole Fractions";
+      input Real iK[nX] "Inverted equilibrium constants";
     algorithm
-      offset := sum({X[i]*(1-iK[i])/(iK[i] + beta*(1-iK[i])) for i in 1:nX});
+      y := sum({X_mol[i]*(1-iK[i])/(iK[i] + u*(1-iK[i])) for i in 1:nX});
     end rachford_rice;
   
   algorithm
     beta_max := max(iK)/(max(iK)-1);
     beta_min := min(iK)/(min(iK)-1);
     beta_eps := 1E-9*(beta_max - beta_min);
-    beta := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function rachford_rice(X=X, iK=iK), u_min = beta_min+beta_eps, u_max = beta_max-beta_eps);
-  end flashBeta;
-
-  partial function invEquilibria "Inverted equilibrium constants"
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state;
-    output Real iK[nX];
-  end invEquilibria;
-  
-  function gasMolarFractions
-    extends Modelica.Icons.Function;
-    input Modelica.Units.SI.MoleFraction beta "Vaporisation ratio";
-    input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
-    input Real[nX] iK "Inverted equilibrium constants";
-    output Modelica.Units.SI.MoleFraction[nX] Xmol_G "Gas molar compositions";
-  algorithm
-    if beta < 0 then
-      Xmol_G := Xmol./iK /sum(Xmol./iK);
-    elseif beta > 1 then
-      Xmol_G := Xmol;
-    else
-      Xmol_G := Xmol ./ (iK + beta*(-iK.+1));
-    end if;
-  end gasMolarFractions;
-  
-  function gasMassFractions
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state;
-    output Modelica.Units.SI.MassFraction[nX] X_gas;
-  protected
-    Real iK = invEquilibria(state);
-    Modelica.Units.SI.MassFraction X = cat(1, state.Xi, {1-sum(state.Xi)});
-    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(X);
-    Modelica.Units.SI.MoleFraction beta = flashBeta(Xmol, iK);
-    Modelica.Units.SI.MoleFraction Xmol_gas = gasMolarFractions(beta, Xmol, iK);
-  algorithm
-    X_gas := moleToMassFractions(Xmol_gas);
-  end gasMassFractions;
-  
-  function liquidMolarFractions
-    extends Modelica.Icons.Function;
-    input Modelica.Units.SI.MoleFraction beta "Vaporisation ratio";
-    input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
-    input Real[nX] iK "Inverted equilibrium constants";
-    output Modelica.Units.SI.MoleFraction[nX] Xmol_L "Liquid molar compositions";
-  algorithm
-    if beta < 0 then
-      Xmol_G := Xmol;
-    elseif beta > 1 then
-      Xmol_G := Xmol*iK /(Xmol*iK);
-    else
-      Xmol_G := (iK.*Xmol) ./ (iK + beta*(-iK.+1));
-    end if;
-  end liquidMolarFractions;
-  
-  function liquidMassFractions
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state;
-    output Modelica.Units.SI.MassFraction[nX] X_liq;
-  protected
-    Real iK = invEquilibria(state);
-    Modelica.Units.SI.MassFraction X = cat(1, state.Xi, {1-sum(state.Xi)});
-    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(X);
-    Modelica.Units.SI.MoleFraction beta = flashBeta(Xmol, iK);
-    Modelica.Units.SI.MoleFraction Xmol_liq = liquidMolarFractions(beta, Xmol, iK);
-  algorithm
-    X_liq := moleToMassFractions(Xmol_liq);
-  end liquidMassFractions;
+    beta_mol := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function rachford_rice(X_mol=X_mol, iK=iK), u_min = beta_min+beta_eps, u_max = beta_max-beta_eps);
+  end flashVaporisation;
 
   function vaporisationRatio
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
     output Modelica.Units.SI.MassFraction beta_mass;
   protected
-    Modelica.Units.SI.MassFraction[nX] X = cat(1, state.Xi, {1-sum(state.Xi)});
-    Modelica.Units.SI.MoleFraction[nX] Xmol = massToMoleFractions(X);
-    Real iK[nX] = invEquilibria(state);
+    Modelica.Units.SI.MoleFraction[nX] Xmol = massToMoleFractions(cat(1, state.Xi, {1-sum(state.Xi)}));
+    Real iK[nX] = invertedKs(state);
     Modelica.Units.SI.MoleFraction beta_mol = flashBeta(Xmol, iK);
     Modelica.Units.SI.MoleFraction[nX] Xmol_G;
-    Modelica.Units.SI.MolarMass MMG "Molar mass for gas phase";
+    Modelica.Units.SI.MolarMass MM_gas "Molar mass for gas phase";
   algorithm
     if beta_mol <= 0 then
       beta_mass := 0;
     elseif beta_mol >= 1 then
       beta_mass := 1;
     else
-      Xmol_G := gasMolarFractions(beta_mol, Xmol, iK);
-      MMG := Xmol_G*MMX;
-      beta_mass := beta_mol * MMG/molarMass(state);
+      Xmol_gas := gasMolarFractions(beta_mol, Xmol, iK);
+      MM_gas := Xmol_gas*MMX;
+      beta_mass := beta_mol * MM_gas/molarMass(state);
     end if;
   end vaporisationRatio;
+
+
+  partial function invertedKs "Inverted equilibrium constants"
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state;
+    output Real iK[nX];
+  end invertedKs;
+
+
+  function gasMolarFractions
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.MoleFraction beta_mol "Vaporisation ratio";
+    input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
+    input Real[nX] iK "Inverted equilibrium constants";
+    output Modelica.Units.SI.MoleFraction[nX] Xmol_gas "Gas molar compositions";
+  algorithm
+    if beta_mol < 0 then
+      Xmol_gas := Xmol./iK /sum(Xmol./iK);
+    elseif beta_mol > 1 then
+      Xmol_gas := Xmol;
+    else
+      Xmol_gas := Xmol ./ (iK + beta_mol*(-iK.+1));
+    end if;
+  end gasMolarFractions;
   
-  partial function specificHeatCapacityCpofGas
+  function liquidMolarFractions
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    output Modelica.Units.SI.SpecificHeatCapacity cp;
-  end specificHeatCapacityCpofGas;
+    input Modelica.Units.SI.MoleFraction beta_mol "Vaporisation ratio";
+    input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
+    input Real[nX] iK "Inverted equilibrium constants";
+    output Modelica.Units.SI.MoleFraction[nX] Xmol_liq "Liquid molar compositions";
+  algorithm
+    if beta_mol < 0 then
+      Xmol_liq := Xmol;
+    elseif beta_mol > 1 then
+      Xmol_liq := Xmol.*iK /(Xmol*iK);
+    else
+      Xmol_liq := (iK.*Xmol) ./ (iK + beta_mol*(-iK.+1));
+    end if;
+  end liquidMolarFractions;
+
+
+  function gasConstant "Gas constant for the gas phase"
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state "Thermodynamic state record";
+    output Modelica.Units.SI.SpecificHeatCapacity R_s "Gas constant of the gas phase";
+  protected
+    import Modelica.Constants.R;
+    Real iK[nX] = invertedKs(state) "Inverted equilibrium constants";
+    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(cat(1, state.Xi, {1-sum(state.Xi)})) "Molar fractions";
+    Modelica.Units.SI.MoleFraction beta_mol = flashVaporisation(Xmol, iK) "Generalised vaporisation ratio";
+    Modelica.Units.SI.MoleFraction[nX] Xmol_gas = gasMolarFractions(beta_mol, Xmol, iK) "Molar fractions in gas phase";
+    Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas "Average molar mass of gas phase";
+  algorithm
+    R_s := R / MM_gas;
+  end gasConstant;
+
   
-  partial function specificHeatCapacityCpofLiquid
+  function flashEquilibrium
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    output Modelica.Units.SI.SpecificHeatCapacity cp;
-  end specificHeatCapacityCpofLiquid;
+    input ThermodynamicState state;
+    output Modelica.Units.SI.MassFraction beta;
+    output ThermodynamicState state_gas;
+    output ThermodynamicState state_liq;
+  protected
+    Real iK[nX] = invertedKs(state);
+    Modelica.Units.SI.MoleFraction Xmol[nX] = massToMoleFractions(cat(1, state.Xi, {1 - sum(state.Xi)}));
+    Modelica.Units.SI.MoleFraction beta_mol = flashVaporisation(Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_gas[nX] = gasMolarFractions(beta_mol, Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_liq[nX] = liquidMolarFractions(beta_mol, Xmol, iK);
+    Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas;
+    Modelica.Units.SI.MassFraction X_gas[nX] = moleToMassFractions(Xmol_gas);
+    Modelica.Units.SI.MassFraction X_liq[nX] = moleToMassFractions(Xmol_liq);
+  algorithm
+    beta := beta_mol * MM_gas/molarMass(state);
+    state_gas := ThermodynamicState(state.p, state.T, X_gas[1:nXi]);
+    state_liq := ThermodynamicState(state.p, state.T, X_liq[1:nXi]);
+  end flashEquilibrium;
+
+
+  partial function gasSpecificHeatCapacityCp
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state_gas "State of the gas phase, with gas compositions";
+    output Modelica.Units.SI.SpecificHeatCapacity cp_gas;
+  end gasSpecificHeatCapacityCp;
   
-  partial function specificEnthalpyofGas
+  partial function liquidSpecificHeatCapacityCp
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    output Modelica.Units.SI.SpecificEnthalpy h;
-  end specificEnthalpyofGas;
+    input ThermodynamicState state_liq "State of the liquid phase, with liquid compositions";
+    output Modelica.Units.SI.SpecificHeatCapacity cp_liq;
+  end liquidSpecificHeatCapacityCp;
+  
+  redeclare function extends specificHeatCapacityCp
+  protected
+    Modelica.Units.SI.MassFraction beta;
+    ThermodynamicState state_gas;
+    ThermodynamicState state_liq;
+  algorithm
+    (beta, state_gas, state_liq) := flashEquilibrium(state);
+    cp := beta*gasSpecificHeatCapacityCp(state_gas) + (1-beta)*liquidSpecificHeatCapacityCp(state_liq);
+  end specificHeatCapacityCp;
+  
+  redeclare function extends specificHeatCapacityCv
+    import Modelica.Constants.R;
+  protected
+    Modelica.Units.SI.MassFraction beta;
+    ThermodynamicState state_gas;
+    ThermodynamicState state_liq;
+    Modelica.Units.SI.MolarMass MM_gas;
+  algorithm
+    (beta, state_gas, state_liq) := flashEquilibrium(state);
+    MM_gas := MMX*massToMoleFractions(cat(1, state_gas.Xi, {1-sum(state_gas.Xi)}));
+    cv := beta*(gasSpecificHeatCapacityCp(state_gas)-R/MM_gas) + (1-beta)*liquidSpecificHeatCapacityCp(state_liq);
+  end specificHeatCapacityCv;
 
-  partial function specificEnthalpyofLiquid
+
+  partial function gasSpecificEnthalpy
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    output Modelica.Units.SI.SpecificEnthalpy h;
-  end specificEnthalpyofLiquid;
+    input ThermodynamicState state_gas "State of the gas phase, with gas compositions";
+    output Modelica.Units.SI.SpecificEnthalpy h_gas;
+  end gasSpecificEnthalpy;
 
-  partial function specificEntropyofGas
+  partial function liquidSpecificEnthalpy
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.Pressure p "Gas pressure";
-    output Modelica.Units.SI.SpecificEntropy s;
-  end specificEntropyofGas;
+    input ThermodynamicState state_liq "State of the liquid phase, with liquid compositions";
+    output Modelica.Units.SI.SpecificEnthalpy h_liq;
+  end liquidSpecificEnthalpy;
+  
+  redeclare function extends specificEnthalpy
+  protected
+    Modelica.Units.SI.MassFraction beta;
+    ThermodynamicState state_gas;
+    ThermodynamicState state_liq;
+  algorithm
+    (beta, state_gas, state_liq) := flashEquilibrium(state);
+    h := beta*gasSpecificEnthalpy(state_gas) + (1-beta)*liquidSpecificEnthalpy(state_liq);
+  end specificEnthalpy;
 
-  partial function specificEntropyofLiquid
+
+  partial function gasSpecificEntropy
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.Pressure p "Gas pressure";
-    output Modelica.Units.SI.SpecificEntropy s;
-  end specificEntropyofLiquid;
+    input ThermodynamicState state_gas "State of the gas phase, with gas compositions";
+    output Modelica.Units.SI.SpecificEntropy s_gas;
+  end gasSpecificEntropy;
+
+  partial function liquidSpecificEntropy
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state_liq "State of the liquid phase, with liquid compositions";
+    output Modelica.Units.SI.SpecificEntropy s_liq;
+  end liquidSpecificEntropy;
+  
+  redeclare function extends specificEntropy
+  protected
+    Modelica.Units.SI.MassFraction beta;
+    ThermodynamicState state_gas;
+    ThermodynamicState state_liq;
+  algorithm
+    (beta, state_gas, state_liq) := flashEquilibrium(state);
+    s := beta*gasSpecificEntropy(state_gas) + (1-beta)*liquidSpecificEntropy(state_liq);
+  end specificEntropy;
 
 
-  // TODO calculate thermodynamic properties; leave implementation to child classes (Shomate and the like)
-  // Have {enthalpy|entropy}of{Gas|Liquid} & combine in main functions, e.g. SpecificEnthalpy & C.
-  // Also need heatcapacity (p&c), isentropicEnthalpy
+  partial function gasDensity
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state_gas "State of the gas phase, with gas compositions";
+    output Modelica.Units.SI.Density d_gas;
+  end gasDensity;
+
+  partial function liquidDensity
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state_liq "State of the liquid phase, with liquid compositions";
+    output Modelica.Units.SI.Density d_liq;
+  end liquidDensity;
+
+  redeclare function extends density
+  protected
+    Modelica.Units.SI.MassFraction beta;
+    ThermodynamicState state_gas;
+    ThermodynamicState state_liq;
+  algorithm
+    (beta, state_gas, state_liq) := flashEquilibrium(state);
+    d := 1/(beta/gasDensity(state_gas) + (1-beta)/liquidDensity(state_liq));
+  end density;
+
+
+  redeclare function extends specificInternalEnergy
+  protected
+    Modelica.Units.SI.MassFraction beta;
+    ThermodynamicState state_gas;
+    ThermodynamicState state_liq;
+  algorithm
+    (beta, state_gas, state_liq) := flashEquilibrium(state);
+    u := specificEnthalpy(state) - state.p*(beta/gasDensity(state) + (1-beta)/liquidDensity(state));
+  end specificInternalEnergy;
+
+
+  redeclare function extends isentropicEnthalpy
+  protected
+    Modelica.Units.SI.SpecificEntropy s_ref;
+    Modelica.Units.SI.SpecificEnthalpy h_min, h_max;
+
+    function s_offset "Find offset from isoentropic conditions, u is h_out"
+      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+      input Modelica.Units.SI.SpecificEntropy s_in;
+      input Modelica.Units.SI.Pressure p_out;
+      input Modelica.Units.SI.MassFraction[nXi] Xi;
+    protected
+      Modelica.Units.SI.SpecificEntropy s_out;
+    algorithm
+      s_out := specificEntropy(setState_phX(p_out, u, Xi));
+      y := s_out - s_in;
+    end s_offset;
+  algorithm
+    h_min := specificEnthalpy(setState_pTX(refState.p, 273.15, refState.Xi));
+    h_max := specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
+    s_ref := specificEntropy(refState);
+    h_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = h_min, u_max = h_max);
+  end isentropicEnthalpy;
+
 
   redeclare function extends setSmoothState "Return thermodynamic state so that it smoothly approximates: if x > 0 then state_a else state_b"
   algorithm
