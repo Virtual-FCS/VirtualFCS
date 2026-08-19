@@ -1,59 +1,50 @@
 within VirtualFCS.Media;
 
-package CathodeAir "Medium model for cathodic air"
-  extends Modelica.Media.Interfaces.PartialMedium(
-    final ThermoStates = Modelica.Media.Interfaces.Choices.IndependentVariables.pTX,
-    final mediumName = "Cathode_air",
+package CathodeAir "Medium model for cathodic air in PEM fuel cells"
+  extends PartialCondensingMixture(
+    final mediumName = "Cathode air",
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
     final reference_X = {0.23, 0.76, 0.01},  // NB! These are MASS fractions, not molar. Oxygen is heavier, water is lighter.
-    final singleState = false,
-    final reducedX = true,
-    final fixedX = false,
     Temperature(min = 273.15, max = 500, start = 333),
-    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5));
+    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5),
+    MMX={Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM,
+         Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, 
+         Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}
+  );
 
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
   constant Integer Nitrogen = 2 "Index of nitrogen (in substanceNames, massFractions X, etc.)";
   constant Integer Water = 3 "Index of water (in substanceNames, massFractions X, etc.)";
-  constant Modelica.Units.SI.MolarMass MMs[nX] = {
-    Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM, 
-    Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, 
-    Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM} "Molar weights of the medium species";
+
 
   redeclare record extends ThermodynamicState "Thermodynamic state variables"
     extends Modelica.Icons.Record;
-    /* To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.
-     * Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.
-     * If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T).
-     * Since pure freezing or boiling water is an extremely rare case in fuel cells, we use the more convenient option.
-     */
     AbsolutePressure p "Absolute pressure of medium";
     Temperature T "Temperature of medium";
     MassFraction[nXi] Xi(start = reference_X[1:nXi]) "Independent mass fractions";
+    annotation(
+      Documentation(info = "<html><head></head><body><div>To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.</div><div>Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.</div><div>If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T), which is an onerous operation since Shomate equations are polynomials of T and would need to be solved iteratively:</div><div>this it possible but numerically onerous.</div><div>It would also be possible to calculate new direct correlations T(h), but this becomes rapidly a larger job.</div><div>Since pure freezing or boiling water is an extremely rare case in fuel cells, we use the more convenient option.</div></body></html>"));
   end ThermodynamicState;
 
-  redeclare model extends BaseProperties(final standardOrderComponents = true) "Base properties of medium"
-      Modelica.Units.SI.MoleFraction phi = relativeHumidity(state) "Relative humidity of gas phase";
-      Modelica.Units.SI.MassFraction X_l = liquidMassFraction(state) "Mass fraction in liquid phase";
-      Modelica.Units.SI.MassFraction Y[nX] = cat(1, Yi, {1-sum(Yi)}) "Full gas-phase compositions";
-      Modelica.Units.SI.AbsolutePressure p_sat = saturationPressure(state.T);
-      Modelica.Units.SI.SpecificEnthalpy h_gas = enthalpyOfGas(T, Yi[Oxygen], Yi[Nitrogen]);
-      Modelica.Units.SI.SpecificEnthalpy h_liq = enthalpyOfWater(T);
-    protected
-      Modelica.Units.SI.MassFraction Yi[nXi] = gasMassFraction(state) "Independent gas-phase compositions";
-    equation
-      d = density(state);
-      h = specificEnthalpy(state);
-      u = specificInternalEnergy(state);
-      
-      MM = molarMass(state); // Weighed average for all species, both phases
-      R_s = gasConstant(state); // Gas constant valid only for gas phase
-
-      state.p = p;
-      state.T = T;
-      state.Xi = Xi;
+  redeclare model extends BaseProperties "Base properties of cathodic air"
+      Modelica.Units.SI.MoleFraction phi = Xmol_gas[Water] / (saturationPressure(state.T)/state.p);
   end BaseProperties;
+
+
+  redeclare function flashVaporisation
+    extends Modelica.Icons.Function;
+    import Modelica.Constants.eps;
+    input Modelica.Units.SI.MoleFraction Xmol[nX] "Mole Fractions";
+    input Real iK[nX] "Inverted equilibrium constants, XL[i] = iK[i]*XG[i]";
+    output Real beta_mol "Generalised gas fraction";
+  algorithm
+    assert(abs(iK[Water]-1) > eps, "flashVaporisation: boiling point reached, Rachford-Rice is indetermined.");
+    beta_mol := (1-Xmol[Water])*iK[Water]/(iK[Water]-1);
+    annotation(
+      Documentation(info = "<html><head></head><body>We redeclare this function to use the fact that there is a single condensing phase in this model, making it possible to obtain a direct solution to the Rachford-Rice equation.</body></html>"));
+  end flashVaporisation;
+
 
   function saturationPressure "Vapour pressure of water as function of temperature"
     extends Modelica.Icons.Function;
@@ -85,273 +76,92 @@ package CathodeAir "Medium model for cathodic air"
     p := 10^5*10^(A - B/(T + C));
     dp := p*log(10)*B/(T + C)^2;
   end saturationPressure_der;
-
-
-  redeclare function extends setState_pTX "Set state with pressure, temperature, composition"
-  algorithm
-    state.p := p;
-    state.T := T;
-    state.Xi := X[1:nXi];
-  end setState_pTX;
-
-  redeclare function extends setState_phX "Set state with pressure, enthalpy, composition"
-  protected
-    function h_offset "Solve h = specificEnthalpy_pTX(p, T, X) for T with given h"
-      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
-      input AbsolutePressure p "Pressure";
-      input SpecificEnthalpy h "Specific enthalpy";
-      input MassFraction[:] X "Mass fractions of composition";
-    algorithm
-      y := specificEnthalpy_pTX(p, u, X) - h;
-    end h_offset;
-  algorithm
-    state.p := p;
-    state.Xi := X[1:nXi];
-    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 200, u_max = 1000);
-  end setState_phX;
   
-  redeclare function extends temperature
+  redeclare function extends invertedKs
   algorithm
-    T := state.T;
-  end temperature;
-  
-  redeclare function extends pressure
-  algorithm
-    p := state.p;
-  end pressure;
-  
-  redeclare function extends massFraction
-  algorithm
-    Xi := state.Xi;
-  end massFraction;
-  
-  redeclare function extends molarMass
-  protected
-    Modelica.Units.SI.MassFraction X[nX];
-  algorithm
-    X := cat(1, state.Xi, {1-sum(state.Xi)});
-    MM := 1 / sum(X ./ MMs);
-  end molarMass;
-  
-  function liquidMassFraction "Fraction of mass in liquid phase, assumed only water."
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state "Thermodynamic state record";
-    output Modelica.Units.SI.MassFraction X_l "Mass fraction in liquid phase";
-  algorithm
-    X_l := max(0.0, (1-sum(state.Xi)) - MMs[Water]/molarMass(state)*saturationPressure(state.T)/state.p);
-  end liquidMassFraction;
-
-  function gasMassFraction "Independent mass fractions in gas phase"
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state "Thermodynamic state record";
-    output Modelica.Units.SI.MassFraction[nXi] Yi "Mass fractions in gas phase";
-  algorithm
-    Yi := state.Xi[Oxygen:Nitrogen] / (1-liquidMassFraction(state));
-  end gasMassFraction;
-
-  function gasConstant "Gas constant for the gas phase"
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state "Thermodynamic state record";
-    output Modelica.Units.SI.SpecificHeatCapacity R_s "Gas constant of the gas phase";
-  protected
-    import Modelica.Constants.R;
-    Modelica.Units.SI.MassFraction[nXi] Yi "Independent mass fractions in gas phase";
-    Modelica.Units.SI.MolarMass MM_gas "Average molar mass of gas phase";
-  algorithm
-    Yi := gasMassFraction(state);
-    MM_gas := 1/(sum(Yi./MMs[Oxygen:Nitrogen]) + (1-sum(Yi))/MMs[Water]);
-    R_s := R / MM_gas;
-  end gasConstant;
-
-  redeclare function extends specificEnthalpy
-  protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-  algorithm
-    X_l := liquidMassFraction(state);
-    Yi := gasMassFraction(state);
-    h := X_l*enthalpyOfWater(state.T) + (1-X_l)*enthalpyOfGas(state.T, Yi[Oxygen], Yi[Nitrogen]);
-  end specificEnthalpy;
-  
-  function enthalpyOfWater "Helper function for enthalpy of liquid water"
-    extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T;
-    output Modelica.Units.SI.SpecificEnthalpy h_liq;
-  algorithm
-    h_liq := Shomate.enthalpy(T, Shomate.H2O_L) / MMs[Water];
-  annotation(
-      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
-  end enthalpyOfWater;
-
-  function enthalpyOfGas
-    extends Modelica.Icons.Function;    
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
-    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
-    output Modelica.Units.SI.SpecificEnthalpy h_gas;
-  protected
-    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
-  algorithm
-    h_gas := y_O2 * Shomate.enthalpy(T, Shomate.O2) / MMs[Oxygen] +
-             y_N2 * Shomate.enthalpy(T, Shomate.N2) / MMs[Nitrogen] +
-             (1-y_O2-y_N2) * Shomate.enthalpy(T, Shomate.H2O_G) / MMs[Water];
-  annotation(
-      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
-end enthalpyOfGas;
-
-  redeclare function extends specificEntropy
-  protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
-  algorithm
-    X_l := liquidMassFraction(state);
-    Yi := gasMassFraction(state);
-    s := X_l*entropyOfWater(state.T) + (1-X_l)*entropyOfGas(state.T, state.p, Yi[Oxygen], Yi[Nitrogen]);
-  end specificEntropy;
-  
-  function entropyOfWater "Helper function for entropy of liquid water"
-    extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T;
-    output Modelica.Units.SI.SpecificEntropy s_liq;
-  algorithm
-    s_liq := Shomate.entropy(T, Shomate.H2O_L) / MMs[Water];
-  annotation(
-      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
-  end entropyOfWater;
-  
-  function entropyOfGas
-    extends Modelica.Icons.Function;
-    import Modelica.Constants.R;
-    import Modelica.Constants.eps;
-    
-    input Modelica.Units.SI.Temperature T "Gas temperature";
-    input Modelica.Units.SI.Pressure p "Gas pressure";
-    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
-    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
-    output Modelica.Units.SI.SpecificEntropy s_gas;
-  protected
-    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
-    Modelica.Units.SI.MassFraction[nX] Y = {y_O2, y_N2, 1-y_O2-y_N2};
-  algorithm
-    s_gas := Y*{Shomate.entropy(T, parameters[i])/MMs[i] for i in 1:nX}
-           - R*(Y./MMs)*{log(max(Y[i], eps))+log(p/reference_p) for i in 1:nX};
-  annotation(
-      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
-  end entropyOfGas;
-
-  redeclare function extends isentropicEnthalpy
-  protected
-    function s_offset "Find offset from isoentropic conditions, u is h_out"
-      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
-      input Modelica.Units.SI.SpecificEntropy s_in;
-      input Modelica.Units.SI.Pressure p_out;
-      input Modelica.Units.SI.MassFraction[nXi] Xi;
-    protected
-      Modelica.Units.SI.SpecificEntropy s_out;
-    algorithm
-      s_out := specificEntropy(setState_phX(p_out, u, Xi));
-      y := s_out - s_in;
-    end s_offset;
-
-    Modelica.Units.SI.SpecificEntropy s_ref;
-    Modelica.Units.SI.SpecificEnthalpy h_min, h_max;
-  algorithm
-    h_min := specificEnthalpy(setState_pTX(refState.p, 273.15, refState.Xi));
-    h_max := specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
-    s_ref := specificEntropy(refState);
-    h_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = h_min, u_max = h_max);
-  end isentropicEnthalpy;
-  
-  redeclare function extends specificInternalEnergy
-  protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-  algorithm
-    X_l := liquidMassFraction(state);
-    u := specificEnthalpy(state) - state.p*(X_l/densityOfWater(state.p, state.T) + (1-X_l)/densityOfGas(state));
-  end specificInternalEnergy;
-
-  function densityOfWater
-    extends Modelica.Icons.Function;
-    import Modelica.Media.Water.IF97_Utilities.rho_pT;
-
-    input Modelica.Units.SI.AbsolutePressure p;
-    input Modelica.Units.SI.Temperature T;
-    output Modelica.Units.SI.Density d_liq "Water density";
-  algorithm
-    d_liq := rho_pT(p, T, 1); // Last "1" specifies liquid phase explicitly
-  end densityOfWater;
-  
-  function densityOfGas
-    extends Modelica.Icons.Function;
-    input ThermodynamicState state;
-    output Modelica.Units.SI.Density d_gas "Gas density";
-  algorithm
-    d_gas := state.p/(gasConstant(state)*state.T);
-  end densityOfGas;
-  
-  redeclare function extends density
-  extends Modelica.Icons.Function;
-  protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-  algorithm
-    X_l := liquidMassFraction(state);
-    d := 1 / (X_l/densityOfWater(state.p, state.T) + (1-X_l)/densityOfGas(state)); // NOTE non-linear combination
-  end density;
+    iK := {0.0, 0.0, state.p/saturationPressure(state.T)};
+  end invertedKs;
 
   function relativeHumidity
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
     output Modelica.Units.SI.MoleFraction phi;
+  protected
+    Modelica.Units.SI.MassFraction X[nX] = cat(1, state.Xi, {1-sum(state.Xi)});
+    Modelica.Units.SI.MoleFraction Xmol[nX] = massToMoleFractions(X);
+    Real iK[nX] = invertedKs(state);
+    Real beta_mol = flashVaporisation(Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_gas[nX] = gasMolarFractions(beta_mol, Xmol, iK);
   algorithm
-    phi := ((1-sum(state.Xi))-liquidMassFraction(state)) * (molarMass(state)/MMs[Water]) * (state.p/saturationPressure(state.T));
+    phi := Xmol_gas[Water]*state.p/saturationPressure(state.T);
   end relativeHumidity;
 
 
-  function specificHeatCapacityCpOfWater "Helper function for heat capacity of liquid water"
-    extends Modelica.Icons.Function;
-    input Modelica.Units.SI.Temperature T;
-    output Modelica.Units.SI.SpecificHeatCapacity cp_liq;
+  redeclare function extends gasSpecificHeatCapacityCp
+  protected
+    constant Shomate.Parameters sh[nX] = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    Modelica.Units.SI.MassFraction X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
   algorithm
-    cp_liq := Shomate.heat_capacity(T, Shomate.H2O_L) / MMs[Water];
+    cp_gas := sum(X_gas[i] * Shomate.heat_capacity(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);
+  end gasSpecificHeatCapacityCp;
+
+  redeclare function extends liquidSpecificHeatCapacityCp
+  algorithm
+    cp_liq := Shomate.heat_capacity(state_liq.T, Shomate.H2O_L) / MMX[Water];
     annotation(
     Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
-  end specificHeatCapacityCpOfWater;
-  
-  function specificHeatCapacityCpOfGas
-    extends Modelica.Icons.Function;    
-    input Modelica.Units.SI.Temperature T "Vapour temperature";
-    input Modelica.Units.SI.MassFraction y_O2 "Oxygen fraction in gas";
-    input Modelica.Units.SI.MassFraction y_N2 "Nitrogen fraction in gas";
-    output Modelica.Units.SI.SpecificHeatCapacity cp_gas;
+  end liquidSpecificHeatCapacityCp;
+
+
+  redeclare function extends gasSpecificEnthalpy
   protected
-    constant Shomate.Parameters[nX] parameters = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    constant Shomate.Parameters sh[nX] = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    Modelica.Units.SI.MassFraction X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
   algorithm
-    cp_gas := y_O2 * Shomate.heat_capacity(T, Shomate.O2) / MMs[Oxygen] +
-              y_N2 * Shomate.heat_capacity(T, Shomate.N2) / MMs[Nitrogen] +
-              (1-y_O2-y_N2) * Shomate.heat_capacity(T, Shomate.H2O_G) / MMs[Water];
+    h_gas := sum(X_gas[i] * Shomate.enthalpy(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);
+  end gasSpecificEnthalpy;
+
+  redeclare function extends liquidSpecificEnthalpy
+  algorithm
+    h_liq := Shomate.enthalpy(state_liq.T, Shomate.H2O_L) / MMX[Water];
   annotation(
-      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
-  end specificHeatCapacityCpOfGas;
+      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+  end liquidSpecificEnthalpy;
   
-  redeclare function extends specificHeatCapacityCp
+
+  redeclare function extends gasSpecificEntropy
+    import Modelica.Constants.R;
+    import Modelica.Constants.eps;
   protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+    constant Shomate.Parameters sh[nX] = {Shomate.O2, Shomate.N2, Shomate.H2O_G};
+    Modelica.Units.SI.MassFraction X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
   algorithm
-    X_l := liquidMassFraction(state);
-    Yi := gasMassFraction(state);
-    cp := specificHeatCapacityCpOfGas(state.T, Yi[Oxygen], Yi[Nitrogen])*(1-X_l) + specificHeatCapacityCpOfWater(state.T)*X_l;
-  end specificHeatCapacityCp;
+    s_gas := X_gas*{Shomate.entropy(state_gas.T, sh[i])/MMX[i] for i in 1:nX}
+           - R*(X_gas./MMX)*{log(max(X_gas[i], eps))+log(state_gas.p/reference_p) for i in 1:nX};
+  end gasSpecificEntropy;
+
+  redeclare function extends liquidSpecificEntropy
+  algorithm
+    s_liq := Shomate.entropy(state_liq.T, Shomate.H2O_L) / MMX[Water];
+  annotation(
+      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+  end liquidSpecificEntropy;
+
   
-  redeclare function extends specificHeatCapacityCv
+  redeclare function extends gasDensity
   protected
-    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
-    Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+    import Modelica.Constants.R;
+    Modelica.Units.SI.MassFraction X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
+    Modelica.Units.SI.MolarMass MM_gas = 1/sum(X_gas./MMX);
   algorithm
-    X_l := liquidMassFraction(state);
-    Yi := gasMassFraction(state);
-    cv := (specificHeatCapacityCpOfGas(state.T, Yi[Oxygen], Yi[Nitrogen])-gasConstant(state))*(1-X_l) + specificHeatCapacityCpOfWater(state.T)*X_l;
-  end specificHeatCapacityCv;
+    d_gas := state_gas.p/((R/MM_gas)*state_gas.T);
+  end gasDensity;
+  
+  redeclare function extends liquidDensity
+    import Modelica.Media.Water.IF97_Utilities.rho_pT;
+  algorithm
+    d_liq := rho_pT(state_liq.p, state_liq.T, 1); // Last "1" specifies liquid phase explicitly
+  end liquidDensity;
 
 
   redeclare function extends dynamicViscosity
@@ -386,15 +196,6 @@ end enthalpyOfGas;
   <p>Imported from Modelica.Media.Air.MoistAir, since a variable nitrogen-oxygen ratio will not have a major impact.</p>
   </html>"));
   end thermalConductivity;
-
-  redeclare function extends setSmoothState
-    "Return thermodynamic state so that it smoothly approximates: if x > 0 then state_a else state_b"
-  algorithm
-    state := ThermodynamicState(
-          p=Media.Common.smoothStep(x, state_a.p, state_b.p, x_small),
-          T=Media.Common.smoothStep(x, state_a.T, state_b.T, x_small),
-          Xi=Media.Common.smoothStep(x, state_a.Xi, state_b.Xi, x_small));
-  end setSmoothState;
 
   annotation(
     Documentation(info = "<html><head></head><body><p>

@@ -19,33 +19,33 @@ partial model PartialCondensingMixture
   redeclare model extends BaseProperties(final standardOrderComponents = true,
     d = 1/(beta/d_gas + (1-beta)/d_liq),
     h = beta*h_gas + (1-beta)*h_liq,
-    u = beta*u_gas + (1-beta)*u_liq,
+    u = h - p*(beta/d_gas+(1-beta)/d_liq),
     MM = molarMass(state),
     R_s = Modelica.Constants.R / MM_gas,
     state.p = p,
     state.T = T,
     state.Xi = Xi
     ) "Base properties of medium"
-    Modelica.Units.SI.MassFraction beta = beta_mol * MM_gas/MM "Mass vaporisation rate";
+    Modelica.Units.SI.MassFraction beta = max( min(beta_mol * MM_gas/MM, 1.0), 0.0) "Mass vaporisation rate";
     Modelica.Units.SI.MassFraction X_liq[nX] = moleToMassFractions(Xmol_liq) "Liquid mass fractions";
     Modelica.Units.SI.MassFraction X_gas[nX] = moleToMassFractions(Xmol_gas) "Gas mass fractions";
     Modelica.Units.SI.MolarMass MM_liq = MMX*Xmol_liq "Molar mass of liquid phase";
     Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas "Molar mass of gas phase";
 
     // The following functions are specific to the fluid and need to be specified in child classes
-    Modelica.Units.SI.Density d_liq = liquidDensity(state) "Density of liquid phase";
-    Modelica.Units.SI.Density d_gas = gasDensity(state) "Density of gas phase";
-    Modelica.Units.SI.SpecificEnthalpy h_liq = liquidSpecificEnthalpy(state) "Specific enthalpy of liquid phase";
-    Modelica.Units.SI.SpecificEnthalpy h_gas = gasSpecificEnthalpy(state) "Specific enthalpy of gas phase";
-    Modelica.Units.SI.SpecificEnergy u_liq = liquidSpecificInternalEnergy(state) "Specific internal energy of liquid phase";
-    Modelica.Units.SI.SpecificEnergy u_gas = gasSpecificInternalEnergy(state) "Specific internal energy of gas phase";
+    Modelica.Units.SI.Density d_liq = liquidDensity(state_liq) "Density of liquid phase";
+    Modelica.Units.SI.Density d_gas = gasDensity(state_gas) "Density of gas phase";
+    Modelica.Units.SI.SpecificEnthalpy h_liq = liquidSpecificEnthalpy(state_liq) "Specific enthalpy of liquid phase";
+    Modelica.Units.SI.SpecificEnthalpy h_gas = gasSpecificEnthalpy(state_gas) "Specific enthalpy of gas phase";
   
   protected // These helper variables are hidden to avoid cluttering the model
     Real iK[nX] = invertedKs(state) "Inverted equilibrium constants";
-    Modelica.Units.SI.MoleFraction beta_mol = flashVaporisation(state.X, iK) "Generalised vaporisation ratio";
-    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(X);
-    Modelica.Units.SI.MoleFraction Xmol_liq = liquidMolarFractions(beta_mol, Xmol, iK);
-    Modelica.Units.SI.MoleFraction Xmol_gas = gasMolarFractions(beta_mol, Xmol, iK);
+    Real beta_mol = flashVaporisation(Xmol, iK) "Generalised vaporisation ratio";
+    Modelica.Units.SI.MoleFraction Xmol[nX] = massToMoleFractions(X);
+    Modelica.Units.SI.MoleFraction Xmol_liq[nX] = liquidMolarFractions(beta_mol, Xmol, iK);
+    Modelica.Units.SI.MoleFraction Xmol_gas[nX] = gasMolarFractions(beta_mol, Xmol, iK);
+    ThermodynamicState state_gas = ThermodynamicState(p, T, X_gas[1:nXi]);
+    ThermodynamicState state_liq = ThermodynamicState(p, T, X_liq[1:nXi]);
   end BaseProperties;
 
 
@@ -105,7 +105,7 @@ partial model PartialCondensingMixture
       extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
       input AbsolutePressure p "Pressure";
       input SpecificEnthalpy h "Specific enthalpy";
-      input MassFraction[:] X "Mass fractions of composition";
+      input MassFraction X[:] "Mass fractions of composition";
     algorithm
       y := specificEnthalpy_pTX(p, u, X) - h;
     end h_offset;
@@ -116,9 +116,9 @@ partial model PartialCondensingMixture
   end setState_phX;
 
 
-  function flashVaporisation
+  replaceable function flashVaporisation
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.MoleFraction X_mol[nX] "Mole Fractions";
+    input Modelica.Units.SI.MoleFraction Xmol[nX] "Mole Fractions";
     input Real iK[nX] "Inverted equilibrium constants, XL[i] = iK[i]*XG[i]";
     output Real beta_mol "Generalised gas fraction";
   protected
@@ -128,17 +128,17 @@ partial model PartialCondensingMixture
 
     function rachford_rice
       extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
-      input Modelica.Units.SI.MoleFraction X_mol[nX] "Mole Fractions";
+      input Modelica.Units.SI.MoleFraction Xmol[nX] "Mole Fractions";
       input Real iK[nX] "Inverted equilibrium constants";
     algorithm
-      y := sum({X_mol[i]*(1-iK[i])/(iK[i] + u*(1-iK[i])) for i in 1:nX});
+      y := sum({Xmol[i]*(1-iK[i])/(iK[i] + u*(1-iK[i])) for i in 1:nX});
     end rachford_rice;
   
   algorithm
     beta_max := max(iK)/(max(iK)-1);
     beta_min := min(iK)/(min(iK)-1);
     beta_eps := 1E-9*(beta_max - beta_min);
-    beta_mol := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function rachford_rice(X_mol=X_mol, iK=iK), u_min = beta_min+beta_eps, u_max = beta_max-beta_eps);
+    beta_mol := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function rachford_rice(Xmol=Xmol, iK=iK), u_min = beta_min+beta_eps, u_max = beta_max-beta_eps);
   end flashVaporisation;
 
   function vaporisationRatio
@@ -148,8 +148,8 @@ partial model PartialCondensingMixture
   protected
     Modelica.Units.SI.MoleFraction[nX] Xmol = massToMoleFractions(cat(1, state.Xi, {1-sum(state.Xi)}));
     Real iK[nX] = invertedKs(state);
-    Modelica.Units.SI.MoleFraction beta_mol = flashBeta(Xmol, iK);
-    Modelica.Units.SI.MoleFraction[nX] Xmol_G;
+    Real beta_mol = flashVaporisation(Xmol, iK);
+    Modelica.Units.SI.MoleFraction[nX] Xmol_gas;
     Modelica.Units.SI.MolarMass MM_gas "Molar mass for gas phase";
   algorithm
     if beta_mol <= 0 then
@@ -173,33 +173,33 @@ partial model PartialCondensingMixture
 
   function gasMolarFractions
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.MoleFraction beta_mol "Vaporisation ratio";
+    import Modelica.Constants.eps;
+    input Real beta_mol "Generalised vaporisation ratio";
     input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
     input Real[nX] iK "Inverted equilibrium constants";
     output Modelica.Units.SI.MoleFraction[nX] Xmol_gas "Gas molar compositions";
+  protected
+    // Watch out for division by zero
+    Real iK_safe[nX] = {max(iK[i], eps) for i in 1:nX};
   algorithm
-    if beta_mol < 0 then
-      Xmol_gas := Xmol./iK /sum(Xmol./iK);
-    elseif beta_mol > 1 then
+    if beta_mol >= 1 then
       Xmol_gas := Xmol;
     else
-      Xmol_gas := Xmol ./ (iK + beta_mol*(-iK.+1));
+      Xmol_gas := Xmol ./ (iK_safe + beta_mol*(1.0.-iK));
     end if;
   end gasMolarFractions;
   
   function liquidMolarFractions
     extends Modelica.Icons.Function;
-    input Modelica.Units.SI.MoleFraction beta_mol "Vaporisation ratio";
+    input Real beta_mol "Generalised vaporisation ratio";
     input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
     input Real[nX] iK "Inverted equilibrium constants";
     output Modelica.Units.SI.MoleFraction[nX] Xmol_liq "Liquid molar compositions";
   algorithm
-    if beta_mol < 0 then
+    if beta_mol <= 0 then
       Xmol_liq := Xmol;
-    elseif beta_mol > 1 then
-      Xmol_liq := Xmol.*iK /(Xmol*iK);
     else
-      Xmol_liq := (iK.*Xmol) ./ (iK + beta_mol*(-iK.+1));
+      Xmol_liq := (iK.*Xmol) ./ (iK + beta_mol*(1.0.-iK));
     end if;
   end liquidMolarFractions;
 
@@ -211,8 +211,8 @@ partial model PartialCondensingMixture
   protected
     import Modelica.Constants.R;
     Real iK[nX] = invertedKs(state) "Inverted equilibrium constants";
-    Modelica.Units.SI.MoleFraction Xmol = massToMoleFractions(cat(1, state.Xi, {1-sum(state.Xi)})) "Molar fractions";
-    Modelica.Units.SI.MoleFraction beta_mol = flashVaporisation(Xmol, iK) "Generalised vaporisation ratio";
+    Modelica.Units.SI.MoleFraction Xmol[nX] = massToMoleFractions(cat(1, state.Xi, {1-sum(state.Xi)})) "Molar fractions";
+    Real beta_mol = flashVaporisation(Xmol, iK) "Generalised vaporisation ratio";
     Modelica.Units.SI.MoleFraction[nX] Xmol_gas = gasMolarFractions(beta_mol, Xmol, iK) "Molar fractions in gas phase";
     Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas "Average molar mass of gas phase";
   algorithm
@@ -229,7 +229,7 @@ partial model PartialCondensingMixture
   protected
     Real iK[nX] = invertedKs(state);
     Modelica.Units.SI.MoleFraction Xmol[nX] = massToMoleFractions(cat(1, state.Xi, {1 - sum(state.Xi)}));
-    Modelica.Units.SI.MoleFraction beta_mol = flashVaporisation(Xmol, iK);
+    Real beta_mol = flashVaporisation(Xmol, iK);
     Modelica.Units.SI.MoleFraction Xmol_gas[nX] = gasMolarFractions(beta_mol, Xmol, iK);
     Modelica.Units.SI.MoleFraction Xmol_liq[nX] = liquidMolarFractions(beta_mol, Xmol, iK);
     Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas;
@@ -354,7 +354,7 @@ partial model PartialCondensingMixture
     ThermodynamicState state_liq;
   algorithm
     (beta, state_gas, state_liq) := flashEquilibrium(state);
-    u := specificEnthalpy(state) - state.p*(beta/gasDensity(state) + (1-beta)/liquidDensity(state));
+    u := specificEnthalpy(state) - state.p*(beta/gasDensity(state_gas) + (1-beta)/liquidDensity(state_liq));
   end specificInternalEnergy;
 
 
