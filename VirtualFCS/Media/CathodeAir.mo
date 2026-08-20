@@ -11,6 +11,8 @@ package CathodeAir "Medium model for cathodic air in PEM fuel cells"
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}
   );
+  
+  import saturationPressure = Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.psat;
 
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
@@ -46,37 +48,6 @@ package CathodeAir "Medium model for cathodic air in PEM fuel cells"
   end flashVaporisation;
 
 
-  function saturationPressure "Vapour pressure of water as function of temperature"
-    extends Modelica.Icons.Function;
-    import Modelica.Math.log;
-    input Modelica.Units.SI.Temperature T;
-    output Modelica.Units.SI.AbsolutePressure p;
-  protected
-    constant Real A = 4.6543;
-    constant Real B = 1435.264;
-    constant Real C = -64.848;
-  algorithm
-    p := 10^5*10^(A - B/(T + C));
-    annotation(
-      derivative = saturationPressure_der);
-  end saturationPressure;
-
-  function saturationPressure_der
-    extends Modelica.Icons.Function;
-    import Modelica.Math.log;
-    input Modelica.Units.SI.Temperature T;
-    input Modelica.Units.SI.TemperatureSlope dT;
-    output Modelica.Units.SI.PressureSlope dp;
-  protected
-    constant Real A = 4.6543;
-    constant Real B = 1435.264;
-    constant Real C = -64.848;
-    Modelica.Units.SI.Pressure p;
-  algorithm
-    p := 10^5*10^(A - B/(T + C));
-    dp := p*log(10)*B/(T + C)^2;
-  end saturationPressure_der;
-  
   redeclare function extends invertedKs
   algorithm
     iK := {0.0, 0.0, state.p/saturationPressure(state.T)};
