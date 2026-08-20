@@ -167,7 +167,7 @@ partial model PartialCondensingMixture
   partial function invertedKs "Inverted equilibrium constants"
     extends Modelica.Icons.Function;
     input ThermodynamicState state;
-    output Real iK[nX];
+    output Real iK[nX](each min=0.0);
   end invertedKs;
 
 
