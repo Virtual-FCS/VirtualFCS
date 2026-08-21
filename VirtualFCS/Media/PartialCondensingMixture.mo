@@ -66,7 +66,28 @@ partial model PartialCondensingMixture
     Xmol := (X./MMX)/(X*(1.0./MMX));
     annotation (smoothOrder=5);
   end massToMoleFractions;
-
+  
+  function antoine "Vapour pressure according to the Antoine equation"
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.Temperature T;
+    input Real A;
+    input Modelica.Units.SI.TemperatureDifference B, C;
+    output Modelica.Units.SI.AbsolutePressure p;
+  algorithm
+    p := 10^(A - B/(T + C));
+    annotation(smoothOrder(normallyConstant = A, normallyConstant = B, normallyConstant = C) = 100);
+  end antoine;
+  
+  function clausiusClapeyron "Vapour pressure according to the Clausius Clapeyron equation"
+    extends Modelica.Icons.Function;
+    import Modelica.Constants.R;
+    input Modelica.Units.SI.Temperature T, T_boil;
+    input Modelica.Units.SI.MolarEnergy L;
+    output Modelica.Units.SI.AbsolutePressure p;
+  algorithm
+    p := reference_p * exp(-L/R * (1/T - 1/T_boil));
+    annotation(smoothOrder(normallyConstant = T_boil, normallyConstant = L) = 100);
+  end clausiusClapeyron;
 
   redeclare function extends temperature
   algorithm
