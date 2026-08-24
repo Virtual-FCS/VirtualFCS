@@ -12,7 +12,8 @@ package CathodeAir "Medium model for cathodic air in PEM fuel cells"
          Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}
   );
   
-  import saturationPressure = Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.psat;
+  import saturationPressure = Modelica.Media.Air.ReferenceMoistAir.Utilities.Water95_Utilities.psat;
+  //function saturationPressure = antoine(A=5+4.6543, B=1435.264, C=-64.848);
 
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
@@ -42,13 +43,14 @@ package CathodeAir "Medium model for cathodic air in PEM fuel cells"
     output Real beta_mol "Generalised gas fraction";
   algorithm
     assert(abs(iK[Water]-1) > eps, "flashVaporisation: boiling point reached, Rachford-Rice is indetermined.");
-    beta_mol := (1-Xmol[Water])*iK[Water]/(iK[Water]-1);
+    beta_mol := (1-Xmol[Water])*iK[Water]/max((iK[Water]-1), eps);
     annotation(
       Documentation(info = "<html><head></head><body>We redeclare this function to use the fact that there is a single condensing phase in this model, making it possible to obtain a direct solution to the Rachford-Rice equation.</body></html>"));
   end flashVaporisation;
 
 
   redeclare function extends invertedKs
+    import Modelica.Constants.eps;
   algorithm
     iK := {0.0, 0.0, state.p/saturationPressure(state.T)};
   end invertedKs;
