@@ -160,7 +160,24 @@ partial model PartialCondensingMixture
     beta_min := min(iK)/(min(iK)-1);
     beta_eps := 1E-9*(beta_max - beta_min);
     beta_mol := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function rachford_rice(Xmol=Xmol, iK=iK), u_min = beta_min+beta_eps, u_max = beta_max-beta_eps);
+    annotation(derivative = flashVaporisation_der);
   end flashVaporisation;
+  
+  replaceable function flashVaporisation_der
+    extends Modelica.Icons.Function;
+    input Modelica.Units.SI.MoleFraction Xmol[nX];
+    input Real iK[nX];
+    input Real dXmol[nX];
+    input Real diK[nX];
+    output Real dbeta_mol = flashVaporisation(Xmol, iK);
+  protected
+    Real D[nX] = {iK[i] + beta_mol*(1-iK[i]) for i in 1:nX} "Convenience variable";
+    Real S = sum(Xmol[i]*(1-iK[i])^2/D[i]^2 for i in 1:nX) "Convenience variable";
+  algorithm
+    dbeta_mol := (sum((1-iK[i])/D[i]*dXmol[i] - Xmol[i]/D[i]^2*diK[i] for i in 1:nX)) / S;
+  annotation(
+      Documentation(info = "<html><head></head><body>Differential of the Rachford-Rice relation for flash equilibria:<div>h(β) = Σ<sub>i</sub> z<sub>i</sub>/(iK<sub>i</sub>+β(1-iK<sub>i</sub>) = 0</div><div><br></div><div>Having defined the convenience variables:</div><div>D<sub>i</sub>=iK<sub>i</sub>+β(1-iK<sub>i</sub>)</div><div>S = Σ<sub>i</sub> (1-iK<sub>i</sub>)<sup>2</sup>z<sub>i</sub>/D<sub>i</sub></div><div><sub><br></sub></div><div>The differential is then dβ = Σ<sub>i</sub>(1-iK<sub>i</sub>)/(S*D<sub>i</sub>) dz<sub>i</sub> - z<sub>i</sub>/(S*D<sub>i</sub><sup>2</sup>) diK<sub>i</sub></div><div><sub><br></sub></div><div>If you need to verify this, either find pen and paper, or use Maxima and enter <pre>diff( z*(1-iK)/(iK+b*(1-iK)));</pre></div></body></html>"));
+end flashVaporisation_der;
 
   function vaporisationRatio
     extends Modelica.Icons.Function;
