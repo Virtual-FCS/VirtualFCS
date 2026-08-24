@@ -257,7 +257,7 @@ partial model PartialCondensingMixture
     Modelica.Units.SI.MassFraction X_gas[nX] = moleToMassFractions(Xmol_gas);
     Modelica.Units.SI.MassFraction X_liq[nX] = moleToMassFractions(Xmol_liq);
   algorithm
-    beta := beta_mol * MM_gas/molarMass(state);
+    beta := max(0.0, min(1.0, beta_mol * MM_gas/molarMass(state)));
     state_gas := ThermodynamicState(state.p, state.T, X_gas[1:nXi]);
     state_liq := ThermodynamicState(state.p, state.T, X_liq[1:nXi]);
   end flashEquilibrium;
