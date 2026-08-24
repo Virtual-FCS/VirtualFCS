@@ -381,8 +381,9 @@ partial model PartialCondensingMixture
 
   redeclare function extends isentropicEnthalpy
   protected
-    Modelica.Units.SI.SpecificEntropy s_ref;
-    Modelica.Units.SI.SpecificEnthalpy h_min, h_max;
+    Modelica.Units.SI.SpecificEntropy s_ref = specificEntropy(refState);
+    Modelica.Units.SI.SpecificEnthalpy h_min = specificEnthalpy(setState_pTX(refState.p, 200, refState.Xi));
+    Modelica.Units.SI.SpecificEnthalpy h_max = specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
 
     function s_offset "Find offset from isoentropic conditions, u is h_out"
       extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
@@ -396,9 +397,6 @@ partial model PartialCondensingMixture
       y := s_out - s_in;
     end s_offset;
   algorithm
-    h_min := specificEnthalpy(setState_pTX(refState.p, 273.15, refState.Xi));
-    h_max := specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
-    s_ref := specificEntropy(refState);
     h_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = h_min, u_max = h_max);
   end isentropicEnthalpy;
 
