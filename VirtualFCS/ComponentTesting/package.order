@@ -24,6 +24,7 @@ ManifoldTest
 MixingVolumeTest
 MultiManifoldTest
 NH3CrackedTest
+PEMELfluidTest
 PreHeaterTest
 PressureRegulatorTest
 PressureRegulatorTest_v2
@@ -39,3 +40,4 @@ SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemHydrogenWithFuelCellTest
+WetHydrogenTest
