@@ -14,6 +14,7 @@ partial model PartialCondensingMixture
     Modelica.Units.SI.AbsolutePressure p "Absolute pressure of medium";
     Modelica.Units.SI.Temperature T "Temperature of medium";
     Modelica.Units.SI.MassFraction[nXi] Xi(start=reference_X[1:nXi]) "Mass fractions (= (component mass)/total mass  m_i/m)";
+      annotation( Documentation(info = "<html><head></head><body><div>To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.</div><div>Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.</div><div>If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T), which is an onerous operation since Shomate equations are polynomials of T and would need to be solved iteratively:</div><div>this it possible but numerically onerous.</div><div>It would also be possible to calculate new direct correlations T(h), but this becomes rapidly a larger job.</div><div>Since pure freezing or boiling water is an extremely rare case in the systems we study, we use the more convenient option.</div></body></html>"));
   end ThermodynamicState;
   
   redeclare model extends BaseProperties(final standardOrderComponents = true,

@@ -18,16 +18,6 @@ package WetHydrogen "Media model for hydrogen containing water vapour"
   constant Integer Hydrogen = 1 "Index of hydrogen (in substanceNames, massFractions X, etc.)";
   constant Integer Water = 2 "Index of water (in substanceNames, massFractions X, etc.)";
 
-
-  redeclare record extends ThermodynamicState "Thermodynamic state variables"
-    extends Modelica.Icons.Record;
-    AbsolutePressure p "Absolute pressure of medium";
-    Temperature T "Temperature of medium";
-    MassFraction[nXi] Xi(start = reference_X[1:nXi]) "Independent mass fractions";
-    annotation(
-      Documentation(info = "<html><head></head><body><div>To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.</div><div>Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.</div><div>If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T), which is an onerous operation since Shomate equations are polynomials of T and would need to be solved iteratively:</div><div>this it possible but numerically onerous.</div><div>It would also be possible to calculate new direct correlations T(h), but this becomes rapidly a larger job.</div><div>Since pure freezing or boiling water is an extremely rare case in fuel cells, we use the more convenient option.</div></body></html>"));
-  end ThermodynamicState;
-
   redeclare model extends BaseProperties "Base properties of wet hydrogen"
       Modelica.Units.SI.MoleFraction phi = Xmol_gas[Water] / (saturationPressure(state.T)/state.p);
   end BaseProperties;
