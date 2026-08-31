@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Media.Examples;
 
 model NH3CrackedTest
   //X_ambient = X_start + {-x_NH3_conversion, x_NH3_conversion*0.5, x_NH3_conversion*3}

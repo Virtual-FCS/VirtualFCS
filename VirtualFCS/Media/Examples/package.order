@@ -1,2 +1,9 @@
+CathodeAirTest
+CathodeAirH2Test
+CathodeAirCCTest
+CrackedAmmoniaTest
 TestAirState
 NH3Test
+NH3CrackedTest
+PEMELfluidTest
+WetHydrogenTest

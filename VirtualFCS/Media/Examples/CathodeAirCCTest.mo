@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Media.Examples;
 
 model CathodeAirCCTest
   extends Modelica.Media.Examples.Utilities.PartialTestModel(redeclare package Medium = Media.CathodeAir_CC, fixedMassFlowRate(X_ambient = X_start+ {-x_H2O_increase*0.2, -x_H2O_increase*0.8, x_H2O_increase}, T_ambient = T_source), ambient(p_ambient = P_ambient));

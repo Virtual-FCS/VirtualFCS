@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Media.Examples;
 
 model WetHydrogenTest
   extends Modelica.Icons.Example;

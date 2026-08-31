@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Media.Examples;
 
 model CathodeAirTest
   extends Modelica.Icons.Example;
