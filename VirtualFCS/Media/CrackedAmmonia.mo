@@ -4,8 +4,8 @@ model CrackedAmmonia
   extends PartialCondensingMixture(
     final mediumName = "Cracked ammonia",
     final substanceNames = {"ammonia", "hydrogen", "nitrogen"}, 
-    final reference_X = {0.9, 0.1},
-    Temperature(min = 273.15, max = 500, start = 333),// TODO check
+    final reference_X = {0.8, 0.1, 0.1},
+    Temperature(min = 195.5, max = 405.4, start = 298),
     AbsolutePressure(min = 3E4, max = 1E6, start = 1E5),
     MMX={Modelica.Media.IdealGases.Common.SingleGasesData.NH3.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
@@ -29,7 +29,7 @@ model CrackedAmmonia
     output Real beta_mol "Generalised gas fraction";
   algorithm
     assert(abs(iK[Ammonia]-1) > eps, "flashVaporisation: boiling point reached, Rachford-Rice is indetermined.");
-    beta_mol := (1-Xmol[Ammonia])*iK[Water]/max((iK[Ammonia]-1), eps);
+    beta_mol := (1-Xmol[Ammonia])*iK[Ammonia]/max((iK[Ammonia]-1), eps);
     annotation(
       Documentation(info = "<html><head></head><body>We redeclare this function to use the fact that there is a single condensing phase in this model, making it possible to obtain a direct solution to the Rachford-Rice equation.</body></html>"));
   end flashVaporisation;
@@ -50,9 +50,9 @@ model CrackedAmmonia
     cp_gas := sum(X_gas[i] * Shomate.heat_capacity(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);
   end gasSpecificHeatCapacityCp;
 
-  redeclare function extends liquidSpecificHeatCapacityCp // FIXME Perry 2-214
+  redeclare function extends liquidSpecificHeatCapacityCp
   algorithm
-    cp_liq := Shomate.heat_capacity(state_liq.T, Shomate.H2O_L) / MMX[Water];
+    cp_liq := Shomate.heat_capacity(state_liq.T, Shomate.NH3_L) / MMX[Ammonia];
     annotation(
     Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
   end liquidSpecificHeatCapacityCp;
@@ -66,9 +66,9 @@ model CrackedAmmonia
     h_gas := sum(X_gas[i] * Shomate.enthalpy(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);
   end gasSpecificEnthalpy;
 
-  redeclare function extends liquidSpecificEnthalpy // FIXME Perry 2-214
+  redeclare function extends liquidSpecificEnthalpy
   algorithm
-    h_liq := Shomate.enthalpy(state_liq.T, Shomate.H2O_L) / MMX[Water];
+    h_liq := Shomate.enthalpy(state_liq.T, Shomate.NH3_L) / MMX[Ammonia];
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
   end liquidSpecificEnthalpy;
@@ -85,9 +85,9 @@ model CrackedAmmonia
            - R*(X_gas./MMX)*{log(max(X_gas[i], eps))+log(state_gas.p/reference_p) for i in 1:nX};
   end gasSpecificEntropy;
 
-  redeclare function extends liquidSpecificEntropy // FIXME Perry 2-214
+  redeclare function extends liquidSpecificEntropy
   algorithm
-    s_liq := Shomate.entropy(state_liq.T, Shomate.H2O_L) / MMX[Water];
+    s_liq := Shomate.entropy(state_liq.T, Shomate.NH3_L) / MMX[Ammonia];
   annotation(
       Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
   end liquidSpecificEntropy;
@@ -102,10 +102,13 @@ model CrackedAmmonia
     d_gas := state_gas.p/((R/MM_gas)*state_gas.T);
   end gasDensity;
   
-  redeclare function extends liquidDensity // FIXME Perry 2-97
-    import Modelica.Media.Water.IF97_Utilities.rho_pT;
+  redeclare function extends liquidDensity
+  protected
+    constant Real C[4] = {3.5383, 0.25443, 653.15, 0.1898};
   algorithm
-    d_liq := rho_pT(state_liq.p, state_liq.T, 1); // Last "1" specifies liquid phase explicitly
-  end liquidDensity;
+    d_liq := C[1]/C[2]^(1+(1-state_liq.T/C[3])^C[4]) / 1000 * MMX[Ammonia];
+  annotation(
+      Documentation(info = "<html><head></head><body>Correlation from Perry's Chemical Engineer's Handbook, 7th edition, table 2-30.<div>The original formula produces results in kmol/m<sup>3</sup>&nbsp;as a function of temperatures only, which are corrected to kg/m<sup>3</sup>&nbsp;in the code.</div></body></html>"));
+end liquidDensity;
 
 end CrackedAmmonia;
