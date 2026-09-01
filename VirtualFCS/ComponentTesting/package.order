@@ -37,3 +37,4 @@ SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemHydrogenWithFuelCellTest
+PSATest

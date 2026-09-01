@@ -1,32 +1,156 @@
 within VirtualFCS.Fluid;
 
 model PSASimple
-  extends VirtualFCS.Fluid.PSAInterface;
-  parameter Real sep_eff "Product separation efficiency";
-  
-  redeclare package Medium_1 = VirtualFCS.Media.NH3Cracked "Medium for inlet";
-  redeclare package Medium_2 = Modelica.Media.IdealGases.SingleGases.H2 "Medium for purified gas outlet" ;
-  redeclare package Medium_3 = VirtualFCS.Media.NH3Cracked "Medium for other gases outlet";
+  extends Fluid.PSAInterface;
+
+  parameter Real sep_eff = 0.9
+    "Fraction of inlet H2 recovered in product";
+
+  redeclare package Medium_feed =
+      VirtualFCS.Media.NH3Cracked
+    "Medium for inlet";
+
+  redeclare package Medium_product =
+      Modelica.Media.IdealGases.SingleGases.H2
+    "Medium for purified gas outlet";
+
+  redeclare package Medium_tail =
+      VirtualFCS.Media.NH3Cracked
+    "Medium for other gases outlet";
+
+  Medium_feed.MassFraction Xi_test[2];
+
+protected
+
+  Medium_feed.ThermodynamicState feedState;
+
+  Real X_H2;
+  Real X_N2;
+  Real X_NH3;
+
+  Real X_H2_tail;
+  Real X_N2_tail;
+  Real X_NH3_tail;
+
+  Modelica.Units.SI.MassFlowRate m_flow_product;
+  Modelica.Units.SI.MassFlowRate m_flow_tail;
+
+  Modelica.Units.SI.Temperature T_feed;
 
 equation
-// Species mass balance using pure H2 as product stream
-feed.Xi_outflow[2] = inStream(feed.Xi_outflow[2]);
+  Xi_test = inStream(feed.Xi_outflow);
+  //------------------------------------------------------------------
+  // Incoming feed state
+  //------------------------------------------------------------------
 
-product.m_flow = feed.m_flow * inStream(feed.Xi_outflow[1]) * sep_eff;
+  feedState =
+    Medium_feed.setState_phX(
+      feed.p,
+      //-9.8e6,
+      inStream(feed.h_outflow),
+      inStream(feed.Xi_outflow));
 
-tail.m_flow = feed.m_flow - product.m_flow;
-
-tail.Xi_outflow[1] = (feed.m_flow*inStream(feed.Xi_outflow[1]) - product.m_flow) / tail.m_flow;
-tail.Xi_outflow[2] = (feed.m_flow*inStream(feed.Xi_outflow[2])) / tail.m_flow;
+  T_feed = Medium_feed.temperature(feedState);
 
 
-// Momentum balance no pressure drop
-product.p = feed.p;
-tail.p = feed.p;
+  //------------------------------------------------------------------
+  // Feed composition
+  //
+  // NH3Cracked:
+  //   Xi[1] = H2
+  //   Xi[2] = N2
+  //   X_NH3 = 1 - X_H2 - X_N2
+  //------------------------------------------------------------------
 
-// Energy balance: Simplifying initial assumption, constant specific enthalpies (not correct as they vary with composition)
-feed.h_outflow = inStream(feed.h_outflow);
-product.h_outflow = inStream(feed.h_outflow);
-tail.h_outflow = inStream(feed.h_outflow);
+  X_H2 = inStream(feed.Xi_outflow[1]);
+  X_N2 = inStream(feed.Xi_outflow[2]);
+  X_NH3 = 1 - X_H2 - X_N2;
 
+
+  //------------------------------------------------------------------
+  // Define the feed-port outflow stream.
+  //
+  // This is the stream that would leave through the feed port in
+  // case of reverse flow. It does not affect the normal feed->outlet
+  // operation.
+  //------------------------------------------------------------------
+
+  feed.h_outflow =
+    Medium_feed.specificEnthalpy(feedState);
+
+  feed.Xi_outflow[1] = X_H2;
+  feed.Xi_outflow[2] = X_N2;
+
+
+  //------------------------------------------------------------------
+  // H2 separation
+  //------------------------------------------------------------------
+
+  m_flow_product =
+    sep_eff * feed.m_flow * X_H2;
+
+  m_flow_tail =
+    feed.m_flow - m_flow_product;
+
+
+  //------------------------------------------------------------------
+  // Outlet mass flows
+  //------------------------------------------------------------------
+
+  product.m_flow = -m_flow_product;
+  tail.m_flow = -m_flow_tail;
+
+
+  //------------------------------------------------------------------
+  // Outlet pressures
+  //------------------------------------------------------------------
+
+  product.p = feed.p;
+  //tail.p = feed.p;
+
+
+  //------------------------------------------------------------------
+  // Product: pure H2 at feed temperature
+  //------------------------------------------------------------------
+
+  product.h_outflow =
+    Medium_product.specificEnthalpy(
+      Medium_product.setState_pTX(
+        product.p,
+        T_feed,
+        {1.0}));
+
+
+  //------------------------------------------------------------------
+  // Tail composition
+  //------------------------------------------------------------------
+
+  X_H2_tail =
+    (1 - sep_eff) * feed.m_flow * X_H2 / m_flow_tail;
+
+  X_N2_tail =
+    feed.m_flow * X_N2 / m_flow_tail;
+
+  X_NH3_tail =
+    feed.m_flow * X_NH3 / m_flow_tail;
+
+
+  //------------------------------------------------------------------
+  // Tail: same temperature as feed
+  //------------------------------------------------------------------
+
+  tail.h_outflow =
+    Medium_tail.specificEnthalpy(
+      Medium_tail.setState_pTX(
+        tail.p,
+        T_feed,
+        {X_H2_tail, X_N2_tail, X_NH3_tail}));
+
+
+  //------------------------------------------------------------------
+  // Tail composition
+  //------------------------------------------------------------------
+
+  tail.Xi_outflow[1] = X_H2_tail;
+  tail.Xi_outflow[2] = X_N2_tail;
 end PSASimple;
