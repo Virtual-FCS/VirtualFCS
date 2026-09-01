@@ -10,8 +10,6 @@ model Compressor "Compressor with constant isentropic efficiency"
   parameter Modelica.Units.SI.AngularVelocity RPM_nom(displayUnit="rpm") = 8377.580409572781 "Nominal rounds per minute";
 
   Modelica.Units.SI.AngularVelocity RPM(displayUnit="rpm") = RPM_nom * sqrt(sensor.power/P_nom) "Actual rounds per minute";
-
-  Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
   Modelica.Units.SI.MassFlowRate m_flow(min=0, start=1e-4, fixed=true) "Mass flow through the unit";
 
   Modelica.Units.SI.EnthalpyFlowRate Hin  = port_a.m_flow * inStream(port_a.h_outflow) "Enthalpy inflow at inlet";
@@ -22,6 +20,8 @@ model Compressor "Compressor with constant isentropic efficiency"
   Modelica.Mechanics.Rotational.Sensors.MultiSensor sensor annotation(
     Placement(transformation(origin = {-28, -20}, extent = {{-10, -10}, {10, 10}})));
 protected
+  Medium.ThermodynamicState state_in = Medium.setState_phX(port_a.p, inStream(port_a.h_outflow), inStream(port_a.Xi_outflow));
+  Medium.ThermodynamicState state_out = Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow);
   Modelica.Units.SI.KinematicViscosity m_flow_relax=1 "Relaxation constant for mass flow, time scale << 1 s";
   Modelica.Mechanics.Rotational.Components.Damper damper(final d = P_nom/RPM_nom^2) annotation(
     Placement(transformation(origin = {10, -20}, extent = {{10, -10}, {-10, 10}})));
@@ -31,13 +31,7 @@ equation
   port_a.m_flow = m_flow;
   port_b.m_flow = -m_flow "No-holdup model - what goes in leaves immediately";
   port_a.Xi_outflow = inStream(port_a.Xi_outflow) "Compositions do not change";
-  medium_in.Xi = port_a.Xi_outflow "Compositions do not change";
-  medium_out.Xi = medium_in.Xi "Compositions do not change";
-  port_b.Xi_outflow = medium_out.Xi "Compositions do not change";
-  medium_in.p = port_a.p "Bind inlet pressures to medium";
-  medium_out.p = port_b.p "Bind outlet pressures to medium";
-  medium_in.h = inStream(port_a.h_outflow) "Inlet specific enthalpy from upstream";
-  medium_out.h = port_b.h_outflow "Outlet specific enthalpy bound to port_b";
+  port_b.Xi_outflow  = port_a.Xi_outflow "Compositions do not change";
   port_a.h_outflow = inStream(port_a.h_outflow) "Not supposed to be used, but must be set to balance equations";
   
   if noEvent(abs(port_b.m_flow) > eps) then
@@ -45,8 +39,8 @@ equation
   else
     port_b.h_outflow = port_a.h_outflow "Handle case of no flow, or Hout definition will not be invertible";
   end if;
-  TheatPort = medium_out.T "Heat port temperature set at outlet temperature";
-  m_flow_relax * der(m_flow) = Hin + sensor.power*eta - m_flow*Medium.isentropicEnthalpy(medium_out.p, medium_in.state) "Avoid spurious branch with dynamic m_flow";
+  TheatPort = Medium.temperature(state_out) "Heat port temperature set at outlet temperature";
+  m_flow_relax * der(m_flow) = Hin + sensor.power*eta - m_flow*Medium.isentropicEnthalpy(port_b.p, state_in) "Avoid spurious branch with dynamic m_flow";
 
   connect(flange_a, inertia.flange_a) annotation(
     Line(points = {{-100, 0}, {-90, 0}, {-90, -20}, {-80, -20}}));
