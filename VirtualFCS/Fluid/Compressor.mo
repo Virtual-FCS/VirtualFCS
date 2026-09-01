@@ -22,7 +22,7 @@ model Compressor "Compressor with constant isentropic efficiency"
   Modelica.Mechanics.Rotational.Sensors.MultiSensor sensor annotation(
     Placement(transformation(origin = {-28, -20}, extent = {{-10, -10}, {10, 10}})));
 protected
-  Modelica.Units.SI.KinematicViscosity nu_m_flow=1 "Relaxation constant for mass flow";
+  Modelica.Units.SI.KinematicViscosity m_flow_relax=1 "Relaxation constant for mass flow, time scale << 1 s";
   Modelica.Mechanics.Rotational.Components.Damper damper(final d = P_nom/RPM_nom^2) annotation(
     Placement(transformation(origin = {10, -20}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Mechanics.Rotational.Components.Fixed fixed annotation(
@@ -46,7 +46,7 @@ equation
     port_b.h_outflow = port_a.h_outflow "Handle case of no flow, or Hout definition will not be invertible";
   end if;
   TheatPort = medium_out.T "Heat port temperature set at outlet temperature";
-  nu_m_flow * der(m_flow) = Hin + sensor.power*eta - m_flow*Medium.isentropicEnthalpy(medium_out.p, medium_in.state) "Avoid spurious branch with dynamic m_flow";
+  m_flow_relax * der(m_flow) = Hin + sensor.power*eta - m_flow*Medium.isentropicEnthalpy(medium_out.p, medium_in.state) "Avoid spurious branch with dynamic m_flow";
 
   connect(flange_a, inertia.flange_a) annotation(
     Line(points = {{-100, 0}, {-90, 0}, {-90, -20}, {-80, -20}}));
