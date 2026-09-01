@@ -31,5 +31,5 @@ equation
     Line(points = {{30, -20}, {20, -20}, {20, 0}}));
 annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>Test model for the electrically heated fluid pipe.</p></html>"));
+annotation(Documentation(info = "<html><p>This test connects the pre-heater between fluid boundaries at 506625 Pa inlet and 476228 Pa outlet. The pipe length is 100 m and the water medium and 25 V nominal battery use model defaults.</p><p>No explicit flow, fluid temperature, or time-varying excitation is prescribed. The experiment runs from 0 to 600 s with 0.5 s output intervals.</p></html>"));
 end PreHeaterTest;

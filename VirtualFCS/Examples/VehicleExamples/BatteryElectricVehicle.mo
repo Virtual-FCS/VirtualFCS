@@ -32,5 +32,5 @@ equation
     Line(points = {{-36, 0}, {-28, 0}, {-28, 0}, {-26, 0}}, color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 25000, Tolerance = 1e-6, Interval = 1));
-annotation(Documentation(info = "<html><p>Example battery-electric vehicle model using the VirtualFCS battery powertrain.</p></html>"));
+annotation(Documentation(info = "<html><p>This example drives the Mirai vehicle profile with the NEDC drive cycle and a battery-electric powertrain. The battery starts at SOC = 0.9 with 200 Ah capacity, nominal voltage 320 V, and operating limits of 300 V to 360 V.</p><p>Vehicle velocity from the drive cycle determines the traction power demand.</p></html>"));
 end BatteryElectricVehicle;

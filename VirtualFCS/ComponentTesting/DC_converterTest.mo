@@ -25,5 +25,5 @@ equation
                                       color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
-annotation(Documentation(info = "<html><p>Test model for the DC converter.</p></html>"));
+annotation(Documentation(info = "<html><p>This test applies a constant 100 A current reference to the DC converter while two default battery systems are connected to its DC sides.</p></html>"));
 end DC_converterTest;

@@ -58,5 +58,5 @@ equation
     Line(points = {{20, 70}, {4, 70}, {4, 22}}, color = {0, 0, 127}));
   annotation(
     experiment(StopTime = 400, StartTime = 0, Tolerance = 1e-06, Interval = 0.1));
-annotation(Documentation(info = "<html><p>Alternative test model for the humidifier component.</p></html>"));
+annotation(Documentation(info = "<html><p>This alternative humidifier test uses slow sinusoidal excitation: wet flow has 0.0004 kg/s offset and 0.00003 kg/s amplitude at 0.05 mHz; temperature has 343 K offset and 10 K amplitude at 0.04 mHz; humidity has 0.75 offset and 0.25 amplitude at 0.03 mHz.</p><p>The dry feed is 0.0004 kg/s at 353.15 K with X = {0.24, 0.76, 0}; outlet pressures are 2e5 Pa and 1.8e5 Pa. </p></html>"));
 end HumidifierTest_2;

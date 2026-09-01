@@ -23,5 +23,5 @@ equation
 annotation(
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
   __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>Test model for the manifold component.</p></html>"));
+annotation(Documentation(info = "<html><p>This test feeds a 1 m3 manifold with 1 kg/s and a constant reaction rate of 5. The outlet pressure is set to ambient, the reaction coefficients are nu = {-0.5, 0, 1}, and no heat port is used.</p></html>"));
 end ManifoldTest;

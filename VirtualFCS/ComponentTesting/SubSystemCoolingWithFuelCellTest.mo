@@ -65,5 +65,5 @@ equation
     Line(points = {{-10, -80}, {-60, -80}, {-60, 60}, {-30, 60}}, color = {0, 0, 255}));
 annotation(
     experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 0.833333));
-annotation(Documentation(info = "<html><p>Test model for the cooling subsystem coupled to a fuel cell.</p></html>"));
+annotation(Documentation(info = "<html><p>This test couples the cooling subsystem to a 42-cell fuel cell. It uses lambda = 3, 2.5e5 Pa air pressure, 7.5e-5 kg/s air flow, 320 K stack temperature, 323.15 K coolant start temperature, and a 24 V supply.</p><p>The load resistance steps from 30 ohm to 50 ohm at 250 s.</p></html>"));
 end SubSystemCoolingWithFuelCellTest;

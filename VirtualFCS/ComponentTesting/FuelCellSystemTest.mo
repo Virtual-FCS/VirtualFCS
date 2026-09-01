@@ -29,5 +29,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.012),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>Test model for the integrated fuel-cell system.</p></html>"));
+annotation(Documentation(info = "<html><p>This integrated fuel-cell system test ramps the electrical load resistance from 3 ohm to 0.01 ohm over 20 s, starting at 20 s. </p><p>The cathode and anode flow resistances are 10000 and the compressor starts at 0.01 kg/s. </p></html>"));
 end FuelCellSystemTest;

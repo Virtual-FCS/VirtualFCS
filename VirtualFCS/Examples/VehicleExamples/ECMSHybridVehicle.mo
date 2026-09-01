@@ -46,5 +46,5 @@ equation
   connect(vehicleProfile.pin_n, eCMSPowerTrain.pin_n) annotation (Line(points={{16.9,
           -10.5},{26.5,-10.5},{26.5,-9},{38.2,-9}},        color={0,0,255}));
   annotation(experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-04, Interval = 1));
-annotation(Documentation(info = "<html><p>Hybrid vehicle example using equivalent-consumption minimization for power management.</p></html>"));
+annotation(Documentation(info = "<html><p>This example applies the NEDC drive cycle to a Mirai-profile hybrid vehicle controlled by equivalent-consumption minimization. The battery starts at SOC = 0.95 with 50 Ah capacity, nominal voltage 320 V, and limits of 250 V to 360 V.</p></html>"));
 end ECMSHybridVehicle;

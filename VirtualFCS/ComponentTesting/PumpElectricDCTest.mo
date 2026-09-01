@@ -85,5 +85,5 @@ annotation (
       Interval=0.5,
       Tolerance=1e-06,
       __Dymola_Algorithm="Dassl"));
-annotation(Documentation(info = "<html><p>Test model for the electrically driven DC pump.</p></html>"));
+annotation(Documentation(info = "<html><p>This test drives an electric DC pump with a trapezoidal control beginning at 50 s. The signal has amplitude 1, rise and fall times of 100 s, width 100 s, and a 400 s period.</p><p>The water circuit uses five parallel channels, a 1 m by 0.003 m inlet pipe, a 0.2 m by 0.01 m downstream pipe, and a 60 V nominal battery supply with 58 V to 62 V limits.</p></html>"));
 end PumpElectricDCTest;

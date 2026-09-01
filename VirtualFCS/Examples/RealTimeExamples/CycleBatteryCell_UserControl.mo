@@ -55,6 +55,6 @@ equation
   connect(limiter.y, signalCurrent.i) annotation (
     Line(points = {{-26, 84}, {0, 84}, {0, 84}, {0, 84}}, color = {0, 0, 127}));
   annotation (
-    Documentation(info = "<html><head></head><body>This example demonstrates the galvanostatic operation of a Li-ion battery cell in real time over a period of 30 seconds with the current set by the user via the up and down arrows on the keyboard.&nbsp;<div><br></div><div>Requires that the user load the library: Modelica_DeviceDrivers</div></body></html>"),
+    Documentation(info = "<html><p>This real-time example lets the user control Li-ion cell current with the keyboard up and down keys. The current is limited to -4.4 A to +4.4 A.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for keyboard input and real-time scheduling.</p></html>"),
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell_UserControl;

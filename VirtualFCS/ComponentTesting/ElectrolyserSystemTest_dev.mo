@@ -17,5 +17,5 @@ equation
   annotation (experiment(StopTime = 20, Interval = 0.5, __Dymola_Algorithm = "Dassl"),
     Icon(graphics = {Text(origin = {-1, 1}, extent = {{19, 13}, {-19, -13}}, textString = "DEV")}));
 
-annotation(Documentation(info = "<html><p>Development test model for the electrolyser system.</p></html>"));
+annotation(Documentation(info = "<html><p>Development test for the electrolyser system. The applied voltage steps from 80 V to 90 V at 10 s.</p><p>Fluid operating boundaries are not set locally and therefore use the development model defaults.</p></html>"));
 end ElectrolyserSystemTest_dev;

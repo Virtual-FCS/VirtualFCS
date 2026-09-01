@@ -33,6 +33,6 @@ equation
     Line(points = {{-10, 40}, {-12, 40}, {-12, 20}, {-11, 20}}, color = {0, 0, 255}));
   annotation(
     Icon,
-    Documentation(info = "<html><head></head><body>This example demonstrates the setup for a fuel cell system to generate a polarization curve. The fuel cell stack is connected to subsystems for hydrogen, air, and cooling. The electrical load is provided by a ramp voltage source that sweeps the current domain over a period of 500 seconds.&nbsp;</body></html>"),
+    Documentation(info = "<html><p>This example generates a reference fuel-cell polarization curve by stepping the electrical load through 20 A at 0 s, 150 A at 50 s, and 370 A at 100 s.</p><p>The stack has 180 cells and is connected to hydrogen, air, and cooling subsystems. The nominal operating conditions are 2e5 Pa on the reactant sides, 333.15 K coolant, air lambda = 1.7, and hydrogen recirculation ratio = 1.3.</p></html>"),
     experiment(StopTime = 150, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
 end PolarizeFuelCellStack;

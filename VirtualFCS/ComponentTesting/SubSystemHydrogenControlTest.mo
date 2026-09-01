@@ -23,5 +23,5 @@ equation
   connect(sine.y, subSystemHydrogenControl.signalInterface_FC) annotation (
     Line(points = {{-58, 30}, {-42, 30}, {-42, 12}, {-22, 12}}, color = {0, 0, 127}));
 annotation (experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>Test model for hydrogen subsystem control.</p></html>"));
+annotation(Documentation(info = "<html><p>This test exercises hydrogen subsystem control with a fuel-cell signal varying sinusoidally at 0.1 Hz (amplitude 100, offset 300). Hydrogen control inputs use cosine signals at 0.2 Hz (amplitude 15, offset 45) and 0.3 Hz (amplitude 20, offset 50), enabled from 2 s.</p></html>"));
 end SubSystemHydrogenControlTest;

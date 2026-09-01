@@ -25,5 +25,5 @@ equation
     Line(points = {{0, -20}, {0, -60}}, color = {0, 127, 255}));
 annotation(
     experiment(StartTime = 0, StopTime = 2, Tolerance = 1e-06, Interval = 0.004));
-annotation(Documentation(info = "<html><p>Test model for the heat exchanger.</p></html>"));
+annotation(Documentation(info = "<html><p>This test runs 1 kg/s water at 353.15 K through one side of a 50-cell heat exchanger while 1 kg/s air flows on the other side. The sink pressure and temperature conditions use Boundary_pT defaults.</p></html>"));
 end HeatExchangerTest;

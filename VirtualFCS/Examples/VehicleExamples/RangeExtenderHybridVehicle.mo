@@ -43,5 +43,5 @@ equation
   connect(vehicleProfile.pin_n, rangeExtenderPowerTrain.pin_n) annotation (
     Line(points={{16.9,-10.5},{42,-10.5},{42,-10},{40,-10}},    color = {0, 0, 255}));
   annotation(experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-04, Interval = 1));
-annotation(Documentation(info = "<html><p>Range-extender hybrid vehicle example combining a battery drive and fuel-cell generator.</p></html>"));
+annotation(Documentation(info = "<html><p>This example applies the NEDC drive cycle to a Mirai-profile range-extender vehicle. A battery starting at SOC = 0.5 (50 Ah, 320 V nominal, 250 V to 360 V limits) supplies the drive while the fuel-cell generator extends the operating range.</p></html>"));
 end RangeExtenderHybridVehicle;

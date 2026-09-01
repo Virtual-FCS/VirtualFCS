@@ -19,5 +19,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>Test model for the mixing-volume component.</p></html>"));
+annotation(Documentation(info = "<html><p>This test feeds a 1 m3 mixing volume with 1 kg/s at 303.15 K and X = {0, 1, 0}. The outlet is connected to an ambient-pressure boundary and the heat port is enabled.</p><p>Ambient pressure and the initial volume temperature are inherited from the connected boundary and volume defaults. </p></html>"));
 end MixingVolumeTest;

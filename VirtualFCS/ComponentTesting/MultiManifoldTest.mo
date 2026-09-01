@@ -62,5 +62,5 @@ equation
     Line(points = {{0, 58}, {0, 80}, {-59, 80}}, color = {0, 0, 127}));
 annotation(
     experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
-annotation(Documentation(info = "<html><p>Test model for multiple connected manifolds.</p></html>"));
+annotation(Documentation(info = "<html><p>This test connects anode and cathode manifolds with reaction-derived flows. The reaction rate steps from 0.1 to 1 at 0.5 s; lambda = 3 and cell voltage = 0.7 V determine the resulting flow rates.</p><p>Both manifold volumes are 0.01 m3 and share a heat port. </p></html>"));
 end MultiManifoldTest;

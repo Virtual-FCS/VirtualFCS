@@ -42,5 +42,5 @@ equation
   annotation(
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
 
-annotation(Documentation(info = "<html><p>Test model for the averaged boost converter.</p></html>"));
+annotation(Documentation(info = "<html><p>This test drives the averaged boost converter with a 10 Hz sinusoidal duty command of amplitude 0.4 and offset 0.5. It uses a 100 V source, 10 ohm load, 0.1 ohm internal resistance, 20 uF input capacitor, and a 323.15 K thermal boundary.</p></html>"));
 end AveragedBoostConverterTest;

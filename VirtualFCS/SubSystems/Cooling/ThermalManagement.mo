@@ -76,4 +76,5 @@ equation
     version = "1",
     conversion(noneFromVersion = ""));
 annotation(Documentation(info = "<html><p>Thermal management model coupling a coolant pump and heat exchanger for controlling the temperature of a thermal circuit.</p></html>"));
+annotation(Documentation(info = "<html><p><b>ThermalManagement</b> is a compact cooling-loop example that transfers heat from a hot-water circuit to a separate coolant circuit.</p><h3>Composition and operation</h3><p>A heat exchanger connects the hot-water ports <code>HotWaterIn</code>/<code>HotWaterOut</code> to the coolant loop. The coolant loop contains a pump, temperature sensors, fixed-temperature source and sink boundaries, and a PI controller. The controller compares the cold-side temperature with a 328.15 K set point and commands the pump within a 0.2 to 0.5 flow range.</p><p>The hot-water and coolant media are replaceable. The 48 V source and boundary conditions are example values for system-level thermal-management studies.</p></html>"));
 end ThermalManagement;
