@@ -1,6 +1,6 @@
 within VirtualFCS.Fluid;
 
-model Compressor "Compressor with constant polytropic efficiency"
+model Compressor "Compressor with constant isentropic efficiency"
   extends VirtualFCS.Fluid.CompressorInterface(useHeatPort=true);
 
   import Modelica.Constants.eps;
