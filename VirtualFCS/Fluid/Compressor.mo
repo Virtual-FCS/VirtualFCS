@@ -12,7 +12,7 @@ model Compressor "Compressor with constant isentropic efficiency"
   Modelica.Units.SI.AngularVelocity RPM(displayUnit="rpm") = RPM_nom * sqrt(sensor.power/P_nom) "Actual rounds per minute";
 
   Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
-  Modelica.Units.SI.MassFlowRate m_flow(min=0) "Mass flow through the unit";
+  Modelica.Units.SI.MassFlowRate m_flow(min=0, start=1e-4, fixed=true) "Mass flow through the unit";
 
   Modelica.Units.SI.EnthalpyFlowRate Hin  = port_a.m_flow * inStream(port_a.h_outflow) "Enthalpy inflow at inlet";
   Modelica.Units.SI.EnthalpyFlowRate Hout = port_b.m_flow * port_b.h_outflow "Enthalpy inflow at outlet (mind the sign)";
