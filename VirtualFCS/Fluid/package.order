@@ -2,6 +2,7 @@ AmmoniaCracker
 AmmoniaCracker_2
 CompressorInterface
 Compressor
+CompressorMap
 CompressorSimple
 ElectricCompressorInterface
 ElectricCompressor

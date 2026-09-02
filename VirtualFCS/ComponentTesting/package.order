@@ -8,6 +8,7 @@ CathodeAirH2Test
 CathodeAirTest
 ChopperTest
 CompressorTest
+CompressorMapTest
 DC_converterTest
 ECMS_Experiment_Testing
 ElectricCompressorTest
