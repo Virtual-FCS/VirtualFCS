@@ -172,6 +172,7 @@ partial model PartialCondensingMixture
     input Real diK[nX];
     output Real dbeta_mol = flashVaporisation(Xmol, iK);
   protected
+    Real beta_mol = flashVaporisation(Xmol, iK);
     Real D[nX] = {iK[i] + beta_mol*(1-iK[i]) for i in 1:nX} "Convenience variable";
     Real S = sum(Xmol[i]*(1-iK[i])^2/D[i]^2 for i in 1:nX) "Convenience variable";
   algorithm
