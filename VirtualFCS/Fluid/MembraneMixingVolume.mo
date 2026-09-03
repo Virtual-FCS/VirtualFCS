@@ -6,6 +6,7 @@ model MembraneMixingVolume "Lumped volume with a selective membrane mass source"
     U(stateSelect = StateSelect.prefer),
     medium(h(stateSelect = StateSelect.avoid), T(stateSelect = StateSelect.avoid)),
     massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial,
+    energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial,
     Qb_flow = -LossPower,
     Wb_flow = 0,
     mbXi_flow = semiLinear(port_a.m_flow, inStream(port_a.Xi_outflow), port_a.Xi_outflow) + semiLinear(port_b.m_flow, inStream(port_b.Xi_outflow), port_b.Xi_outflow) + membrane_m_flow*membrane_Xi,

@@ -15,10 +15,8 @@ model HumidifierV2 "Discretised hollow-fiber membrane humidifier"
   parameter SI.Volume V_wet = 1E-4 "Total wet-side gas volume";
   parameter SI.Volume V_dry = V_wet "Total dry-side gas volume";
   parameter SI.ThermalConductance UA = 1000 "Total fluid-to-fluid conductance";
-  parameter SI.DiffusionCoefficient D_mem = 3.6e-7
-    "Membrane diffusion coefficient";
-  parameter Integer waterIndex(min = 1) = 3
-    "Index of water in the medium; water must be the dependent species";
+  parameter SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient";
+  parameter Integer waterIndex(min = 1) = 3 "Index of water in the medium; water must be the dependent species";
   parameter Integer nFibers = 488 "Number of hollow fibers";
   parameter SI.Diameter dFiber_i = 0.9e-3 "Inner fiber diameter";
   parameter SI.Diameter dFiber_o = 1.0e-3 "Outer fiber diameter";
@@ -28,14 +26,19 @@ model HumidifierV2 "Discretised hollow-fiber membrane humidifier"
     "Reference binary diffusion coefficient";
   parameter SI.Pressure atm_P = 101325 "Reference pressure";
   parameter SI.Temperature atm_T = 298.15 "Reference temperature";
+  
   parameter SI.MassFlowRate m_flow_min = 1e-9 "Regularisation flow rate";
+  parameter SI.MassFlowRate m_flow_nom = 0.0004 "Nominal mass flow";
+  parameter SI.VolumeFlowRate V_flow_min = 1e-12 "Min volume flow rate";
+  parameter SI.Velocity k_mass_min = 1e-12 "Convective mass-transfer coefficient min";
+  
   parameter SI.PressureDifference dp_nominal = 100
     "Nominal pressure drop of each control volume";
 
   MembraneMixingVolume wetVolume[n](
     redeclare each package Medium = wet_medium,
     each V = V_wet/n,
-    each R_flow = 2*dp_nominal/0.0004,
+    each R_flow = dp_nominal/(n*m_flow_nom),
     each useHeatPort = true,
     each p_start = wet_p_start,
     each T_start = wet_T_start,
@@ -44,7 +47,7 @@ model HumidifierV2 "Discretised hollow-fiber membrane humidifier"
   MembraneMixingVolume dryVolume[n](
     redeclare each package Medium = dry_medium,
     each V = V_dry/n,
-    each R_flow = 2*dp_nominal/0.0004,
+    each R_flow = dp_nominal/(n*m_flow_nom),
     each useHeatPort = true,
     each p_start = dry_p_start,
     each T_start = dry_T_start,
@@ -115,39 +118,48 @@ equation
   for i in 1:n loop
     wetFlow[i] = max(abs(wetVolume[i].port_a.m_flow), m_flow_min);
     dryFlow[i] = max(abs(dryVolume[i].port_a.m_flow), m_flow_min);
+    
     wetVolumeFlow[i] = wetFlow[i]/wetVolume[i].medium.d;
     dryVolumeFlow[i] = dryFlow[i]/dryVolume[i].medium.d;
+    
     wetVelocity[i] = wetVolumeFlow[i]/A_c_fibers;
     dryVelocity[i] = dryVolumeFlow[i]/A_c_shell_gap;
+    
     D_H2O_Air[i] = D_H2O_Air_ref*(((wetVolume[i].medium.T + dryVolume[i].medium.T)/2)/atm_T)^1.75
       *(atm_P/((wetVolume[i].medium.p + dryVolume[i].medium.p)/2));
+    
     Re_wet[i] = wetVolume[i].medium.d*wetVelocity[i]*dFiber_i
       /wet_medium.dynamicViscosity(wetVolume[i].medium.state);
     Sc_wet[i] = wet_medium.dynamicViscosity(wetVolume[i].medium.state)
       /(wetVolume[i].medium.d*D_H2O_Air[i]);
+    
     Re_dry[i] = dryVolume[i].medium.d*dryVelocity[i]*d_hyd_dry
       /dry_medium.dynamicViscosity(dryVolume[i].medium.state);
     Sc_dry[i] = dry_medium.dynamicViscosity(dryVolume[i].medium.state)
       /(dryVolume[i].medium.d*D_H2O_Air[i]);
-    Sh_wet[i] = (3.66^3 + 0.7^3
-      + (1.615*(Re_wet[i]*Sc_wet[i]*dFiber_i/L_fiber)^(1/3) - 0.7)^3)^(1/3);
-    Sh_dry[i] = (0.53 - 0.58*nFibers*dFiber_o^2/dHousing^2)
-      *Re_dry[i]^0.53*Sc_dry[i]^0.33;
-    beta_eff[i] = 1/(1/(max(Sh_wet[i]*D_H2O_Air[i]/dFiber_i, m_flow_min)*A_mem/n)
-      + (dFiber_o - dFiber_i)/(2*D_mem*A_mem/n)
-      + 1/(max(Sh_dry[i]*D_H2O_Air[i]/d_hyd_dry, m_flow_min)*A_mem/n));
-    NTU[i] = beta_eff[i]/max(wetVolumeFlow[i], m_flow_min);
+    
+    Sh_wet[i] = (3.66^3 + 0.7^3 + (1.615*(Re_wet[i]*Sc_wet[i]*dFiber_i/L_fiber)^(1/3) - 0.7)^3)^(1/3);
+    Sh_dry[i] = (0.53 - 0.58*nFibers*dFiber_o^2/dHousing^2)*Re_dry[i]^0.53*Sc_dry[i]^0.33;
+    
+    beta_eff[i] = 1/(1/(max(Sh_wet[i]*D_H2O_Air[i]/dFiber_i, k_mass_min)*A_mem/n) + (dFiber_o - dFiber_i)/(2*D_mem*A_mem/n) + 1/(max(Sh_dry[i]*D_H2O_Air[i]/d_hyd_dry, k_mass_min)*A_mem/n));
+    
+    NTU[i] = beta_eff[i]/max(wetVolumeFlow[i], V_flow_min);
+    
     effectiveness[i] = NTU[i]/(1 + NTU[i]);
+    
     m_transfer[i] = wet_medium.MMs[waterIndex]*effectiveness[i]
       *(wetVolume[i].medium.d*(1 - sum(wetVolume[i].medium.Xi))/wet_medium.MMs[waterIndex]
       - dryVolume[i].medium.d*(1 - sum(dryVolume[i].medium.Xi))/dry_medium.MMs[waterIndex])
       *wetVolumeFlow[i];
+    
     transfer_h[i] = if m_transfer[i] >= 0 then
       Media.Shomate.enthalpy(wetVolume[i].medium.T, Media.Shomate.H2O_G)/wet_medium.MMs[waterIndex]
       else Media.Shomate.enthalpy(dryVolume[i].medium.T, Media.Shomate.H2O_G)/dry_medium.MMs[waterIndex];
+    
     wetVolume[i].membrane_m_flow = -m_transfer[i];
     wetVolume[i].membrane_h_outflow = transfer_h[i];
     wetVolume[i].membrane_Xi = transfer_Xi_wet;
+    
     dryVolume[i].membrane_m_flow = m_transfer[i];
     dryVolume[i].membrane_h_outflow = transfer_h[i];
     dryVolume[i].membrane_Xi = transfer_Xi_dry;
