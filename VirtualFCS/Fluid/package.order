@@ -7,6 +7,8 @@ ElectricCompressorInterface
 ElectricCompressor
 HumidifierInterface
 Humidifier
+MembraneMixingVolume
+HumidifierV2
 PipeInterface
 PressureRegulator
 PumpElectricDC

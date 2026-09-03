@@ -19,5 +19,5 @@ model HumidifierInterface
 equation
 
 annotation(
-    Icon(graphics = {Rectangle(fillColor = {189, 189, 189}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}, radius = 30), Rectangle(origin = {-62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Rectangle(origin = {62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Line(origin = {0.2, 56}, points = {{-56, 0}, {56, 0}}), Line(origin = {0.2, -56}, points = {{-56, 0}, {56, 0}})}));
+    Icon(graphics = {Rectangle(fillColor = {189, 189, 189}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}, radius = 30), Rectangle(origin = {-62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Rectangle(origin = {62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Line(origin = {0.2, 56}, points = {{-56, 0}, {56, 0}}), Line(origin = {0.2, -56}, points = {{-56, 0}, {56, 0}}), Text(origin = {29, 51}, extent = {{-15, 9}, {15, -9}}, textString = "wet_in"), Text(origin = {29, -49}, extent = {{-15, 9}, {15, -9}}, textString = "wet_out"), Text(origin = {-85, 21}, extent = {{-15, 9}, {15, -9}}, textString = "dry_in"), Text(origin = {85, 19}, extent = {{-15, 9}, {15, -9}}, textString = "dry_out")}));
 end HumidifierInterface;

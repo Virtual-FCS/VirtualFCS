@@ -32,6 +32,7 @@ equation
   port_a.C_outflow = C;
   port_b.C_outflow = C;
   
+  
   T_heatPort = medium.T;
   annotation(
     Icon(graphics = {Rectangle( fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}), Ellipse(origin = {-40, -20}, lineThickness = 1, extent = {{-20, 20}, {20, -20}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Ellipse(origin = {40, -20}, lineThickness = 1, extent = {{-20, 20}, {20, -20}}, startAngle = 90, endAngle = -90, closure = EllipseClosure.None), Line(origin = {0, -20}, points = {{-40, 20}, {40, -20}}, thickness = 1), Line(origin = {0, -20}, points = {{40, 20}, {-40, -20}}, thickness = 1), Line(origin = {0, 21}, points = {{0, -39}, {0, 39}, {0, 39}}, thickness = 1)}),

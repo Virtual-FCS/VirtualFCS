@@ -20,6 +20,7 @@ HeatSinkTest
 HeatSinkTest2
 HumidifierTest
 HumidifierTest_2
+HumidifierV2Test
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest
