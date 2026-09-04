@@ -6,7 +6,7 @@ model FuelCellTest
   parameter Real lambda = 3;
   parameter Integer N_cells = 42 "Number of cells in the stack";
   package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
-  package Cathode_Medium = VirtualFCS.Media.CathodeAir;
+  package Cathode_Medium = VirtualFCS.Media.CathodeAir_CC;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
   Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, cathode(p_start = air_sink.p), anode(p_start = hydrogen_source.p)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));

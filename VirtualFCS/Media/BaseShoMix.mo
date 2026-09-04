@@ -228,7 +228,80 @@ end enthalpyOfLiquid;
       Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
 end enthalpyOfGas;
   
+
+redeclare function extends specificEntropy
+  protected
+    Modelica.Units.SI.MassFraction X_l "Liquid mass fraction";
+  algorithm
+    X_l := liquidMassFraction(state);
+    s := X_l*entropyOfWater(state) + (1-X_l)*entropyOfGas(state);
+    
+  end specificEntropy;
   
+  function entropyOfWater "Helper function for entropy of liquid water"
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state "Thermodynamic state record";
+    output Modelica.Units.SI.SpecificEntropy s_liq;
+  algorithm
+    s_liq := Shomate.entropy(state.T, Shomate.H2O_L) / Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM;
+  
+  annotation(
+      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+  end entropyOfWater;
+  
+  function entropyOfGas
+    extends Modelica.Icons.Function;
+    import Modelica.Constants.R;
+    import Modelica.Constants.eps;
+    
+    input ThermodynamicState state "Thermodynamic state record";
+    output Modelica.Units.SI.SpecificEntropy s_gas;
+  
+  protected
+      Modelica.Units.SI.MassFraction Yi[nXi] "Independent gas-phase compositions";
+      Modelica.Units.SI.MassFraction Y[nX] "Independent gas-phase compositions";
+      
+  
+  algorithm
+    Yi := gasMassFraction(state);
+    Y := cat(1, Yi, {1 - sum(Yi)});
+    
+    s_gas := 0;
+  
+    for i in 1:nX loop
+  
+    s_gas := s_gas + Y[i]*Shomate.entropy(state.T, sh_params[i])/MMs[i]
+           - R*(Y[i]/MMs[i])*(log(max(Y[i], eps))+log(state.p/reference_p));
+  
+    end for;
+    
+  annotation(
+      Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
+  end entropyOfGas;
+  
+redeclare function extends isentropicEnthalpy
+  protected
+    function s_offset "Find offset from isoentropic conditions, u is h_out"
+      extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
+      input Modelica.Units.SI.SpecificEntropy s_in;
+      input Modelica.Units.SI.Pressure p_out;
+      input Modelica.Units.SI.MassFraction[nXi] Xi;
+    protected
+      Modelica.Units.SI.SpecificEntropy s_out;
+    algorithm
+      s_out := specificEntropy(setState_phX(p_out, u, Xi));
+      y := s_out - s_in;
+    end s_offset;
+
+    Modelica.Units.SI.SpecificEntropy s_ref;
+    Modelica.Units.SI.SpecificEnthalpy h_min, h_max;
+  algorithm
+    h_min := specificEnthalpy(setState_pTX(refState.p, 273.15, refState.Xi));
+    h_max := specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
+    s_ref := specificEntropy(refState);
+    h_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = h_min, u_max = h_max);
+  end isentropicEnthalpy;
+
   replaceable function densityOfLiquid
     extends Modelica.Icons.Function;
     import Modelica.Media.Water.IF97_Utilities.rho_pT;
@@ -373,6 +446,5 @@ the information that is requested in the comments of the
 Modelica source.
 </p>
 </html>"));
-
 
 end BaseShoMix;

@@ -5,6 +5,7 @@ Compressor
 CompressorSimple
 ElectricCompressorInterface
 ElectricCompressor
+HumidifierInterface
 Humidifier
 PipeInterface
 PressureRegulator
@@ -13,10 +14,9 @@ PumpInterface
 SimplePump
 RecirculationBlower
 simplePipe
-HumidifierInterface
-HumidifierDummy
 RelativeHumiditySensor
 HeatExchangerInterface
 HeatExchanger
 MixingVolume
 UsersGuide
+NonHumidifier

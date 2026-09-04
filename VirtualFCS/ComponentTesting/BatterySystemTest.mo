@@ -4,7 +4,7 @@ model BatterySystemTest
   extends Modelica.Icons.Example;
   Electrochemical.Battery.BatterySystem batterySystem(SOC_init = 0.99)  annotation(
     Placement(transformation(origin = {5, -15}, extent = {{-19, -19}, {19, 19}})));
-  Modelica.Blocks.Sources.Step P_values(height = -50000, offset = 25000, startTime = 10000) annotation(
+  Modelica.Blocks.Sources.Step P_values(height = -52000, offset = 25800, startTime = 10000) annotation(
     Placement(transformation(origin = {56, 86}, extent = {{10, -10}, {-10, 10}})));
   Electrical.PowerSource powerSource annotation(
     Placement(transformation(origin = {4, 30}, extent = {{10, 10}, {-10, -10}}, rotation = -0)));

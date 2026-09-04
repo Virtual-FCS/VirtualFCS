@@ -25,13 +25,13 @@ model HeatExchanger
 equation
   for i in 1:(n-1) loop
     connect(mixvols_1[i].port_b, mixvols_1[i+1].port_a);
+    connect(mixvols_2[i].port_b, mixvols_2[i+1].port_a);
+    connect(mixvols_1[i].heatPort, conductors[i].port_a);
+    connect(mixvols_2[i].heatPort, conductors[i].port_b);
   end for;
+
   connect(mixvols_1[1].port_a, port_a1);
   connect(mixvols_1[n].port_b, port_b1);
-
-  for i in 1:(n-1) loop
-    connect(mixvols_2[i].port_b, mixvols_2[i+1].port_a);
-  end for;
   if flow_c == Configuration.counterCurrent then
     connect(mixvols_2[1].port_a, port_b2);
     connect(mixvols_2[n].port_b, port_a2);
@@ -39,12 +39,6 @@ equation
     connect(mixvols_2[1].port_a, port_a2);
     connect(mixvols_2[n].port_b, port_b2);
   end if;
-  
-  for i in 1:n loop
-    connect(mixvols_1[i].heatPort, conductors[i].port_a);
-    connect(mixvols_2[i].heatPort, conductors[i].port_b);
-  end for;
-
 
 annotation(
     Documentation(info = "<html><head></head><body>This is a discretised, 1-D heat exchanger suitable for most purposes. Detail level can be adjusted by setting the n parameter for the discretisation steps.<div>The class is implemented as two trains of MixingVolumes, one on each side, thermally connected one by one through a thermal conductance. Volumes and thermal conductances are assumed to be equally split between the MixingVolumes.</div><div><br><div>Volumes of both sides 1 and 2 can be set separately, but the default is for V_2 to be equal to V_1. The thermal conductance UA is given as a single number, as neither U nor A are used elsewhere.</div><div><br></div><div>The exchanger can be configured as cocurrent or countercurrent (default), which is implemented by swapping the train inlet and outlet of side 2.</div></div><div>Note that it is fully possible to obtain a cocurrent setup by inverting flow in one of the sides compared to the expected direction (port_a to port_b); this is discouraged as it can be confusing to users.</div></body></html>"),
