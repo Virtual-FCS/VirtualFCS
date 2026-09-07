@@ -9,6 +9,8 @@ HumidifierInterface
 Humidifier
 MembraneMixingVolume
 HumidifierV2
+MembraneManifoldV3
+HumidifierV3
 PipeInterface
 PressureRegulator
 PumpElectricDC
