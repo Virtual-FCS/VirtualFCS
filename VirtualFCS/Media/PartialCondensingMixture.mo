@@ -131,10 +131,27 @@ partial model PartialCondensingMixture
     algorithm
       y := specificEnthalpy_pTX(p, u, X) - h;
     end h_offset;
+    
+    Modelica.Units.SI.Temperature T_min = 273;
+    Modelica.Units.SI.Temperature T_max = 500;
+    Integer counter = 0 "Keep track of how many times we widened the window";
   algorithm
     state.p := p;
     state.Xi := X[1:nXi];
-    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = 200, u_max = 1000);
+    // Debugging code, 
+    /*if h_offset(T_min, p, h, X)*h_offset(T_max, p, h, X) >= 0 then
+      Modelica.Utilities.Streams.print("Same-sign error in setState_phX");
+      Modelica.Utilities.Streams.print("p="+String(p)+", h="+String(h));
+      for i in 1:nXi loop
+        Modelica.Utilities.Streams.print("X["+String(i)+"]="+String(X[i]));
+      end for;
+    end if;*/
+    while h_offset(T_min, p, h, X)*h_offset(T_max, p, h, X) >= 0 and counter < 20 loop
+      T_min := T_min/1.1;
+      T_max := T_max*1.1;
+      counter := counter + 1;
+    end while;
+    state.T := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function h_offset(p=p, h=h, X=X), u_min = T_min, u_max = T_max);
   end setState_phX;
 
 
