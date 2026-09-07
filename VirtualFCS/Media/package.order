@@ -1,12 +1,9 @@
-Air
-NH3_CP
 Examples
-CathodeAir
-PEMELfluid
 Shomate
-CrackedNH3_CP
-CathodeAir_CC
+PartialCondensingMixture
 BaseShoMix
-CathodeAirH2
-NH3Liq
+CathodeAir
 NH3Cracked
+CrackedAmmonia
+PEMELfluid
+WetHydrogen

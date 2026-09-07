@@ -3,9 +3,6 @@ AmmoniaCrackerTest
 AveragedBoostConverterTest
 BatterySystemTest
 BoostConverterTest
-CathodeAirCCTest
-CathodeAirH2Test
-CathodeAirTest
 ChopperTest
 CompressorTest
 DC_converterTest
@@ -23,7 +20,6 @@ HumidifierTest_2
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest
-NH3CrackedTest
 PreHeaterTest
 PressureRegulatorTest
 PressureRegulatorTest_v2
