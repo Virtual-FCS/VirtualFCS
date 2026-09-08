@@ -7,8 +7,6 @@ ChopperTest
 CompressorTest
 DC_converterTest
 ElectricCompressorTest
-ElectrolyserSystemTest
-ElectrolyserSystemTest_old
 FuelCellSystemTest
 FuelCellTest
 HeatExchangerTest
@@ -34,3 +32,4 @@ SubSystemHydrogenWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemCoolingWithFuelCellTest
+ECMS_Experiment_Testing
