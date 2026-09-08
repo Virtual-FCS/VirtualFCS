@@ -73,4 +73,5 @@ equation
           {55,-24},{48,-24},{48,29.6},{41.6,29.6}}, color={0,0,127}));
 annotation (
   experiment(StopTime = 500, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>This alternative heat-sink test applies periodic trapezoids: coolant temperature varies from 293.15 K to 373.15 K and coolant flow from 0 to 0.2 kg/s. Both signals use 130 s rise/fall times and a 300 s period.</p><p>The battery starts at SOC = 0.9 with 59 V to 61 V limits and 60 V nominal voltage.</p></html>"));
 end HeatSinkTest2;

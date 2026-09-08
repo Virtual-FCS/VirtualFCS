@@ -57,4 +57,5 @@ equation
     Line(points = {{88, 28}, {88, 28}, {88, -6}, {6, -6}, {6, -16}, {6, -16}}, color = {0, 0, 255}));
 annotation (
     Diagram);
+annotation(Documentation(info = "<html><p>DC motor with closed-loop speed control. The model converts a speed command into electrical drive power and mechanical shaft torque.</p></html>"));
 end SpeedControlledDCMotor;

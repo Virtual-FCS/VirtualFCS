@@ -21,4 +21,5 @@ equation
 
 
 
+annotation(Documentation(info = "<html><p>This test steps the electrolyser current from 100 A to 700 A at 10 s. </p></html>"));
 end ElectrolyserSystemTest;

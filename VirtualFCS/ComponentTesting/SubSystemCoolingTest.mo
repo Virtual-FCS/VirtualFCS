@@ -43,4 +43,5 @@ equation
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
     Icon(coordinateSystem(extent = {{-100, -100}, {100, 80}})),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+annotation(Documentation(info = "<html><p>This test steps the applied heat flow from 0 W to 6000 W at 10 s. The coolant system starts at 300 K and 101325 Pa with 0.1 kg/s flow; the pipe starts at 363.15 K and uses 1 m length and 0.01 m diameter.</p><p>The electrical supply is 24 V and the stack PI controller has Ti = 5. </p></html>"));
 end SubSystemCoolingTest;

@@ -61,4 +61,5 @@ algorithm
 
   optimalParameter := bestParameter;
   minimumValue := bestValue;
+annotation(Documentation(info = "<html><p>Function that evaluates a discrete set of candidate control actions and returns the action with minimum cost.</p></html>"));
 end bruteForceMinimization;

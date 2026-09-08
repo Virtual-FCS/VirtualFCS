@@ -20,4 +20,5 @@ equation
 
 annotation(
     Icon(graphics = {Rectangle(fillColor = {189, 189, 189}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}, radius = 30), Rectangle(origin = {-62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Rectangle(origin = {62, 0}, fillPattern = FillPattern.Solid, extent = {{-6, 60}, {6, -60}}), Line(origin = {0.2, 56}, points = {{-56, 0}, {56, 0}}), Line(origin = {0.2, -56}, points = {{-56, 0}, {56, 0}})}));
+annotation(Documentation(info = "<html><p>Interface for humidifier components with separate air-side and hydrogen-side fluid ports.</p></html>"));
 end HumidifierInterface;

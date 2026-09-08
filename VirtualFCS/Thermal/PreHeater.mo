@@ -44,5 +44,24 @@ equation
   connect(prescribedHeatFlow.port, heatCapacitor.port) annotation (
     Line(points = {{-40, -20}, {0, -20}, {0, -22}, {0, -22}}, color = {191, 0, 0}));
   annotation (
-    Icon(graphics={  Line(origin = {29, 31.44}, points = {{-79, 68.562}, {-79, -71.438}, {-69, 8.56202}, {-59, -71.438}, {-49, 8.56202}, {-39, -71.438}, {-29, 8.56202}, {-19, -71.438}, {-9, 8.56202}, {1, -71.438}, {11, 8.56202}, {21, -71.438}, {21, 70.562}, {23, 72.562}}, color = {255, 0, 0}, thickness = 1.5), Line(origin = {-0.67, 27.14}, points = {{-98.9689, -27.1425}, {99.0311, -27.1425}, {101.031, -27.1425}}, color = {0, 85, 255}, thickness = 2)}));
+    Icon(graphics={  Line(origin = {29, 31.44}, points = {{-79, 68.562}, {-79, -71.438}, {-69, 8.56202}, {-59, -71.438}, {-49, 8.56202}, {-39, -71.438}, {-29, 8.56202}, {-19, -71.438}, {-9, 8.56202}, {1, -71.438}, {11, 8.56202}, {21, -71.438}, {21, 70.562}, {23, 72.562}}, color = {255, 0, 0}, thickness = 1.5), Line(origin = {-0.67, 27.14}, points = {{-98.9689, -27.1425}, {99.0311, -27.1425}, {101.031, -27.1425}}, color = {0, 85, 255}, thickness = 2)}),
+    Documentation(info = "<html>
+<p>The <b>PreHeater</b> models an electrically heated fluid pipe. The electrical power dissipated by the internal resistor <code>R1</code> is transferred to the pipe through a thermal conductor and heat capacity.</p>
+<h3>Interfaces</h3>
+<table><tr><th>Interface</th><th>Description</th></tr>
+<tr><td><code>port_a</code></td><td>Fluid inlet.</td></tr>
+<tr><td><code>port_b</code></td><td>Fluid outlet.</td></tr>
+<tr><td><code>pin_p</code>, <code>pin_n</code></td><td>Electrical heater terminals.</td></tr>
+</table>
+<h3>Parameters</h3>
+<table><tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>Medium</code></td><td>ConstantPropertyLiquidWater</td><td>Replaceable fluid medium.</td></tr>
+<tr><td><code>R_eq</code></td><td>1.75 &Omega;</td><td>Equivalent electrical resistance of the heater.</td></tr>
+<tr><td><code>D_pipe</code></td><td>0.015 m</td><td>Internal pipe diameter.</td></tr>
+<tr><td><code>L_pipe</code></td><td>1 m</td><td>Pipe length.</td></tr>
+<tr><td><code>N_pipe</code></td><td>10</td><td>Number of parallel pipes.</td></tr>
+</table>
+<h3>Implementation notes</h3>
+<p>The heater heat flow equals the resistor loss power, <code>Q_flow = R_eq*I^2</code>. The internal pipe start pressure is fixed at <b>102502 Pa</b>, the thermal conductance at <b>1777 W/K</b>, and the thermal capacity at <b>100 J/K</b>. These values are implementation constants rather than user parameters.</p>
+</html>"));
 end PreHeater;
