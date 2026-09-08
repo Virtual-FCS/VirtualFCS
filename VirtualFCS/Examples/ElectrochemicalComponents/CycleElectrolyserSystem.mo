@@ -26,4 +26,5 @@ equation
       __Dymola_Algorithm="Dassl"));
 
 
+annotation(Documentation(info = "<html><p>Example simulation of an electrolyser system over a prescribed operating cycle.</p></html>"));
 end CycleElectrolyserSystem;

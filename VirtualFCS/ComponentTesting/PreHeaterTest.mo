@@ -31,4 +31,5 @@ equation
     Line(points = {{30, -20}, {20, -20}, {20, 0}}));
 annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>Test model for the electrically heated fluid pipe.</p></html>"));
 end PreHeaterTest;

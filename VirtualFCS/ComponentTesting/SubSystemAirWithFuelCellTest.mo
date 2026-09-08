@@ -59,4 +59,5 @@ equation
     Line(points = {{46, 12}, {46, 40}, {22, 40}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
+annotation(Documentation(info = "<html><p>Test model for the air subsystem coupled to a fuel cell.</p></html>"));
 end SubSystemAirWithFuelCellTest;

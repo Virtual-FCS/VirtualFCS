@@ -23,4 +23,5 @@ equation
 annotation(
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
   __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+annotation(Documentation(info = "<html><p>Test model for the manifold component.</p></html>"));
 end ManifoldTest;

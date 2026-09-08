@@ -18,4 +18,5 @@ equation
     Line(points = {{-38, 0}, {-28, 0}, {-28, 0}, {-26, 0}}, color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 0.1));
+annotation(Documentation(info = "<html><p>Battery-electric vehicle example controlled by a joystick drive input.</p></html>"));
 end BatteryElectricVehicle_JoystickControl;

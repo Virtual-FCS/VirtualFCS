@@ -21,4 +21,5 @@ equation
     Line(points = {{-14, 26}, {-14, 10}, {-60, 10}}, color = {0, 127, 255}));
   connect(E_rev.cathode, cathode.ports[1]) annotation(
     Line(points = {{14, 26}, {14, 10}, {60, 10}}, color = {0, 127, 255}));
+annotation(Documentation(info = "<html><p>Test model for reversible fuel-cell potential calculations.</p></html>"));
 end ReversiblePotentialTest;

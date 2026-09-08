@@ -25,4 +25,5 @@ equation
     Line(points = {{0, -20}, {0, -60}}, color = {0, 127, 255}));
 annotation(
     experiment(StartTime = 0, StopTime = 2, Tolerance = 1e-06, Interval = 0.004));
+annotation(Documentation(info = "<html><p>Test model for the heat exchanger.</p></html>"));
 end HeatExchangerTest;

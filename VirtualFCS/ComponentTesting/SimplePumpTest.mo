@@ -30,4 +30,5 @@ equation
     Line(points = {{-18, 52}, {0, 52}, {0, 18}}, color = {0, 0, 127}));
   connect(simplePump.port_b, sink.ports[1]) annotation(
     Line(points = {{20, 16}, {60, 16}}, color = {0, 127, 255}));
+annotation(Documentation(info = "<html><p>Test model for the simplified pump.</p></html>"));
 end SimplePumpTest;

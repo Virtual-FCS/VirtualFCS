@@ -29,4 +29,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.012),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+annotation(Documentation(info = "<html><p>Test model for the integrated fuel-cell system.</p></html>"));
 end FuelCellSystemTest;

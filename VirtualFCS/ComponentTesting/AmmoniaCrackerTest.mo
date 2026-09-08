@@ -36,4 +36,5 @@ equation
     Line(points = {{36, 10}, {76, 10}}, color = {0, 127, 255}));
   connect(ammonia_source.ports[1], ammoniaCracker.inlet_nh3_feed) annotation(
     Line(points = {{-60, 10}, {-10, 10}}, color = {0, 127, 255}));
+annotation(Documentation(info = "<html><p>Test model for the ammonia cracker component.</p></html>"));
 end AmmoniaCrackerTest;

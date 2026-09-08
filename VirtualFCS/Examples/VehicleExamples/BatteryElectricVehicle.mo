@@ -32,4 +32,5 @@ equation
     Line(points = {{-36, 0}, {-28, 0}, {-28, 0}, {-26, 0}}, color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 25000, Tolerance = 1e-6, Interval = 1));
+annotation(Documentation(info = "<html><p>Example battery-electric vehicle model using the VirtualFCS battery powertrain.</p></html>"));
 end BatteryElectricVehicle;

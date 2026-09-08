@@ -50,4 +50,5 @@ equation
           255}));
   annotation (
     experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>Test model for the pressure regulator.</p></html>"));
 end PressureRegulatorTest;

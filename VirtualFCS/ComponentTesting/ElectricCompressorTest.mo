@@ -57,4 +57,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 20, Tolerance = 1e-06, Interval = 0.06),
     Diagram);
+annotation(Documentation(info = "<html><p>Test model for the electrically driven compressor.</p></html>"));
 end ElectricCompressorTest;

@@ -26,4 +26,5 @@ record DCPMMCompressor_30kW
       wRef = wNominal * 2 * Modelica.Constants.pi / 60),
     strayLoadParameters = Modelica.Electrical.Machines.Losses.StrayLoadParameters(PRef = 0, IRef = IaNominal, wRef = wNominal));
 
+annotation(Documentation(info = "<html><p>Parameter record containing the nominal data for a 30 kW permanent-magnet compressor motor.</p></html>"));
 end DCPMMCompressor_30kW;

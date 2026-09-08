@@ -85,4 +85,5 @@ annotation (
       Interval=0.5,
       Tolerance=1e-06,
       __Dymola_Algorithm="Dassl"));
+annotation(Documentation(info = "<html><p>Test model for the electrically driven DC pump.</p></html>"));
 end PumpElectricDCTest;

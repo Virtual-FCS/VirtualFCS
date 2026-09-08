@@ -62,4 +62,5 @@ equation
     Line(points = {{0, 58}, {0, 80}, {-59, 80}}, color = {0, 0, 127}));
 annotation(
     experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
+annotation(Documentation(info = "<html><p>Test model for multiple connected manifolds.</p></html>"));
 end MultiManifoldTest;

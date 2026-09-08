@@ -70,4 +70,5 @@ equation
     Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
     experiment(StopTime = 600, Interval = 0.1, Tolerance = 1e-06, StartTime = 0),
     Diagram(coordinateSystem(extent = {{-100, 120}, {120, -100}})));
+annotation(Documentation(info = "<html><p>Cooling subsystem for circulating coolant through the fuel-cell stack and regulating the coolant temperature.</p></html>"));
 end SubSystemCooling;

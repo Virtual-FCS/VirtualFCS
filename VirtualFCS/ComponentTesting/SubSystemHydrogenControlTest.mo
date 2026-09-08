@@ -23,4 +23,5 @@ equation
   connect(sine.y, subSystemHydrogenControl.signalInterface_FC) annotation (
     Line(points = {{-58, 30}, {-42, 30}, {-42, 12}, {-22, 12}}, color = {0, 0, 127}));
 annotation (experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>Test model for hydrogen subsystem control.</p></html>"));
 end SubSystemHydrogenControlTest;

@@ -18,4 +18,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 20000, Tolerance = 1e-06, Interval = 0.5),
   Diagram);
+annotation(Documentation(info = "<html><p>Test model for the battery system.</p></html>"));
 end BatterySystemTest;

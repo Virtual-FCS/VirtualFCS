@@ -30,4 +30,5 @@ equation
     Line(points={{4.4,60.4},{4.4,40},{10,40},{10,14}},    color = {0, 0, 255}));
   annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>Test model for the recirculation blower.</p></html>"));
 end RecirculationBlowerTest;

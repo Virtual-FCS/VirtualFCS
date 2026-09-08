@@ -42,4 +42,5 @@ equation
   annotation(
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
 
+annotation(Documentation(info = "<html><p>Test model for the averaged boost converter.</p></html>"));
 end AveragedBoostConverterTest;

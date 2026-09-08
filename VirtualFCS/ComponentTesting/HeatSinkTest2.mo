@@ -73,4 +73,5 @@ equation
           {55,-24},{48,-24},{48,29.6},{41.6,29.6}}, color={0,0,127}));
 annotation (
   experiment(StopTime = 500, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>Alternative test model for the heat sink.</p></html>"));
 end HeatSinkTest2;

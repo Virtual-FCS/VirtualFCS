@@ -53,4 +53,5 @@ equation
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03));
+annotation(Documentation(info = "<html><p>Test model for the fuel-cell component.</p></html>"));
 end FuelCellTest;

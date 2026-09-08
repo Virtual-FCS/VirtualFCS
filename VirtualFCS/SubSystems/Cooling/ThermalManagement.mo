@@ -75,4 +75,5 @@ equation
     Icon(graphics = {Rectangle(origin = {0, -1}, fillColor = {85, 0, 255}, fillPattern = FillPattern.HorizontalCylinder, lineThickness = 4, extent = {{-98, 99}, {98, -99}}), Text(origin = {0, 1}, textColor = {255, 255, 255}, extent = {{-76, 65}, {76, -65}}, textString = "Thermal Sub-System")}, coordinateSystem(extent = {{-100, -100}, {100, 100}})),
     version = "1",
     conversion(noneFromVersion = ""));
+annotation(Documentation(info = "<html><p>Thermal management model coupling a coolant pump and heat exchanger for controlling the temperature of a thermal circuit.</p></html>"));
 end ThermalManagement;

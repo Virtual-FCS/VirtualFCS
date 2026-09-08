@@ -17,4 +17,5 @@ equation
   annotation (experiment(StopTime = 20, Interval = 0.5, __Dymola_Algorithm = "Dassl"),
     Icon(graphics = {Text(origin = {-1, 1}, extent = {{19, 13}, {-19, -13}}, textString = "DEV")}));
 
+annotation(Documentation(info = "<html><p>Development test model for the electrolyser system.</p></html>"));
 end ElectrolyserSystemTest_dev;

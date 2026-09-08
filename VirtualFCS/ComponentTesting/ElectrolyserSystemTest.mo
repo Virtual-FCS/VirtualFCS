@@ -21,4 +21,5 @@ equation
 
 
 
+annotation(Documentation(info = "<html><p>Test model for the electrolyser system.</p></html>"));
 end ElectrolyserSystemTest;

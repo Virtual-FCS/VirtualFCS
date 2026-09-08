@@ -46,4 +46,5 @@ equation
   connect(vehicleProfile.pin_n, eCMSPowerTrain.pin_n) annotation (Line(points={{16.9,
           -10.5},{26.5,-10.5},{26.5,-9},{38.2,-9}},        color={0,0,255}));
   annotation(experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-04, Interval = 1));
+annotation(Documentation(info = "<html><p>Hybrid vehicle example using equivalent-consumption minimization for power management.</p></html>"));
 end ECMSHybridVehicle;

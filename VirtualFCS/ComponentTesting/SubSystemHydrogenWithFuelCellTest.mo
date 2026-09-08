@@ -66,4 +66,5 @@ equation
     Line(points = {{-30, 60}, {-80, 60}, {-80, 10}}, color = {0, 0, 255}));
 annotation(
     experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 1));
+annotation(Documentation(info = "<html><p>Test model for the hydrogen subsystem coupled to a fuel cell.</p></html>"));
 end SubSystemHydrogenWithFuelCellTest;

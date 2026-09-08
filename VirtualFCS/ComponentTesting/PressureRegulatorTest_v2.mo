@@ -63,4 +63,5 @@ equation
     Line(points={{-33,-80},{8,-80}},      color = {0, 0, 127}));
   annotation (
     experiment(StopTime = 2000, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>Alternative test model for the pressure regulator.</p></html>"));
 end PressureRegulatorTest_v2;

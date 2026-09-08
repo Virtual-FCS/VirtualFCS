@@ -213,4 +213,5 @@ equation
 // outlet.Xi_outflow is the vector of independent mass fractions (length = Medium.nXi = nX-1)
 //outlet_cracked_gas.Xi_outflow = X_full[1:Medium.nXi];
 // this component is the state-setter for pressure:
+annotation(Documentation(info = "<html><p>Alternative simplified tube-and-shell ammonia cracker with catalytic decomposition and heat transfer through the outer tube wall.</p><p>The model is intended for system-level studies.</p></html>"));
 end AmmoniaCracker_2;

@@ -24,4 +24,5 @@ equation
    E_act_A = R*T_stack/(a_A*F)*Modelica.Math.asinh(j/2*i_0);
    E_act = E_act_A + E_act_C;
    v = E_act;
+annotation(Documentation(info = "<html><p>Activation-loss model for the anode and cathode of a hydrogen fuel cell.</p></html>"));
 end ActivationLossAnCa;

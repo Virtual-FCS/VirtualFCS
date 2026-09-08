@@ -25,4 +25,5 @@ equation
                                       color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
+annotation(Documentation(info = "<html><p>Test model for the DC converter.</p></html>"));
 end DC_converterTest;

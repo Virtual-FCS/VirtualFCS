@@ -58,4 +58,5 @@ equation
     Line(points = {{20, 70}, {4, 70}, {4, 22}}, color = {0, 0, 127}));
   annotation(
     experiment(StopTime = 400, StartTime = 0, Tolerance = 1e-06, Interval = 0.1));
+annotation(Documentation(info = "<html><p>Alternative test model for the humidifier component.</p></html>"));
 end HumidifierTest_2;
