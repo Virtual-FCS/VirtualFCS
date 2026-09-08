@@ -28,7 +28,7 @@ model HumidifierV3Test "Pollak humidifier test case using the v3 volume model"
     Placement(transformation(origin = {-60, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   VirtualFCS.Fluid.RelativeHumiditySensor sensorWetSource(redeclare package Medium = wet_medium) annotation(
     Placement(transformation(origin = {-26, 16}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Fluid.HumidifierV3 humidifierV3(redeclare package dry_medium = dry_medium, redeclare package wet_medium = wet_medium, n = 10, wet_p_start = 2e5, dry_p_start = 2e5, wet_T_start = 353.15, dry_T_start = 353.15, wet_X_start = {0.24, 0.76, 0}, dry_X_start = {0.24, 0.76, 0}, V_wet = 0.0000468, V_dry = 0.000005, UA = 1, dp_nominal = 1e5) annotation(
+  Fluid.HumidifierV3 humidifierV3(redeclare package dry_medium = dry_medium, redeclare package wet_medium = wet_medium, n = 7, wet_p_start = 2e5, dry_p_start = 2e5, wet_T_start = 353.15, dry_T_start = 353.15, wet_X_start = {0.24, 0.76, 0}, dry_X_start = {0.24, 0.76, 0}, V_wet = 0.0000468, V_dry = 0.000005, UA = 0.4, dp_nominal = 1e4) annotation(
     Placement(transformation(origin = {0, -10}, extent = {{-20, -20}, {20, 20}})));
 equation
   connect(step_m_flow.y, wet_air_source.m_flow_in) annotation(

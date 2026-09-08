@@ -33,15 +33,6 @@ model MembraneTransferV3 "Calculates membrane mass and enthalpy transfer for one
   input wet_medium.ThermodynamicState wetState;
   input dry_medium.ThermodynamicState dryState;
 
-  input SI.Density wetDensity;
-  input SI.Density dryDensity;
-
-  input SI.Pressure wetPressure;
-  input SI.Pressure dryPressure;
-
-  input SI.Temperature wetTemperature;
-  input SI.Temperature dryTemperature;
-
   input SI.MassFraction wetXi[wet_medium.nXi];
   input SI.MassFraction dryXi[dry_medium.nXi];
 
@@ -82,6 +73,15 @@ protected
   SI.VolumeFlowRate beta_eff;
   SI.DimensionlessRatio NTU;
   SI.Efficiency effectiveness;
+
+  SI.Density wetDensity = wet_medium.density(wetState);
+  SI.Density dryDensity = dry_medium.density(dryState);
+
+  SI.Temperature wetTemperature = wet_medium.temperature(wetState);
+  SI.Temperature dryTemperature = dry_medium.temperature(dryState);
+
+  SI.Pressure wetPressure = wet_medium.pressure(wetState);
+  SI.Pressure dryPressure = dry_medium.pressure(dryState);
 
 equation
 
