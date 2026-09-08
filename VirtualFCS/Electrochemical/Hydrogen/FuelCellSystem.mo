@@ -12,6 +12,9 @@ model FuelCellSystem
   // H2 Subsystem Paramters
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure";
+  // Mediums
+  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v) "Power delivered from the FC stack";
@@ -23,18 +26,19 @@ model FuelCellSystem
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable FuelCell fuelCell(N_cells = N_cells)  annotation (Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
-  replaceable SubSystems.Air.SubSystemAir subSystemAir(N_cells = N_cells, p_set = p_air_set)  annotation(
+  replaceable FuelCell fuelCell(N_cells = N_cells, redeclare package Cathode_Medium = Cathode_Medium) annotation(
+    Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
+  replaceable SubSystems.Air.SubSystemAir subSystemAir(N_cells = N_cells, p_set = p_air_set, redeclare package Medium = Cathode_Medium)  annotation(
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {1, -47}, extent = {{-11, -11}, {11, 11}})));
-  replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(subSystemHydrogenControl(pressure_H2_set = p_H2_set))  annotation(
+  replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(subSystemHydrogenControl(pressure_H2_set = p_H2_set), redeclare package Anode_Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
-  eta_sys_HHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2HHV)*100, eta_max);
-  eta_sys_LHV = min(Power_system / (max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10) * H2LHV)*100, eta_max);
+  eta_sys_HHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2HHV)*100, eta_max);
+  eta_sys_LHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2LHV)*100, eta_max);
   connect(pin_n, currentSensor.p) annotation(
     Line(points = {{-40, 96}, {-40, 80}}, color = {0, 0, 255}));
   connect(fuelCell.pin_n, currentSensor.n) annotation(

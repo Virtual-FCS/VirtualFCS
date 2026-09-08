@@ -5,7 +5,8 @@ model SubSystemHydrogen
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
   parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
   parameter Integer N_cells = 180 "FC stack number of cells";
-  
+  parameter Modelica.Units.SI.VolumeFlowRate V_flow_HRB_min = 1e-7 "Minimum volume flow of the Hydrogen Recirculation Blower";
+  parameter Real RR = 1.3 "Hydrogen recirculation ratio";
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, nPorts = 1, p = system.p_ambient, use_T_in = false) annotation(
     Placement(transformation(origin = {-150, -80}, extent = {{-14, -14}, {14, 14}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent(unit = "A") annotation(
@@ -24,7 +25,7 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-66, 106}, extent = {{18, -18}, {-18, 18}}, rotation = -90)));
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 12) annotation(
     Placement(transformation(origin = {25, 106}, extent = {{24, -14}, {-24, 14}})));
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 2000000) annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 2000000, minimumFlow = V_flow_HRB_min, RR = RR) annotation(
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-125, 107}, extent = {{17, -17}, {-17, 17}}, rotation = -90)));
@@ -36,8 +37,10 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-36, -80}, extent = {{14, -14}, {-14, 14}})));
   VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-28, 50}, extent = {{-10, 10}, {10, -10}})));
-  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium) annotation(
+  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium, eta_is = 0.35) annotation(
     Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
+  Modelica.Fluid.Sensors.Temperature temp_h2_from_stack(redeclare package Medium = Anode_Medium)  annotation(
+    Placement(transformation(origin = {102, -54}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
     Line(points = {{-97, 142}, {-97, 132}, {-125, 132}, {-125, 124}}, color = {191, 0, 0}));
@@ -77,6 +80,8 @@ equation
     Line(points = {{60, 10}, {150, 10}}, color = {0, 0, 255}));
   connect(subSystemHydrogenControl.pumpSpeed_set, HRB.u) annotation(
     Line(points = {{-76, -26}, {0, -26}, {0, 0}, {22, 0}}, color = {0, 0, 127}));
+  connect(temp_h2_from_stack.port, fromStack) annotation(
+    Line(points = {{102, -64}, {100, -64}, {100, -80}, {152, -80}}, color = {0, 127, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-27, 58}, extent = {{-17, 6}, {25, -8}}, textString = "Pressure regulator"), Text(origin = {54, 23}, extent = {{-28, 13}, {42, -15}}, textString = "Hydrogen recirculation blower")}),
     Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H2")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),

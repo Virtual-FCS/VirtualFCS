@@ -84,17 +84,32 @@ package Shomate
       H = 0.0);
   
    /* Validity range 298 K - 1400 K. Original data Chase et al. (1998)
-   * https://webbook.nist.gov/cgi/cbook.cgi?ID=C7664417&Units=SI&Mask=1#Thermo-Gas
-   */
+    * https://webbook.nist.gov/cgi/cbook.cgi?ID=C7664417&Units=SI&Mask=1#Thermo-Gas
+    */
   constant Parameters NH3_G(
-      A = 19.99563	, 
-      B = 49.77119	, 
+      A = 19.99563, 
+      B = 49.77119, 
       C = -15.37599, 
       D = 1.921168, 
       E = 0.189174, 
       F = -53.30667, 
       G = 203.8591, 
       H = -45.89806);
+    
+   /* Validity range 195.5 - 405.4 K. Data from Perry's 7th ed., table 2-232
+    * Data fits well up to 390, after that degrades a bit but still usable.
+    * See attached script Utilities/ammoniaregression.py for how these values
+    * were calculated.
+    */
+   constant Parameters NH3_L(
+      A = -5161.92,
+      B = 39412.44,
+      C = -110391.57,
+      D = 109486.5,
+      E = 35.896,
+      F = 598.047,
+      G = -13739.695, 
+      H = -68.6);
   
   function heat_capacity "Molar constant-pressure heat capacity"
     extends Modelica.Icons.Function;

@@ -3,7 +3,7 @@ within VirtualFCS.Fluid;
 model ElectricCompressor
   extends VirtualFCS.Fluid.ElectricCompressorInterface;
   Modelica.Units.SI.Power power "The power consumed by the Compressor";
-  replaceable Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet motor(IaNominal = 30, Jr = 0.15, Js = 0.29, La(displayUnit = "mH") = 0.0015, Ra(displayUnit = "mOhm") = 0.05, TaNominal = 293.15, TaOperational = 293.15, TaRef = 293.15, VaNominal = 100, alpha20a = 0, wMechanical(displayUnit = "rpm"), wNominal(displayUnit = "rpm") = 125.66370614359174) annotation(
+  replaceable Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet motor(IaNominal = 30, Jr = 0.15, Js = 0.29, La(displayUnit = "mH") = 0.0015, Ra(displayUnit = "mOhm") = 0.01, TaNominal = 293.15, TaOperational = 293.15, TaRef = 293.15, VaNominal = 100, alpha20a = 0, wMechanical(displayUnit = "rpm"), wNominal(displayUnit = "rpm") = 125.66370614359174) annotation(
     Placement(transformation(origin = {-10, -12}, extent = {{-10, -10}, {10, 10}})));
   replaceable Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.IdealDcDc converter(Td(displayUnit = "ms") = 0.001, Ti(displayUnit = "ms") = 0.001) annotation(
     Placement(transformation(origin = {-10, 60}, extent = {{-10, -10}, {10, 10}})));

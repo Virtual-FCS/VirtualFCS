@@ -19,15 +19,19 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
   // Coefficients for open-circuit voltage calculation
   // LFP
   parameter Modelica.Units.SI.Voltage V_chem_max = 3.65;
-  Modelica.Units.SI.Voltage a1 = 3.25;
-  Real b1 = -1e-4; // Should be V/degC
-  Modelica.Units.SI.Voltage c1 = -0.08;
-  Modelica.Units.SI.Voltage d1 = 0.07;
-  Modelica.Units.SI.Voltage e1 = -0.02;
-  Modelica.Units.SI.Voltage f1 = -0.01;
-  Modelica.Units.SI.Voltage g1 = -0.06;
-  Modelica.Units.SI.Voltage h1 = -0.02;
-  Modelica.Units.SI.LinearTemperatureCoefficient i1 = -0.002;
+  parameter Modelica.Units.SI.Voltage a1 = 3.39;
+  parameter Real b1 = -1e-4;
+  parameter Modelica.Units.SI.Voltage c1 = -7.46e-2;
+  parameter Modelica.Units.SI.Voltage d1 = 5.82e-3;
+  parameter Modelica.Units.SI.Voltage e1 = -2.75e-2;
+  parameter Modelica.Units.SI.Voltage f1 = 2.30e-2;
+  parameter Modelica.Units.SI.Voltage g1 = -4.71e-2;
+  parameter Modelica.Units.SI.Voltage h1 = -0.02;
+  parameter Modelica.Units.SI.LinearTemperatureCoefficient i1 = -0.002;
+  
+  Real C_rate = pin_p.i / C_bat_pack "Cycle rate";
+  
+
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {146, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
@@ -78,7 +82,7 @@ protected
 equation
 // ***DEFINE EQUATIONS ***//
 // Calculate the open-circuit voltage at given temperature and state of charge
-  OCV.v = V_max_bat_pack * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15))) / V_chem_max;
+  OCV.v = N_s * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15)));
 // Thermal equations
   heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i);
 // ***DEFINE CONNECTIONS ***//

@@ -69,8 +69,8 @@ model Humidifier "Hollow fiber membrane humidifier:
   wet_medium.ThermodynamicState med_state_A_out;
   dry_medium.ThermodynamicState med_state_B_in;
   dry_medium.ThermodynamicState med_state_B_out;
-  Modelica.Units.SI.MassFraction XiA_out[wet_medium.nXi];
-  Modelica.Units.SI.MassFraction XiB_out[dry_medium.nXi];
+  Modelica.Units.SI.MassFraction XiA_out[wet_medium.nXi] (start=wet_medium.reference_X[1:wet_medium.nXi]);
+  Modelica.Units.SI.MassFraction XiB_out[dry_medium.nXi] (start=dry_medium.reference_X[1:dry_medium.nXi]);
   Modelica.Units.SI.MassFraction XiA_out_3 "Mass fractions of H20 for logging";
   Modelica.Units.SI.MassFraction XiB_out_3 "Mass fraction of H20 for logging";
 equation
@@ -130,25 +130,14 @@ equation
   portA_in.p = portA_out.p;
   portB_in.p = portB_out.p;
 // Species balances
-// To avoide div by zero
-  if abs(portA_out.m_flow) > m_flow_min then
-    XiA_out[1] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[1]))/abs(portA_out.m_flow);
-    XiA_out[2] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[2]))/abs(portA_out.m_flow);
-    XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
-  else
-    XiA_out[1] = inStream(portA_in.Xi_outflow[1]);
-    XiA_out[2] = inStream(portA_in.Xi_outflow[2]);
-    XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
-  end if;
-  if abs(portB_out.m_flow) > m_flow_min then
-    XiB_out[1] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[1]))/abs(portB_out.m_flow);
-    XiB_out[2] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[2]))/abs(portB_out.m_flow);
-    XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
-  else
-    XiB_out[1] = inStream(portB_in.Xi_outflow[1]);
-    XiB_out[2] = inStream(portB_in.Xi_outflow[2]);
-    XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
-  end if;
+  XiA_out[1] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[1]))/max(abs(portA_out.m_flow), m_flow_min);
+  XiA_out[2] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[2]))/max(abs(portA_out.m_flow), m_flow_min);
+  XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
+
+  XiB_out[1] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[1]))/max(abs(portB_out.m_flow), m_flow_min);
+  XiB_out[2] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[2]))/max(abs(portB_out.m_flow), m_flow_min);
+  XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
+
 // Energy balance (enthalpy flow)
   if m_perm_state > 0 then
     perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_A_in.T, Media.Shomate.H2O_G)/wet_medium.MMs[3])*m_perm_state;
