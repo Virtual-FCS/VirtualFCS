@@ -5,15 +5,16 @@ partial model ElectrolyserInterface
 
   replaceable package Cathode_Medium = PartialMedium constrainedby PartialMedium;
   replaceable package Anode_Medium = PartialMedium constrainedby PartialMedium;
-  
-  Modelica.Fluid.Interfaces.FluidPort_a cathode_a(redeclare package Medium = Cathode_Medium) annotation(
-    Placement(transformation(origin = {-150, 40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b cathode_b(redeclare package Medium = Cathode_Medium) annotation(
-    Placement(transformation(origin = {-150, -40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, -70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_a anode_a(redeclare package Medium = Anode_Medium) annotation(
+
+  Modelica.Fluid.Interfaces.FluidPort_a port_anode_a(redeclare package Medium = Anode_Medium) annotation(
+
     Placement(transformation(origin = {150, 40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b anode_b(redeclare package Medium = Anode_Medium) annotation(
+  Modelica.Fluid.Interfaces.FluidPort_b port_anode_b(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {150, -40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Fluid.Interfaces.FluidPort_a port_cathode_a(redeclare package Medium = Cathode_Medium) annotation(
+    Placement(transformation(origin = {-150, 40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, 70}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_cathode_b(redeclare package Medium = Cathode_Medium) annotation(
+    Placement(transformation(origin = {-150, -40}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, -70}, extent = {{-10, -10}, {10, 10}})));
   
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
     Placement(transformation(origin = {60, 150}, extent = {{-14, -14}, {14, 14}}), iconTransformation(origin = {80, 110}, extent = {{-10, -10}, {10, 10}})));
