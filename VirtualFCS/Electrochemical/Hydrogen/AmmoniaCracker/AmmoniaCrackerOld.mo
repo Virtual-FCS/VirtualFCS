@@ -266,3 +266,5 @@ equation
   
   
 annotation(Documentation(info = "<html><p>Simplified tube-and-shell ammonia cracker with catalytic ammonia decomposition and heat transfer from the shell-side fluid.</p><p>The model is a reduced-order representation intended for system-level studies.</p></html>"));
+
+end AmmoniaCrackerOld;

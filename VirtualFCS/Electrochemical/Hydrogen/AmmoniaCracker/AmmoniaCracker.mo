@@ -226,3 +226,5 @@ equation
 
 
 annotation(Documentation(info = "<html><p>Alternative simplified tube-and-shell ammonia cracker with catalytic decomposition and heat transfer through the outer tube wall.</p><p>The model is intended for system-level studies.</p></html>"));
+
+end AmmoniaCracker;

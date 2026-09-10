@@ -37,3 +37,5 @@ equation
   connect(ammonia_source.ports[1], ammoniaCracker.inlet_nh3_feed) annotation(
     Line(points = {{-60, 10}, {-10, 10}}, color = {0, 127, 255}));
 annotation(Documentation(info = "<html><p>This test feeds the ammonia cracker with a constant 0.3 kg/s ammonia stream at 550 degC and observes the outlet at 3e5 Pa. The outlet temperature is not explicitly enabled, so temperature behavior follows the component defaults.</p></html>"));
+
+end AmmoniaCrackerTestOld;
