@@ -26,4 +26,5 @@ equation
       __Dymola_Algorithm="Dassl"));
 
 
+annotation(Documentation(info = "<html><p>This example drives the electrolyser with a trapezoidal current demand. The current starts at 0 A, rises to 600 A from 50 s over 100 s, remains at that level for the 400 s pulse width, and then falls according to the 800 s period.</p><p>Fluid operating boundaries are inherited from the connected system components.</p></html>"));
 end CycleElectrolyserSystem;

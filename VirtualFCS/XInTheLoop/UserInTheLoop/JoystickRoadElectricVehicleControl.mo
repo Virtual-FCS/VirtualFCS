@@ -55,4 +55,5 @@ equation
     Line(points = {{62, 80}, {66, 80}, {66, 80}, {68, 80}}, color = {0, 0, 127}));
   connect(abs1.y, ctl_brake) annotation (
     Line(points = {{92, 80}, {104, 80}, {104, 80}, {110, 80}}, color = {0, 0, 127}));
+annotation(Documentation(info = "<html><p>User-in-the-loop vehicle controller that converts joystick acceleration and braking commands into bounded control signals.</p></html>"));
 end JoystickRoadElectricVehicleControl;

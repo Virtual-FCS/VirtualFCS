@@ -57,4 +57,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 20, Tolerance = 1e-06, Interval = 0.06),
     Diagram);
+annotation(Documentation(info = "<html><p>This test starts the compressor at 0.001 kg/s and steps the commanded mass flow to 0.301 kg/s at 10 s.</p><p>The bench uses a 48 V supply, a 2e5 Pa pressure setpoint, a 2.5e5 Pa nominal valve pressure, and a 1 m3 manifold at 353.15 K. The nominal flow is 0.3 kg/s with a 1.5e5 Pa nominal pressure difference.</p></html>"));
 end ElectricCompressorTest;

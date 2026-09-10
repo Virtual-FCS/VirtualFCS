@@ -13,7 +13,7 @@ model PolarizeFuelCellStack "Generate a polarization curve for a fuel cell stack
   
   inner Modelica.Fluid.System system(p_ambient(displayUnit = "Pa")) annotation(
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2e5, p_H2_set = 2e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation(i_0 = 0.005), A_el = A_el, G_cool = 1500, cathode(R_flow = 1e6), anode(R_flow = 4e7)), subSystemAir(lambda = 1.7, compressor(compressor(eta = 0.9))), subSystemHydrogen( RR = 1.3, V_flow_HRB_min = 6e-4), redeclare package Cathode_Medium = Cathode_Medium, redeclare package Anode_Medium = Anode_Medium) annotation(
+  Electrochemical.Hydrogen.FuelCellSystem fcs(p_air_set = 2e5, p_H2_set = 2e5, N_cells = 180, fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(R_ref = 1.25e-5), redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation(i_0 = 0.005), A_el = A_el, G_cool = 8000, cathode(R_flow = 1e6), anode(R_flow = 4e7)), subSystemAir(lambda = 1.7, compressor(compressor(eta = 0.9))), subSystemHydrogen(V_flow_HRB_min = 6e-4, RR = 1.3), redeclare package Cathode_Medium = Cathode_Medium, subSystemCooling(T_coolant_set = 333.15)) annotation(
     Placement(transformation(extent = {{-22, -22}, {22, 22}})));
   Modelica.Electrical.Analog.Basic.VariableResistor resistor annotation(
     Placement(transformation(origin = {0, 40}, extent = {{10, -10}, {-10, 10}})));
@@ -34,6 +34,6 @@ equation
     Line(points = {{-10, 40}, {-12, 40}, {-12, 20}, {-11, 20}}, color = {0, 0, 255}));
   annotation(
     Icon,
-    Documentation(info = "<html><head></head><body>This example demonstrates the setup for a fuel cell system to generate a polarization curve. The fuel cell stack is connected to subsystems for hydrogen, air, and cooling. The electrical load is provided by a ramp voltage source that sweeps the current domain over a period of 500 seconds.&nbsp;</body></html>"),
+    Documentation(info = "<html><p>This example generates a reference fuel-cell polarization curve by stepping the electrical load through 20 A at 0 s, 150 A at 50 s, and 370 A at 100 s.</p><p>The stack has 180 cells and is connected to hydrogen, air, and cooling subsystems. The nominal operating conditions are 2e5 Pa on the reactant sides, 333.15 K coolant, air lambda = 1.7, and hydrogen recirculation ratio = 1.3.</p></html>"),
     experiment(StopTime = 150, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
 end PolarizeFuelCellStack;

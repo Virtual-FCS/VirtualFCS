@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Media.Examples;
 
 model NH3CrackedTest
   //X_ambient = X_start + {-x_NH3_conversion, x_NH3_conversion*0.5, x_NH3_conversion*3}
@@ -9,4 +9,5 @@ model NH3CrackedTest
   parameter Modelica.Units.SI.Temperature T_source = 193;
 equation
 
+annotation(Documentation(info = "<html><p>Test model for cracked-ammonia medium flow.</p></html>"));
 end NH3CrackedTest;

@@ -14,4 +14,5 @@ function calcCost
 
 algorithm
   cost := ((currentFc * voltageFc)/(LHVH2 * calcFcEfficiency(currentFc))) + ((1-mu*((SOC - 0.5*(SOC_min+SOC_max))/(0.5*(SOC_min+SOC_max)))) * ((sigma * currentBattery * voltageBattery)/(LHVH2 * calcFcEfficiency(currentFc))));
+annotation(Documentation(info = "<html><p>Calculates the equivalent-consumption cost used by the ECMS.</p></html>"));
 end calcCost;

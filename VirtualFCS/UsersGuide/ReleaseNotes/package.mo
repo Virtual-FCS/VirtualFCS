@@ -13,4 +13,5 @@ package ReleaseNotes
 <tr><td><a href=\"modelica://VirtualFCS.UsersGuide.ReleaseNotes.Version_0_1_0\">Version 0.1.0-beta</a></td><td>2021-07-01</td></tr>
 </table>
 </body></html>"));
+annotation(Documentation(info = "<html><p>Release notes and change history for the VirtualFCS library.</p></html>"));
 end ReleaseNotes;

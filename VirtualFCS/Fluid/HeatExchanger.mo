@@ -25,13 +25,11 @@ model HeatExchanger
 equation
   for i in 1:(n-1) loop
     connect(mixvols_1[i].port_b, mixvols_1[i+1].port_a);
-  end for;
-  connect(mixvols_1[1].port_a, port_a1);
-  connect(mixvols_1[n].port_b, port_b1);
-
-  for i in 1:(n-1) loop
     connect(mixvols_2[i].port_b, mixvols_2[i+1].port_a);
   end for;
+
+  connect(mixvols_1[1].port_a, port_a1);
+  connect(mixvols_1[n].port_b, port_b1);
   if flow_c == Configuration.counterCurrent then
     connect(mixvols_2[1].port_a, port_b2);
     connect(mixvols_2[n].port_b, port_a2);

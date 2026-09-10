@@ -48,4 +48,5 @@ annotation(
     Diagram(graphics),
     Icon(graphics = {Line(origin = {2, 52},points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {2, 52},points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255})}),
   __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+annotation(Documentation(info = "<html><p>Two-phase pulse-width modulation block for generating complementary switching commands from a duty-cycle request.</p></html>"));
 end TwoPhasedPWM;

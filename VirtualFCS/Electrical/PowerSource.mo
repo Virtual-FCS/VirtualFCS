@@ -19,4 +19,5 @@ model PowerSource
     // Constant power relation
     P = v*i;
 
+annotation(Documentation(info = "<html><p>Electrical source component providing a prescribed power input through a voltage and current interface.</p></html>"));
 end PowerSource;

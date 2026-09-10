@@ -27,4 +27,5 @@ model simplePipe "A simple 0D pipe with mass and heat transfer"
     // Estimated heat port temperature from coolant inlet temperature, which defines how much heat is dissipated here
     heat_port.T = T_water_in;
 
+annotation(Documentation(info = "<html><p>Simple zero-dimensional pipe model with fluid mass and heat transfer between its two fluid ports.</p><p>The heat-port temperature is estimated from the coolant inlet temperature; the low-flow enthalpy expression uses a small numerical flow threshold.</p></html>"));
 end simplePipe;

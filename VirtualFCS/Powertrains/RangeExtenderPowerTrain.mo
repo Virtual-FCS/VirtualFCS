@@ -105,4 +105,5 @@ equation
     Line(points = {{6, 40}, {42, 40}, {42, 96}}, color = {0, 0, 255}));
   annotation (
     Icon(graphics={  Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)));
+annotation(Documentation(info = "<html><p>Range-extender hybrid powertrain combining a battery-electric drive with a fuel-cell.</p></html>"));
 end RangeExtenderPowerTrain;
