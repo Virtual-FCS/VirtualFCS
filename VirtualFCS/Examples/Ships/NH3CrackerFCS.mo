@@ -3,14 +3,14 @@ within VirtualFCS.Examples.Ships;
 model NH3CrackerFCS
   inner Modelica.Fluid.System system;
   // Medium
-  package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
+  package AmmoniaMedium = VirtualFCS.Media.CrackedAmmonia;
   package HydrogenMedium = Modelica.Media.IdealGases.SingleGases.H2;
   // Parameters
   parameter Modelica.Units.SI.Pressure P_H2_tank_start = 20e5 "Initial H2 tank pressure";
   parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 20e5 "Initial H2 tank pressure";
 
 
-  Electrochemical.Hydrogen.AmmoniaCracker.AmmoniaCracker ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium)  annotation(
+  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium)  annotation(
     Placement(transformation(origin = {59, 57}, extent = {{-19, -19}, {19, 19}})));
   Modelica.Fluid.Vessels.ClosedVolume ammoniaTank(redeclare package Medium = AmmoniaMedium, nPorts = 1, portsData(each diameter = 0.1), V = 1)  annotation(
     Placement(transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}})));

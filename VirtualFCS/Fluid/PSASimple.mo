@@ -7,7 +7,7 @@ model PSASimple
     "Fraction of inlet H2 recovered in product";
 
   redeclare package Medium_feed =
-      VirtualFCS.Media.NH3Cracked
+      VirtualFCS.Media.CrackedAmmonia
     "Medium for inlet";
 
   redeclare package Medium_product =
@@ -15,7 +15,7 @@ model PSASimple
     "Medium for purified gas outlet";
 
   redeclare package Medium_tail =
-      VirtualFCS.Media.NH3Cracked
+      VirtualFCS.Media.CrackedAmmonia
     "Medium for other gases outlet";
 
   Medium_feed.MassFraction Xi_test[2];
