@@ -56,15 +56,15 @@ equation
   //------------------------------------------------------------------
   // Feed composition
   //
-  // NH3Cracked:
-  //   Xi[1] = H2
-  //   Xi[2] = N2
-  //   X_NH3 = 1 - X_H2 - X_N2
+  // CrackedAmmonia:
+  //   Xi[1] = NH3
+  //   Xi[2] = H2
+  //   X_N2 = 1 - X_NH3 - X_H2
   //------------------------------------------------------------------
 
-  X_H2 = inStream(feed.Xi_outflow[1]);
-  X_N2 = inStream(feed.Xi_outflow[2]);
-  X_NH3 = 1 - X_H2 - X_N2;
+  X_NH3 = inStream(feed.Xi_outflow[1]);
+  X_H2 = inStream(feed.Xi_outflow[2]);
+  X_N2 = 1 - X_NH3 - X_H2;
 
 
   //------------------------------------------------------------------
@@ -78,8 +78,8 @@ equation
   feed.h_outflow =
     Medium_feed.specificEnthalpy(feedState);
 
-  feed.Xi_outflow[1] = X_H2;
-  feed.Xi_outflow[2] = X_N2;
+  feed.Xi_outflow[1] = X_NH3;
+  feed.Xi_outflow[2] = X_H2;
 
 
   //------------------------------------------------------------------
@@ -144,13 +144,13 @@ equation
       Medium_tail.setState_pTX(
         tail.p,
         T_feed,
-        {X_H2_tail, X_N2_tail, X_NH3_tail}));
+        {X_NH3_tail, X_H2_tail}));
 
 
   //------------------------------------------------------------------
   // Tail composition
   //------------------------------------------------------------------
 
-  tail.Xi_outflow[1] = X_H2_tail;
-  tail.Xi_outflow[2] = X_N2_tail;
+  tail.Xi_outflow[1] = X_NH3_tail;
+  tail.Xi_outflow[2] = X_H2_tail;
 end PSASimple;

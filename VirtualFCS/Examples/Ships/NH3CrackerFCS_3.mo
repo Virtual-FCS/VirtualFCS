@@ -23,7 +23,7 @@ model NH3CrackerFCS_3
     Placement(transformation(origin = {74, -32}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant heat(k = 1000) annotation(
     Placement(transformation(origin = {-51, 75}, extent = {{-7, -7}, {7, 7}})));
-  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = {0.1, 0.1, 0.8}, m_flow = 0.3, nPorts = 1, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = {0.8, 0.1, 0.1}, m_flow = 0.3, nPorts = 1, use_m_flow_in = false) annotation(
     Placement(transformation(origin = {-74, 32}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(heater1.port, NH3Vaporizer.heatPorts[1]) annotation(

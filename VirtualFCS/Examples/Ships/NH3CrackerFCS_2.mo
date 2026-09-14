@@ -20,7 +20,7 @@ model NH3CrackerFCS_2
     Placement(transformation(origin = {62, 12}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = P_out, T = T_in) annotation(
     Placement(transformation(origin = {74, -32}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = {0.1, 0.1, 0.8}, m_flow = 0.3, nPorts = 2, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = {0.8, 0.1, 0.1}, m_flow = 0.3, nPorts = 2, use_m_flow_in = false) annotation(
     Placement(transformation(origin = {-60, 60}, extent = {{-10, -10}, {10, 10}})));
 
 
