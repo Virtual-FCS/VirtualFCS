@@ -5,7 +5,7 @@ model CrackedAmmonia
     final mediumName = "Cracked ammonia",
     final substanceNames = {"ammonia", "hydrogen", "nitrogen"}, 
     final reference_X = {0.8, 0.1, 0.1},
-    Temperature(min = 195.5, max = 405.4, start = 298),
+    Temperature(min = 195.5, max = 1273.15, start = 298),
     AbsolutePressure(min = 3E4, max = 5E6, start = 1E5),
     MMX={Modelica.Media.IdealGases.Common.SingleGasesData.NH3.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 

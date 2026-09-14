@@ -180,8 +180,8 @@ equation
     end if;
   end for;
 // Connect fluid interfaces
-  mf_NH3 = inlet_nh3_feed.m_flow*inStream(inlet_nh3_feed.Xi_outflow[idx_NH3]);
-  inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T_in, inStream(inlet_nh3_feed.Xi_outflow)));
+  mf_NH3 = inlet_nh3_feed.m_flow*inStream(inlet_nh3_feed.Xi_outflow[1]);
+  inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T_in, {inStream(inlet_nh3_feed.Xi_outflow[1]), inStream(inlet_nh3_feed.Xi_outflow[2])}));
   inlet_nh3_feed.p = P_tot[1];
   inlet_nh3_feed.Xi_outflow = {Xi_outflow_NH3[1], Xi_outflow_H2[1]};
   outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_out, T_in, {Xi_outflow_NH3[N], Xi_outflow_H2[N]}));
