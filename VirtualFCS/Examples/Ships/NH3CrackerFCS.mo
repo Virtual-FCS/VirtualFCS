@@ -7,12 +7,12 @@ model NH3CrackerFCS
   package HydrogenMedium = Modelica.Media.IdealGases.SingleGases.H2;
   // Parameters
   parameter Modelica.Units.SI.Pressure P_H2_tank_start = 20e5 "Initial H2 tank pressure";
-  parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 20e5 "Initial H2 tank pressure";
+  parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 1e5 "Initial H2 tank pressure";
 
 
   Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium)  annotation(
     Placement(transformation(origin = {59, 57}, extent = {{-19, -19}, {19, 19}})));
-  Modelica.Fluid.Vessels.ClosedVolume ammoniaTank(redeclare package Medium = AmmoniaMedium, nPorts = 1, portsData(each diameter = 0.1), V = 1)  annotation(
+  Modelica.Fluid.Vessels.ClosedVolume ammoniaTank(redeclare package Medium = AmmoniaMedium, nPorts = 1, portsData(each diameter = 0.1), V = 100, X_start = {0.8, 0.1, 0.1})  annotation(
     Placement(transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}})));
   Fluid.SimplePump ammoniaPump(redeclare package Medium = AmmoniaMedium)  annotation(
     Placement(transformation(origin = {-56, 22}, extent = {{-10, -10}, {10, 10}})));
@@ -20,11 +20,11 @@ model NH3CrackerFCS
     Placement(transformation(origin = {-14, 30}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heater1 annotation(
     Placement(transformation(origin = {-28, 56}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.FixedBoundary hydrogenSink(nPorts = 1, redeclare package Medium = HydrogenMedium, p = 2e6)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary hydrogenSink(nPorts = 1, redeclare package Medium = HydrogenMedium, p = P_H2_tank_start)  annotation(
     Placement(transformation(origin = {44, -30}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   Fluid.PSASimple psa(sep_eff = 0.9)  annotation(
     Placement(transformation(origin = {62, 12}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = 2e6) annotation(
+  Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = P_H2_tank_start) annotation(
     Placement(transformation(origin = {74, -32}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant heat(k = 1000)  annotation(
     Placement(transformation(origin = {-51, 75}, extent = {{-7, -7}, {7, 7}})));
