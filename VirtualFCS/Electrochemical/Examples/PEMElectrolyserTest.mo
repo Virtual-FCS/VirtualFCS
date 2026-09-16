@@ -6,7 +6,7 @@ model PEMElectrolyserTest
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.Boundary_pT cathode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.WetHydrogen, p = 3e6) annotation(
     Placement(transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.Boundary_pT anode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_p_in = true, p = 1e5) annotation(
+  Modelica.Fluid.Sources.Boundary_pT anode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_p_in = true, p = 1e5, X = {0, 0, 1}) annotation(
     Placement(transformation(origin = {70, -10}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Fluid.Sources.MassFlowSource_T anode_inlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, m_flow = 3e-3, X = {0, 0, 1}, T = 323.15) annotation(
     Placement(transformation(origin = {70, 30}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
@@ -20,7 +20,7 @@ model PEMElectrolyserTest
   Modelica.Units.SI.EnthalpyFlowRate H_out = H_out_anode + H_out_cathode;
   Modelica.Units.SI.EnthalpyFlowRate H_out_anode = abs(anode_outlet.ports[1].m_flow)*ely.port_anode_b.h_outflow;
   Modelica.Units.SI.EnthalpyFlowRate H_out_cathode = abs(cathode_outlet.ports[1].m_flow)*ely.port_cathode_b.h_outflow;
-  Modelica.Blocks.Sources.Ramp ramp(height = 29e5, duration = 50, offset = 1e5, startTime = 5)  annotation(
+  Modelica.Blocks.Sources.Ramp ramp(height = 29e5, duration = 100, offset = 1e5, startTime = 5)  annotation(
     Placement(transformation(origin = {50, -50}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(ely.port_anode_b, anode_outlet.ports[1]) annotation(
@@ -39,5 +39,6 @@ equation
     Line(points = {{62, -50}, {92, -50}, {92, -2}, {82, -2}}, color = {0, 0, 127}));
 
 annotation(
-    experiment(StartTime = 0, StopTime = 100, Tolerance = 1e-06, Interval = 0.2));
+    experiment(StartTime = 0, StopTime = 150, Tolerance = 1e-06, Interval = 0.1),
+  Documentation(info = "<html><head></head><body>This is a simple test of a PEM electrolyser with variable current pushed through it while undergoing pressurisation.<div>Note that the sources and sinks are implemented with \"hard\" constraints rather than physical valves to simplify the example; it is easy to realise non-physical conditions if e.g. the pressure ramp is too fast (producing backflow into the stack).</div></body></html>"));
 end PEMElectrolyserTest;
