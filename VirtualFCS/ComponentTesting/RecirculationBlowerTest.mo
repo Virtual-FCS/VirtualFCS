@@ -30,4 +30,5 @@ equation
     Line(points={{4.4,60.4},{4.4,40},{10,40},{10,14}},    color = {0, 0, 255}));
   annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>This test drives the recirculation blower with a sine command of amplitude 0.2, offset 1, and frequency 0.01 Hz, enabled from 1 s. The hydrogen inlet pressure is fixed at 200000 Pa.</p></html>"));
 end RecirculationBlowerTest;

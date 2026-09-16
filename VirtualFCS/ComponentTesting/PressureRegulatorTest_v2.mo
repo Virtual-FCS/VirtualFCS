@@ -63,4 +63,5 @@ equation
     Line(points={{-33,-80},{8,-80}},      color = {0, 0, 127}));
   annotation (
     experiment(StopTime = 2000, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>This alternative pressure-regulator test starts with 70 MPa upstream pressure in a 0.13 m3 volume and 202650 Pa downstream pressure in a 0.2 m3 volume. From 25 s, the downstream flow excitation follows a 0.1 Hz sine-derived signal with amplitude 500 and offset 225.</p><p>The pressure setpoint and thermal boundary are 202650 Pa and 293.15 K.</p></html>"));
 end PressureRegulatorTest_v2;

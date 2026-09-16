@@ -175,4 +175,5 @@ package Shomate
   
   end gibbs_free_energy;
 
+annotation(Documentation(info = "<html><p>Media and thermodynamic-property functions based on Shomate polynomial correlations.</p></html>"));
 end Shomate;

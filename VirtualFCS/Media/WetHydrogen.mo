@@ -6,7 +6,7 @@ package WetHydrogen "Media model for hydrogen containing water vapour"
     final substanceNames = {"hydrogen", "water"}, 
     final reference_X = {0.9, 0.1},
     Temperature(min = 273.15, max = 500, start = 333),
-    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5),
+    AbsolutePressure(min = 3E4, max = 90E6, start = 1E5),
     MMX={Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}
   );

@@ -6,5 +6,5 @@ model TestThrottleKeys
 equation
 
   annotation (
-    Documentation(info = "<html><head></head><body>This example reads the state of the up and down arrows on the keyboard in real time.&nbsp;<div><br></div><div>Requires the user to load the library: Modelica_DeviceDrivers</div></body></html>"));
+    Documentation(info = "<html><p>This real-time example exposes the up and down keyboard states as a throttle-control signal. It has no prescribed simulation horizon or physical boundary conditions; user key events provide the excitation.</p><p>It requires Modelica_DeviceDrivers.</p></html>"));
 end TestThrottleKeys;

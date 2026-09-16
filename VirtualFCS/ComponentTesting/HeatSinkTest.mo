@@ -59,4 +59,5 @@ equation
         color={0,0,255}));
 annotation (
   experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>This test applies a 0.01 Hz sine control to the coolant pump from 10 s, with amplitude 0.14 and offset 0.15. The coolant inlet is initially 100 K above the default temperature and the thermal setpoint is 350 K.</p><p>The battery starts at SOC = 0.9 with 23 V to 27 V limits and 25 V nominal voltage. </p></html>"));
 end HeatSinkTest;

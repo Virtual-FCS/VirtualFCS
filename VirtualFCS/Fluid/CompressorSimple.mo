@@ -45,4 +45,5 @@ equation
   // Relate work to p ratio
   power*eta/port_a.m_flow = k*medium_in.R_s*medium_in.T/(k - 1)*((medium_out.p/medium_in.p)^((k - 1)/k) - 1);
 
+annotation(Documentation(info = "<html><p>Simplified compressor model for fluid-system studies. The component relates the electrical drive input to fluid pressure rise and flow.</p></html>"));
 end CompressorSimple;

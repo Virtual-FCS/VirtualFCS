@@ -30,4 +30,5 @@ equation
     Line(points = {{-18, 52}, {0, 52}, {0, 18}}, color = {0, 0, 127}));
   connect(simplePump.port_b, sink.ports[1]) annotation(
     Line(points = {{20, 16}, {60, 16}}, color = {0, 127, 255}));
+annotation(Documentation(info = "<html><p>This test steps the pump mass-flow command from 1 kg/s to 6 kg/s at 0.5 s. The inlet is held at 2e5 Pa and 323.15 K, the outlet at 1e6 Pa, and the electrical supply at 48 V.</p></html>"));
 end SimplePumpTest;

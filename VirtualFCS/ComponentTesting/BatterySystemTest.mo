@@ -18,4 +18,5 @@ equation
   annotation(
     experiment(StartTime = 0, StopTime = 20000, Tolerance = 1e-06, Interval = 0.5),
   Diagram);
+annotation(Documentation(info = "<html><p>This test applies a battery power demand of 25.8 kW from 0 to 10000 s, then steps it to -26.2 kW at 10000 s. The battery starts at SOC = 0.99. </p><p>The electrical source is connected directly to the battery system; battery electrical and thermal parameters otherwise use their model defaults.</p></html>"));
 end BatterySystemTest;

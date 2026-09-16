@@ -24,4 +24,5 @@ equation
       StopTime=1490,
       __Dymola_NumberOfIntervals=1490,
       __Dymola_Algorithm="Dassl"));
+annotation(Documentation(info = "<html><p>Experiment configuration used for an ECMS article test run.</p></html>"));
 end Article_test_run;

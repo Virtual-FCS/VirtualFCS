@@ -6,7 +6,7 @@ package CathodeAir "Medium model for cathodic air in PEM fuel cells"
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
     final reference_X = {0.23, 0.76, 0.01},  // NB! These are MASS fractions, not molar. Oxygen is heavier, water is lighter.
     Temperature(min = 273.15, max = 500, start = 333),
-    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5),
+    AbsolutePressure(min = 3E4, max = 5E6, start = 1E5),
     MMX={Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM,
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}

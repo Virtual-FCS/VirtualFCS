@@ -33,4 +33,5 @@ equation
   power = (u/medium_out.d) * (port_b.p-port_a.p) / eta_is;
   pin_p.i + pin_n.i = 0;
 
+annotation(Documentation(info = "<html><p>Simplified electrically driven pump with an isentropic efficiency relation between fluid pressure rise, volumetric flow, and electrical power.</p></html>"));
 end SimplePump;

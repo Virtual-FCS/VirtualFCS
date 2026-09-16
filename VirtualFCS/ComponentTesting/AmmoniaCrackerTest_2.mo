@@ -29,4 +29,5 @@ equation
     Line(points = {{32, 10}, {76, 10}}, color = {0, 127, 255}));
   connect(ammoniaCracker.inlet_nh3_feed, ammonia_source.ports[1]) annotation(
     Line(points = {{-14, 10}, {-58, 10}}, color = {0, 127, 255}));
+annotation(Documentation(info = "<html><p>This test feeds the ammonia cracker with 0.3 kg/s at 550 degC and evaluates the outlet at 3e5 Pa. The inlet composition is set to X = {0, 0, 1}; interpret the product stream using the connected cracked-ammonia medium.</p></html>"));
 end AmmoniaCrackerTest_2;

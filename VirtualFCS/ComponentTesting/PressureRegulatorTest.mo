@@ -50,4 +50,5 @@ equation
           255}));
   annotation (
     experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
+annotation(Documentation(info = "<html><p>This test evaluates pressure regulation from a 35 MPa hydrogen upstream volume of 0.13 m3 to a downstream volume of 10 m3. The downstream boundary is held at 202650 Pa; the thermal boundary is 293.15 K with convection conductance 12.</p></html>"));
 end PressureRegulatorTest;

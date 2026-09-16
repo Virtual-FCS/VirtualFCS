@@ -59,4 +59,5 @@ equation
     Line(points = {{46, 12}, {46, 40}, {22, 40}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
+annotation(Documentation(info = "<html><p>This test couples the air subsystem to a 42-cell fuel cell with 0.075 kg/s air feed, 1 kg/s coolant, 323.15 K coolant inlet, and a 24 V subsystem supply.</p><p>A load-resistance step from 30 ohm to 50 ohm is scheduled at 250 s.</p></html>"));
 end SubSystemAirWithFuelCellTest;

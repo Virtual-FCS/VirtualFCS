@@ -53,4 +53,5 @@ equation
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03));
+annotation(Documentation(info = "<html><p>This test applies a load step from 3 ohm to 0.6 ohm at 30 s to a 42-cell fuel cell. The hydrogen inlet is 3e5 Pa, the air outlet is 2.5e5 Pa, and the air flow is 0.003 kg/s.</p><p>The glycol coolant enters at 323.15 K with a flow of 0.05 kg/s. </p></html>"));
 end FuelCellTest;

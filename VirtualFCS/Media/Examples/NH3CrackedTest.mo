@@ -9,4 +9,5 @@ model NH3CrackedTest
   parameter Modelica.Units.SI.Temperature T_source = 193;
 equation
 
+annotation(Documentation(info = "<html><p>Test model for cracked-ammonia medium flow.</p></html>"));
 end NH3CrackedTest;
