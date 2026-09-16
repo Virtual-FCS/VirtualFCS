@@ -45,23 +45,13 @@ equation
     Line(points = {{-40, -20}, {0, -20}, {0, -22}, {0, -22}}, color = {191, 0, 0}));
   annotation (
     Icon(graphics={  Line(origin = {29, 31.44}, points = {{-79, 68.562}, {-79, -71.438}, {-69, 8.56202}, {-59, -71.438}, {-49, 8.56202}, {-39, -71.438}, {-29, 8.56202}, {-19, -71.438}, {-9, 8.56202}, {1, -71.438}, {11, 8.56202}, {21, -71.438}, {21, 70.562}, {23, 72.562}}, color = {255, 0, 0}, thickness = 1.5), Line(origin = {-0.67, 27.14}, points = {{-98.9689, -27.1425}, {99.0311, -27.1425}, {101.031, -27.1425}}, color = {0, 85, 255}, thickness = 2)}),
-    Documentation(info = "<html>
+    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>R_eq</code></td><td>SI.Resistance</td><td>Ohm</td><td>1.75</td><td>Equivalent Resistance</td></tr>
+<tr><td><code>D_pipe</code></td><td>SI.Diameter</td><td>-</td><td>0.015</td><td>Pipe Diameter</td></tr>
+<tr><td><code>L_pipe</code></td><td>SI.Length</td><td>m</td><td>1</td><td>Pipe Length</td></tr>
+<tr><td><code>N_pipe</code></td><td>Integer</td><td>1</td><td>10</td><td>Number of Parallel Pipes</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>port_a</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2>
 <p>The <b>PreHeater</b> models an electrically heated fluid pipe. The electrical power dissipated by the internal resistor <code>R1</code> is transferred to the pipe through a thermal conductor and heat capacity.</p>
-<h3>Interfaces</h3>
-<table><tr><th>Interface</th><th>Description</th></tr>
-<tr><td><code>port_a</code></td><td>Fluid inlet.</td></tr>
-<tr><td><code>port_b</code></td><td>Fluid outlet.</td></tr>
-<tr><td><code>pin_p</code>, <code>pin_n</code></td><td>Electrical heater terminals.</td></tr>
-</table>
-<h3>Parameters</h3>
-<table><tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
-<tr><td><code>Medium</code></td><td>ConstantPropertyLiquidWater</td><td>Replaceable fluid medium.</td></tr>
-<tr><td><code>R_eq</code></td><td>1.75 &Omega;</td><td>Equivalent electrical resistance of the heater.</td></tr>
-<tr><td><code>D_pipe</code></td><td>0.015 m</td><td>Internal pipe diameter.</td></tr>
-<tr><td><code>L_pipe</code></td><td>1 m</td><td>Pipe length.</td></tr>
-<tr><td><code>N_pipe</code></td><td>10</td><td>Number of parallel pipes.</td></tr>
-</table>
 <h3>Implementation notes</h3>
-<p>The heater heat flow equals the resistor loss power, <code>Q_flow = R_eq*I^2</code>. The internal pipe start pressure is fixed at <b>102502 Pa</b>, the thermal conductance at <b>1777 W/K</b>, and the thermal capacity at <b>100 J/K</b>. These values are implementation constants rather than user parameters.</p>
-</html>"));
+<p>The heater heat flow equals the resistor loss power, <code>Q_flow = R_eq*I^2</code>. The internal pipe start pressure is fixed at <b>102502 Pa</b>, the thermal conductance at <b>1777 W/K</b>, and the thermal capacity at <b>100 J/K</b>. These values are implementation constants rather than user parameters.</p><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>prescribedHeatFlow.Q_flow = R1.LossPower;</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>port_b</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
 end PreHeater;

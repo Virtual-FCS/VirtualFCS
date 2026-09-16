@@ -8,7 +8,6 @@ model AmmoniaCracker_2 "Ammonia cracker model based on a tube and shell configur
   replaceable package AmmoniaMedium = VirtualFCS.Media.NH3Cracked;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
-  
   // Define interface
   Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}})));
@@ -205,7 +204,6 @@ equation
   inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   inlet_nh3_feed.p = P_tot[1];
   inlet_nh3_feed.Xi_outflow = {mol_frac_N2[1], mol_frac_H2[1]};
-  
   outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(state_NH3);
   outlet_cracked_gas.p = P_out;
   outlet_cracked_gas.m_flow = mf_NH3;
@@ -213,5 +211,46 @@ equation
 // outlet.Xi_outflow is the vector of independent mass fractions (length = Medium.nXi = nX-1)
 //outlet_cracked_gas.Xi_outflow = X_full[1:Medium.nXi];
 // this component is the state-setter for pressure:
-annotation(Documentation(info = "<html><p>Alternative simplified tube-and-shell ammonia cracker with catalytic decomposition and heat transfer through the outer tube wall.</p><p>The model is intended for system-level studies.</p></html>"));
+  annotation(
+    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>N</code></td><td>Integer</td><td>1</td><td>50</td><td>Number of reactor computational segments</td></tr>
+<tr><td><code>H</code></td><td>SI.Length</td><td>m</td><td>12.0</td><td>Reactor height (m)</td></tr>
+<tr><td><code>L</code></td><td>SI.Length</td><td>m</td><td>1.0</td><td>Reactor length (m)</td></tr>
+<tr><td><code>W</code></td><td>SI.Length</td><td>m</td><td>1.2</td><td>Reactor width (m)</td></tr>
+<tr><td><code>pitch</code></td><td>SI.Length</td><td>m</td><td>10e-2</td><td>Space separation between tubes (where hot stream flows)</td></tr>
+<tr><td><code>z_head</code></td><td>Real</td><td>1</td><td>0.166</td><td>Fraction of reactor length needed as header space at the inflow + outflow of the reactor</td></tr>
+<tr><td><code>D_tubes</code></td><td>SI.Length</td><td>m</td><td>10e-2</td><td>Tubes diameter (m)</td></tr>
+<tr><td><code>t_tubes</code></td><td>SI.Length</td><td>m</td><td>5e-3</td><td>Tubes wall thickness(m)</td></tr>
+<tr><td><code>W_cat</code></td><td>Real</td><td>1</td><td>0.0045</td><td>Mass loading catalyst in reactor (g/m^2)</td></tr>
+<tr><td><code>T_in_degC</code></td><td>Real</td><td>1</td><td>550</td><td>Inlet temperature (°C)</td></tr>
+<tr><td><code>k0</code></td><td>Real</td><td>1</td><td>3.33/3.6*1e10</td><td>Pre-exponential factor (mol/(kg*s))</td></tr>
+<tr><td><code>T_in</code></td><td>SI.Temperature</td><td>K</td><td>T_in_degC + 273.15</td><td>Inlet temperature (K)</td></tr>
+<tr><td><code>z_tube</code></td><td>SI.Length</td><td>m</td><td>H*(1 - z_head)</td><td>Tubes length(m)</td></tr>
+<tr><td><code>A_r</code></td><td>SI.Area</td><td>m2</td><td>N_tubes*2*3.1415*(D_tubes - t_tubes)/2*z_tube</td><td>Catalyst-covered reaction area (m^2)</td></tr>
+<tr><td><code>A_c</code></td><td>SI.Area</td><td>m2</td><td>3.1415*(D_tubes/2)^2</td><td>Cross-sectional area (m^2)</td></tr>
+<tr><td><code>N_tubes_x</code></td><td>Integer</td><td>1</td><td>integer(floor((L + pitch)/(D_tubes + pitch)))</td><td>Number of tubes along length of reactor</td></tr>
+<tr><td><code>N_tubes_y</code></td><td>Integer</td><td>1</td><td>integer(floor((W + pitch)/(D_tubes + pitch)))</td><td>Number of tubes along width of reactor</td></tr>
+<tr><td><code>N_tubes</code></td><td>Integer</td><td>1</td><td>N_tubes_x*N_tubes_y</td><td>Number of tubes in the reactor</td></tr>
+<tr><td><code>z[N]</code></td><td>SI.Length</td><td>m</td><td>{z_tube/N*i - z_tube/N/2 for i in 1:N}</td><td>Vector holding the distances from the center of the segments to the inlet</td></tr>
+<tr><td><code>deltaG_0</code></td><td>Real</td><td>1</td><td>95517 - 193.67*T_in - 0.035293*T_in^2 + (9.22*10e-6*T_in^3)</td><td></td></tr>
+<tr><td><code>k_eq</code></td><td>Real</td><td>1</td><td>exp(-deltaG_0/R/T_in)</td><td>Equilibrium constant for the ammonia decomposition reaction</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>inlet_nh3_feed</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
+<tr><td><code>a</code></td><td>input</td><td>Real</td><td>1</td><td></td></tr>
+<tr><td><code>P_NH3</code></td><td>input</td><td>Real</td><td>1</td><td></td></tr>
+<tr><td><code>u</code></td><td>input</td><td>Real</td><td>1</td><td>Velocity [m/s]</td></tr>
+<tr><td><code>z</code></td><td>input</td><td>Real</td><td>1</td><td>Axial position [m]</td></tr>
+<tr><td><code>rho</code></td><td>input</td><td>Real</td><td>1</td><td>Density [kg/m³]</td></tr>
+<tr><td><code>f</code></td><td>input</td><td>Real</td><td>1</td><td>Friction factor</td></tr>
+<tr><td><code>D</code></td><td>input</td><td>Real</td><td>1</td><td>Hydraulic diameter [m]</td></tr>
+<tr><td><code>P_outlet</code></td><td>input</td><td>Real</td><td>1</td><td>Outlet pressure [Pa]</td></tr>
+<tr><td><code>L</code></td><td>input</td><td>Real</td><td>1</td><td>Reactor length [m]</td></tr>
+<tr><td><code>Re</code></td><td>input</td><td>Real</td><td>1</td><td>Reynolds number</td></tr></tbody></table><h2>2. Model description</h2><p>Alternative simplified tube-and-shell ammonia cracker with catalytic decomposition and heat transfer through the outer tube wall.</p><p>The model is intended for system-level studies.</p><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>g_catalyst_mol_flow_NH3 = W_cat*A_r/(mf_NH3*1000/M_NH3/3600);
+state_NH3 = AmmoniaMedium.setState_pTX(P_out, T_in);
+state_H2 = HydrogenMedium.setState_pT(P_out, T_in);
+state_N2 = NitrogenMedium.setState_pT(P_out, T_in);
+rho_NH3 = AmmoniaMedium.density(state_NH3);
+rho_H2 = HydrogenMedium.density(state_H2);
+rho_N2 = NitrogenMedium.density(state_N2);
+mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>outlet_cracked_gas</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
+<tr><td><code>r</code></td><td>output</td><td>Real</td><td>1</td><td></td></tr>
+<tr><td><code>Pz</code></td><td>output</td><td>Real</td><td>1</td><td>Pressure at position z [Pa]</td></tr>
+<tr><td><code>f</code></td><td>output</td><td>Real</td><td>1</td><td>Friction factor</td></tr></tbody></table></body></html>"));
 end AmmoniaCracker_2;
