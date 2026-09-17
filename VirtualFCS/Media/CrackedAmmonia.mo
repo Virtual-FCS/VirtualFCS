@@ -12,6 +12,10 @@ model CrackedAmmonia
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM}
   );
   
+  redeclare model extends BaseProperties "Base properties of cathodic air"
+      Modelica.Units.SI.MoleFraction phi = Xmol_gas[Ammonia] / (saturationPressure(state.T)/state.p);
+  end BaseProperties;
+  
   // Parameters from Stull (1947) as quoted in NIST
   //function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
   function saturationPressure = clausiusClapeyron(T_boil=239.8, L=23400);
