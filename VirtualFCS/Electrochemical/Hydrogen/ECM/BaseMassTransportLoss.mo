@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 partial model BaseMassTransportLoss
   extends Modelica.Electrical.Analog.Interfaces.OnePort;

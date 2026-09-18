@@ -2,7 +2,7 @@ within VirtualFCS.Electrochemical.Examples;
 
 model PEMElectrolyserTest
   extends Modelica.Icons.Example;
-  Hydrogen.PEMElectrolyser ely annotation(
+  Hydrogen.Electrolysers.PEMElectrolyser ely annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.Boundary_pT cathode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.WetHydrogen, p = 3e6) annotation(
     Placement(transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}})));

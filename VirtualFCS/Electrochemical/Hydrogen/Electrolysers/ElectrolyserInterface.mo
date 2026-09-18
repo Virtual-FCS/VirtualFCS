@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.Electrolysers;
 
 partial model ElectrolyserInterface
   import Modelica.Media.Interfaces.PartialMedium;

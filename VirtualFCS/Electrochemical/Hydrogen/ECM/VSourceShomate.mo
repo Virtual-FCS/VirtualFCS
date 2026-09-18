@@ -1,7 +1,7 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 model VSourceShomate
-  extends Electrochemical.Hydrogen.BaseVSource;
+  extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseVSource;
   
   import Modelica.Math.log;
   import Modelica.Constants.F;

@@ -1,7 +1,7 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 model OhmicNafion
-  extends VirtualFCS.Electrochemical.Hydrogen.BaseOhmic;
+  extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseOhmic;
   outer parameter Integer N_cells "number of cells in the stack";
   outer parameter Real A_cell "Active Area of the Cell";
   outer parameter Real T_stack "Stack temperature";

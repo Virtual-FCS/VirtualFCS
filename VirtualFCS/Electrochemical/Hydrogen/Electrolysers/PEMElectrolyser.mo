@@ -1,7 +1,7 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.Electrolysers;
 
 model PEMElectrolyser
-  extends VirtualFCS.Electrochemical.Hydrogen.ElectrolyserInterface(redeclare package Anode_Medium = Media.CathodeAir, redeclare package Cathode_Medium = Media.WetHydrogen);
+  extends VirtualFCS.Electrochemical.Hydrogen.Electrolysers.ElectrolyserInterface(redeclare package Anode_Medium = Media.CathodeAir, redeclare package Cathode_Medium = Media.WetHydrogen);
   import Modelica.Constants.F "Faraday constant";
   import Modelica.Constants.R "Universal gas constant";
   import SI = Modelica.Units.SI;
@@ -9,6 +9,8 @@ model PEMElectrolyser
   final constant Integer n = 2 "Electrons exchanged in reaction";
   parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Real n_drag = 4 "Electro-osmotic drag coefficient";
+  
+  inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   
   replaceable Modelica.Electrical.Analog.Sources.ConstantVoltage voltage_source(V = N_cells*1.5) annotation(
     Placement(transformation(origin = {-40, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -180)));

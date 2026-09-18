@@ -19,3 +19,6 @@ BaseActivationLoss
 BaseMassTransportLoss
 BaseOhmic
 BaseVSource
+ECM
+FuelCells
+Electrolysers

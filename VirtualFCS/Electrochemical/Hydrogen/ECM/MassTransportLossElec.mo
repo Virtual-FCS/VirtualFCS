@@ -1,7 +1,7 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 model MassTransportLossElec
-  extends Electrochemical.Hydrogen.BaseMassTransportLoss;
+  extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseMassTransportLoss;
   import Modelica.Constants.R;
   import Modelica.Constants.F;
   

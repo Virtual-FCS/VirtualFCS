@@ -1,7 +1,7 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 model OhmicResistance "Ohmic resistance to proton flow through MEA"
-  extends Electrochemical.Hydrogen.BaseOhmic;
+  extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseOhmic;
   
   import Modelica.Math.exp;
 

@@ -35,7 +35,7 @@ model ParallelHybridPowerTrain
     Placement(visible = true, transformation(origin = {-94, 94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation (
     Placement(visible = true, transformation(origin = {-68, 4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCellSystem fuelCellSystem annotation (
+  VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem fuelCellSystem annotation (
     Placement(visible = true, transformation(origin = {72, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation (
     Placement(visible = true, transformation(origin = {-28, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
