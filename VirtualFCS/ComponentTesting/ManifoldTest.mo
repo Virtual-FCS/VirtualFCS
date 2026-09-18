@@ -3,7 +3,7 @@ within VirtualFCS.ComponentTesting;
 model ManifoldTest
   extends Modelica.Icons.Example;
   package medium = Media.CathodeAir;
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, useHeatPort = false, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = medium, nu = {-0.5, 0, 1}, MMX = {0.032, 0.028, 0.018}, useHeatPort = false, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = medium, p = system.p_ambient) annotation(
     Placement(transformation(origin = {80, 0}, extent = {{20, -20}, {-20, 20}}, rotation = -0)));

@@ -7,7 +7,7 @@ model HumidifierTest_2
   import VirtualFCS.Media.CathodeAir.Nitrogen;
   import VirtualFCS.Media.CathodeAir.Water;
   import VirtualFCS.Media.CathodeAir.saturationPressure;
-  import VirtualFCS.Media.CathodeAir.MMs;
+  import VirtualFCS.Media.CathodeAir.MMX;
   
   replaceable package dry_medium = VirtualFCS.Media.CathodeAir;
   replaceable package wet_medium = VirtualFCS.Media.CathodeAir;
@@ -38,7 +38,7 @@ equation
   X_mol[Water] = humidity.y * saturationPressure(temperature.y)/wet_sink.p;
   X_mol[Oxygen] = 0.21 * (1-X_mol[Water]);
   X_mol[Nitrogen] = 0.79 * (1-X_mol[Water]);
-  wet_source.X_in = MMs .* X_mol / (MMs*X_mol);
+  wet_source.X_in = MMX .* X_mol / (MMX*X_mol);
 
   connect(dry_source.ports[1], humidifier.portB_in) annotation(
     Line(points = {{-68, -20}, {-20, -20}}, color = {0, 127, 255}, thickness = 0.75));

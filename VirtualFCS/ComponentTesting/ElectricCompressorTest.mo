@@ -9,7 +9,7 @@ model ElectricCompressorTest
     Placement(transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.FixedBoundary environment(nPorts = 2, redeclare package Medium = VirtualFCS.Media.CathodeAir)  annotation(
     Placement(transformation(origin = {-50, 70}, extent = {{-10, 10}, {10, -10}})));
-  VirtualFCS.Electrochemical.Hydrogen.Manifold manifold(MMs = {0.032, 0.028, 0.018}, redeclare package Medium = Medium, T = 353.15, V = 1, nu = {-0.5, 0, 1}, useHeatPort = false) annotation(
+  VirtualFCS.Electrochemical.Hydrogen.Manifold manifold(MMX = {0.032, 0.028, 0.018}, redeclare package Medium = Medium, T = 353.15, V = 1, nu = {-0.5, 0, 1}, useHeatPort = false) annotation(
     Placement(transformation(origin = {30, -26}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Constant reaction_rate(k = 0) annotation(
     Placement(transformation(origin = {-10, 10}, extent = {{-10, -10}, {10, 10}})));

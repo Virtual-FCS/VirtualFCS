@@ -7,8 +7,6 @@ model VSourceShomate
   import Modelica.Constants.F;
   import Modelica.Constants.R;
   import VirtualFCS.Media.Shomate;
-  import VirtualFCS.Media.CathodeAir.Oxygen;
-  import VirtualFCS.Media.CathodeAir.MMs;
   
   parameter Integer N_cell = 42 "Number of cells in the stack"; 
   final parameter Modelica.Units.SI.AbsolutePressure p_reference = 1.013e5 "Pa";

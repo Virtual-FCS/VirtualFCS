@@ -14,7 +14,7 @@ model SubSystemHydrogenTest "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {1.9984e-15, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 750, falling = 50, period = 500, rising = 50, startTime = 100, width = 200, offset = 1)  annotation (
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Anode_Medium, nu = {-1}, MMs = {0.002})  annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Anode_Medium, nu = {-1}, MMX = {0.002})  annotation(
     Placement(transformation(origin = {0, 60}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation(

@@ -120,7 +120,7 @@ equation
   NTU = beta_eff_a/max(V_dot_a, eps);
   eta = if abs(VFR - 1.0) < 1e-6 then NTU/(1 + NTU) else (1 - exp((VFR - 1)*NTU))/(1 - VFR*exp((VFR - 1)*NTU));
 // Permation rate, based on Fick's law
-  m_perm = wet_medium.MMs[3]*eta*(wet_medium.density(med_state_A_in)*(1 - inStream(portA_in.Xi_outflow[1]) - inStream(portA_in.Xi_outflow[2]))/wet_medium.MMs[3] - dry_medium.density(med_state_B_in)*(1 - inStream(portB_in.Xi_outflow[1]) - inStream(portB_in.Xi_outflow[2]))/dry_medium.MMs[3])*V_dot_a;
+  m_perm = wet_medium.MMX[3]*eta*(wet_medium.density(med_state_A_in)*(1 - inStream(portA_in.Xi_outflow[1]) - inStream(portA_in.Xi_outflow[2]))/wet_medium.MMX[3] - dry_medium.density(med_state_B_in)*(1 - inStream(portB_in.Xi_outflow[1]) - inStream(portB_in.Xi_outflow[2]))/dry_medium.MMX[3])*V_dot_a;
 // First-order dynamics
   Xi = m_perm/max(min(abs(portA_in.m_flow), abs(portB_in.m_flow)), eps);
   der(Xi_state) = (Xi - Xi_state)/tau_perm;
@@ -139,9 +139,9 @@ equation
   XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
 // Energy balance (enthalpy flow)
   if m_perm_state > 0 then
-    perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_A_in.T, Media.Shomate.H2O_G)/wet_medium.MMs[3])*m_perm_state;
+    perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_A_in.T, Media.Shomate.H2O_G)/wet_medium.MMX[3])*m_perm_state;
   else
-    perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_B_in.T, Media.Shomate.H2O_G)/dry_medium.MMs[3])*m_perm_state;
+    perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_B_in.T, Media.Shomate.H2O_G)/dry_medium.MMX[3])*m_perm_state;
   end if;
   if abs(portA_out.m_flow) > m_flow_min then
     portA_out_h_outflow = (abs(portA_in.m_flow)*inStream(portA_in.h_outflow) - perm_enthalpy_flow)/abs(portA_out.m_flow);

@@ -10,7 +10,7 @@ partial package BaseShoMix
       final fixedX = false);
   
   replaceable constant Shomate.Parameters[nX+1] sh_params;
-  replaceable constant Modelica.Units.SI.MolarMass MMs[nX] "Molar weights of the medium species";
+  replaceable constant Modelica.Units.SI.MolarMass MMX[nX] "Molar weights of the medium species";
   replaceable constant Modelica.Units.SI.Temperature T_boil "Boiling temperature at atmospheric pressure of the condensing phase";
   replaceable constant Modelica.Units.SI.MolarEnergy L "Latent heat of condensing phase";
     
@@ -100,7 +100,7 @@ partial package BaseShoMix
     Modelica.Units.SI.MolarMass X[nX];
   algorithm
     X := cat(1, state.Xi, {1-sum(state.Xi)});
-    MM := 1 / sum(X ./ MMs);
+    MM := 1 / sum(X ./ MMX);
   end molarMass;
 
   redeclare function extends setState_phX "Set state with pressure, enthalpy, composition"
@@ -142,7 +142,7 @@ partial package BaseShoMix
     protected
 
     algorithm
-    X_l := max(0.0, (1-sum(state.Xi)) - MMs[nX]/molarMass(state)*saturationPressure(state.T, T_boil, L)/state.p);
+    X_l := max(0.0, (1-sum(state.Xi)) - MMX[nX]/molarMass(state)*saturationPressure(state.T, T_boil, L)/state.p);
   end liquidMassFraction;
 
 
@@ -171,7 +171,7 @@ protected
   Modelica.Units.SI.MolarMass MM_gas "Average molar mass of gas phase";
 algorithm
   Yi := gasMassFraction(state); 
-  MM_gas := sum(Yi./MMs[1:nX-1]) + (1-sum(Yi))/MMs[nX];
+  MM_gas := sum(Yi./MMX[1:nX-1]) + (1-sum(Yi))/MMX[nX];
   R_s := R * MM_gas;
   
   end gasConstant;
@@ -222,7 +222,7 @@ end enthalpyOfLiquid;
     h_gas := 0;
   
     for i in 1:nX loop
-      h_gas := h_gas + Y[i] * Shomate.enthalpy(state.T, sh_params[i]) / MMs[i];
+      h_gas := h_gas + Y[i] * Shomate.enthalpy(state.T, sh_params[i]) / MMX[i];
     end for;
   annotation(
       Documentation(info = "<html><head></head><body><b><u>Important note!</u></b> To avoid confusing the compiler, we provide 2 scalars instead of an array Yi as it would seem simpler.<div>This nonsense does not always appear and is devilishly difficult to track back to this point. Noticed first in ManifoldTest.</div><div>It might not happen at all in Dymola or future OpenModelica compilers.</div><div><i>Modify at your peril!</i></div></body></html>"));
@@ -270,8 +270,8 @@ redeclare function extends specificEntropy
   
     for i in 1:nX loop
   
-    s_gas := s_gas + Y[i]*Shomate.entropy(state.T, sh_params[i])/MMs[i]
-           - R*(Y[i]/MMs[i])*(log(max(Y[i], eps))+log(state.p/reference_p));
+    s_gas := s_gas + Y[i]*Shomate.entropy(state.T, sh_params[i])/MMX[i]
+           - R*(Y[i]/MMX[i])*(log(max(Y[i], eps))+log(state.p/reference_p));
   
     end for;
     
@@ -335,7 +335,7 @@ redeclare function extends isentropicEnthalpy
     input ThermodynamicState state;
     output Modelica.Units.SI.MoleFraction phi;
   algorithm
-    phi := ((1-sum(state.Xi))-liquidMassFraction(state)) * (molarMass(state)/MMs[nX]) * (state.p/saturationPressure(state.T, T_boil, L));
+    phi := ((1-sum(state.Xi))-liquidMassFraction(state)) * (molarMass(state)/MMX[nX]) * (state.p/saturationPressure(state.T, T_boil, L));
   end relativeHumidity;
 
 
@@ -363,7 +363,7 @@ redeclare function extends isentropicEnthalpy
     cp_gas := 0;
   
     for i in 1:nX loop
-      cp_gas := cp_gas + Y[i] * Shomate.heat_capacity(T, sh_params[i]) / MMs[i];
+      cp_gas := cp_gas + Y[i] * Shomate.heat_capacity(T, sh_params[i]) / MMX[i];
     end for;
   
   annotation(

@@ -38,9 +38,9 @@ model FuelCell
   Real eta_stack_LHV(unit = "100") "Lower heating value efficiency of fuel cell stack";
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(C = 110, T(start = 293.15, fixed = true)) annotation(
     Placement(transformation(origin = {-47, -57}, extent = {{-17, -17}, {17, 17}})));
-  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMs = {M_O2, M_N2, M_H2O}) annotation(
+  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, useHeatPort = true, nu = {-0.5, 0, 1}, MMX = {M_O2, M_N2, M_H2O}) annotation(
     Placement(transformation(origin = {100, 0}, extent = {{28, -28}, {-28, 28}}, rotation = 90)));
-  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMs = {M_H2}, redeclare package Medium = Anode_Medium) annotation(
+  replaceable Manifold anode(useHeatPort = true, nu = {-1}, MMX = {M_H2}, redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-100, 0}, extent = {{-28, -28}, {28, 28}}, rotation = -90)));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-100, 120}, extent = {{20, 20}, {-20, -20}}, rotation = 90)));
