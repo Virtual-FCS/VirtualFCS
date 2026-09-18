@@ -83,6 +83,29 @@ equation
   connect(dC_converter.pin_pFC, batterySystem.pin_p) annotation (
     Line(points={{12,-34},{-24,-34},{-24,-62.4},{-23.6,-62.4}},    color = {0, 0, 255}));
   annotation (
-    Icon(graphics={  Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)));
-annotation(Documentation(info = "<html><p>Parallel hybrid powertrain coupling a fuel-cell system and battery to a common DC bus through a bidirectional converter.</p></html>"));
+    Icon(graphics = {Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>m_powertrain</code></td><td>SI.Mass</td><td>kg</td><td>m_FC_stack + m_bat_pack</td><td></td></tr>
+<tr><td><code>V_HV_Bus</code></td><td>SI.Voltage</td><td>V</td><td>343</td><td>Voltage of the HV Bus</td></tr>
+<tr><td><code>V_tank_H2</code></td><td>SI.Volume</td><td>m3</td><td>0.13</td><td>H2 tank volume</td></tr>
+<tr><td><code>p_tank_H2</code></td><td>SI.AbsolutePressure</td><td>Pa</td><td>3500000</td><td>H2 tank initial pressure</td></tr>
+<tr><td><code>m_FC_stack</code></td><td>SI.Mass</td><td>kg</td><td>14.3</td><td>FC stack mass</td></tr>
+<tr><td><code>L_FC_stack</code></td><td>SI.Length</td><td>m</td><td>0.255</td><td>FC stack length</td></tr>
+<tr><td><code>W_FC_stack</code></td><td>SI.Breadth</td><td>m</td><td>0.760</td><td>FC stack breadth</td></tr>
+<tr><td><code>H_FC_stack</code></td><td>SI.Height</td><td>m</td><td>0.060</td><td>FC stack height</td></tr>
+<tr><td><code>vol_FC_stack</code></td><td>SI.Volume</td><td>m3</td><td>L_FC_stack * W_FC_stack * H_FC_stack</td><td>FC stack volume</td></tr>
+<tr><td><code>V_rated_FC_stack</code></td><td>SI.Voltage</td><td>V</td><td>57.9</td><td>FC stack maximum operating voltage</td></tr>
+<tr><td><code>I_rated_FC_stack</code></td><td>SI.Current</td><td>A</td><td>300</td><td>FC stack minimum operating voltage</td></tr>
+<tr><td><code>i_L_FC_stack</code></td><td>SI.Current</td><td>A</td><td>1.7 * I_rated_FC_stack</td><td>FC stack maximum limiting current</td></tr>
+<tr><td><code>I_nom_FC_stack</code></td><td>SI.Current</td><td>A</td><td>0.25 * I_rated_FC_stack</td><td>FC stack maximum limiting current</td></tr>
+<tr><td><code>N_FC_stack</code></td><td>Integer</td><td>1</td><td></td><td>1</td></tr>
+<tr><td><code>m_bat_pack</code></td><td>SI.Mass</td><td>kg</td><td>100</td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>SI.Length</td><td>m</td><td>0.6</td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>SI.Breadth</td><td>m</td><td>0.45</td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>SI.Height</td><td>m</td><td>0.1</td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>1000</td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>37.5</td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>48</td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>54.75</td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>NonSI.ElectricCharge_Ah</td><td>Ah</td><td>2700</td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td>0.5</td><td>Battery pack initial state of charge</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p>Parallel hybrid powertrain coupling a fuel-cell system and battery to a common DC bus through a bidirectional converter.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
 end ParallelHybridPowerTrain;

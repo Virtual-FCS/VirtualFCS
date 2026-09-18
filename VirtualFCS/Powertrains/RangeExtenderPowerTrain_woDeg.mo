@@ -104,6 +104,31 @@ equation
   connect(fuelCellSystem_woDeg.pin_n, dC_converter.pin_nBus)
     annotation (Line(points={{67,-63},{67,-54},{32,-54}}, color={0,0,255}));
   annotation (
-    Icon(graphics={  Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)));
-annotation(Documentation(info = "<html><p>Range-extender hybrid powertrain variant for studies without degradation modeling, combining a battery-electric drive with a fuel-cell.</p></html>"));
+    Icon(graphics = {Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>m_powertrain</code></td><td>SI.Mass</td><td>kg</td><td>fuelCellSystem_woDeg.m_FC_system + batterySystem.m_bat_pack</td><td>Powertrain Parameters</td></tr>
+<tr><td><code>V_HV_Bus</code></td><td>SI.Voltage</td><td>V</td><td>343</td><td>Voltage of the HV Bus</td></tr>
+<tr><td><code>V_tank_H2</code></td><td>SI.Volume</td><td>m3</td><td>0.13</td><td>H2 tank volume</td></tr>
+<tr><td><code>p_tank_H2</code></td><td>SI.AbsolutePressure</td><td>Pa</td><td>35000000</td><td>H2 tank initial pressure</td></tr>
+<tr><td><code>m_FC_stack</code></td><td>SI.Mass</td><td>kg</td><td>14.3</td><td>FC stack mass</td></tr>
+<tr><td><code>L_FC_stack</code></td><td>SI.Length</td><td>m</td><td>0.255</td><td>FC stack length</td></tr>
+<tr><td><code>W_FC_stack</code></td><td>SI.Breadth</td><td>m</td><td>0.760</td><td>FC stack width</td></tr>
+<tr><td><code>H_FC_stack</code></td><td>SI.Height</td><td>m</td><td>0.060</td><td>FC stack height</td></tr>
+<tr><td><code>vol_FC_stack</code></td><td>SI.Volume</td><td>m3</td><td>L_FC_stack * W_FC_stack * H_FC_stack</td><td>FC stack volume</td></tr>
+<tr><td><code>I_nom_FC_stack</code></td><td>SI.ElectricCurrent</td><td>-</td><td>300</td><td>FC stack nominal current</td></tr>
+<tr><td><code>I_rated_FC_stack</code></td><td>SI.ElectricCurrent</td><td>-</td><td>1.7 * I_nom_FC_stack</td><td>FC stack maximum operating current</td></tr>
+<tr><td><code>N_FC_stack</code></td><td>Integer</td><td>1</td><td>280</td><td>FC stack number of cells</td></tr>
+<tr><td><code>m_bat_pack</code></td><td>SI.Mass</td><td>kg</td><td>100</td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>SI.Length</td><td>m</td><td>0.6</td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>SI.Breadth</td><td>m</td><td>0.45</td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>SI.Height</td><td>m</td><td>0.1</td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>1000</td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>240</td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>336</td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>403.2</td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>NonSI.ElectricCharge_Ah</td><td>Ah</td><td>200</td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td>0.5</td><td>Battery pack initial state of charge</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p>Range-extender hybrid powertrain variant for studies without degradation modeling, combining a battery-electric drive with a fuel-cell.</p><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>Power_del_DC_DC = converter.dc_p1.i * converter.dc_p1.v;
+Power_FC = fuelCellSystem_woDeg.pin_n.i * fuelCellSystem_woDeg.pin_p.v;
+Power_batt = batterySystem.pin_n.i * batterySystem.pin_p.v;
+eta_drivetrain = min(max(((Power_del_DC_DC)/max((Power_FC + Power_batt + ((Power_FC * (1-(fuelCellSystem_woDeg.eta_FC_sys)))+ (Power_batt * (1-(batterySystem.eta_batt)))+ (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0),1);
+eta_drivetrain = min(max(((-Power_del_DC_DC)/max((Power_FC -Power_batt + ((Power_FC * (1-(fuelCellSystem_woDeg.eta_FC_sys))) - (Power_batt * (1-(batterySystem.eta_batt))) - (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0), 1);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
 end RangeExtenderPowerTrain_woDeg;
