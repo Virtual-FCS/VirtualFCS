@@ -49,6 +49,6 @@ equation
   connect(pulseCurrent.n, BMS.pin_p_load) annotation (
     Line(points = {{18, 80}, {40, 80}, {40, 58}, {10, 58}, {10, 48}, {12, 48}}, color = {0, 0, 255}));
   annotation (
-    Documentation(info = "<html><head></head><body>This example demonstrates the galvanostatic operation of a Li-ion battery cell in real time. The battery is set to discharge and charge at a 1C rate in 30 second intervals over a 2 minute period.&nbsp;<div><br></div><div>Requires that the user load the library: Modelica_DeviceDrivers</div></body></html>"),
+    Documentation(info = "<html><p>This real-time example applies alternating -2.2 A and +2.2 A galvanostatic pulses to a Li-ion cell. Each pulse lasts 15 s within a 30 s period.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for real-time scheduling and I/O.</p></html>"),
     experiment(StartTime = 0, StopTime = 120, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell_RealTime;

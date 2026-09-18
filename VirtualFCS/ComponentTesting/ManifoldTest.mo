@@ -2,7 +2,7 @@ within VirtualFCS.ComponentTesting;
 
 model ManifoldTest
   extends Modelica.Icons.Example;
-  package medium = Media.CathodeAir_CC;
+  package medium = Media.CathodeAir;
   Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = medium, nu = {-0.5, 0, 1}, MMs = {0.032, 0.028, 0.018}, useHeatPort = false, V = 1, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = medium, p = system.p_ambient) annotation(
@@ -23,4 +23,5 @@ equation
 annotation(
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
   __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+annotation(Documentation(info = "<html><p>This test feeds a 1 m3 manifold with 1 kg/s and a constant reaction rate of 5. The outlet pressure is set to ambient, the reaction coefficients are nu = {-0.5, 0, 1}, and no heat port is used.</p></html>"));
 end ManifoldTest;

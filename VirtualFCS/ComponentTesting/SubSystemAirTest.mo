@@ -7,7 +7,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
     Placement(transformation(origin = {90, -90}, extent = {{-10, -10}, {10, 10}})));
   package Medium = Media.CathodeAir;
   parameter Integer N_cells = 42;
-  replaceable SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells) annotation(
+  replaceable SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells, redeclare VirtualFCS.Fluid.ElectricCompressor compressor(redeclare package Medium = Medium), p_set = 2e5) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM, Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}, V = 1E-3, useHeatPort = false, R_flow = 10000) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));

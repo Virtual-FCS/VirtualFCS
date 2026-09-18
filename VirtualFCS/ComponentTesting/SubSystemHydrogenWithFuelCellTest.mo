@@ -9,7 +9,7 @@ model SubSystemHydrogenWithFuelCellTest
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
 
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, cathode(massDynamics = Modelica.Fluid.Types.Dynamics.DynamicFreeInitial), anode(massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1e5)) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, cathode(massDynamics = Modelica.Fluid.Types.Dynamics.DynamicFreeInitial), anode(massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1e5)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p = 2e5) annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));
@@ -66,4 +66,5 @@ equation
     Line(points = {{-30, 60}, {-80, 60}, {-80, 10}}, color = {0, 0, 255}));
 annotation(
     experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 1));
+annotation(Documentation(info = "<html><p>This test couples the hydrogen subsystem to a 42-cell fuel cell. The fuel-cell load resistance steps from -8 ohm to 2 ohm at 250 s.</p><p>The air feed is 0.075 kg/s with a 2e5 Pa outlet, the anode starts at 1e5 Pa, and coolant enters at 323.15 K and 1 kg/s. The hydrogen subsystem is supplied at 24 V and uses a proportional pressure regulator.</p></html>"));
 end SubSystemHydrogenWithFuelCellTest;

@@ -43,4 +43,5 @@ equation
     annotation (Line(points={{16.9,-10.5},{27.5,-10.5},{27.5,-9.5},{36.1,-9.5}},
         color={0,0,255}));
   annotation(experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-04, Interval = 1));
+annotation(Documentation(info = "<html><p>This example applies the NEDC drive cycle to a Mirai-profile range-extender vehicle while using the degradation-disabled powertrain variant. Battery and fuel-cell operating values are inherited from the powertrain defaults.</p></html>"));
 end RangeExtenderHybridVehicle_woDeg;

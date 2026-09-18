@@ -6,9 +6,9 @@ model FuelCellTest
   parameter Real lambda = 3;
   parameter Integer N_cells = 42 "Number of cells in the stack";
   package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
-  package Cathode_Medium = VirtualFCS.Media.CathodeAir_CC;
+  package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source, cathode(p_start = air_sink.p), anode(p_start = hydrogen_source.p)) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells, redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.OhmicResistance ohmic(T), redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossSimple activation, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.VSourceNernst v_source, cathode(p_start = air_sink.p), anode(p_start = hydrogen_source.p)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogen_source(redeclare package Medium = Anode_Medium, nPorts = 1, p = 3e5) annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
@@ -53,4 +53,5 @@ equation
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03));
+annotation(Documentation(info = "<html><p>This test applies a load step from 3 ohm to 0.6 ohm at 30 s to a 42-cell fuel cell. The hydrogen inlet is 3e5 Pa, the air outlet is 2.5e5 Pa, and the air flow is 0.003 kg/s.</p><p>The glycol coolant enters at 323.15 K with a flow of 0.05 kg/s. </p></html>"));
 end FuelCellTest;

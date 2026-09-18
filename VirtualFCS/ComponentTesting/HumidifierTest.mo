@@ -49,4 +49,5 @@ equation
     Line(points = {{40, 16}, {40, 0}, {18, 0}}, color = {0, 127, 255}));
   annotation(
     experiment(StopTime = 400, StartTime = 0, Tolerance = 1e-06, Interval = 0.1));
+annotation(Documentation(info = "<html><p>This test holds the dry feed at 0.0004 kg/s, 353.15 K, and X = {0.24, 0.76, 0}. At 300 s, the wet-side flow steps from 0.0004 to 0.00043 kg/s and the composition changes to O2 = 0.22344, N2 = 0.70756, and H2O = 0.069.</p><p>Both outlets are held at 2e5 Pa.</p></html>"));
 end HumidifierTest;

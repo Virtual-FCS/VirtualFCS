@@ -48,4 +48,5 @@ equation
 
 annotation(
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+annotation(Documentation(info = "<html><p>This test drives the detailed two-phase boost converter with a 10 Hz sinusoidal duty command of amplitude 0.4 and offset 0.5, while the switching PWM runs at 100 kHz.</p><p>The electrical test bench uses a 100 V source, 10 ohm load, 0.1 ohm internal resistance, 20 uF input capacitor, and a 323.15 K thermal boundary.</p></html>"));
 end BoostConverterTest;

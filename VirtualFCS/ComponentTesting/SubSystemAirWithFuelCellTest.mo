@@ -6,7 +6,7 @@ model SubSystemAirWithFuelCellTest
 
   parameter Integer N_cells = 42 "Number of cells in the stack";
   
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1) annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));
@@ -59,4 +59,5 @@ equation
     Line(points = {{46, 12}, {46, 40}, {22, 40}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
+annotation(Documentation(info = "<html><p>This test couples the air subsystem to a 42-cell fuel cell with 0.075 kg/s air feed, 1 kg/s coolant, 323.15 K coolant inlet, and a 24 V subsystem supply.</p><p>A load-resistance step from 30 ohm to 50 ohm is scheduled at 250 s.</p></html>"));
 end SubSystemAirWithFuelCellTest;

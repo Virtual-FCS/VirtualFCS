@@ -18,4 +18,5 @@ equation
     Line(points = {{-38, 0}, {-28, 0}, {-28, 0}, {-26, 0}}, color = {0, 0, 127}));
   annotation (
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 0.1));
+annotation(Documentation(info = "<html><p>This example replaces a prescribed drive cycle with joystick velocity input for a Mirai-profile battery-electric vehicle. The battery starts at SOC = 0.9 with 200 Ah capacity, nominal voltage 320 V, and limits of 300 V to 360 V.</p><p>The user provides the driving excitation.</p></html>"));
 end BatteryElectricVehicle_JoystickControl;
