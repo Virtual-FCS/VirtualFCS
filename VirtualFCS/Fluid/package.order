@@ -18,7 +18,5 @@ RelativeHumiditySensor
 PumpInterface
 PumpElectricDC
 SimplePump
-PipeInterface
 RecirculationBlower
 Separator
-simplePipe

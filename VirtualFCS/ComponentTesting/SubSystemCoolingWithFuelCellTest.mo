@@ -8,7 +8,7 @@ model SubSystemCoolingWithFuelCellTest
   parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Modelica.Units.SI.Temperature T_stack = 320 "Stack temperature";
   package cathode_medium = Media.CathodeAir;
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), p_stack_start = P_air) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1) annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));

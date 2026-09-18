@@ -9,7 +9,7 @@ model SubSystemHydrogenWithFuelCellTest
   package Cathode_Medium = VirtualFCS.Media.CathodeAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
 
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, cathode(massDynamics = Modelica.Fluid.Types.Dynamics.DynamicFreeInitial), anode(massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1e5)) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, cathode(massDynamics = Modelica.Fluid.Types.Dynamics.DynamicFreeInitial), anode(massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1e5)) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary air_sink(redeclare package Medium = Cathode_Medium, nPorts = 1, p = 2e5) annotation(
     Placement(transformation(origin = {60, -10}, extent = {{4, -4}, {-4, 4}})));

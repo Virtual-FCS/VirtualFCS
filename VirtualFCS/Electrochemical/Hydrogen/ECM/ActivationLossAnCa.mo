@@ -1,7 +1,7 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 model ActivationLossAnCa
-extends Electrochemical.Hydrogen.BaseActivationLoss;
+extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseActivationLoss;
   import Modelica.Constants.R;
   import Modelica.Constants.F;
     

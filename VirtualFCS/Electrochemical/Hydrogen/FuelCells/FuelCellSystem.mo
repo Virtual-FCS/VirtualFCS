@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.FuelCells;
 model FuelCellSystem
 
   outer Modelica.Fluid.System system "System properties";

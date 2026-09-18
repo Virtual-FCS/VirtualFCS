@@ -1,9 +1,9 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 model VSourceConstant
-  extends Electrochemical.Hydrogen.BaseVSource;
+  extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseVSource;
   
-  parameter Modelica.Units.SI.Voltage V_av = 0.9 "Average cell projected open-circuit voltage";
+  parameter Modelica.Units.SI.Voltage V_av = 0.1 "Average cell projected open-circuit voltage";
 
 equation
   v = N_cells*V_av;
