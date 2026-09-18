@@ -58,6 +58,7 @@ model HumidifierV3 "Discretised hollow-fiber membrane humidifier with fluid hold
   parameter Modelica.Fluid.Types.Dynamics energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial "Formulation of energy balances" annotation (
     Dialog(group = "Dynamics"));
   
+  SI.MassFlowRate m_permeation_total "Total net water permeatin rate, positive from wet to dry";
 
   MembraneManifoldV3 wetVolume[n](
     redeclare each package Medium = wet_medium,
@@ -110,6 +111,9 @@ model HumidifierV3 "Discretised hollow-fiber membrane humidifier with fluid hold
   output SI.MoleFraction phi_dry_out = dry_medium.relativeHumidity(dryVolume[1].medium.state);
 
 equation
+  
+  m_permeation_total = sum({transfer[c].m_transfer for c in 1:n});
+  
   connect(wetVolume[1].port_a, portA_in);
   connect(wetVolume[n].port_b, portA_out);
   connect(dryVolume[n].port_b, portB_in);
