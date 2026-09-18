@@ -93,7 +93,7 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   Modelica.Units.SI.DynamicViscosity mu_mix[N];
   
   AmmoniaMedium.BaseProperties medium_inlet "Medium in the source";
-  //AmmoniaMedium.BaseProperties medium_outlet "Medium in the source";
+  AmmoniaMedium.BaseProperties medium_outlet "Medium in the source";
   
   // Reaction rate
   function rate
@@ -209,10 +209,9 @@ equation
    inlet_nh3_feed.h_outflow  = medium_inlet.h;
    inlet_nh3_feed.Xi_outflow = medium_inlet.Xi;
    
-   
-   //outlet_cracked_gas.p          = medium_outlet.p;
-   //outlet_cracked_gas.h_outflow  = medium_outlet.h;
-   //outlet_cracked_gas.Xi_outflow = medium_outlet.Xi;
+   outlet_cracked_gas.p          = medium_outlet.p;
+   outlet_cracked_gas.h_outflow  = medium_outlet.h;
+   outlet_cracked_gas.Xi_outflow = medium_outlet.Xi;
    
   annotation(
     Documentation(info = "<html><p>Alternative simplified tube-and-shell ammonia cracker with catalytic decomposition and heat transfer through the outer tube wall.</p><p>The model is intended for system-level studies.</p></html>"));
