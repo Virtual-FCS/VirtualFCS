@@ -13,10 +13,9 @@ model Electrolyser_dev
     Placement(visible = true, transformation(origin = {54, 114}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossAnCa activation annotation(
     Placement(visible = true, transformation(origin = {86, 114}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable  MassTransportLossElec massTransport annotation(
+  replaceable MassTransportLossElec massTransport annotation(
     Placement(visible = true, transformation(origin = {124, 114}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-
-//*** DECLARE PARAMETERS ***//
+  //*** DECLARE PARAMETERS ***//
   // Physical parameters from https://nelhydrogen.com/product/c10-c20-c30/ and 10.1016/j.ijhydene.2020.01.228; 10.1016/j.enconman.2022.116622
   parameter Modelica.Units.SI.Mass m_cell = 1 "Mass of the Cell";
   //NA
@@ -111,7 +110,8 @@ model Electrolyser_dev
   Modelica.Fluid.Sensors.TemperatureTwoPort Water_Temp_Out(redeclare package Medium = H2O_Medium) annotation(
     Placement(transformation(origin = {118, -52}, extent = {{-10, -10}, {10, 10}})));
   VSourceNernst potentialSource annotation(
-    Placement(transformation(origin = {-40, 100}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));  equation
+    Placement(transformation(origin = {-40, 100}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+equation
 //*** DEFINE EQUATIONS ***//
 // Redeclare variables
   p_H2O = H2OToPEMWE.p;
@@ -196,87 +196,28 @@ model Electrolyser_dev
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1)),
     Icon(coordinateSystem(extent = {{-150, -150}, {150, 150}}, initialScale = 0.1), graphics = {Line(origin = {20.1754, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {80, 0}, fillColor = {0, 178, 227}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Line(origin = {40.1315, 2}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {0.219199, 1.92106}, points = {{0, 78}, {0, -80}, {0, -82}}), Line(origin = {-40.0001, 1.61404}, points = {{0, 78}, {0, -80}, {0, -82}}), Rectangle(origin = {-80, 0}, fillColor = {170, 0, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-20, 100}, {20, -100}}), Text(origin = {10, -54}, textColor = {255, 0, 0}, extent = {{-11, 6}, {11, -6}}, textString = "K"), Line(origin = {-20.0439, -0.307018}, points = {{0, 80}, {0, -80}, {0, -80}}), Rectangle(origin = {35, 54}, fillColor = {177, 177, 177}, fillPattern = FillPattern.Vertical, extent = {{-95, 26}, {25, -134}}), Text(origin = {-80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "C"), Text(origin = {80, 6}, extent = {{-26, 24}, {26, -24}}, textString = "A"), Text(origin = {0, -88}, extent = {{-14, 16}, {14, -16}}, textString = "Stack"), Text(origin = {46, -110}, extent = {{-14, 16}, {14, -16}}, textString = "CoolOut", horizontalAlignment = TextAlignment.Left), Text(origin = {-3, 9}, extent = {{-45, 45}, {45, -45}}, textString = "Dev")}),
-    Documentation(info = "<html><head></head><body>This model describes the dynamic behaviour of a proton exchange membrane water electrolyser cell (PEMWE). The model includes components describing the electrical, fluidic, and thermal properties of the cell.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style=\"font-family: 'Courier New';\">potentialSource.v</span><span style=\"font-family: 'Courier New'; font-size: 12pt;\">,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell.</div><div><br></div><div>The fluidic performance is modelled using simple ideal flow components for the air and hydrogen gas lines, connected to mass sink boundary conditions. The magnitude of the mass sink is coupled to the electrical current in the cell using Faraday's law.&nbsp;</div><div><br></div><div>The thermal performance is considered by coupling a model describing the flow of liquid coolant to a thermal heat source. The magnitude of the heat source is calculated using the higher heating value of hydrogen and the calculated electrical voltage of the cell.</div><div><br></div><div>The hydrogen, air, and coolant ports can be connected to their respective subsystems, either by using the xx 
-    <br> 
-    
-    <table border=\"0.9\">
-    <caption align=\"Left\" style=\"text-align: left;\"> <b><u>Default Parameters</u></b></caption>
-    <tbody><tr><th>Parameter name</th>
-                <th>Value</th>
-                <th>Unit</th>
-             </tr>
-             <tr>
-                <td align=\"Left\">mass</td>
-                <td>=1 </td>
-                <td align=\"Right\">kg</td>
-             </tr>
-             
-             <tr>
-                <td align=\"Left\">volume</td>
-                <td>=0.001</td>
-                  <td align=\"Right\">m3</td>
-             </tr>
-             <tr>
-                <td align=\"Left\">Cp</td>
-                <td>=800</td>
-                <td align=\"Left\">J/(kg.K)</td>
-             </tr>
-               <tr>
-                <td align=\"Left\">N_cells </td>
-                <td>=1</td>
-                <td align=\"Right\">-</td>
-             </tr>
-             
-             <tr>
-                <td align=\"Left\">A_cell </td>
-                <td>=0.0237</td>
-                  <td align=\"Right\">m2</td>
-             </tr>
-             <tr>
-                <td align=\"Left\">i_0</td>
-                <td>=0.0002</td>
-                <td align=\"Right\">A</td>
-             </tr>
-               <tr>
-                <td align=\"Left\">i_L</td>
-                <td>=520</td>
-                <td align=\"Right\">A</td>
-             </tr>         
-             <tr>
-                <td align=\"Left\">i_x</td>
-                <td>=0.001</td>
-                  <td align=\"Right\"> A </td>
-             </tr>
-             <tr>
-                <td align=\"Left\">b_1</td>
-                <td>=0.025</td>
-                <td align=\"Right\"> V/dec </td>
-             </tr>
-               <tr>
-                <td align=\"Left\">b_2</td>
-                <td>=0.25</td>
-                <td align=\"Right\">V/dec</td>
-             </tr>
-             
-             <tr>
-                <td align=\"Left\">R_0</td>
-                <td>=0.02</td>
-                  <td align=\"Right\">Ohm</td>
-             </tr>
-             <tr>
-                <td align=\"Left\">R_1</td>
-                <td>=0.01</td>
-                <td align=\"Right\">Ohm</td>
-             </tr>
-               <tr>
-                <td align=\"Left\">C_1</td>
-                <td>=0.003</td>
-                <td align=\"Right\">F</td>
-             </tr>
-             
-             
-          </tbody></table><br>
-    </div><div><div><span style=\"text-decoration: underline;\"><strong>Electrochemical equations:</strong></span></div><div>In the equations below, i<sub>stack</sub>&nbsp;represents the current flowing through the stack, accessible in the code as&nbsp;<font face=\"Courier New\">currentSensor.i</font>.</div><p><i><u>The Nernst equilibrium potential</u></i></p><p>U<sub>FC</sub><sup>Nernst&nbsp;</sup>= (U<sup>0</sup>&nbsp;-((RT)/(2F) ln( 1/(p<sub>H2</sub>&nbsp;(p<sub>O2</sub><sup>0.5</sup>))), U<sup>0&nbsp;</sup>= 1.229 V</p><p><span style=\"text-decoration: underline;\"><i>Activation overpotential</i></span></p><p>η<sup>act&nbsp;</sup>= b<sub>1&nbsp;</sub>ln( 1-(i<sub>cell&nbsp;</sub>+ i<sub>x</sub>) / i<sub>0</sub>)</p><p><u><i>Concentration overpotential</i></u></p><p>η<sup>con&nbsp;</sup>= -b<sub>2&nbsp;</sub>ln( 1-(i<sub>cell&nbsp;</sub>+ i<sub>x</sub>) / i<sub>L</sub>)</p><p><u><i>Cell voltage</i></u></p><p>V<sub>cell</sub>&nbsp;= N<sub>cell</sub>&nbsp;(U<sub>FC</sub><sup>Nernst</sup>&nbsp;- η<sup>act&nbsp;</sup>&nbsp;- i<sub>FC</sub>R<sub>0</sub>&nbsp;- η<sup>con</sup>)</p><p><span style=\"text-decoration: underline;\"><strong>Thermal equations:</strong></span></p><p><i><u>Electrochemical heat generation</u></i></p><p>Q<sub>gen</sub><sup>&nbsp;</sup>= (V<sub>TN</sub>&nbsp;- V<sub><font size=\"2\">cell</font></sub>)i<sub>cell</sub>, V<sub>TN</sub>&nbsp;= 1.481 V</p></div></body></html>"),
+    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>m_cell</code></td><td>SI.Mass</td><td>kg</td><td>1</td><td>Mass of the Cell</td></tr>
+<tr><td><code>v_cell</code></td><td>SI.Volume</td><td>m3</td><td>0.001</td><td>Volume of the Cell</td></tr>
+<tr><td><code>Cp_cell</code></td><td>SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>1100</td><td>Specific Specific Heat Capacity</td></tr>
+<tr><td><code>N_cells</code></td><td>Real</td><td>1</td><td></td><td>1</td></tr>
+<tr><td><code>A_cell</code></td><td>SI.Area</td><td>m2</td><td>0.0214</td><td>Active Area of the Cell</td></tr>
+<tr><td><code>i_0</code></td><td>SI.CurrentDensity</td><td>-</td><td>1.7e-6</td><td>Exchange Current density</td></tr>
+<tr><td><code>i_x</code></td><td>SI.CurrentDensity</td><td>-</td><td>0.001</td><td>Cross-over Current density</td></tr>
+<tr><td><code>rho_ele</code></td><td>SI.Resistivity</td><td>-</td><td>7.5e-5</td><td>Electrode resistivity</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
+<tr><td><code>H2OToPEMWE</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
+<tr><td><code>HPStack</code></td><td>Input-side interface</td><td>HeatPort_a</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2>This model describes the dynamic behaviour of a proton exchange membrane water electrolyser cell (PEMWE). The model includes components describing the electrical, fluidic, and thermal properties of the cell.&nbsp;<div><br></div><div>The electrical performance is modelled using a 0-D polarization curve model , which incorporates Nernstian thermodynamic effects due to hydrogen and oxygen pressure changes, Tafel kinetics to calculate activation overpotentials, and an empirical relationship to calculate mass-transport overpotentials. These effects are combined in&nbsp;<span style=\"&quot;font-family:\" 'courier=\"\" new';&quot;=\"\">potentialSource.v</span><span style=\"&quot;font-family:\" 'courier=\"\" new';=\"\" font-size:=\"\" 12pt;&quot;=\"\">,</span>which calculates the open-circuit voltage for a single cell, adjusts for hydrogen and oxygen partial pressures, subtracts the activation and mass-transport overpotentials, and finally multiplies by the number of cells in the stack. A simple resistor is included after the potential source to cover all Ohmic resistive losses in the fuel cell.</div><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>p_H2O = H2OToPEMWE.p;
+j = currentSensor.i/A_cell;
+E_rev = 1.5184 - (1.5421e-3*T_stack) + (9.523e-5*T_stack*log(T_stack)) + (9.84e-8*(T_stack)^2);
+E_tn = 1.485 - (1.49e-4*(T_stack - 273.15)) - (9.84e-8*(T_stack - 273.15)^2);
+E_cell = E_rev + activation.E_act + ohmic.E_ohm + massTransport.E_diff;
+P_el = potentialSource.v*currentSensor.i;
+P_th = (E_cell - E_tn)*abs(currentSensor.i)*N_cells;
+Q_rev = (E_tn - E_rev)*abs(currentSensor.i);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
+<tr><td><code>O2ToTank</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
+<tr><td><code>H2ToTank</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
+<tr><td><code>H2OToTank</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
+<tr><td><code>I_PEMWE</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>TStack</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr></tbody></table></body></html>"),
     uses(Modelica(version = "4.0.0")),
     experiment(StopTime = 3153600, Interval = 100, __Dymola_Algorithm = "Dassl"));
 end Electrolyser_dev;
