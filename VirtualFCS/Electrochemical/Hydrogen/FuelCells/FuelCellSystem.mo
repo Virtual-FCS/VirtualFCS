@@ -13,7 +13,7 @@ model FuelCellSystem
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure";
   // Mediums
-  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Cathode_Medium = Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";

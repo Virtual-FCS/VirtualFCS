@@ -5,7 +5,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
   import Modelica.Constants.F;
   inner Modelica.Fluid.System system(T_start = 300, p_start = 101325, m_flow_start = 1e-4) annotation(
     Placement(transformation(origin = {90, -90}, extent = {{-10, -10}, {10, 10}})));
-  package Medium = Media.CathodeAir;
+  package Medium = Media.MoistAir;
   parameter Integer N_cells = 42;
   replaceable SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells, redeclare VirtualFCS.Fluid.ElectricCompressor compressor(redeclare package Medium = Medium), p_set = 2e5) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));

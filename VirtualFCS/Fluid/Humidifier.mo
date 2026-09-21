@@ -5,7 +5,7 @@ model Humidifier "Hollow fiber membrane humidifier:
     - Includes optional first-order dynamics for moisture transfer
     - Based on Pollak et al. (2023)"
   extends VirtualFCS.Fluid.HumidifierInterface(redeclare package wet_medium = wet_medium, redeclare package dry_medium = dry_medium);
-  // Tested with VirtualFCS.Media.CathodeAir -> Still hardcoded with order and number of species in the medium. Can be improved later.
+  // Tested with VirtualFCS.Media.MoistAir -> Still hardcoded with order and number of species in the medium. Can be improved later.
   replaceable package dry_medium = Modelica.Media.Interfaces.PartialMedium "Dry gas (shell side)" annotation(
     choicesAllMatching = true);
   replaceable package wet_medium = Modelica.Media.Interfaces.PartialMedium "Wet side (fiber side)" annotation(
@@ -270,7 +270,7 @@ This captures observed transient behavior.
 <li>No pressure drop is considered</li>
 <li>No heat transfer is included</li>
 <li>Ideal mixture behavior is assumed</li>
-<li>Uniform flow distribution across fibers</li></ul><div><h2>Future developement / Improvements</h2><ul><li>No volume inside humidifier. This introduces instant changes in outflow conditions for wet side. Wet side is normally vented for fuel cell applications, but still makes it difficult to validate the whole model.&nbsp;</li><li>Heat transfer between the streams and pressure drop should be added.&nbsp;</li><li>Effect of liquid water (exhaust of FC) should be investigated.&nbsp;</li><li>Medium handling can be generalized. Currently \"hardcoded\" solutions thats fits the CathodeAir model in VirtualFCS, but will likely crash with other mediums. Species indexes is i.e. hardcoded.&nbsp;</li><li>Support flow reversal. Some manual back-assignments for the ports are included now using inStream() operator. Likely crashing if flow reversal is attempted.&nbsp;</li><li>Could be split into submodels for NTU, mass transfer, geometry.. Would be more adaptable in future.&nbsp;</li></ul></div><ul>
+<li>Uniform flow distribution across fibers</li></ul><div><h2>Future developement / Improvements</h2><ul><li>No volume inside humidifier. This introduces instant changes in outflow conditions for wet side. Wet side is normally vented for fuel cell applications, but still makes it difficult to validate the whole model.&nbsp;</li><li>Heat transfer between the streams and pressure drop should be added.&nbsp;</li><li>Effect of liquid water (exhaust of FC) should be investigated.&nbsp;</li><li>Medium handling can be generalized. Currently \"hardcoded\" solutions thats fits the MoistAir model in VirtualFCS, but will likely crash with other mediums. Species indexes is i.e. hardcoded.&nbsp;</li><li>Support flow reversal. Some manual back-assignments for the ports are included now using inStream() operator. Likely crashing if flow reversal is attempted.&nbsp;</li><li>Could be split into submodels for NTU, mass transfer, geometry.. Would be more adaptable in future.&nbsp;</li></ul></div><ul>
 </ul>
 
 <h2>References</h2>

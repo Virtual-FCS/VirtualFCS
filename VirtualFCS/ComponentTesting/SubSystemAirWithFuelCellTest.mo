@@ -24,7 +24,7 @@ model SubSystemAirWithFuelCellTest
     Placement(transformation(origin = {10, 40}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
   Modelica.Blocks.Sources.Step R_values(height = 20, offset = 30, startTime = 250) annotation(
     Placement(transformation(origin = {50, 76}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  SubSystems.Air.SubSystemAir subSystemAir(environment(redeclare package Medium = Media.CathodeAir))  annotation(
+  SubSystems.Air.SubSystemAir subSystemAir(environment(redeclare package Medium = Media.MoistAir))  annotation(
     Placement(transformation(origin = {50, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Electrical.Analog.Sources.ConstantVoltage V_source(V = 24) annotation(
     Placement(transformation(origin = {80, 0}, extent = {{-6, 6}, {6, -6}}, rotation = 90)));

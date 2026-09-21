@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen.FuelCells;
 
 partial model FCInterface
-  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Cathode_Medium = Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
   

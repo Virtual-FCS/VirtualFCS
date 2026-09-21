@@ -3,7 +3,7 @@ within VirtualFCS.ComponentTesting;
 model FuelCellSystemTest
   extends Modelica.Icons.Example;
   
-  replaceable package Cathode_Medium = VirtualFCS.Media.CathodeAir;
+  replaceable package Cathode_Medium = VirtualFCS.Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   

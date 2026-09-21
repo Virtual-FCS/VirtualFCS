@@ -2,17 +2,17 @@ within VirtualFCS.Fluid.Examples;
 
 model SeparatorTest
   extends Modelica.Icons.Example;
-  Separator separator(useHeatPort = true, redeclare package Medium = VirtualFCS.Media.CathodeAir)  annotation(
+  Separator separator(useHeatPort = true, redeclare package Medium = VirtualFCS.Media.MoistAir)  annotation(
     Placement(transformation(origin = {-20, -4}, extent = {{-30, -30}, {30, 30}})));
-  Modelica.Fluid.Sources.MassFlowSource_T source(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_T_in = false, m_flow = 1, T = 353.15, X = {0.1, 0.4, 0.5}, use_X_in = true)  annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T source(nPorts = 1, redeclare package Medium = VirtualFCS.Media.MoistAir, use_T_in = false, m_flow = 1, T = 353.15, X = {0.1, 0.4, 0.5}, use_X_in = true)  annotation(
     Placement(transformation(origin = {-60, -4}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.Boundary_pT sink(nPorts = 2, redeclare package Medium = VirtualFCS.Media.CathodeAir)  annotation(
+  Modelica.Fluid.Sources.Boundary_pT sink(nPorts = 2, redeclare package Medium = VirtualFCS.Media.MoistAir)  annotation(
     Placement(transformation(origin = {90, 0}, extent = {{10, -10}, {-10, 10}})));
   inner Modelica.Fluid.System system(T_start = 300, m_flow_start = 0, p_start = 101325) annotation(
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Valves.ValveIncompressible valve_liq(redeclare package Medium = VirtualFCS.Media.CathodeAir, dp_nominal = 1e5, m_flow_nominal = 1, opening_nominal = 0.5)  annotation(
+  Modelica.Fluid.Valves.ValveIncompressible valve_liq(redeclare package Medium = VirtualFCS.Media.MoistAir, dp_nominal = 1e5, m_flow_nominal = 1, opening_nominal = 0.5)  annotation(
     Placement(transformation(origin = {40, -80}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Valves.ValveCompressible valve_gas(redeclare package Medium = VirtualFCS.Media.CathodeAir, dp_nominal = 1e5, m_flow_nominal = 1, p_nominal = 2e5, opening_nominal = 0.5)  annotation(
+  Modelica.Fluid.Valves.ValveCompressible valve_gas(redeclare package Medium = VirtualFCS.Media.MoistAir, dp_nominal = 1e5, m_flow_nominal = 1, p_nominal = 2e5, opening_nominal = 0.5)  annotation(
     Placement(transformation(origin = {50, 36}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Continuous.LimPID PID_level(controllerType = Modelica.Blocks.Types.SimpleController.PI, yMax = 1, yMin = 0)  annotation(
     Placement(transformation(origin = {40, -10}, extent = {{-10, -10}, {10, 10}})));

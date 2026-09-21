@@ -2,8 +2,8 @@ within VirtualFCS.ComponentTesting;
 
 model HumidifierTest
   extends Modelica.Icons.Example;
-  replaceable package dry_medium = VirtualFCS.Media.CathodeAir;
-  replaceable package wet_medium = VirtualFCS.Media.CathodeAir;
+  replaceable package dry_medium = VirtualFCS.Media.MoistAir;
+  replaceable package wet_medium = VirtualFCS.Media.MoistAir;
   Modelica.Fluid.Sources.MassFlowSource_T dry_air_source(redeclare package Medium = dry_medium, m_flow = 0.0004, nPorts = 1, X = {0.24, 0.76, 0}, T = 353.15) annotation(
     Placement(transformation(origin = {32, 0}, extent = {{-120, -10}, {-100, 10}})));
   Modelica.Fluid.Sources.MassFlowSource_T wet_air_source(redeclare package Medium = wet_medium, nPorts = 1, use_m_flow_in = true, use_X_in = true, T = 353.15) annotation(

@@ -30,7 +30,7 @@ model FuelCell
   constant SI.MolarMass M_H2O = Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM "Molar mass of water";
   // Convenience variables (Used by inner models)
   inner Modelica.Units.SI.AbsolutePressure p_H2(min = 0) = (anode.port_a.p + anode.port_b.p)/2;
-  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = (cathode.port_a.p + cathode.port_b.p)/2*cathode.medium.X[Media.CathodeAir.Oxygen];
+  inner Modelica.Units.SI.AbsolutePressure p_O2(min = 0) = (cathode.port_a.p + cathode.port_b.p)/2*cathode.medium.X[Media.MoistAir.Oxygen];
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   inner Real phi = cathode.medium.phi "check mol/mass fraction";
   // Outputs

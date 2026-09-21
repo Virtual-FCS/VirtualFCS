@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen.Electrolysers;
 
 model PEMElectrolyser
-  extends VirtualFCS.Electrochemical.Hydrogen.Electrolysers.ElectrolyserInterface(redeclare package Anode_Medium = Media.CathodeAir, redeclare package Cathode_Medium = Media.WetHydrogen);
+  extends VirtualFCS.Electrochemical.Hydrogen.Electrolysers.ElectrolyserInterface(redeclare package Anode_Medium = Media.MoistAir, redeclare package Cathode_Medium = Media.MoistHydrogen);
   import Modelica.Constants.F "Faraday constant";
   import Modelica.Constants.R "Universal gas constant";
   import SI = Modelica.Units.SI;

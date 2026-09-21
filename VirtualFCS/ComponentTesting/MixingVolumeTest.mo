@@ -2,7 +2,7 @@ within VirtualFCS.ComponentTesting;
 
 model MixingVolumeTest
   extends Modelica.Icons.Example;
-  package Medium = Media.CathodeAir;
+  package Medium = Media.MoistAir;
   Fluid.MixingVolume mixvol(redeclare package Medium = Medium, useHeatPort = true, V = 1, T_start (displayUnit = "K"), energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary outlet(nPorts = 1, redeclare package Medium = Medium, p = system.p_ambient) annotation(

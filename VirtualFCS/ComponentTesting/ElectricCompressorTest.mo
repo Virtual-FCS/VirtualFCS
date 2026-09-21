@@ -2,12 +2,12 @@ within VirtualFCS.ComponentTesting;
 
 model ElectricCompressorTest
   extends Modelica.Icons.Example;
-  package Medium = VirtualFCS.Media.CathodeAir;
+  package Medium = VirtualFCS.Media.MoistAir;
   Fluid.ElectricCompressor compressor(redeclare package Medium = Medium, K(k = 2e2, Ti = 1))  annotation(
     Placement(transformation(origin = {-30, -26}, extent = {{-30, -30}, {30, 30}})));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.FixedBoundary environment(nPorts = 2, redeclare package Medium = VirtualFCS.Media.CathodeAir)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary environment(nPorts = 2, redeclare package Medium = VirtualFCS.Media.MoistAir)  annotation(
     Placement(transformation(origin = {-50, 70}, extent = {{-10, 10}, {10, -10}})));
   VirtualFCS.Electrochemical.Hydrogen.Manifold manifold(MMX = {0.032, 0.028, 0.018}, redeclare package Medium = Medium, T = 353.15, V = 1, nu = {-0.5, 0, 1}, useHeatPort = false) annotation(
     Placement(transformation(origin = {30, -26}, extent = {{-10, -10}, {10, 10}})));
