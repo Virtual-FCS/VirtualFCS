@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.FuelCells;
 
 partial model FCInterface
   replaceable package Cathode_Medium = Media.CathodeAir;

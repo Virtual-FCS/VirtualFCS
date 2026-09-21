@@ -4,9 +4,7 @@ model Humidifier "Hollow fiber membrane humidifier:
     - Counterflow NTU-based mass exchanger
     - Includes optional first-order dynamics for moisture transfer
     - Based on Pollak et al. (2023)"
-  
-  extends VirtualFCS.Fluid.HumidifierInterface(redeclare package wet_medium=wet_medium, redeclare package dry_medium=dry_medium);
-      
+  extends VirtualFCS.Fluid.HumidifierInterface(redeclare package wet_medium = wet_medium, redeclare package dry_medium = dry_medium);
   // Tested with VirtualFCS.Media.CathodeAir -> Still hardcoded with order and number of species in the medium. Can be improved later.
   replaceable package dry_medium = Modelica.Media.Interfaces.PartialMedium "Dry gas (shell side)" annotation(
     choicesAllMatching = true);
@@ -24,9 +22,12 @@ model Humidifier "Hollow fiber membrane humidifier:
   parameter SI.Diameter dHousing = 39.2e-3 "Inner diameter of shell [m]";
   parameter SI.Length L_fiber = 150.8e-3 "Fiber length [m]";
   // Reference values
-  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp"; // FIXME - should we be using system.T_ambient?
-  SI.Pressure atm_P = 101325 "Assumed baseline pressure"; // FIXME - should we be using system.p_ambient?
-  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Reference binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm"; // NOTE should this be a variable or a parameter?
+  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp";
+  // FIXME - should we be using system.T_ambient?
+  SI.Pressure atm_P = 101325 "Assumed baseline pressure";
+  // FIXME - should we be using system.p_ambient?
+  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Reference binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
+  // NOTE should this be a variable or a parameter?
   // Numerical stability
   Real eps = 1e-4 "Small number to avoide div by zero";
   SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";
@@ -69,8 +70,8 @@ model Humidifier "Hollow fiber membrane humidifier:
   wet_medium.ThermodynamicState med_state_A_out;
   dry_medium.ThermodynamicState med_state_B_in;
   dry_medium.ThermodynamicState med_state_B_out;
-  Modelica.Units.SI.MassFraction XiA_out[wet_medium.nXi] (start=wet_medium.reference_X[1:wet_medium.nXi]);
-  Modelica.Units.SI.MassFraction XiB_out[dry_medium.nXi] (start=dry_medium.reference_X[1:dry_medium.nXi]);
+  Modelica.Units.SI.MassFraction XiA_out[wet_medium.nXi](start = wet_medium.reference_X[1:wet_medium.nXi]);
+  Modelica.Units.SI.MassFraction XiB_out[dry_medium.nXi](start = dry_medium.reference_X[1:dry_medium.nXi]);
   Modelica.Units.SI.MassFraction XiA_out_3 "Mass fractions of H20 for logging";
   Modelica.Units.SI.MassFraction XiB_out_3 "Mass fraction of H20 for logging";
 equation
@@ -133,11 +134,9 @@ equation
   XiA_out[1] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[1]))/max(abs(portA_out.m_flow), m_flow_min);
   XiA_out[2] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[2]))/max(abs(portA_out.m_flow), m_flow_min);
   XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
-
   XiB_out[1] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[1]))/max(abs(portB_out.m_flow), m_flow_min);
   XiB_out[2] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[2]))/max(abs(portB_out.m_flow), m_flow_min);
   XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
-
 // Energy balance (enthalpy flow)
   if m_perm_state > 0 then
     perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_A_in.T, Media.Shomate.H2O_G)/wet_medium.MMs[3])*m_perm_state;

@@ -7,7 +7,7 @@ model FuelCellSystemTest
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
   
-  Electrochemical.Hydrogen.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.VSourceNernst v_source,redeclare VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ActivationLossSimple activation, cathode(R_flow = 10000), anode(R_flow = 10000)), subSystemAir(compressor(K(y_start = 5, initType = Modelica.Blocks.Types.Init.InitialOutput, Ti = 1), compressor(m_flow(start = 1E-2)))), redeclare package Cathode_Medium = Cathode_Medium, redeclare package Anode_Medium = Anode_Medium) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCellSystem fcs(fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.VSourceNernst v_source,redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossSimple activation, cathode(R_flow = 10000), anode(R_flow = 10000)), subSystemAir(compressor(K(y_start = 5, initType = Modelica.Blocks.Types.Init.InitialOutput, Ti = 1), compressor(m_flow(start = 1E-2)))), redeclare package Cathode_Medium = Cathode_Medium, redeclare package Anode_Medium = Anode_Medium) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}})));

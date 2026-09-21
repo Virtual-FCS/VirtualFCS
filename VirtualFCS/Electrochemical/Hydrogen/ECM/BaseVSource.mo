@@ -1,4 +1,4 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
 
 partial model BaseVSource
   extends Modelica.Electrical.Analog.Interfaces.OnePort;

@@ -6,7 +6,7 @@ model SubSystemAirWithFuelCellTest
 
   parameter Integer N_cells = 42 "Number of cells in the stack";
   
-  Electrochemical.Hydrogen.FuelCell fc(N_cells = N_cells) annotation(
+  Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells) annotation(
     Placement(transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogen(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1) annotation(
     Placement(transformation(origin = {-44, 10}, extent = {{-4, -4}, {4, 4}})));

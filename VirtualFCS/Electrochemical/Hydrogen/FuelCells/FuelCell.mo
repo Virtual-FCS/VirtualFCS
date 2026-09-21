@@ -1,18 +1,18 @@
-within VirtualFCS.Electrochemical.Hydrogen;
+within VirtualFCS.Electrochemical.Hydrogen.FuelCells;
 
 model FuelCell
-  extends VirtualFCS.Electrochemical.Hydrogen.FCInterface;
+  extends VirtualFCS.Electrochemical.Hydrogen.FuelCells.FCInterface;
   import Modelica.Constants.F "Faraday constant";
   import Modelica.Electrical.Analog.Interfaces.OnePort;
   import SI = Modelica.Units.SI;
   // Parameters
-  replaceable VirtualFCS.Electrochemical.Hydrogen.VSourceConstant v_source "Open-circuit voltage" annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.ECM.VSourceConstant v_source "Open-circuit voltage" annotation(
     Placement(transformation(origin = {-46, 100}, extent = {{-18, -18}, {18, 18}}, rotation = 180))) constrainedby BaseVSource;
-  replaceable VirtualFCS.Electrochemical.Hydrogen.OhmicResistance ohmic "Internal resistance" annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.ECM.OhmicResistance ohmic "Internal resistance" annotation(
     Placement(transformation(origin = {48, 100}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseOhmic;
-  replaceable VirtualFCS.Electrochemical.Hydrogen.MassTransportLossSimple mass_transport annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.ECM.MassTransportLossSimple mass_transport annotation(
     Placement(transformation(origin = {102, 100}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseMassTransportLoss;
-  replaceable VirtualFCS.Electrochemical.Hydrogen.ActivationLossNone activation annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossNone activation annotation(
     Placement(transformation(origin = {2, 100}, extent = {{-18, 18}, {18, -18}}))) constrainedby BaseActivationLoss;
   inner parameter Integer N_cells = 42 "Number of cells in the stack";
   inner parameter Modelica.Units.SI.Area A_el = 0.41 "Area of the fuel cell electrode (m^2)";
