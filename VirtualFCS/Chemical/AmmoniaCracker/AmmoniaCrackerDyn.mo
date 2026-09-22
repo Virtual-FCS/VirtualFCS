@@ -3,11 +3,8 @@ within VirtualFCS.Chemical.AmmoniaCracker;
 model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Same kinetics as AmmoniaCracker, but each of the N computational segments is a Modelica.Fluid.Interfaces.PartialLumpedVolume-style control volume so that transient pressure build-up is captured."
   extends AmmoniaCrackerInterface;
   // Import relevant packages
-  import Modelica.Media.IdealGases.SingleGases;
   import Modelica.Fluid.Utilities.regRoot;
   import Modelica.Fluid.Utilities.regSquare;
-  package HydrogenMedium = SingleGases.H2;
-  package NitrogenMedium = SingleGases.N2;
   // Define constant parameters
   constant Real M_NH3 = 17 "Molar mass g/mol";
   constant Real M_H2 = 2 "Molar mass g/mol";
@@ -115,14 +112,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Modelica.Units.SI.DynamicViscosity mu_mix[N] "Mixture dynamic viscosity";
   Modelica.Units.SI.SpecificHeatCapacity cp_mix[N] "Mixture specific heat capacity";
   
-  // Reference thermodynamic states used for the transport properties
-  AmmoniaMedium.ThermodynamicState state_NH3;
-  HydrogenMedium.ThermodynamicState state_H2;
-  NitrogenMedium.ThermodynamicState state_N2;
-  Modelica.Units.SI.SpecificHeatCapacity cp_NH3;
-  Modelica.Units.SI.SpecificHeatCapacity cp_H2;
-  Modelica.Units.SI.SpecificHeatCapacity cp_N2;
-  
   // Reaction rate
   function rate
     input Real a, b, T, k0, Ea, R, k_eq;
@@ -151,13 +140,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   end frictionFactor;
 
 equation
-// Reference transport properties (evaluated at the nominal operating point)
-  state_NH3 = AmmoniaMedium.setState_pTX(p_start, T_in, {1, 0});
-  state_H2 = HydrogenMedium.setState_pT(p_start, T_in);
-  state_N2 = NitrogenMedium.setState_pT(p_start, T_in);
-  cp_NH3 = AmmoniaMedium.specificHeatCapacityCp(state_NH3);
-  cp_H2 = HydrogenMedium.specificHeatCapacityCp(state_H2);
-  cp_N2 = NitrogenMedium.specificHeatCapacityCp(state_N2);
   for i in 1:N loop
 // Inventory of the lumped volume
     m_tot[i] = m_H2[i] + m_N2[i] + m_NH3[i];
@@ -179,7 +161,7 @@ equation
 // Mixture transport properties
     rho_mix[i] = AmmoniaMedium.density(AmmoniaMedium.setState_pTX(P_tot[i], T[i], {w_NH3[i], w_H2[i]}));
     mu_mix[i] = AmmoniaMedium.dynamicViscosity(AmmoniaMedium.setState_pTX(P_tot[i], T[i], {w_NH3[i], w_H2[i]}));
-    cp_mix[i] = cp_NH3*w_NH3[i] + cp_H2*w_H2[i] + cp_N2*w_N2[i];
+    cp_mix[i] = AmmoniaMedium.specificHeatCapacityCp(AmmoniaMedium.setState_pTX(P_tot[i], T[i], {w_NH3[i], w_H2[i]}));
     v_gas[i] = m_flow_face[i]/(rho_mix[i]*A_flow);
     Re[i] = rho_mix[i]*abs(v_gas[i])*D_tubes/mu_mix[i];
     f[i] = frictionFactor(Re[i]);

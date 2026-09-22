@@ -17,6 +17,8 @@ model FuelCellSystemTest
     Placement(transformation(origin = {-40, 30}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Ramp ramp(height = -2.99, duration = 20, offset = 3, startTime = 20)  annotation(
     Placement(transformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Fluid.Sources.MassFlowSource_T h2_source(redeclare package Medium = Anode_Medium, m_flow = 0.001, nPorts = 1, use_m_flow_in = false) annotation(
+    Placement(transformation(origin = {-76, -4}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(resistor.p, fcs.pin_p) annotation(
     Line(points = {{10, 40}, {10, 18}}, color = {0, 0, 255}));
@@ -26,6 +28,8 @@ equation
     Line(points = {{-40, 40}, {-10, 40}}, color = {0, 0, 255}));
   connect(ramp.y, resistor.R) annotation(
     Line(points = {{-58, 70}, {0, 70}, {0, 52}}, color = {0, 0, 127}));
+  connect(h2_source.ports[1], fcs.toTank) annotation(
+    Line(points = {{-66, -4}, {-44, -4}, {-44, 6}, {-22, 6}}, color = {0, 127, 255}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.012),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));

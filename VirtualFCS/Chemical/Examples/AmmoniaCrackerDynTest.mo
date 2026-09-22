@@ -2,13 +2,11 @@ within VirtualFCS.Chemical.Examples;
 
 model AmmoniaCrackerDynTest
   extends Modelica.Icons.Example;
-  import Modelica.Media.IdealGases.SingleGases;
   package AmmoniaMedium = Media.CrackedAmmonia;
-  package HydrogenMedium = SingleGases.H2;
   parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
   parameter Modelica.Units.SI.Temperature T_in_degC = 550 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Temperature T_in = T_in_degC + 273.15 "Inlet temperature (K)";
-  Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(N = 10, dp_small = 100, T_in_degC = T_in_degC, redeclare package AmmoniaMedium = AmmoniaMedium) annotation(
+  Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(N = 5, dp_small = 100, T_in_degC = T_in_degC, redeclare package AmmoniaMedium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {9, 5}, extent = {{-23, -23}, {23, 23}})));
   Modelica.Fluid.Sources.FixedBoundary cracked_gas_sink(redeclare package Medium = AmmoniaMedium, nPorts = 1, use_p = true, p = P_out, use_T = false, T = T_in) annotation(
     Placement(transformation(origin = {86, 10}, extent = {{10, -10}, {-10, 10}})));
@@ -19,6 +17,8 @@ equation
     Line(points = {{32, 10}, {76, 10}}, color = {0, 127, 255}));
   connect(ammoniaCracker.inlet_nh3_feed, ammonia_source.ports[1]) annotation(
     Line(points = {{-14, 10}, {-58, 10}}, color = {0, 127, 255}));
+  annotation(
+    experiment(StartTime = 0, StopTime = 100, Tolerance = 1e-06, Interval = 0.03));
   annotation(
     Documentation(info = "<html><p>This test feeds the dynamic ammonia cracker with 0.3 kg/s at 550 degC and evaluates the outlet at 3e5 Pa. The inlet composition is set to X = {1, 0, 0} in the cracked-ammonia medium order {NH3, H2, N2}. The example uses fewer axial segments and a wider pressure-flow regularization band than the default model to keep simulation turnaround short.</p></html>"));
 end AmmoniaCrackerDynTest;
