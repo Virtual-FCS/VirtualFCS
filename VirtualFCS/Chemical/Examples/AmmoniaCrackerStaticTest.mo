@@ -12,11 +12,20 @@ model AmmoniaCrackerStaticTest
     Placement(transformation(origin = {86, 10}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, use_m_flow_in = false, m_flow = 0.3, nPorts = 1, X = {1, 0, 0}) annotation(
     Placement(transformation(origin = {-68, 10}, extent = {{-10, -10}, {10, 10}})));
+  // Collect the segmented heat port so it is not left dangling (otherwise it is over-determined: unconnected + heatPorts[i].Q_flow set by the model)
+  Modelica.Thermal.HeatTransfer.Components.ThermalCollector thermalCollector(m = ammoniaCracker.N) annotation(
+    Placement(transformation(origin = {9, -50}, extent = {{-23, -10}, {23, 10}})));
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature ambient(T = 293.15) annotation(
+    Placement(transformation(origin = {9, -80}, extent = {{-10, -10}, {10, 10}})));
 equation
   connect(ammoniaCracker.outlet_cracked_gas, cracked_gas_sink.ports[1]) annotation(
     Line(points = {{32, 10}, {76, 10}}, color = {0, 127, 255}));
   connect(ammoniaCracker.inlet_nh3_feed, ammonia_source.ports[1]) annotation(
     Line(points = {{-14, 10}, {-58, 10}}, color = {0, 127, 255}));
+  connect(ammoniaCracker.heatPorts, thermalCollector.port_a) annotation(
+    Line(points = {{9, -18}, {9, -50}}, color = {191, 0, 0}));
+  connect(thermalCollector.port_b, ambient.port) annotation(
+    Line(points = {{9, -60}, {9, -80}}, color = {191, 0, 0}));
   annotation(
     Documentation(info = "<html><p>This test feeds the ammonia cracker with 0.3 kg/s at 550 degC and evaluates the outlet at 3e5 Pa. The inlet composition is set to X = {1, 0, 0} in the cracked-ammonia medium order {NH3, H2, N2}.</p></html>"));
 end AmmoniaCrackerStaticTest;

@@ -12,13 +12,13 @@ model NH3CrackerFCS
 
   Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium)  annotation(
     Placement(transformation(origin = {59, 57}, extent = {{-19, -19}, {19, 19}})));
-  Modelica.Fluid.Vessels.ClosedVolume ammoniaTank(redeclare package Medium = AmmoniaMedium, nPorts = 1, portsData(each diameter = 0.1), V = 100, X_start = {0.8, 0.1, 0.1})  annotation(
+  Modelica.Fluid.Vessels.ClosedVolume ammoniaTank(redeclare package Medium = AmmoniaMedium, nPorts = 1, portsData(each diameter = 0.1), V = 100)  annotation(
     Placement(transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}})));
   Fluid.SimplePump ammoniaPump(redeclare package Medium = AmmoniaMedium)  annotation(
     Placement(transformation(origin = {-56, 22}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Pipes.DynamicPipe NH3Vaporizer(use_HeatTransfer = true, redeclare package Medium = AmmoniaMedium, length = 10, nParallel = 20, diameter = 0.1)  annotation(
     Placement(transformation(origin = {-14, 30}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heater1 annotation(
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heater1(T_ref = 1073.15)  annotation(
     Placement(transformation(origin = {-28, 56}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogenSink(nPorts = 1, redeclare package Medium = HydrogenMedium, p = P_H2_tank_start)  annotation(
     Placement(transformation(origin = {44, -30}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));

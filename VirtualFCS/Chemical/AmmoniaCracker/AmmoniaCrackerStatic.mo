@@ -1,13 +1,7 @@
 within VirtualFCS.Chemical.AmmoniaCracker;
 
 model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell configuration with catalyst-covered outer tube walls for ammonia decomposition reaction. Simplified model from Realpe et al. 2023. DOI: 10.1039/d2re00408a"
-  // Define media types
-  replaceable package AmmoniaMedium = Media.CrackedAmmonia;
-  // Define interface
-  Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium) annotation(
-    Placement(transformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b outlet_cracked_gas(redeclare package Medium = AmmoniaMedium) annotation(
-    Placement(transformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}})));
+  extends AmmoniaCrackerInterface;
   // Define constant parameters
   constant Modelica.Units.SI.MolarMass M_NH3 = 17/1000 "Molar mass kg/mol";
   constant Modelica.Units.SI.MolarMass M_H2 = 2/1000 "Molar mass kg/mol";
@@ -23,7 +17,6 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   constant Modelica.Units.SI.Density rho_NH3_start = 7.04 "Parameter to initialize density-related variables";
   constant Real mol_frac_NH3_in = 1 "Parameter to initialize mol fraction arrays. Assumes pure ammonia at inlet";
   // Reactor geometry parameters
-  parameter Integer N = 50 "Number of reactor computational segments";
   parameter Modelica.Units.SI.Length H = 4.0 "Reactor height (m)";
   parameter Modelica.Units.SI.Length L = 1.0 "Reactor length (m)";
   parameter Modelica.Units.SI.Length W = 1.2 "Reactor width (m)";
@@ -35,6 +28,9 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   // Flow and thermodynamic parameters
   // parameter Modelica.Units.SI.MassFlowRate mf_NH3 = 1 "Inlet mass flow rate ammonia(kg/s)";
   parameter Real T_in_degC = 550 "Inlet temperature (°C)";
+  parameter Modelica.Units.NonSI.Temperature_degC T_a = 20 "Ambient temperature (°C)";
+  parameter Real U_tot = 1 "Heat transfer coefficient to atmosphere (W/m^2/K) ";
+
   parameter Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
   parameter Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
   parameter Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
@@ -47,6 +43,8 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   final parameter Modelica.Units.SI.Length z_tube = H*(1 - z_head) "Tubes length(m)";
   final parameter Modelica.Units.SI.Area A_r = N_tubes*2*3.1415*(D_tubes - t_tubes)/2*z_tube "Catalyst-covered reaction area (m^2)";
   final parameter Modelica.Units.SI.Area A_c = N_tubes*3.1415*(D_tubes/2)^2 "Cross-sectional area (m^2)";
+  final parameter Modelica.Units.SI.Area A_s = 2*(H*L + W*L + H*W) "External walls surface area (m^2)";
+
   final parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes along length of reactor";
   final parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes along width of reactor";
   final parameter Integer N_tubes = N_tubes_x*N_tubes_y "Number of tubes in the reactor";
@@ -88,6 +86,9 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   Real f[N] "Friction factor";
   // Initialize gas velocities along the reactor
   Modelica.Units.SI.Velocity v_gas[N] "Gas mixture velocity (m/s)";
+  Modelica.Units.SI.HeatFlowRate Q_r[N] "Reaction heat W)";
+  Modelica.Units.SI.HeatFlowRate Q_loss[N] "Heat lost to ambient (W)";
+  Modelica.Units.SI.HeatFlowRate Q_tot "Total heat flow (W)";
   // Declare medium state records and thermodynamic properties
   Modelica.Units.SI.Density rho_mix[N](start = fill(rho_NH3_start, N));
   Modelica.Units.SI.DynamicViscosity mu_mix[N];
@@ -172,6 +173,8 @@ equation
       Xi_outflow_N2[i] = mol_flow_N2[i]*M_N2/(mol_flow_H2[i]*M_H2 + mol_flow_N2[i]*M_N2 + mol_flow_NH3[i]*M_NH3);
 // Energy balance
       der(T[i]) = 0;
+      Q_r[i] = deltaH*W_cat*A_r/N*nu_NH3*r_rxn[i];
+      Q_loss[i] = U_tot*A_s/N*(T[i] - T_a);
     else
 // Compute reaction rate (minimume ensures no negative ammonia fractions)
       r_rxn[i] = max(0, min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), mol_flow_NH3[i - 1]/W_cat/A_r*N));
@@ -187,7 +190,16 @@ equation
       Xi_outflow_N2[i] = mol_flow_N2[i]*M_N2/(mol_flow_H2[i]*M_H2 + mol_flow_N2[i]*M_N2 + mol_flow_NH3[i]*M_NH3);
 // Energy balance
       der(T[i]) = 0;
+      Q_r[i] = deltaH*W_cat*A_r/N*nu_NH3*r_rxn[i];
+      Q_loss[i] = U_tot*A_s/N*(T[i] - T_a);
     end if;
+  end for;
+  
+ // Calculate total heat duty
+  Q_tot = sum(Q_r) + sum(Q_loss);
+// Expose the total heat duty, evenly split, on the segmented heat port
+  for i in 1:N loop
+    heatPorts[i].Q_flow = Q_tot/N;
   end for;
 // Connect fluid interfaces
   m_flow_feed = inlet_nh3_feed.m_flow;
@@ -255,3 +267,4 @@ mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);</pre><h2>4. Outputs</h2><p>D
 <tr><td><code>r</code></td><td>output</td><td>Real</td><td>1</td><td></td></tr>
 <tr><td><code>Pz</code></td><td>output</td><td>Real</td><td>1</td><td>Pressure at position z [Pa]</td></tr>
 <tr><td><code>f</code></td><td>output</td><td>Real</td><td>1</td><td>Friction factor</td></tr></tbody></table></body></html>"));
+end AmmoniaCrackerStatic;

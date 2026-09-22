@@ -1,21 +1,13 @@
 within VirtualFCS.Chemical.AmmoniaCracker;
 
 model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Same kinetics as AmmoniaCracker, but each of the N computational segments is a Modelica.Fluid.Interfaces.PartialLumpedVolume-style control volume so that transient pressure build-up is captured."
+  extends AmmoniaCrackerInterface;
   // Import relevant packages
   import Modelica.Media.IdealGases.SingleGases;
   import Modelica.Fluid.Utilities.regRoot;
   import Modelica.Fluid.Utilities.regSquare;
-  // Define media types
-  replaceable package AmmoniaMedium = Media.CrackedAmmonia;
   package HydrogenMedium = SingleGases.H2;
   package NitrogenMedium = SingleGases.N2;
-  // Define interface
-  Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium) annotation(
-    Placement(transformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b outlet_cracked_gas(redeclare package Medium = AmmoniaMedium) annotation(
-    Placement(transformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPorts[N] "Segmented heat input from an external heat source model" annotation(
-    Placement(transformation(origin = {0, -100}, extent = {{-40, -10}, {40, 10}}), iconTransformation(origin = {0, -100}, extent = {{-40, -10}, {40, 10}})));
   // Define constant parameters
   constant Real M_NH3 = 17 "Molar mass g/mol";
   constant Real M_H2 = 2 "Molar mass g/mol";
@@ -34,7 +26,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   constant Modelica.Units.SI.MolarMass MM_N2 = M_N2/1000;
 
   // Reactor geometry parameters
-  parameter Integer N = 50 "Number of reactor computational segments";
   parameter Modelica.Units.SI.Length H = 12.0 "Reactor height (m)";
   parameter Modelica.Units.SI.Length L = 1.0 "Reactor length (m)";
   parameter Modelica.Units.SI.Length W = 1.2 "Reactor width (m)";
