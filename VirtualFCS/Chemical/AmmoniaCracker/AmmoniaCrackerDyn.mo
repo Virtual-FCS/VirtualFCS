@@ -30,12 +30,14 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Real z_head = 0.166 "Fraction of reactor length needed as header space at the inflow + outflow of the reactor";
   parameter Modelica.Units.SI.Length D_tubes = 10e-2 "Tubes diameter (m)";
   parameter Modelica.Units.SI.Length t_tubes = 5e-3 "Tubes wall thickness(m)";
-  parameter Real W_cat = 0.0045 "Mass loading catalyst in reactor (g/m^2)";
+  parameter Real W_cat = 4 "Mass loading catalyst in reactor (g/m^2)";
  
   // Flow and thermodynamic parameters
   parameter Real T_in_degC = 550 "Inlet temperature (degC)";
   // Reaction energetics
   parameter Modelica.Units.SI.MolarEnergy deltaH_rxn = 46.0e3 "Endothermic enthalpy of the ammonia decomposition reaction per mol of NH3 converted (J/mol)";
+  parameter Modelica.Units.SI.Temperature T_a = 293.15 "Ambient temperature used by external thermal boundary models (K)";
+  parameter Modelica.Units.SI.CoefficientOfHeatTransfer U_tot = 1 "Heat transfer coefficient to atmosphere (W/m2/K)";
  
   // Solid (tube wall + catalyst) thermal inertia seen by the gas
   parameter Modelica.Units.SI.Density rho_wall = 7850 "Tube wall material density (kg/m3)";
@@ -61,6 +63,7 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   final parameter Modelica.Units.SI.Area A_r = N_tubes*2*Modelica.Constants.pi*(D_tubes - t_tubes)/2*z_tube "Catalyst-covered reaction area (m^2)";
   final parameter Modelica.Units.SI.Area A_c = Modelica.Constants.pi*(D_tubes/2)^2 "Cross-sectional area of one tube (m^2)";
   final parameter Modelica.Units.SI.Area A_flow = N_tubes*A_c "Total flow cross-sectional area (m^2)";
+  final parameter Modelica.Units.SI.Area A_s = 2*(H*L + W*L + H*W) "External walls surface area (m^2)";
   final parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes along length of reactor";
   final parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes along width of reactor";
   final parameter Integer N_tubes = N_tubes_x*N_tubes_y "Number of tubes in the reactor";
@@ -98,6 +101,8 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Modelica.Units.SI.MolarFlowRate R_NH3[N] "NH3 converted in each segment (mol/s)";
   Real NH3_conversion[N] "Fraction of ammonia reacted";
   Modelica.Units.SI.HeatFlowRate Q_rxn[N] "Heat consumed by the reaction in each segment (W)";
+  Modelica.Units.SI.HeatFlowRate Q_loss[N] "Heat lost from each segment through the thermal boundary (W)";
+  
   // Face (segment boundary) quantities: face j is upstream of segment j, face N+1 is the outlet
   Modelica.Units.SI.MassFlowRate m_flow_face[N + 1] "Mass flow rate through each segment boundary";
   Modelica.Units.SI.MassFraction w_H2_face[N + 1] "Upwind H2 mass fraction at each face";
@@ -167,9 +172,11 @@ equation
     f[i] = frictionFactor(Re[i]);
     Da[i] = k0*exp(-Ea/R/T[i])*P_tot[i]^(a + b)*m_cat_seg*N/max(abs(m_flow_face[1])/MM_NH3, Modelica.Constants.eps);
 // Reaction rate, limited by the NH3 inventory of the segment so that it cannot become negative
-    r_rxn[i] = min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), n_NH3[i]/(tau_rxn_min*m_cat_seg));
+    r_rxn[i] = max(0, min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), n_NH3[i]/(tau_rxn_min*m_cat_seg)));
     R_NH3[i] = r_rxn[i]*m_cat_seg;
     Q_rxn[i] = deltaH_rxn*R_NH3[i];
+    Q_loss[i] = U_tot*A_s/N*(T[i] - T_a);
+    //Q_loss[i] = -heatPorts[i].Q_flow;
 // Species mass balances of the lumped volume
     der(m_NH3[i]) = m_flow_face[i]*w_NH3_face[i] - m_flow_face[i + 1]*w_NH3_face[i + 1] + nu_NH3*R_NH3[i]*MM_NH3;
     der(m_H2[i]) = m_flow_face[i]*w_H2_face[i] - m_flow_face[i + 1]*w_H2_face[i + 1] + nu_H2*R_NH3[i]*MM_H2;
@@ -178,7 +185,7 @@ equation
     if constantTemperature then
       T[i] = T_in;
     else
-      (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = m_flow_face[i]*cp_mix[i]*((if i == 1 then T_in else T[i - 1]) - T[i]) + heatPorts[i].Q_flow - Q_rxn[i];
+      (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = m_flow_face[i]*cp_mix[i]*((if i == 1 then T_in else T[i - 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
     end if;
     heatPorts[i].T = T[i];
   end for;
