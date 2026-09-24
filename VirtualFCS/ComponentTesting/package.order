@@ -16,6 +16,7 @@ HumidifierTest
 HumidifierTest_2
 HumidifierV2Test
 HumidifierV3Test
+HumidifierV3Test_2
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest
@@ -27,6 +28,7 @@ RecirculationBlowerTest
 ReversiblePotentialTest
 SimplePumpTest
 SubSystemAirTest
+SubSystemAirTest_2
 SubSystemAirWithFuelCellTest
 SubSystemAir_humidifierTest
 SubSystemCoolingTest

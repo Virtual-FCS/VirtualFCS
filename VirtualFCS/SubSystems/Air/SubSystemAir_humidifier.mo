@@ -36,7 +36,7 @@ model SubSystemAir_humidifier "Subsystem regulating pressure and flowrate of air
     Placement(transformation(origin = {13, -89}, extent = {{-7, -7}, {7, 7}})));
   replaceable Fluid.ElectricCompressor compressor(redeclare package Medium = Medium) annotation(
     Placement(transformation(origin = {-1, 47}, extent = {{-29, -29}, {29, 29}}))) constrainedby Fluid.ElectricCompressorInterface;
-  Fluid.HumidifierV3 humidifierV3(redeclare package dry_medium = Medium, redeclare package wet_medium = Medium, UA = 0.4, n = 2, nFibers = 1000, m_flow_nom = 0.1, L_fiber = 0.3, dHousing (displayUnit = "mm")= 0.14, V_wet = 0.001, V_dry = 0.003, dFiber_i(displayUnit = "mm"), dFiber_o(displayUnit = "mm") = 0.0011, dp_nominal = 1500)  annotation(
+  Fluid.HumidifierV3 humidifierV3(redeclare package dry_medium = Medium, redeclare package wet_medium = Medium, UA = 0.4, n = 3, nFibers = 7000, m_flow_nom = 0.1, L_fiber = 0.3, dHousing (displayUnit = "mm")= 0.14, V_wet = 0.001, V_dry = 0.003, dFiber_i(displayUnit = "mm"), dFiber_o(displayUnit = "mm") = 0.0011, dp_nominal = 1e4)  annotation(
     Placement(transformation(origin = {48, -68}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   VirtualFCS.Fluid.RelativeHumiditySensor phi_from_stack annotation(
     Placement(transformation(origin = {71, -49}, extent = {{-7, -7}, {7, 7}})));

@@ -9,7 +9,7 @@ model SubSystemAirTest "Simple model to test the compressor component"
   parameter Integer N_cells = 42;
   replaceable SubSystems.Air.SubSystemAir subSystemAir(redeclare package Medium = Medium, N_cells = N_cells, redeclare VirtualFCS.Fluid.ElectricCompressor compressor(redeclare package Medium = Medium), p_set = 2e5) annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
-  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM, Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}, V = 1E-3, useHeatPort = false, R_flow = 10000) annotation(
+  Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Medium, nu = {-0.5, 0, 1}, MMs = {Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM, Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM}, V = 1E-3, useHeatPort = true, R_flow = 10000) annotation(
     Placement(transformation(origin = {0, 70}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Step currentFC(height = 2000, offset = 10, startTime = 10) annotation(
     Placement(transformation(origin = {-70, 10}, extent = {{-10, -10}, {10, 10}})));
@@ -21,6 +21,10 @@ model SubSystemAirTest "Simple model to test the compressor component"
     Placement(transformation(origin = {-70, 90}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Blocks.Sources.Step reaction_rate_step(height = 0.6, offset = 0, startTime = 10) annotation(
     Placement(transformation(origin = {-70, 50}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow annotation(
+    Placement(transformation(origin = {52, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+  Modelica.Blocks.Sources.Step heatFlowStep(height = -145000, offset = 0, startTime = 10) annotation(
+    Placement(transformation(origin = {100, 32}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
 equation
   connect(subSystemAir.toStack, manifold.port_a) annotation(
     Line(points = {{-12, 24}, {-12, 70}, {-10, 70}}, color = {0, 127, 255}));
@@ -36,6 +40,10 @@ equation
     Line(points = {{-30, -60}, {-10, -60}}, color = {0, 0, 255}));
   connect(reaction_rate_step.y, manifold.r) annotation(
     Line(points = {{-59, 50}, {-24, 50}, {-24, 90}, {0, 90}, {0, 78}}, color = {0, 0, 127}));
+  connect(prescribedHeatFlow.Q_flow, heatFlowStep.y) annotation(
+    Line(points = {{62, 58}, {78, 58}, {78, 32}, {90, 32}}, color = {0, 0, 127}));
+  connect(prescribedHeatFlow.port, manifold.heatPort) annotation(
+    Line(points = {{42, 58}, {0, 58}, {0, 60}}, color = {191, 0, 0}));
   annotation(
     experiment(StopTime = 20, Interval = 0.02, Tolerance = 1e-06, StartTime = 0),
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),

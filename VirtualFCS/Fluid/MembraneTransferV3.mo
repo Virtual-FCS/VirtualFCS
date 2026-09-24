@@ -125,18 +125,18 @@ equation
 
   effectiveness = NTU/(1 + NTU);
 
-  m_transfer = wet_medium.MMs[waterIndex]*effectiveness*(wetDensity*(1 - sum(wetXi))/wet_medium.MMs[waterIndex]-dryDensity*(1 - sum(dryXi))/dry_medium.MMs[waterIndex])*wetVolumeFlow;
+  m_transfer = wet_medium.MMX[waterIndex]*effectiveness*(wetDensity*(1 - sum(wetXi))/wet_medium.MMX[waterIndex]-dryDensity*(1 - sum(dryXi))/dry_medium.MMX[waterIndex])*wetVolumeFlow;
 
   h_transfer =
       if m_transfer >= 0 then
         Media.Shomate.enthalpy(
           wetTemperature,
           Media.Shomate.H2O_G)
-        /wet_medium.MMs[waterIndex]
+        /wet_medium.MMX[waterIndex]
       else
         Media.Shomate.enthalpy(
           dryTemperature,
           Media.Shomate.H2O_G)
-        /dry_medium.MMs[waterIndex];
+        /dry_medium.MMX[waterIndex];
 
 end MembraneTransferV3;

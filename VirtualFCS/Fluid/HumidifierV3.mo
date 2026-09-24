@@ -63,7 +63,7 @@ model HumidifierV3 "Discretised hollow-fiber membrane humidifier with fluid hold
   MembraneManifoldV3 wetVolume[n](
     redeclare each package Medium = wet_medium,
     each nu = zeros(wet_medium.nX),
-    each MMs = wet_medium.MMs,
+    each MMs = wet_medium.MMX,
     each V = V_wet/n,
     each R_flow = dp_nominal/(n*m_flow_nom),
     each useHeatPort = true,
@@ -76,7 +76,7 @@ model HumidifierV3 "Discretised hollow-fiber membrane humidifier with fluid hold
   MembraneManifoldV3 dryVolume[n](
     redeclare each package Medium = dry_medium,
     each nu = zeros(dry_medium.nX),
-    each MMs = dry_medium.MMs,
+    each MMs = dry_medium.MMX,
     each V = V_dry/n,
     each R_flow = dp_nominal/(n*m_flow_nom),
     each useHeatPort = true,
