@@ -8,10 +8,10 @@ model NH3CrackerFCS_2
   // Parameters
   parameter Modelica.Units.SI.Pressure P_H2_tank_start = 20e5 "Initial H2 tank pressure";
   parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 20e5 "Initial H2 tank pressure";
-  parameter Modelica.Units.SI.Temperature T_in_degC = 550 "Inlet temperature (K)";
-  parameter Modelica.Units.SI.Temperature T_in = T_in_degC + 273.15 "Inlet temperature (K)";
+  parameter Modelica.Units.SI.Temperature T_out_target = 550 "Inlet temperature (K)";
+  parameter Modelica.Units.SI.Temperature T_in = 550 + 273.15 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
-  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, T_in_degC = T_in_degC) annotation(
+  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, T_out_target = T_out_target) annotation(
     Placement(transformation(origin = {51, 57}, extent = {{-19, -19}, {19, 19}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogenSink(nPorts = 1, redeclare package Medium = HydrogenMedium, p = P_out, T = T_in) annotation(
     Placement(transformation(origin = {52, -78}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));

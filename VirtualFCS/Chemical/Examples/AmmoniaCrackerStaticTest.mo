@@ -4,11 +4,10 @@ model AmmoniaCrackerStaticTest
   extends Modelica.Icons.Example;
   package AmmoniaMedium = Media.CrackedAmmonia;
   parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
-  parameter Modelica.Units.SI.Temperature T_in_degC = 550 "Inlet temperature (K)";
-  parameter Modelica.Units.SI.Temperature T_in = T_in_degC + 273.15 "Inlet temperature (K)";
-  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(T_in_degC = T_in_degC, redeclare package AmmoniaMedium = AmmoniaMedium) annotation(
+  parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Inlet temperature (K)";
+  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(T_out_target = T_out_target, redeclare package AmmoniaMedium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {9, 5}, extent = {{-23, -23}, {23, 23}})));
-  Modelica.Fluid.Sources.FixedBoundary cracked_gas_sink(redeclare package Medium = AmmoniaMedium, nPorts = 1, use_p = true, p = P_out, use_T = false, T = T_in) annotation(
+  Modelica.Fluid.Sources.FixedBoundary cracked_gas_sink(redeclare package Medium = AmmoniaMedium, nPorts = 1, use_p = true, p = P_out, use_T = false, T = T_out_target) annotation(
     Placement(transformation(origin = {86, 10}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, use_m_flow_in = false, m_flow = 0.3, nPorts = 1, X = {1, 0, 0}) annotation(
     Placement(transformation(origin = {-68, 10}, extent = {{-10, -10}, {10, 10}})));

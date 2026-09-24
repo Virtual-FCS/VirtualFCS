@@ -9,9 +9,17 @@ model NH3CrackerFCS_4
   parameter Modelica.Units.SI.Pressure P_H2_tank_start = 20e5 "Initial H2 tank pressure";
   parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 20e5 "Initial H2 tank pressure";
   parameter Modelica.Units.SI.Pressure P_out_PSA = 20e5 "Initial H2 tank pressure";
-  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium) annotation(
+  parameter Modelica.Units.SI.Temperature T_out_target = 550 +273.15 "Target outlet temperature for ammonia cracker";
+  parameter Modelica.Units.SI.Temperature T_start = T_out_target "Start temperature for ammonia cracker";
+  parameter Modelica.Units.SI.Temperature T_NH3_tank = 20 + 273.15 "Start temperature for ammonia cracker";
+
+  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {NH3, H2, N2}";
+ 
+  parameter Integer N = 10 "Number of computational segments for ammonia cracker";
+  
+  Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, T_out_target = T_out_target, T_start = T_start) annotation(
     Placement(transformation(origin = {59, 57}, extent = {{-19, -19}, {19, 19}})));
-  Modelica.Fluid.Pipes.DynamicPipe NH3Vaporizer(use_HeatTransfer = true, redeclare package Medium = AmmoniaMedium, length = 10, nParallel = 20, diameter = 0.1, m_flow_start = 0.3) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe NH3Vaporizer(use_HeatTransfer = true, redeclare package Medium = AmmoniaMedium, length = 10, nParallel = 20, diameter = 0.1, m_flow_start = 0.3, X_start = X_start) annotation(
     Placement(transformation(origin = {-14, 30}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow heater1(T_ref = 1173.15)  annotation(
     Placement(transformation(origin = {-28, 56}, extent = {{-10, -10}, {10, 10}})));
@@ -19,9 +27,9 @@ model NH3CrackerFCS_4
     Placement(transformation(origin = {62, -36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = P_out_PSA) annotation(
     Placement(transformation(origin = {74, -80}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Constant heat(k = 5e5) annotation(
+  Modelica.Blocks.Sources.Constant heat(k = 5e3) annotation(
     Placement(transformation(origin = {-51, 75}, extent = {{-7, -7}, {7, 7}})));
-  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = {0.8, 0.1, 0.1}, m_flow = 0.3, nPorts = 1, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = X_start, m_flow = 0.3, nPorts = 1, use_m_flow_in = false, T = T_NH3_tank) annotation(
     Placement(transformation(origin = {-74, 32}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sensors.Temperature temp_in_cracker(redeclare package Medium = AmmoniaMedium)  annotation(
     Placement(transformation(origin = {24, 84}, extent = {{-10, -10}, {10, 10}})));
@@ -66,4 +74,6 @@ equation
     Line(points = {{-18, -28}, {-20, -28}, {-20, -44}, {-14, -44}, {-14, -50}}, color = {0, 0, 255}));
   connect(resistor.n, fuelCellSystem.pin_n) annotation(
     Line(points = {{2, -28}, {0, -28}, {0, -44}, {-4, -44}, {-4, -50}}, color = {0, 0, 255}));
+annotation(
+    experiment(StopTime = 1, Interval = 0.01, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
 end NH3CrackerFCS_4;
