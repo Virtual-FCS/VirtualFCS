@@ -1,6 +1,6 @@
 within VirtualFCS.Fluid;
 
-model MembraneTransferV3 "Calculates membrane mass and enthalpy transfer for one cell pair"
+model MembraneTransfer "Calculates membrane mass and enthalpy transfer for one cell pair"
 
   replaceable package wet_medium =
       Modelica.Media.Interfaces.PartialMedium
@@ -139,4 +139,4 @@ equation
           Media.Shomate.H2O_G)
         /dry_medium.MMX[waterIndex];
 
-end MembraneTransferV3;
+end MembraneTransfer;

@@ -1,6 +1,6 @@
 within VirtualFCS.Fluid;
 
-model MembraneManifoldV3 "Manifold with a selective membrane source"
+model MembraneManifold "Manifold with a selective membrane source"
   extends VirtualFCS.Electrochemical.Hydrogen.Manifold(
     mbXi_flow = semiLinear(port_a.m_flow, inStream(port_a.Xi_outflow), port_a.Xi_outflow) + semiLinear(port_b.m_flow, inStream(port_b.Xi_outflow), port_b.Xi_outflow) + productions[1:Medium.nXi] + membrane_m_flow*membrane_Xi, 
     mb_flow = port_a.m_flow + port_b.m_flow + sum(productions) + membrane_m_flow,
@@ -24,4 +24,4 @@ it. The original manifold model is unchanged.</p>
 <p>The inherited manifold determines port outflow states and provides the
 existing hydraulic resistance, fluid holdup, and conditional heat port.</p>
 </body></html>"));
-end MembraneManifoldV3;
+end MembraneManifold;
