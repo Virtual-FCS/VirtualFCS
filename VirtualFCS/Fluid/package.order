@@ -10,6 +10,9 @@ ElectricCompressor
 HeatExchangerInterface
 HeatExchanger
 HumidifierInterface
+Humidifier
+MembraneManifold
+MembraneTransfer
 MixingVolume
 NonHumidifier
 PressureRegulator
@@ -19,6 +22,3 @@ RecirculationBlower
 RelativeHumiditySensor
 Separator
 SimplePump
-Humidifier
-MembraneManifold
-MembraneTransfer

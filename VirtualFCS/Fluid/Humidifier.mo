@@ -11,7 +11,7 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
     "Wet gas in the fiber bores" annotation(choicesAllMatching = true);
   import SI = Modelica.Units.SI;
 
-  parameter Integer n(min = 1) = 10 "Number of axial volumes";
+  parameter Integer n(min = 1) = 5 "Number of axial volumes";
   parameter SI.Volume V_wet = 1E-4 "Wet-side gas volume" annotation (
     Dialog(group = "Physical parameters")); //Consider calculating this from the already input physical parameters
   parameter SI.Volume V_dry = V_wet "Dry-side gas volume" annotation (

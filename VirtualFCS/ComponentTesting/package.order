@@ -12,6 +12,8 @@ FuelCellTest
 HeatExchangerTest
 HeatSinkTest
 HeatSinkTest2
+HumidifierTest
+HumidifierTest_2
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest
@@ -31,5 +33,4 @@ SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 SubSystemCoolingWithFuelCellTest
 ECMS_Experiment_Testing
-HumidifierTest
-HumidifierTest_2
+
