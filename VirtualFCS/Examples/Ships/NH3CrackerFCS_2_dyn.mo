@@ -44,5 +44,5 @@ equation
   connect(electricHeatingDistr.heatPorts, ammoniaCracker.heatPorts) annotation(
     Line(points = {{52, 26}, {52, 38}}, color = {191, 0, 0}, thickness = 0.5));
 annotation(
-    experiment(StopTime = 10, Interval = 0.01, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
+    experiment(StopTime = 60, Interval = 0.01, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"));
 end NH3CrackerFCS_2_dyn;

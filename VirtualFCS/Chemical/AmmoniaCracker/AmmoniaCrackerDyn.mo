@@ -16,11 +16,14 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   constant Real a = 0.37 "Kinetic parameter Co-Ba/CeO2 catalyst (Realpe 2023)";
   constant Real b = -1.04 "Kinetic parameter Co-Ba/CeO2 catalyst (Realpe 2023)";
   constant Real R = 8.314 "Gas constant (J/mol/K)";
- 
+
   // SI molar masses (kg/mol) used consistently in the balances
   constant Modelica.Units.SI.MolarMass MM_NH3 = M_NH3/1000;
   constant Modelica.Units.SI.MolarMass MM_H2 = M_H2/1000;
   constant Modelica.Units.SI.MolarMass MM_N2 = M_N2/1000;
+  constant Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
+  constant Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
+  constant Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
 
   // Reactor geometry parameters
   parameter Modelica.Units.SI.Length H = 12.0 "Reactor height (m)";
@@ -50,10 +53,10 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
     Evaluate = true,
     choices(checkBox = true));
   parameter Modelica.Units.SI.Pressure p_start = 30e5 "Initial pressure in every segment";
-  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.001, 0.001, 0.998} "Initial mass fractions {H2, N2, NH3} in every segment";
+  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {H2, N2, NH3} in every segment";
  
   // Numerical regularization
-  parameter Modelica.Units.SI.Pressure dp_small = 1 "Regularization range of the face pressure drop (Pa)";
+  parameter Modelica.Units.SI.Pressure dp_small = 1e3 "Regularization range of the face pressure drop (Pa)";
   parameter Modelica.Units.SI.Time tau_rxn_min = 0.05 "Minimum time in which the NH3 inventory of a segment may be consumed (limits the reaction rate)";
   
   // Calculated parameters
@@ -73,12 +76,12 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   final parameter Modelica.Units.SI.HeatCapacity C_solid_seg = N_tubes*Modelica.Constants.pi*(D_tubes - t_tubes)*t_tubes*dz*rho_wall*cp_wall "Tube wall heat capacity per segment (J/K)";
   final parameter Real deltaG_0 = 95517 - 193.67*T_out_target - 0.035293*T_out_target^2 + (9.22*10e-6*T_out_target^3);
   final parameter Real k_eq = exp(-deltaG_0/R/T_out_target) "Equilibrium constant for the ammonia decomposition reaction";
-  final parameter Modelica.Units.SI.Density rho_start = p_start/(R*T_start*(X_start[1]/MM_H2 + X_start[2]/MM_N2 + X_start[3]/MM_NH3)) "Initial mixture density (ideal gas)";
+  final parameter Modelica.Units.SI.Density rho_start = p_start/(R*T_start*(X_start[idx_H2]/MM_H2 + X_start[idx_N2]/MM_N2 + X_start[idx_NH3]/MM_NH3)) "Initial mixture density (ideal gas)";
  
   // Segment states (lumped volume inventories, PartialLumpedVolume style)
-  Modelica.Units.SI.Mass m_H2[N](each start = X_start[1]*rho_start*V_seg, each fixed = true) "H2 inventory of each segment";
-  Modelica.Units.SI.Mass m_N2[N](each start = X_start[2]*rho_start*V_seg, each fixed = true) "N2 inventory of each segment";
-  Modelica.Units.SI.Mass m_NH3[N](each start = X_start[3]*rho_start*V_seg, each fixed = true) "NH3 inventory of each segment";
+  Modelica.Units.SI.Mass m_H2[N](each start = X_start[idx_H2]*rho_start*V_seg, each fixed = true) "H2 inventory of each segment";
+  Modelica.Units.SI.Mass m_N2[N](each start = X_start[idx_N2]*rho_start*V_seg, each fixed = true) "N2 inventory of each segment";
+  Modelica.Units.SI.Mass m_NH3[N](each start = X_start[idx_NH3]*rho_start*V_seg, each fixed = true) "NH3 inventory of each segment";
   Modelica.Units.SI.Temperature T[N](each start = T_start, each fixed = not constantTemperature) "Gas temperature of each segment (K)";
  
   // Segment quantities
@@ -197,8 +200,8 @@ equation
     heatPorts[i].T = T[i];
   end for;
 // Upwind (donor cell) face compositions, assuming forward flow through the reactor
-  w_NH3_face[1] = inStream(inlet_nh3_feed.Xi_outflow[1]);
-  w_H2_face[1] = inStream(inlet_nh3_feed.Xi_outflow[2]);
+  w_NH3_face[1] = inStream(inlet_nh3_feed.Xi_outflow[idx_NH3]);
+  w_H2_face[1] = inStream(inlet_nh3_feed.Xi_outflow[idx_H2]);
   w_N2_face[1] = 1 - w_NH3_face[1] - w_H2_face[1];
   h_inlet = inStream(inlet_nh3_feed.h_outflow);
   T_in = AmmoniaMedium.temperature(AmmoniaMedium.setState_phX(inlet_nh3_feed.p, h_inlet, inStream(inlet_nh3_feed.Xi_outflow)));
@@ -226,7 +229,7 @@ equation
   outlet_cracked_gas.m_flow = -m_flow_face[N + 1];
   outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[N], T[N], {w_NH3[N], w_H2[N]}));
   outlet_cracked_gas.Xi_outflow = {w_NH3[N], w_H2[N]};
-  m_flow_balance =  inlet_nh3_feed.m_flow + outlet_cracked_gas.m_flow + der(sum(m_tot));
+  m_flow_balance = inlet_nh3_feed.m_flow + outlet_cracked_gas.m_flow - der(sum(m_tot));
   
 
   annotation(

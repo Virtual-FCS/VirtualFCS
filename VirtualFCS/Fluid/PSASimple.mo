@@ -123,16 +123,20 @@ equation
 
   //------------------------------------------------------------------
   // Tail composition
+  //
+  // Written as X_i/(1 - sep_eff*X_H2) instead of (feed.m_flow*X_i)/m_flow_tail:
+  // the feed.m_flow factor cancels analytically (m_flow_tail = feed.m_flow*(1 - sep_eff*X_H2)),
+  // so this is exact and avoids a 0/0 division when the feed flow is (momentarily) zero.
   //------------------------------------------------------------------
 
   X_H2_tail =
-    (1 - sep_eff) * feed.m_flow * X_H2 / m_flow_tail;
+    (1 - sep_eff) * X_H2 / (1 - sep_eff*X_H2);
 
   X_N2_tail =
-    feed.m_flow * X_N2 / m_flow_tail;
+    X_N2 / (1 - sep_eff*X_H2);
 
   X_NH3_tail =
-    feed.m_flow * X_NH3 / m_flow_tail;
+    X_NH3 / (1 - sep_eff*X_H2);
 
 
   //------------------------------------------------------------------

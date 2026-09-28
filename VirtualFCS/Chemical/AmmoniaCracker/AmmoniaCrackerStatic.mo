@@ -16,6 +16,10 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   constant Real deltaH = -50000 "Reaction enthalpy (J/mol)";
   constant Modelica.Units.SI.Density rho_NH3_start = 7.04 "Parameter to initialize density-related variables";
   constant Real mol_frac_NH3_in = 1 "Parameter to initialize mol fraction arrays. Assumes pure ammonia at inlet";
+  constant Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
+  constant Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
+  constant Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
+  
   // Reactor geometry parameters
   parameter Modelica.Units.SI.Length H = 4.0 "Reactor height (m)";
   parameter Modelica.Units.SI.Length L = 1.0 "Reactor length (m)";
@@ -30,10 +34,8 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   parameter Real U_tot = 1 "Heat transfer coefficient to atmosphere (W/m^2/K) ";
   parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Outlet temperature target(K)";
   parameter Modelica.Units.SI.Temperature T_start = 550 + 273.15 "Start temperature for whole reactor length";
+  
 
-  parameter Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
-  parameter Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
-  parameter Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
   //parameter Real f = 0.01 "Friction factor (Should calculate it as function as Re)";
   //parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
   // Calculated parameters
