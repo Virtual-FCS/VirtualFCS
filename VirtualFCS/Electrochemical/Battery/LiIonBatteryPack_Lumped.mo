@@ -36,8 +36,6 @@ model LiIonBatteryPack_Lumped "A Li-ion battery pack model comprising a single l
     Placement(visible = true, transformation(origin = {-146, 52}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort annotation(
     Placement(visible = true, transformation(origin = {-70, -22}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Basic.Ground ground annotation(
-    Placement(visible = true, transformation(origin = {-146, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Resistor R1(R = R1_0, useHeatPort = false) annotation(
     Placement(visible = true, transformation(origin = {-50, 52}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Capacitor C2(C = C2_0, v(fixed = true)) annotation(
@@ -106,8 +104,6 @@ equation
     Line(points = {{-70, 0}, {-70, -22}}, color = {191, 0, 0}));
   connect(heatSource.port, heatCapacitor.port) annotation(
     Line(points = {{-110, 0}, {-70, 0}}, color = {191, 0, 0}));
-  connect(pin_n, ground.p) annotation(
-    Line(points = {{-146, 52}, {-146, 40}}, color = {0, 0, 255}));
   connect(convection.Gc, setConvectiveCoefficient.y) annotation(
     Line(points = {{-40, -50}, {-26, -50}, {-26, -50}, {-26.5, -50}}, color = {0, 0, 127}));
   connect(heatPort, convection.solid) annotation(
