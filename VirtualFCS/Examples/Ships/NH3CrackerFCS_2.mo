@@ -8,9 +8,11 @@ model NH3CrackerFCS_2
   // Parameters
   parameter Modelica.Units.SI.Pressure P_H2_tank_start = 20e5 "Initial H2 tank pressure";
   parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 20e5 "Initial H2 tank pressure";
-  parameter Modelica.Units.SI.Temperature T_out_target = 550 "Inlet temperature (K)";
+  parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Temperature T_in = 550 + 273.15 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
+  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.9, 0.05, 0.05} "Initial mass fractions {NH3, H2, N2}";
+
   Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, T_out_target = T_out_target) annotation(
     Placement(transformation(origin = {51, 57}, extent = {{-19, -19}, {19, 19}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogenSink(nPorts = 1, redeclare package Medium = HydrogenMedium, p = P_out, T = T_in) annotation(
@@ -19,7 +21,7 @@ model NH3CrackerFCS_2
     Placement(transformation(origin = {70, -36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = P_out, T = T_in) annotation(
     Placement(transformation(origin = {82, -80}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = {0.8, 0.1, 0.1}, m_flow = 0.3, nPorts = 2, use_m_flow_in = false) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = X_start, m_flow = 0.3, nPorts = 2, use_m_flow_in = false) annotation(
     Placement(transformation(origin = {-60, 60}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Thermal.HeatTransfer.Components.ThermalCollector thermalCollector(m = ammoniaCracker.N) annotation(
     Placement(transformation(origin = {51, 18.6087}, extent = {{-17, -7.3913}, {17, 7.3913}})));
@@ -29,7 +31,7 @@ model NH3CrackerFCS_2
 
 initial algorithm
 
-print("p = " + String(ammoniaCracker.outlet_cracked_gas.p));
+print("p = " + String(ammoniaCracker.port_b.p));
 
 
 
@@ -38,9 +40,9 @@ equation
     Line(points = {{60, -36}, {52, -36}, {52, -68}}, color = {0, 127, 255}));
   connect(psa.tail, tailSink.ports[1]) annotation(
     Line(points = {{80, -38}, {82, -38}, {82, -70}}, color = {0, 127, 255}));
-  connect(ammonia_source.ports[1], ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(ammonia_source.ports[1], ammoniaCracker.port_a) annotation(
     Line(points = {{-50, 60}, {-50, 61}, {31, 61}}, color = {0, 127, 255}));
-  connect(ammoniaCracker.outlet_cracked_gas, psa.feed) annotation(
+  connect(ammoniaCracker.port_b, psa.feed) annotation(
     Line(points = {{70, 62}, {94, 62}, {94, -34}, {80, -34}}, color = {0, 127, 255}));
   connect(thermalCollector.port_b, ambient.port) annotation(
     Line(points = {{51, 11.2174}, {51, 3.7174}, {55, 3.7174}, {55, -10.7826}}, color = {191, 0, 0}));

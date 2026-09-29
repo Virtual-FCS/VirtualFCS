@@ -8,11 +8,11 @@ model NH3CrackerFCS_3
   // Parameters
   parameter Modelica.Units.SI.Pressure P_H2_tank_start = 20e5 "Initial H2 tank pressure";
   parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 20e5 "Initial H2 tank pressure";
-  parameter Modelica.Units.SI.Pressure P_out_PSA = 20e5 "Initial H2 tank pressure";
-  parameter Modelica.Units.SI.Temperature T_out_target = 550 +273.15 "Target outlet temperature for ammonia cracker";
+  parameter Modelica.Units.SI.Pressure P_out_PSA = 30e5 "Initial H2 tank pressure";
+  parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Target outlet temperature for ammonia cracker";
   parameter Modelica.Units.SI.Temperature T_start = T_out_target "Start temperature for ammonia cracker";
   parameter Modelica.Units.SI.Temperature T_NH3_tank = 20 + 273.15 "Start temperature for ammonia cracker";
-  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {NH3, H2, N2}";
+  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.9, 0.05, 0.05} "Initial mass fractions {NH3, H2, N2}";
 
   Chemical.AmmoniaCracker.AmmoniaCrackerStatic ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, T_out_target = T_out_target, T_start = T_start) annotation(
     Placement(transformation(origin = {59, 57}, extent = {{-19, -19}, {19, 19}})));
@@ -41,9 +41,9 @@ model NH3CrackerFCS_3
 equation
   connect(heater1.port, NH3Vaporizer.heatPorts[1]) annotation(
     Line(points = {{-4, 66}, {-4, 38}, {-13, 38}, {-13, 22}, {-14, 22}}, color = {191, 0, 0}));
-  connect(NH3Vaporizer.port_b, ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(NH3Vaporizer.port_b, ammoniaCracker.port_a) annotation(
     Line(points = {{-4, 18}, {20, 18}, {20, 62}, {40, 62}}, color = {0, 127, 255}));
-  connect(ammoniaCracker.outlet_cracked_gas, psa.feed) annotation(
+  connect(ammoniaCracker.port_b, psa.feed) annotation(
     Line(points = {{78, 62}, {86, 62}, {86, -34}, {72, -34}}, color = {0, 127, 255}));
   connect(psa.product, hydrogenSink.ports[1]) annotation(
     Line(points = {{52, -36}, {44, -36}, {44, -68}}, color = {0, 127, 255}));
@@ -53,7 +53,7 @@ equation
     Line(points = {{-29.3, 85}, {-23.3, 85}, {-23.3, 65}}, color = {0, 0, 127}));
   connect(ammonia_source.ports[1], NH3Vaporizer.port_a) annotation(
     Line(points = {{-64, 20}, {-24, 20}, {-24, 18}}, color = {0, 127, 255}));
-  connect(temp_in_cracker.port, ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(temp_in_cracker.port, ammoniaCracker.port_a) annotation(
     Line(points = {{24, 74}, {24, 62}, {40, 62}}, color = {0, 127, 255}));
   connect(thermalCollector.port_b, ambient.port) annotation(
     Line(points = {{59, 9.21739}, {59, 1.71739}, {63, 1.71739}, {63, -12.7826}}, color = {191, 0, 0}));

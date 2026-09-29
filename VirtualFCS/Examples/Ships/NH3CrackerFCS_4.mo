@@ -48,9 +48,9 @@ model NH3CrackerFCS_4
 equation
   connect(heater1.port, NH3Vaporizer.heatPorts[1]) annotation(
     Line(points = {{-18, 56}, {-14, 56}, {-14, 34}}, color = {191, 0, 0}));
-  connect(NH3Vaporizer.port_b, ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(NH3Vaporizer.port_b, ammoniaCracker.port_a) annotation(
     Line(points = {{-4, 30}, {20, 30}, {20, 62}, {40, 62}}, color = {0, 127, 255}));
-  connect(ammoniaCracker.outlet_cracked_gas, psa.feed) annotation(
+  connect(ammoniaCracker.port_b, psa.feed) annotation(
     Line(points = {{78, 62}, {86, 62}, {86, -34}, {72, -34}}, color = {0, 127, 255}));
   connect(psa.tail, tailSink.ports[1]) annotation(
     Line(points = {{72, -38}, {74, -38}, {74, -70}}, color = {0, 127, 255}));
@@ -58,7 +58,7 @@ equation
     Line(points = {{-44, 76}, {-38, 76}, {-38, 56}}, color = {0, 0, 127}));
   connect(ammonia_source.ports[1], NH3Vaporizer.port_a) annotation(
     Line(points = {{-64, 32}, {-24, 32}, {-24, 30}}, color = {0, 127, 255}));
-  connect(temp_in_cracker.port, ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(temp_in_cracker.port, ammoniaCracker.port_a) annotation(
     Line(points = {{24, 74}, {24, 62}, {40, 62}}, color = {0, 127, 255}));
   connect(thermalCollector.port_b, ambient.port) annotation(
     Line(points = {{59, 9.21739}, {59, 1.71739}, {63, 1.71739}, {63, -12.7826}}, color = {191, 0, 0}));

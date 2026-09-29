@@ -6,9 +6,9 @@ partial model AmmoniaCrackerInterface "Common interface for ammonia cracker mode
   // Reactor discretization
   parameter Integer N = 50 "Number of reactor computational segments";
   // Define interface
-  Modelica.Fluid.Interfaces.FluidPort_a inlet_nh3_feed(redeclare package Medium = AmmoniaMedium) annotation(
+  Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-104, 22}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b outlet_cracked_gas(redeclare package Medium = AmmoniaMedium) annotation(
+  Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {104, 22}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPorts[N] "Segmented heat input ports" annotation(
     Placement(transformation(origin = {0, -100}, extent = {{-40, -10}, {40, 10}}), iconTransformation(origin = {0, -100}, extent = {{-40, -10}, {40, 10}})));

@@ -12,6 +12,8 @@ model NH3CrackerFCS_2_dyn
   parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Temperature T_in = 550 + 273.15 "Inlet temperature (K)";
   parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
+  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.9, 0.05, 0.05} "Initial mass fractions {NH3, H2, N2}";
+
   Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, T_out_target = T_out_target, N=N, constantTemperature = false) annotation(
     Placement(transformation(origin = {51, 57}, extent = {{-19, -19}, {19, 19}})));
   Modelica.Fluid.Sources.FixedBoundary hydrogenSink(nPorts = 1, redeclare package Medium = HydrogenMedium, p = P_out, T = T_in) annotation(
@@ -27,17 +29,17 @@ model NH3CrackerFCS_2_dyn
   Modelica.Fluid.Sensors.Temperature temp_out_cracker(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {80, 18}, extent = {{10, -10}, {-10, 10}})));
 initial algorithm
-  print("p = " + String(ammoniaCracker.outlet_cracked_gas.p));
+  print("p = " + String(ammoniaCracker.port_b.p));
 equation
   connect(psa.product, hydrogenSink.ports[1]) annotation(
     Line(points = {{60, -36}, {52, -36}, {52, -68}}, color = {0, 127, 255}));
   connect(psa.tail, tailSink.ports[1]) annotation(
     Line(points = {{80, -38}, {82, -38}, {82, -70}}, color = {0, 127, 255}));
-  connect(ammonia_source.ports[1], ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(ammonia_source.ports[1], ammoniaCracker.port_a) annotation(
     Line(points = {{-50, 60}, {-50, 61}, {31, 61}}, color = {0, 127, 255}));
-  connect(ammoniaCracker.outlet_cracked_gas, psa.feed) annotation(
+  connect(ammoniaCracker.port_b, psa.feed) annotation(
     Line(points = {{70, 62}, {94, 62}, {94, -34}, {80, -34}}, color = {0, 127, 255}));
-  connect(temp_out_cracker.port, ammoniaCracker.outlet_cracked_gas) annotation(
+  connect(temp_out_cracker.port, ammoniaCracker.port_b) annotation(
     Line(points = {{80, 8}, {80, 4}, {94, 4}, {94, 62}, {70, 62}}, color = {0, 127, 255}));
   connect(temp_out_cracker.T, electricHeatingDistr.T_meas) annotation(
     Line(points = {{74, 18}, {69, 18}, {69, 20}, {62, 20}}, color = {0, 0, 127}));

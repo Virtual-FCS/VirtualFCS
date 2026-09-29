@@ -16,10 +16,6 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   constant Real deltaH = -50000 "Reaction enthalpy (J/mol)";
   constant Modelica.Units.SI.Density rho_NH3_start = 7.04 "Parameter to initialize density-related variables";
   constant Real mol_frac_NH3_in = 1 "Parameter to initialize mol fraction arrays. Assumes pure ammonia at inlet";
-  constant Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
-  constant Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
-  constant Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
-  
   // Reactor geometry parameters
   parameter Modelica.Units.SI.Length H = 4.0 "Reactor height (m)";
   parameter Modelica.Units.SI.Length L = 1.0 "Reactor length (m)";
@@ -34,8 +30,10 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   parameter Real U_tot = 1 "Heat transfer coefficient to atmosphere (W/m^2/K) ";
   parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Outlet temperature target(K)";
   parameter Modelica.Units.SI.Temperature T_start = 550 + 273.15 "Start temperature for whole reactor length";
-  
 
+  parameter Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
+  parameter Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
+  parameter Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
   //parameter Real f = 0.01 "Friction factor (Should calculate it as function as Re)";
   //parameter Modelica.Units.SI.Pressure P_out = 30e5 "Outlet pressure";
   // Calculated parameters
@@ -201,28 +199,28 @@ equation
     heatPorts[i].Q_flow = Q_tot/N;
   end for;
 // Connect fluid interfaces
-  m_flow_feed = inlet_nh3_feed.m_flow;
-  Xi_inlet_stream = inStream(inlet_nh3_feed.Xi_outflow);
+  m_flow_feed = port_a.m_flow;
+  Xi_inlet_stream = inStream(port_a.Xi_outflow);
   mf_NH3 = m_flow_feed*Xi_inlet_stream[1];
   mol_flow_NH3_in = mf_NH3/M_NH3;
   mol_flow_H2_in = m_flow_feed*Xi_inlet_stream[2]/M_H2;
   mol_flow_N2_in = m_flow_feed*(1 - sum(Xi_inlet_stream))/M_N2;
-  inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], Xi_inlet_stream));
-  inlet_nh3_feed.p = P_tot[1];
-  inlet_nh3_feed.Xi_outflow = {Xi_outflow_NH3[1], Xi_outflow_H2[1]};
-  outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_out, T_out_target, {Xi_outflow_NH3[N], Xi_outflow_H2[N]}));
-  outlet_cracked_gas.p = P_out;
-  outlet_cracked_gas.m_flow = -m_flow_feed;
-  outlet_cracked_gas.Xi_outflow = {Xi_outflow_NH3[N], Xi_outflow_H2[N]};
+  port_a.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], Xi_inlet_stream));
+  port_a.p = P_tot[1];
+  port_a.Xi_outflow = {Xi_outflow_NH3[1], Xi_outflow_H2[1]};
+  port_b.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_out, T_out_target, {Xi_outflow_NH3[N], Xi_outflow_H2[N]}));
+  port_b.p = P_out;
+  port_b.m_flow = -m_flow_feed;
+  port_b.Xi_outflow = {Xi_outflow_NH3[N], Xi_outflow_H2[N]};
   
   //Inlet/outlet monitoring
-   inlet_nh3_feed.p          = medium_inlet.p;
-   inlet_nh3_feed.h_outflow  = medium_inlet.h;
-   inlet_nh3_feed.Xi_outflow = medium_inlet.Xi;
+   port_a.p          = medium_inlet.p;
+   port_a.h_outflow  = medium_inlet.h;
+   port_a.Xi_outflow = medium_inlet.Xi;
    
-   outlet_cracked_gas.p          = medium_outlet.p;
-   outlet_cracked_gas.h_outflow  = medium_outlet.h;
-   outlet_cracked_gas.Xi_outflow = medium_outlet.Xi;
+   port_b.p          = medium_outlet.p;
+   port_b.h_outflow  = medium_outlet.h;
+   port_b.Xi_outflow = medium_outlet.Xi;
    
   annotation(
     Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>N</code></td><td>Integer</td><td>1</td><td>50</td><td>Number of reactor computational segments</td></tr>
@@ -245,7 +243,7 @@ equation
 <tr><td><code>N_tubes</code></td><td>Integer</td><td>1</td><td>N_tubes_x*N_tubes_y</td><td>Number of tubes in the reactor</td></tr>
 <tr><td><code>z[N]</code></td><td>SI.Length</td><td>m</td><td>{z_tube/N*i - z_tube/N/2 for i in 1:N}</td><td>Vector holding the distances from the center of the segments to the inlet</td></tr>
 <tr><td><code>deltaG_0</code></td><td>Real</td><td>1</td><td>95517 - 193.67*T_in - 0.035293*T_in^2 + (9.22*10e-6*T_in^3)</td><td></td></tr>
-<tr><td><code>k_eq</code></td><td>Real</td><td>1</td><td>exp(-deltaG_0/R/T_in)</td><td>Equilibrium constant for the ammonia decomposition reaction</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>inlet_nh3_feed</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
+<tr><td><code>k_eq</code></td><td>Real</td><td>1</td><td>exp(-deltaG_0/R/T_in)</td><td>Equilibrium constant for the ammonia decomposition reaction</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>port_a</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
 <tr><td><code>a</code></td><td>input</td><td>Real</td><td>1</td><td></td></tr>
 <tr><td><code>P_NH3</code></td><td>input</td><td>Real</td><td>1</td><td></td></tr>
 <tr><td><code>u</code></td><td>input</td><td>Real</td><td>1</td><td>Velocity [m/s]</td></tr>
@@ -262,7 +260,7 @@ state_N2 = NitrogenMedium.setState_pT(P_out, T_in);
 rho_NH3 = AmmoniaMedium.density(state_NH3);
 rho_H2 = HydrogenMedium.density(state_H2);
 rho_N2 = NitrogenMedium.density(state_N2);
-mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>outlet_cracked_gas</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
+mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>port_b</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
 <tr><td><code>r</code></td><td>output</td><td>Real</td><td>1</td><td></td></tr>
 <tr><td><code>Pz</code></td><td>output</td><td>Real</td><td>1</td><td>Pressure at position z [Pa]</td></tr>
 <tr><td><code>f</code></td><td>output</td><td>Real</td><td>1</td><td>Friction factor</td></tr></tbody></table></body></html>"));

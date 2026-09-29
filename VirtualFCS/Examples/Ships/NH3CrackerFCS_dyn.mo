@@ -33,7 +33,7 @@ model NH3CrackerFCS_dyn
     Placement(transformation(origin = {24, 84}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sensors.Temperature temp_out_cracker(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {76, -8}, extent = {{10, -10}, {-10, 10}})));
-  Chemical.AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr annotation(
+  Chemical.AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr(N = N)  annotation(
     Placement(transformation(origin = {48, -10}, extent = {{-10, -10}, {10, 10}}, rotation = -180)));
   Modelica.Fluid.Vessels.ClosedVolume ammoniaTank(redeclare package Medium = AmmoniaMedium, T_start = 293.15, V = 100, nPorts = 1, p_start = P_NH3_tank_start, portsData(each diameter = 0.1)) annotation(
     Placement(transformation(origin = {-88, 62}, extent = {{-10, -10}, {10, 10}})));
@@ -46,9 +46,9 @@ model NH3CrackerFCS_dyn
 equation
   connect(heater1.port, NH3Vaporizer.heatPorts[1]) annotation(
     Line(points = {{-2, 86}, {-2, 69}, {0, 69}, {0, 58}, {-9, 58}, {-9, 38}, {-8.5, 38}, {-8.5, 36}, {-8, 36}}, color = {191, 0, 0}));
-  connect(NH3Vaporizer.port_b, ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(NH3Vaporizer.port_b, ammoniaCracker.port_a) annotation(
     Line(points = {{2, 32}, {20, 32}, {20, 62}, {40, 62}}, color = {0, 127, 255}));
-  connect(ammoniaCracker.outlet_cracked_gas, psa.feed) annotation(
+  connect(ammoniaCracker.port_b, psa.feed) annotation(
     Line(points = {{78, 62}, {86, 62}, {86, -34}, {72, -34}}, color = {0, 127, 255}));
   connect(psa.product, hydrogenSink.ports[1]) annotation(
     Line(points = {{52, -36}, {44, -36}, {44, -68}}, color = {0, 127, 255}));
@@ -56,9 +56,9 @@ equation
     Line(points = {{72, -38}, {74, -38}, {74, -70}}, color = {0, 127, 255}));
   connect(heat.y, heater1.Q_flow) annotation(
     Line(points = {{-39, 87}, {-29.3, 87}, {-29.3, 85}, {-21.6, 85}}, color = {0, 0, 127}));
-  connect(temp_in_cracker.port, ammoniaCracker.inlet_nh3_feed) annotation(
+  connect(temp_in_cracker.port, ammoniaCracker.port_a) annotation(
     Line(points = {{24, 74}, {24, 62}, {40, 62}}, color = {0, 127, 255}));
-  connect(temp_out_cracker.port, ammoniaCracker.outlet_cracked_gas) annotation(
+  connect(temp_out_cracker.port, ammoniaCracker.port_b) annotation(
     Line(points = {{76, -18}, {86, -18}, {86, 62}, {78, 62}}, color = {0, 127, 255}));
   connect(temp_out_cracker.T, electricHeatingDistr.T_meas) annotation(
     Line(points = {{69, -8}, {62, -8}, {62, -7}, {57, -7}}, color = {0, 0, 127}));

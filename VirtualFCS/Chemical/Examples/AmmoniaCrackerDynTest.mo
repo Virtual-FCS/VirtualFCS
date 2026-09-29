@@ -19,11 +19,11 @@ model AmmoniaCrackerDynTest
   AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr(N = N, T_out_target = T_out_target)  annotation(
     Placement(transformation(origin = {8, -42}, extent = {{-10, -10}, {10, 10}}, rotation = -180)));
 equation
-  connect(ammoniaCracker.outlet_cracked_gas, cracked_gas_sink.ports[1]) annotation(
+  connect(ammoniaCracker.port_b, cracked_gas_sink.ports[1]) annotation(
     Line(points = {{32, 10}, {76, 10}}, color = {0, 127, 255}));
-  connect(ammoniaCracker.inlet_nh3_feed, ammonia_source.ports[1]) annotation(
+  connect(ammoniaCracker.port_a, ammonia_source.ports[1]) annotation(
     Line(points = {{-14, 10}, {-58, 10}}, color = {0, 127, 255}));
-  connect(T_out_cracker.port, ammoniaCracker.outlet_cracked_gas) annotation(
+  connect(T_out_cracker.port, ammoniaCracker.port_b) annotation(
     Line(points = {{46, -50}, {46, -64}, {58, -64}, {58, 10}, {32, 10}}, color = {0, 127, 255}));
   connect(T_out_cracker.T, electricHeatingDistr.T_meas) annotation(
     Line(points = {{39, -40}, {29, -40}, {29, -39}, {17, -39}}, color = {0, 0, 127}));

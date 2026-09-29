@@ -200,11 +200,11 @@ equation
     heatPorts[i].T = T[i];
   end for;
 // Upwind (donor cell) face compositions, assuming forward flow through the reactor
-  w_NH3_face[1] = inStream(inlet_nh3_feed.Xi_outflow[idx_NH3]);
-  w_H2_face[1] = inStream(inlet_nh3_feed.Xi_outflow[idx_H2]);
+  w_NH3_face[1] = inStream(port_a.Xi_outflow[idx_NH3]);
+  w_H2_face[1] = inStream(port_a.Xi_outflow[idx_H2]);
   w_N2_face[1] = 1 - w_NH3_face[1] - w_H2_face[1];
-  h_inlet = inStream(inlet_nh3_feed.h_outflow);
-  T_in = AmmoniaMedium.temperature(AmmoniaMedium.setState_phX(inlet_nh3_feed.p, h_inlet, inStream(inlet_nh3_feed.Xi_outflow)));
+  h_inlet = inStream(port_a.h_outflow);
+  T_in = AmmoniaMedium.temperature(AmmoniaMedium.setState_phX(port_a.p, h_inlet, inStream(port_a.Xi_outflow)));
   for j in 2:N + 1 loop
     w_H2_face[j] = w_H2[j - 1];
     w_N2_face[j] = w_N2[j - 1];
@@ -220,16 +220,16 @@ equation
   for j in 2:N loop
     m_flow_face[j] = regRoot(P_tot[j - 1] - P_tot[j], dp_small)/sqrt(k_face[j]);
   end for;
-  m_flow_face[N + 1] = regRoot(P_tot[N] - outlet_cracked_gas.p, dp_small)/sqrt(k_face[N + 1]);
+  m_flow_face[N + 1] = regRoot(P_tot[N] - port_b.p, dp_small)/sqrt(k_face[N + 1]);
 // Connect fluid interfaces
-  m_flow_face[1] = inlet_nh3_feed.m_flow;
-  inlet_nh3_feed.p = P_tot[1] + k_face[1]*regSquare(m_flow_face[1], 1e-3);
-  inlet_nh3_feed.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], {w_NH3[1], w_H2[1]}));
-  inlet_nh3_feed.Xi_outflow = {w_NH3[1], w_H2[1]};
-  outlet_cracked_gas.m_flow = -m_flow_face[N + 1];
-  outlet_cracked_gas.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[N], T[N], {w_NH3[N], w_H2[N]}));
-  outlet_cracked_gas.Xi_outflow = {w_NH3[N], w_H2[N]};
-  m_flow_balance = inlet_nh3_feed.m_flow + outlet_cracked_gas.m_flow - der(sum(m_tot));
+  m_flow_face[1] = port_a.m_flow;
+  port_a.p = P_tot[1] + k_face[1]*regSquare(m_flow_face[1], 1e-3);
+  port_a.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], {w_NH3[1], w_H2[1]}));
+  port_a.Xi_outflow = {w_NH3[1], w_H2[1]};
+  port_b.m_flow = -m_flow_face[N + 1];
+  port_b.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[N], T[N], {w_NH3[N], w_H2[N]}));
+  port_b.Xi_outflow = {w_NH3[N], w_H2[N]};
+  m_flow_balance = port_a.m_flow + port_b.m_flow - der(sum(m_tot));
   
 
   annotation(
