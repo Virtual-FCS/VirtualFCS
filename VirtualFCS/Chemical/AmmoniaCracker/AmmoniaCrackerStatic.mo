@@ -213,7 +213,7 @@ equation
   port_b.m_flow = -m_flow_feed;
   port_b.Xi_outflow = {Xi_outflow_NH3[N], Xi_outflow_H2[N]};
   
-  //Inlet/outlet monitoring
+  //Inlet/outlet monitoring (To remove when things work)
    port_a.p          = medium_inlet.p;
    port_a.h_outflow  = medium_inlet.h;
    port_a.Xi_outflow = medium_inlet.Xi;

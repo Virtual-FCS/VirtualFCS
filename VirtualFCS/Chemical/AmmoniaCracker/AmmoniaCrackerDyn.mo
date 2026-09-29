@@ -5,6 +5,7 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   // Import relevant packages
   import Modelica.Fluid.Utilities.regRoot;
   import Modelica.Fluid.Utilities.regSquare;
+  import Modelica.Fluid.Utilities.regStep;
   // Define constant parameters
   constant Real M_NH3 = 17 "Molar mass g/mol";
   constant Real M_H2 = 2 "Molar mass g/mol";
@@ -53,11 +54,14 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
     Evaluate = true,
     choices(checkBox = true));
   parameter Modelica.Units.SI.Pressure p_start = 30e5 "Initial pressure in every segment";
-  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {H2, N2, NH3} in every segment";
+  parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {NH3, H2, N2} in every segment";
  
   // Numerical regularization
   parameter Modelica.Units.SI.Pressure dp_small = 1e3 "Regularization range of the face pressure drop (Pa)";
   parameter Modelica.Units.SI.Time tau_rxn_min = 0.05 "Minimum time in which the NH3 inventory of a segment may be consumed (limits the reaction rate)";
+  parameter Modelica.Units.SI.Pressure dp_inlet_nominal = 0 "Pressure loss of the inlet header/distributor at m_flow_nominal (added to the inlet face)";
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 0.3 "Nominal feed mass flow rate used to scale dp_inlet_nominal";
+  parameter Modelica.Units.SI.MassFlowRate m_flow_small = 1e-3 "Flow range over which the upwind face composition switches smoothly between the two neighbours";
   
   // Calculated parameters
   final parameter Real k0 = 3.33/3.6*1e10 "Pre-exponential factor (mol/(kg*s))";
@@ -126,6 +130,10 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   // Inlet conditions
   Modelica.Units.SI.SpecificEnergy h_inlet "Mixture inlet specific enthalpy";
   Modelica.Units.SI.Temperature T_in "Mixture inlet temperature";
+  Modelica.Units.SI.SpecificEnthalpy h_feed_seg1 "Specific enthalpy of the feed composition at the pressure and temperature of segment 1";
+  
+  AmmoniaMedium.BaseProperties medium_inlet "Medium in the source";
+  AmmoniaMedium.BaseProperties medium_outlet "Medium in the source";
   
   // Reaction rate
   function rate
@@ -194,24 +202,30 @@ equation
     if constantTemperature then
       T[i] = T_out_target;
     else
-      (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = m_flow_face[i]*cp_mix[i]*((if i == 1 then T_in else T[i - 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
+// Only the streams entering the segment change its temperature (forward inflow through face i, reverse inflow through face i+1).
+// The feed term uses enthalpies so that the latent heat of a partly liquid feed is accounted for.
+      (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = noEvent(max(m_flow_face[i], 0))*(if i == 1 then h_inlet - h_feed_seg1 else cp_mix[i]*(T[i - 1] - T[i])) + noEvent(max(-m_flow_face[i + 1], 0))*cp_mix[i]*((if i == N then T[N] else T[i + 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
 
     end if;
     heatPorts[i].T = T[i];
   end for;
-// Upwind (donor cell) face compositions, assuming forward flow through the reactor
-  w_NH3_face[1] = inStream(port_a.Xi_outflow[idx_NH3]);
-  w_H2_face[1] = inStream(port_a.Xi_outflow[idx_H2]);
+// Upwind (donor cell) face compositions for both flow directions (smooth switch within +-m_flow_small)
+  w_NH3_face[1] = regStep(m_flow_face[1], inStream(port_a.Xi_outflow[idx_NH3]), w_NH3[1], m_flow_small);
+  w_H2_face[1] = regStep(m_flow_face[1], inStream(port_a.Xi_outflow[idx_H2]), w_H2[1], m_flow_small);
   w_N2_face[1] = 1 - w_NH3_face[1] - w_H2_face[1];
   h_inlet = inStream(port_a.h_outflow);
   T_in = AmmoniaMedium.temperature(AmmoniaMedium.setState_phX(port_a.p, h_inlet, inStream(port_a.Xi_outflow)));
-  for j in 2:N + 1 loop
-    w_H2_face[j] = w_H2[j - 1];
-    w_N2_face[j] = w_N2[j - 1];
-    w_NH3_face[j] = w_NH3[j - 1];
+  h_feed_seg1 = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], inStream(port_a.Xi_outflow)));
+  for j in 2:N loop
+    w_H2_face[j] = regStep(m_flow_face[j], w_H2[j - 1], w_H2[j], m_flow_small);
+    w_N2_face[j] = regStep(m_flow_face[j], w_N2[j - 1], w_N2[j], m_flow_small);
+    w_NH3_face[j] = regStep(m_flow_face[j], w_NH3[j - 1], w_NH3[j], m_flow_small);
   end for;
+  w_NH3_face[N + 1] = regStep(m_flow_face[N + 1], w_NH3[N], inStream(port_b.Xi_outflow[idx_NH3]), m_flow_small);
+  w_H2_face[N + 1] = regStep(m_flow_face[N + 1], w_H2[N], inStream(port_b.Xi_outflow[idx_H2]), m_flow_small);
+  w_N2_face[N + 1] = 1 - w_NH3_face[N + 1] - w_H2_face[N + 1];
 // Quadratic friction coefficients of the faces (half a segment at the inlet and outlet faces)
-  k_face[1] = f[1]*(dz/2)/(2*D_tubes*rho_mix[1]*A_flow^2);
+  k_face[1] = f[1]*(dz/2)/(2*D_tubes*rho_mix[1]*A_flow^2) + dp_inlet_nominal/m_flow_nominal^2;
   k_face[N + 1] = f[N]*(dz/2)/(2*D_tubes*rho_mix[N]*A_flow^2);
   for j in 2:N loop
     k_face[j] = f[j - 1]*dz/(2*D_tubes*rho_mix[j - 1]*A_flow^2);
@@ -231,6 +245,14 @@ equation
   port_b.Xi_outflow = {w_NH3[N], w_H2[N]};
   m_flow_balance = port_a.m_flow + port_b.m_flow - der(sum(m_tot));
   
+  //Inlet/outlet monitoring
+   port_a.p          = medium_inlet.p;
+   port_a.h_outflow  = medium_inlet.h;
+   port_a.Xi_outflow = medium_inlet.Xi;
+   
+   port_b.p          = medium_outlet.p;
+   port_b.h_outflow  = medium_outlet.h;
+   port_b.Xi_outflow = medium_outlet.Xi;
 
   annotation(
     Documentation(info = "<html>
