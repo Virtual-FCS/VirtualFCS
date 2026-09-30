@@ -3,13 +3,11 @@ model RangeExtenderHybridVehicle
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(
-    C_bat_pack=50,
-    SOC_init=0.5,                                                                                          V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation (
+  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(C_bat_pack=50, SOC_init=0.5, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation (
     Placement(visible = true, transformation(origin={58,3.55271e-15},    extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN="Mirai",                                                 useRegenerativeBreaking = true) annotation (
+  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN="Mirai", useRegenerativeBreaking = true) annotation (
     Placement(visible = true, transformation(origin={-2,0},   extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  VirtualFCS.Vehicles.DriveCycle driveCycle(v="NEDC")                                              annotation (
+  VirtualFCS.Vehicles.DriveCycle driveCycle(cycle="NEDC") annotation (
     Placement(visible = true, transformation(origin = {-60, -6.66134e-16}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
 
 
@@ -18,10 +16,10 @@ model RangeExtenderHybridVehicle
   Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
 equation
   when time > 0.1 then
-    hydrogen_mass_init = rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m;
+    hydrogen_mass_init = rangeExtenderPowerTrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m;
   end when;
   when terminal() then
-    fuel_consumption = (hydrogen_mass_init - rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m)/max((vehicleProfile.x * 0.00001), 0.01);
+    fuel_consumption = (hydrogen_mass_init - rangeExtenderPowerTrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m)/max((vehicleProfile.x * 0.00001), 0.01);
   end when;
   if vehicleProfile.useRegenerativeBreaking then
     if vehicleProfile.P > 0 then
