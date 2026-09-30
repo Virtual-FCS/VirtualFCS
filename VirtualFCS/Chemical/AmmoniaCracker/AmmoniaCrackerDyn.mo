@@ -237,7 +237,8 @@ equation
   m_flow_face[N + 1] = regRoot(P_tot[N] - port_b.p, dp_small)/sqrt(k_face[N + 1]);
 // Connect fluid interfaces
   m_flow_face[1] = port_a.m_flow;
-  port_a.p = P_tot[1] + k_face[1]*regSquare(m_flow_face[1], 1e-3);
+  // Same regularised law as the internal faces: finite conductance at low (controlled) feed flows
+  m_flow_face[1] = regRoot(port_a.p - P_tot[1], dp_small)/sqrt(k_face[1]);
   port_a.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], {w_NH3[1], w_H2[1]}));
   port_a.Xi_outflow = {w_NH3[1], w_H2[1]};
   port_b.m_flow = -m_flow_face[N + 1];
