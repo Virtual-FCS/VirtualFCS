@@ -431,22 +431,20 @@ end liquidMolarFractions;
   redeclare function extends isentropicEnthalpy
   protected
     Modelica.Units.SI.SpecificEntropy s_ref = specificEntropy(refState);
-    Modelica.Units.SI.SpecificEnthalpy h_min = specificEnthalpy(setState_pTX(refState.p, 200, refState.Xi));
-    Modelica.Units.SI.SpecificEnthalpy h_max = specificEnthalpy(setState_pTX(refState.p, 1000, refState.Xi));
 
-    function s_offset "Find offset from isoentropic conditions, u is h_out"
+    function s_offset "Find offset from isentropic conditions, u is T_out"
       extends Modelica.Math.Nonlinear.Interfaces.partialScalarFunction;
       input Modelica.Units.SI.SpecificEntropy s_in;
       input Modelica.Units.SI.Pressure p_out;
       input Modelica.Units.SI.MassFraction[nXi] Xi;
-    protected
-      Modelica.Units.SI.SpecificEntropy s_out;
     algorithm
-      s_out := specificEntropy(setState_phX(p_out, u, Xi));
-      y := s_out - s_in;
+      y := specificEntropy(setState_pTX(p_out, u, Xi)) - s_in;
     end s_offset;
+
+    Modelica.Units.SI.Temperature T_is "Temperature after isentropic change of pressure";
   algorithm
-    h_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = h_min, u_max = h_max);
+    T_is := Modelica.Math.Nonlinear.solveOneNonlinearEquation(f = function s_offset(s_in=s_ref, p_out=p_downstream, Xi=refState.Xi), u_min = 200, u_max = 1000);
+    h_is := specificEnthalpy(setState_pTX(p_downstream, T_is, refState.Xi));
   end isentropicEnthalpy;
 
 
