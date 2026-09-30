@@ -28,7 +28,7 @@ model NH3CrackerFCS_4_dyn
   parameter Modelica.Units.SI.Time T_filter = 1 "Time constant of the tank pressure measurement filter";
   parameter Modelica.Units.SI.Pressure P_vap_start = P_out_PSA + dp_distributor*m_feed_start/m_feed_max "Initial pressure of the NH3 vaporizer (approx. consistent with m_feed_start)";
 
-  Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, constantTemperature = false, dp_small = 1e4, p_start = P_out_PSA, N = N, T_out_target = T_out_target, T_start = T_start, X_start = X_cracker_start, dp_inlet_nominal = dp_distributor, m_flow_nominal = m_feed_max, H = 3, L = 1, W = 1) annotation(
+  Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(redeclare package AmmoniaMedium = AmmoniaMedium, constantTemperature = false, dp_small = 1e4, p_start = P_out_PSA, N = N, T_out_target = T_out_target, T_start = T_start, X_start = X_cracker_start, dp_inlet_nominal = dp_distributor, m_flow_nominal = m_feed_max, H = 3) annotation(
     Placement(transformation(origin = {59, 57}, extent = {{-19, -19}, {19, 19}})));
   Modelica.Fluid.Pipes.DynamicPipe NH3Vaporizer(use_HeatTransfer = true, redeclare package Medium = AmmoniaMedium, length = 10, nParallel = 20, diameter = 0.1, m_flow_start = m_feed_start, X_start = X_start, T_start = T_NH3_tank, p_a_start = P_vap_start, p_b_start = P_vap_start, allowFlowReversal = true, useLumpedPressure = false, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(transformation(origin = {-24, 32}, extent = {{-10, -10}, {10, 10}})));
@@ -38,7 +38,7 @@ model NH3CrackerFCS_4_dyn
     Placement(transformation(origin = {62, -36}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = P_out_PSA) annotation(
     Placement(transformation(origin = {74, -80}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Constant heat(k = 5e4) annotation(
+  Modelica.Blocks.Sources.Constant heat(k = 1e4) annotation(
     Placement(transformation(origin = {-47, 87}, extent = {{-7, -7}, {7, 7}})));
   Modelica.Fluid.Sources.MassFlowSource_T ammonia_source(redeclare package Medium = AmmoniaMedium, X = X_start, m_flow = 0.3, nPorts = 2, use_m_flow_in = true, T = T_NH3_tank) annotation(
     Placement(transformation(origin = {-84, 34}, extent = {{-10, -10}, {10, 10}})));
