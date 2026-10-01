@@ -1,6 +1,6 @@
 within VirtualFCS.Control;
 block EnergyManagementSystem "Implement algorithms to control the energy and power distribution in a hybrid system."
-  parameter Modelica.Units.SI.Current I_nom_FC_stack = 100 "FC stack nominal operating current";
+  parameter Modelica.Units.SI.Current I_nom_FC_stack = 350 "FC stack nominal operating current";
   parameter Modelica.Units.SI.TimeAging ramp_up = 20 "FC stack current ramp up rate";
   parameter Real SOC_lower_limit(unit = "1") = 0.2 "SOC lower limit";
   parameter Real SOC_higher_limit(unit = "1") = 0.8 "SOC lower limit";
