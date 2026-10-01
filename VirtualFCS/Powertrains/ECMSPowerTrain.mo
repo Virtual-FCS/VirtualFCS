@@ -1,35 +1,19 @@
 within VirtualFCS.Powertrains;
 model ECMSPowerTrain
-  // System
+
   outer Modelica.Fluid.System system "System properties";
-  // Powertrain parameters
-  parameter Modelica.Units.SI.Mass m_powertrain = fuelCellSystem.m_FC_system + batterySystem.m_bat_pack annotation (
-    Dialog(group = "Powertrain Parameters"));
+
   parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus" annotation (
     Dialog(group = "Powertrain Parameters"));
-  // H2 Subsystem Paramters
+
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "H2 tank volume" annotation (
-    Dialog(group = "Hydrogen storage Parameters")); // 15 kg @ 300 bar from VFCS D4.1
+    Dialog(group = "Hydrogen storage Parameters"));
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
-  // Fuel Cell Stack Paramters
-  parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.760 "FC stack width" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Height H_FC_stack = 0.060 "FC stack height" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.ElectricCurrent I_nom_FC_stack = 300 "FC stack nominal current" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.ElectricCurrent I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
+
   parameter Integer N_FC_stack = 280 "FC stack number of cells" annotation (
     Dialog(group = "Fuel Cell Stack Parameters"));
-  // Battery Pack Parameters
+
   parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack" annotation (
     Dialog(group = "Battery Pack Parameters"));
   parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length" annotation (
@@ -50,13 +34,15 @@ model ECMSPowerTrain
     Dialog(group = "Battery Pack Parameters"));
   parameter Real SOC_init = 0.5 "Battery pack initial state of charge" annotation (
     Dialog(group = "Battery Pack Parameters"));
+
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {42, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-90, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation (
-    Placement(visible = true, transformation(origin = {-68, 4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem fuelCellSystem(H_FC_stack = H_FC_stack, I_nom_FC_stack = I_nom_FC_stack, I_rated_FC_stack = I_rated_FC_stack,L_FC_stack = L_FC_stack, N_FC_stack = N_FC_stack, V_tank_H2 = V_tank_H2, W_FC_stack = W_FC_stack, m_FC_stack = m_FC_stack, p_tank_H2 = p_tank_H2)  annotation (
+    Placement(transformation(origin = {-70, -90}, extent = {{-10, -10}, {10, 10}})));
+
+  VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem fuelCellSystem(N_cells = N_FC_stack, subSystemHydrogen(tankHydrogen(V = V_tank_H2, p_start = p_tank_H2))) annotation (
     Placement(visible = true, transformation(origin = {72, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem(C_bat_pack = C_bat_pack, Cp_bat_pack = Cp_bat_pack, H_bat_pack = H_bat_pack, L_bat_pack = L_bat_pack, SOC_init = SOC_init, V_max_bat_pack = V_max_bat_pack, V_min_bat_pack = V_min_bat_pack, V_nom_bat_pack = V_nom_bat_pack, W_bat_pack = W_bat_pack, m_bat_pack = m_bat_pack) annotation (
     Placement(visible = true, transformation(origin = {-28, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -64,7 +50,7 @@ model ECMSPowerTrain
     Placement(visible = true, transformation(origin = {0, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   VirtualFCS.Electrical.DC_converter dC_converter annotation (
     Placement(visible = true, transformation(origin = {22, -44}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
-  // Power & Efficiencies
+
   Modelica.Units.SI.Power Power_del_DC_DC "Power delivered from the DC/DC converter";
   Modelica.Units.SI.Power Power_FC "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_batt "Power delivered from the batt system";
@@ -106,17 +92,17 @@ model ECMSPowerTrain
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-110,4})));
-  Modelica.Blocks.Sources.RealExpression getFcTemp(y=fuelCellSystem.fuelCellStack.temperatureSensor.T)
+  Modelica.Blocks.Sources.RealExpression getFcTemp(y=fuelCellSystem.fuelCell.heatPort.T)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-110,-50})));
-  Modelica.Blocks.Sources.RealExpression getP_H2(y=fuelCellSystem.fuelCellStack.p_H2)
+  Modelica.Blocks.Sources.RealExpression getP_H2(y=fuelCellSystem.fuelCell.p_H2)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-110,-66})));
-  Modelica.Blocks.Sources.RealExpression getP_O2(y=fuelCellSystem.fuelCellStack.p_O2)
+  Modelica.Blocks.Sources.RealExpression getP_O2(y=fuelCellSystem.fuelCell.p_O2)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -126,12 +112,12 @@ equation
   Power_FC = fuelCellSystem.pin_n.i * fuelCellSystem.pin_p.v;
   Power_batt = batterySystem.pin_n.i * batterySystem.pin_p.v;
   if Power_del_DC_DC > 0 then
-    eta_drivetrain = min(max(((Power_del_DC_DC)/max((Power_FC + Power_batt + ((Power_FC * (1-(fuelCellSystem.eta_FC_sys)))+ (Power_batt * (1-(batterySystem.eta_batt)))+ (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0),1);
+    eta_drivetrain = min(max(((Power_del_DC_DC)/max((Power_FC + Power_batt + ((Power_FC * (1-(fuelCellSystem.eta_sys_LHV)))+ (Power_batt * (1-(batterySystem.eta_batt)))+ (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0),1);
   else
-    eta_drivetrain = min(max(((-Power_del_DC_DC)/max((Power_FC -Power_batt + ((Power_FC * (1-(fuelCellSystem.eta_FC_sys))) - (Power_batt * (1-(batterySystem.eta_batt))) - (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0), 1);
+    eta_drivetrain = min(max(((-Power_del_DC_DC)/max((Power_FC -Power_batt + ((Power_FC * (1-(fuelCellSystem.eta_sys_LHV))) - (Power_batt * (1-(batterySystem.eta_batt))) - (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0), 1);
   end if;
   connect(pin_n, ground.p) annotation (
-    Line(points = {{-40, 96}, {-68, 96}, {-68, 14}}, color = {0, 0, 255}));
+    Line(points = {{-40, 96}, {-40, 94}, {-70, 94}, {-70, -80}}, color = {0, 0, 255}));
   connect(converter.dc_n2, batterySystem.pin_n) annotation (
     Line(points={{-6,20},{-6,-22},{-32.4,-22},{-32.4,-62.4}},    color = {0, 0, 255}));
   connect(converter.dc_p2, batterySystem.pin_p) annotation (
@@ -174,6 +160,8 @@ equation
           0,0,127}));
   connect(getFcTemp.y, eMS_ECMS.inputFCTemp)
     annotation (Line(points={{-99,-50},{-84,-50},{-84,-34}}, color={0,0,127}));
+  connect(ground.p, dC_converter.pin_nBus) annotation(
+    Line(points = {{-70, -80}, {-50, -80}, {-50, -90}, {32, -90}, {32, -54}}, color = {0, 0, 255}));
   annotation (
     Icon(graphics = {Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)),
   Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>m_powertrain</code></td><td>SI.Mass</td><td>kg</td><td>fuelCellSystem.m_FC_system + batterySystem.m_bat_pack</td><td>Powertrain Parameters</td></tr>

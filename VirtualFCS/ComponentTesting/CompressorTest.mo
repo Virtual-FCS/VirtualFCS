@@ -4,7 +4,7 @@ model CompressorTest
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}})));
-  replaceable package Medium = VirtualFCS.Media.CathodeAir;
+  replaceable package Medium = VirtualFCS.Media.MoistAir;
   Modelica.Fluid.Sources.FixedBoundary environment(redeclare package Medium = Medium, nPorts = 2, p = system.p_ambient, T = system.T_ambient) annotation(
     Placement(transformation(origin = {-50, 50}, extent = {{10, 10}, {-10, -10}}, rotation = 180)));
   Fluid.Compressor compressor(redeclare package Medium = Medium, useHeatPort = true) annotation(

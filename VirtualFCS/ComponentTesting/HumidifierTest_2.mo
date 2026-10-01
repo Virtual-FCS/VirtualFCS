@@ -3,14 +3,13 @@ within VirtualFCS.ComponentTesting;
 model HumidifierTest_2
 extends Modelica.Icons.Example;
   
-  import VirtualFCS.Media.CathodeAir.Oxygen;
-  import VirtualFCS.Media.CathodeAir.Nitrogen;
-  import VirtualFCS.Media.CathodeAir.Water;
-  //import VirtualFCS.Media.CathodeAir.saturationPressure;
-  import VirtualFCS.Media.CathodeAir.MMX;
+  import VirtualFCS.Media.MoistAir.Oxygen;
+  import VirtualFCS.Media.MoistAir.Nitrogen;
+  import VirtualFCS.Media.MoistAir.Water;
+  import VirtualFCS.Media.MoistAir.MMX;
   
-  replaceable package dry_medium = VirtualFCS.Media.CathodeAir;
-  replaceable package wet_medium = VirtualFCS.Media.CathodeAir;
+  replaceable package dry_medium = VirtualFCS.Media.MoistAir;
+  replaceable package wet_medium = VirtualFCS.Media.MoistAir;
   Modelica.Fluid.Sources.MassFlowSource_T dry_source(redeclare package Medium = dry_medium, m_flow = 0.0004, nPorts = 1, X = {0.24, 0.76, 0}, T = 353.15) annotation(
     Placement(transformation(origin = {32, -20}, extent = {{-120, -10}, {-100, 10}})));
   Modelica.Fluid.Sources.MassFlowSource_T wet_source(redeclare package Medium = wet_medium, nPorts = 1, use_m_flow_in = true, use_X_in = true, T = 353.15, use_T_in = true) annotation(

@@ -6,7 +6,7 @@ model SubSystemHydrogenWithFuelCellTest
   parameter Real lambda = 3;
   parameter Integer N_cells = 42 "Number of cells in the stack";
   package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
-  package Cathode_Medium = VirtualFCS.Media.CathodeAir;
+  package Cathode_Medium = VirtualFCS.Media.MoistAir;
   package Coolant_Medium = Modelica.Media.Incompressible.Examples.Glycol47;
 
   Electrochemical.Hydrogen.FuelCells.FuelCell fc(N_cells = N_cells, heatCapacitor(T(start = 323.15, fixed = true)), redeclare package Anode_Medium = Anode_Medium, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Coolant_Medium = Coolant_Medium, cathode(massDynamics = Modelica.Fluid.Types.Dynamics.DynamicFreeInitial), anode(massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, p_start = 1e5)) annotation(
@@ -29,7 +29,7 @@ model SubSystemHydrogenWithFuelCellTest
     Placement(transformation(origin = {10, 40}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
   Modelica.Blocks.Sources.Step R_values(height = 10, offset = -8, startTime = 250) annotation(
     Placement(transformation(origin = {50, 76}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(N_cell = N_cells, redeclare package Anode_Medium = Anode_Medium, pressureRegulator(pid(controllerType = Modelica.Blocks.Types.SimpleController.P)))  annotation(
+  SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(N_cells = N_cells, redeclare package Anode_Medium = Anode_Medium, pressureRegulator(pid(controllerType = Modelica.Blocks.Types.SimpleController.P)))  annotation(
     Placement(transformation(origin = {-50, 0}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
   Modelica.Electrical.Analog.Sources.ConstantVoltage V_source(V = 24) annotation(
     Placement(transformation(origin = {-80, 0}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));

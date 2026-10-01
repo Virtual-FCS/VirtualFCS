@@ -1,6 +1,6 @@
 within VirtualFCS.Media;
 
-package WetHydrogen "Media model for hydrogen containing water vapour"
+package MoistHydrogen "Media model for hydrogen containing water vapour"
   extends PartialCondensingMixture(
     final mediumName = "Wet hydrogen",
     final substanceNames = {"hydrogen", "water"}, 
@@ -124,4 +124,4 @@ package WetHydrogen "Media model for hydrogen containing water vapour"
     d_liq := rho_pT(state_liq.p, state_liq.T, 1); // Last "1" specifies liquid phase explicitly
   end liquidDensity;
 
-end WetHydrogen;
+end MoistHydrogen;

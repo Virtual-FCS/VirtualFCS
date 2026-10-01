@@ -63,7 +63,7 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
   MembraneManifold wetVolume[n](
     redeclare each package Medium = wet_medium,
     each nu = zeros(wet_medium.nX),
-    each MMs = wet_medium.MMX,
+    each MMX = wet_medium.MMX,
     each V = V_wet/n,
     each R_flow = dp_nominal/(n*m_flow_nom),
     each useHeatPort = true,
@@ -76,7 +76,7 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
   MembraneManifold dryVolume[n](
     redeclare each package Medium = dry_medium,
     each nu = zeros(dry_medium.nX),
-    each MMs = dry_medium.MMX,
+    each MMX = dry_medium.MMX,
     each V = V_dry/n,
     each R_flow = dp_nominal/(n*m_flow_nom),
     each useHeatPort = true,
@@ -174,4 +174,5 @@ equation
 <tr><td><code>phi_dry_out</code></td><td>Output</td><td>Real</td><td>1</td><td>Dry-side outlet relative humidity (mole fraction)</td></tr></tbody></table></body></html>"),
 
   Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Line(points = {{-40, 80}, {-40, -80}}, thickness = 0.5), Line(points = {{40, 80}, {40, -80}}, thickness = 0.5), Line(points = {{-40, 80}, {-34, 80}}, thickness = 0.5), Line(points = {{-40, -80}, {-34, -80}}, thickness = 0.5), Line(points = {{34, 80}, {40, 80}}, thickness = 0.5), Line(points = {{34, -80}, {40, -80}}, thickness = 0.5), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 60}, {20, 40}}), Ellipse(origin = {-6, 50}, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Ellipse(origin = {6, 50}, rotation = 180, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Line(origin = {0, 50}, points = {{6, 3}, {-6, -3}}), Line(origin = {0, 50}, points = {{6, -3}, {-6, 3}}), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -40}, {20, -60}}), Ellipse(origin = {-6, -50}, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Ellipse(origin = {6, -50}, rotation = 180, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Line(origin = {0, -50}, points = {{6, 3}, {-6, -3}}), Line(origin = {0, -50}, points = {{6, -3}, {-6, 3}}), Line(points = {{-100, 50}, {-20, 50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{20, 50}, {100, 50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{100, -50}, {20, -50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{-20, -50}, {-100, -50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{-8, 40}, {-8, 12}}, color = {255, 0, 0}, thickness = 0.5), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.Backward, extent = {{-13, 12}, {-3, -12}}), Line(points = {{-8, -12}, {-8, -40}}, color = {255, 0, 0}, thickness = 0.5), Line(points = {{10, 40}, {10, 12}}, color = {0, 0, 255}, thickness = 0.5), Rectangle(lineColor = {0, 0, 255}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Forward, extent = {{5, 12}, {15, -12}}), Line(points = {{10, 8}, {10, -8}}, color = {0, 0, 255}, thickness = 0.75, arrow = {Arrow.None, Arrow.Filled}), Line(points = {{10, -12}, {10, -40}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-25, 75}, {25, 63}}, textString = "V_wet/n"), Text(extent = {{-25, -63}, {25, -75}}, textString = "V_dry/n"), Text(extent = {{-38, 8}, {-14, -8}}, textString = "UA/n", horizontalAlignment = TextAlignment.Right), Text(extent = {{17, 12}, {56, -2}}, textString = "Membrane", horizontalAlignment = TextAlignment.Left), Text(textColor = {0, 0, 255}, extent = {{17, -2}, {62, -16}}, textString = "m_H2O", horizontalAlignment = TextAlignment.Left), Text(textColor = {0, 127, 255}, extent = {{-20, 94}, {20, 82}}, textString = "Wet side"), Text(textColor = {0, 127, 255}, extent = {{-20, -82}, {20, -94}}, textString = "Dry side"), Line(origin = {-18, 0},points = {{10, 8}, {10, -8}}, color = {238, 46, 47}, thickness = 0.75, arrow = {Arrow.Filled, Arrow.Filled})}));
+
 end Humidifier;

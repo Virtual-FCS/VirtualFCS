@@ -1,8 +1,8 @@
 within VirtualFCS.SubSystems.Air;
 
-model SubSystemAir
-outer Modelica.Fluid.System system "System properties";
-  replaceable package Medium = Media.CathodeAir;
+model SubSystemAir "Subsystem regulating pressure and flowrate of air to a fuel cell stack"
+  outer Modelica.Fluid.System system "System properties";
+  replaceable package Medium = Media.MoistAir;
   import Modelica.Constants.F;
   constant Modelica.Units.SI.MoleFraction xO2 = 0.21 "Standard molar fraction of oxygen in air";
   constant Modelica.Units.SI.MolarMass MM_O2 = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "(kg O2 / mol O2) Molar mass molecular oxygen";

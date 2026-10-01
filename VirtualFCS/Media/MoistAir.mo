@@ -1,6 +1,6 @@
 within VirtualFCS.Media;
 
-package CathodeAir "Medium model for cathodic air in PEM fuel cells"
+package MoistAir "Medium model for cathodic air in PEM fuel cells"
   extends PartialCondensingMixture(
     final mediumName = "Cathode air",
     final substanceNames = {"oxygen", "nitrogen", "water"}, 
@@ -164,4 +164,4 @@ package CathodeAir "Medium model for cathodic air in PEM fuel cells"
     Documentation(info = "<html><head></head><body><p>
 This medium models air in fuel cells. This includes separate accounts of oxygen and nitrogen, in addition to tracking humidity and condensation.</p>
 </body></html>"));
-end CathodeAir;
+end MoistAir;
