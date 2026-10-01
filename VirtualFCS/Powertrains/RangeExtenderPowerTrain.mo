@@ -1,36 +1,18 @@
 within VirtualFCS.Powertrains;
 model RangeExtenderPowerTrain
-  // System
   outer Modelica.Fluid.System system "System properties";
-  // Powertrain parameters
-  /*parameter Modelica.Units.SI.Mass m_powertrain = fuelCellSystem.m_FC_system + batterySystem.m_bat_pack annotation (
-    Dialog(group = "Powertrain Parameters"));*/
+
   parameter Modelica.Units.SI.Voltage V_HV_Bus = 343 "Voltage of the HV Bus" annotation (
     Dialog(group = "Powertrain Parameters"));
-  // H2 Subsystem Paramters
+
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure" annotation (
     Dialog(group = "Hydrogen storage Parameters"));
-  // Fuel Cell Stack Paramters
-  /*parameter Modelica.Units.SI.Mass m_FC_stack = 14.3 "FC stack mass" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Length L_FC_stack = 0.255 "FC stack length" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Breadth W_FC_stack = 0.760 "FC stack width" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Height H_FC_stack = 0.060 "FC stack height" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.Volume vol_FC_stack = L_FC_stack * W_FC_stack * H_FC_stack "FC stack volume" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.ElectricCurrent I_nom_FC_stack = 300 "FC stack nominal current" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  parameter Modelica.Units.SI.ElectricCurrent I_rated_FC_stack = 1.7 * I_nom_FC_stack "FC stack maximum operating current" annotation (
-    Dialog(group = "Fuel Cell Stack Parameters"));
-  */
+
   parameter Integer N_FC_stack = 280 "FC stack number of cells" annotation (
     Dialog(group = "Fuel Cell Stack Parameters"));
-  // Battery Pack Parameters
+
   parameter Modelica.Units.SI.Mass m_bat_pack = 100 "Mass of the pack" annotation (
     Dialog(group = "Battery Pack Parameters"));
   parameter Modelica.Units.SI.Length L_bat_pack = 0.6 "Battery pack length" annotation (
@@ -67,7 +49,7 @@ model RangeExtenderPowerTrain
     Placement(transformation(origin = {22, -44}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
   VirtualFCS.Control.EnergyManagementSystem energyManagementSystem annotation (
     Placement(transformation(origin = {-62, -70}, extent = {{10, -10}, {-10, 10}})));
-  // Power & Efficiencies
+
   Modelica.Units.SI.Power Power_del_DC_DC "Power delivered from the DC/DC converter";
   Modelica.Units.SI.Power Power_FC "Power delivered from the FC system";
   Modelica.Units.SI.Power Power_batt "Power delivered from the batt system";
