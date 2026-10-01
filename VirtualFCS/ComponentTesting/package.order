@@ -24,11 +24,12 @@ PumpElectricDCTest
 RecirculationBlowerTest
 SimplePumpTest
 SubSystemAirTest
+SubSystemAirTest_2
 SubSystemAirWithFuelCellTest
-SubSystemAir_humidifierTest
 SubSystemCoolingTest
 SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
 ECMS_Experiment_Testing
+

@@ -1,286 +1,178 @@
 within VirtualFCS.Fluid;
 
-model Humidifier "Hollow fiber membrane humidifier:
-    - Counterflow NTU-based mass exchanger
-    - Includes optional first-order dynamics for moisture transfer
-    - Based on Pollak et al. (2023)"
-  extends VirtualFCS.Fluid.HumidifierInterface(redeclare package wet_medium = wet_medium, redeclare package dry_medium = dry_medium);
-  // Tested with VirtualFCS.Media.MoistAir -> Still hardcoded with order and number of species in the medium. Can be improved later.
-  replaceable package dry_medium = Modelica.Media.Interfaces.PartialMedium "Dry gas (shell side)" annotation(
-    choicesAllMatching = true);
-  replaceable package wet_medium = Modelica.Media.Interfaces.PartialMedium "Wet side (fiber side)" annotation(
-    choicesAllMatching = true);
+model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup"
+  extends VirtualFCS.Fluid.HumidifierInterface(
+    redeclare package wet_medium = wet_medium,
+    redeclare package dry_medium = dry_medium);
+
+  replaceable package dry_medium = Modelica.Media.Interfaces.PartialMedium 
+    "Dry gas on the shell side" annotation(choicesAllMatching = true);
+  replaceable package wet_medium = Modelica.Media.Interfaces.PartialMedium
+    "Wet gas in the fiber bores" annotation(choicesAllMatching = true);
   import SI = Modelica.Units.SI;
-  // Wet (A) and Dry (B) fluid ports
-  // Model parameters
-  parameter SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient [m2/s] (to be calibrated)";
-  parameter SI.Time tau_perm = 6.1 "Time constant for moisture transfer [s] (to be calibrated)";
-  // Geometric and packing properties
-  parameter Integer nFibers = 488 "Number of hollow fibers";
-  parameter SI.Diameter dFiber_i = 0.9e-3 "Inner fiber diameter [m]";
-  parameter SI.Diameter dFiber_o = 1.0e-3 "Outer fiber diameter [m]";
-  parameter SI.Diameter dHousing = 39.2e-3 "Inner diameter of shell [m]";
-  parameter SI.Length L_fiber = 150.8e-3 "Fiber length [m]";
-  // Reference values
-  SI.ThermodynamicTemperature atm_T = 298.15 "Assumed baseline temp";
-  // FIXME - should we be using system.T_ambient?
-  SI.Pressure atm_P = 101325 "Assumed baseline pressure";
-  // FIXME - should we be using system.p_ambient?
-  SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Reference binary diffusion coefficient of H2O in air [m2/s] at 25°C, 1 atm";
-  // NOTE should this be a variable or a parameter?
-  // Numerical stability
-  Real eps = 1e-4 "Small number to avoide div by zero";
-  SI.MassFlowRate m_flow_min = 1e-9 "Minimum mass flow rate limit to avoid div by zero";
-  // Volumetric flow
-  SI.VolumeFlowRate V_dot_a, V_dot_b "Volumetric flow rates [m3/s]";
-  SI.DimensionlessRatio VFR "Volume flow ratio";
-  // Mass transfer velocity
-  SI.Velocity v_a, v_b "Flow through fibers [m/s]";
-  SI.Velocity h_conv_a, h_conv_b "Convective resistances [m/s]";
-  // Geometry-derived variables
-  SI.Diameter d_hyd_b "Effective shell hydraulic diameter";
-  SI.Area A_mem "Surface area of fibers";
-  SI.Area A_c_fibers_in "Cross-section area of fibers inner diameter";
-  SI.Area A_c_fibers_out "Cross-section area of fibers outer diameter";
-  SI.Area A_c_shell "Cross-section area of humidifier shell";
-  SI.Area A_c_shell_gap "Cross-section area of humidifier shell space not occupied by fibers";
-  // Transport and dimentionless numbers
-  Real Re_a, Sc_a, Re_b, Sc_b;
-  Real Sh_wet1, Sh_wet2, Sh_wet;
-  SI.DiffusionCoefficient D_H2O_Air "Temperature and pressure dependent binary diffusion coefficient of H2O in air [m2/s]";
-  Real Phi, Sh_dry;
-  // Mass transfer model
-  SI.SpectralConcentration R_conv_a, R_conv_b, R_mem "Resistance [s/m3]";
-  SI.VolumeFlowRate beta_eff_a "Effective mass transfer coeff. [m3/s]";
-  SI.DimensionlessRatio NTU "Number of transfer units";
-  SI.Efficiency eta "Effectiveness";
-  // Moisture transfer and dynamics
-  SI.MassFlowRate m_perm "Instantaneous permeation mass flow [kg/s]";
-  SI.DimensionlessRatio Xi "Normalized permeation state";
-  SI.MassFlowRate m_perm_state "Dynamic permeation flow [kg/s]";
-  SI.DimensionlessRatio Xi_state(start = 0, fixed = true) "State variable for normalized moisture transfer";
-  // Thermodynamics and energy varaibles
-  SI.SpecificEnthalpy portA_out_h_outflow, portB_out_h_outflow "Specific enthalpy for the ports";
-  SI.EnthalpyFlowRate perm_enthalpy_flow "The enthalpy flow rate for mass transfer";
-  // Output /diagnostics
-  SI.MoleFraction phi_A_out "Relative humidity of wet gas out";
-  SI.MoleFraction phi_B_out "Relative humidity of dry gas out";
-  // Medium states
-  wet_medium.ThermodynamicState med_state_A_in;
-  wet_medium.ThermodynamicState med_state_A_out;
-  dry_medium.ThermodynamicState med_state_B_in;
-  dry_medium.ThermodynamicState med_state_B_out;
-  Modelica.Units.SI.MassFraction XiA_out[wet_medium.nXi](start = wet_medium.reference_X[1:wet_medium.nXi]);
-  Modelica.Units.SI.MassFraction XiB_out[dry_medium.nXi](start = dry_medium.reference_X[1:dry_medium.nXi]);
-  Modelica.Units.SI.MassFraction XiA_out_3 "Mass fractions of H20 for logging";
-  Modelica.Units.SI.MassFraction XiB_out_3 "Mass fraction of H20 for logging";
+
+  parameter Integer n(min = 1) = 5 "Number of axial volumes";
+  parameter SI.Volume V_wet = 1E-4 "Wet-side gas volume" annotation (
+    Dialog(group = "Physical parameters")); //Consider calculating this from the already input physical parameters
+  parameter SI.Volume V_dry = V_wet "Dry-side gas volume" annotation (
+    Dialog(group = "Physical parameters")); //Consider calculating this from the already input physical parameters
+  parameter SI.ThermalConductance UA = 1000 "Specific fluid-to-fluid conductance" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter Integer waterIndex(min = 1) = 3 "Water species index; water must be the dependent species";
+  parameter Integer nFibers = 488 "Number of hollow fibers" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter SI.Diameter dFiber_i = 0.9e-3 "Inner fiber diameter" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter SI.Diameter dFiber_o = 1.0e-3 "Outer fiber diameter" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter SI.Diameter dHousing = 39.2e-3 "Inner shell diameter" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter SI.Length L_fiber = 150.8e-3 "Fiber length" annotation (
+    Dialog(group = "Physical parameters"));
+  parameter SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5"Reference water-air diffusion coefficient" annotation (
+    Dialog(group = "Physical parameters"));
+  constant SI.Pressure atm_P = 101325 "Reference pressure";
+  constant SI.Temperature atm_T = 298.15 "Reference temperature";
+  constant SI.MassFlowRate m_flow_min = 1e-9 "Minimum flow rate";
+  constant SI.VolumeFlowRate V_flow_min = 1e-12 "Minimum volume flow rate";
+  constant SI.Velocity k_mass_min = 1e-12 "Minimum mass-transfer coefficient";
+  parameter SI.MassFlowRate m_flow_nom = 0.0004 "Nominal mass flow per train";
+  parameter SI.PressureDifference dp_nominal = 100 "Nominal pressure drop";
+
+  parameter SI.Pressure wet_p_start = wet_medium.p_default "Initial wet-side pressure" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter SI.Pressure dry_p_start = dry_medium.p_default "Initial dry-side pressure" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter SI.Temperature wet_T_start = wet_medium.T_default "Initial wet-side temperature" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter SI.Temperature dry_T_start = dry_medium.T_default "Initial dry-side temperature" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter SI.MassFraction wet_X_start[wet_medium.nX] = wet_medium.X_default "Initial wet-side composition" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter SI.MassFraction dry_X_start[dry_medium.nX] = dry_medium.X_default "Initial dry-side composition" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter Modelica.Fluid.Types.Dynamics massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial "Formulation of mass balances" annotation (
+    Dialog(group = "Dynamics"));
+  parameter Modelica.Fluid.Types.Dynamics energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial "Formulation of energy balances" annotation (
+    Dialog(group = "Dynamics"));
+  
+  SI.MassFlowRate m_permeation_total "Total net water permeatin rate, positive from wet to dry";
+
+  MembraneManifold wetVolume[n](
+    redeclare each package Medium = wet_medium,
+    each nu = zeros(wet_medium.nX),
+    each MMX = wet_medium.MMX,
+    each V = V_wet/n,
+    each R_flow = dp_nominal/(n*m_flow_nom),
+    each useHeatPort = true,
+    each p_start = wet_p_start,
+    each T_start = wet_T_start,
+    each X_start = wet_X_start,
+    each massDynamics = massDynamics,
+    each energyDynamics = energyDynamics);
+  
+  MembraneManifold dryVolume[n](
+    redeclare each package Medium = dry_medium,
+    each nu = zeros(dry_medium.nX),
+    each MMX = dry_medium.MMX,
+    each V = V_dry/n,
+    each R_flow = dp_nominal/(n*m_flow_nom),
+    each useHeatPort = true,
+    each p_start = dry_p_start,
+    each T_start = dry_T_start,
+    each X_start = dry_X_start,
+    each massDynamics = massDynamics,
+    each energyDynamics = energyDynamics);
+    
+  MembraneTransfer transfer[n] (
+    redeclare each package wet_medium = wet_medium,
+    redeclare each package dry_medium = dry_medium,
+    each waterIndex = waterIndex,
+    each nFibers = nFibers,
+    each dFiber_i = dFiber_i,
+    each dFiber_o = dFiber_o,
+    each L_fiber = L_fiber,
+    each D_mem = D_mem,
+    each D_H2O_Air_ref = D_H2O_Air_ref,
+    each atm_P = atm_P,
+    each atm_T = atm_T,
+    each m_flow_min = m_flow_min,
+    each V_flow_min = V_flow_min,
+    each k_mass_min = k_mass_min,
+    each n = n);
+    
+  Modelica.Thermal.HeatTransfer.Components.ThermalConductor conductors[n](each G = UA/n);
+
+  SI.MassFraction transfer_Xi_wet[wet_medium.nXi] = zeros(wet_medium.nXi);
+  SI.MassFraction transfer_Xi_dry[dry_medium.nXi] = zeros(dry_medium.nXi);
+  output SI.MoleFraction phi_wet_out = wet_medium.relativeHumidity(wetVolume[n].medium.state);
+  output SI.MoleFraction phi_dry_out = dry_medium.relativeHumidity(dryVolume[1].medium.state);
+
 equation
-// Diffusion coefficient scaling : Chapman-Enskog theory
-// Gas diffusion is changing based on temperature and pressure.
-  D_H2O_Air = D_H2O_Air_ref*(((wet_medium.temperature(med_state_A_in) + dry_medium.temperature(med_state_B_in))/2)/atm_T)^(1.75)*(atm_P/((wet_medium.pressure(med_state_A_in) + dry_medium.pressure(med_state_B_in))/2));
-// Define input medium states, easy to access and track throughout the code
-  med_state_A_in = wet_medium.setState_phX(portA_in.p, inStream(portA_in.h_outflow), inStream(portA_in.Xi_outflow));
-  med_state_B_in = dry_medium.setState_phX(portB_in.p, inStream(portB_in.h_outflow), inStream(portB_in.Xi_outflow));
-// Compute volumetric flows and ratio of volumetric flow
-  V_dot_a = abs(portA_in.m_flow)/wet_medium.density(med_state_A_in);
-  V_dot_b = abs(portB_in.m_flow)/dry_medium.density(med_state_B_in);
-  VFR = V_dot_a/max(V_dot_b, eps);
-// Compute various geometry features of the humidifier
-  d_hyd_b = 4*(dHousing^2 - nFibers*(dFiber_o^2)/4)/(Modelica.Constants.pi*nFibers*dFiber_o);
-  A_c_shell = Modelica.Constants.pi*(dHousing^2)/4;
-  A_c_fibers_out = nFibers*Modelica.Constants.pi*(dFiber_o^2)/4;
-  A_c_fibers_in = nFibers*Modelica.Constants.pi*(dFiber_i^2)/4;
-  A_c_shell_gap = A_c_shell - A_c_fibers_out;
-  A_mem = nFibers*L_fiber*Modelica.Constants.pi*dFiber_o;
-// Compute velocities
-  v_a = V_dot_a/A_c_fibers_in;
-  v_b = (abs(portB_in.m_flow)/dry_medium.density(med_state_B_in))/A_c_shell_gap;
-// We compute some dimentionless numbers that are used for Sherwood number correlations
-  Re_a = wet_medium.density(med_state_A_in)*v_a*dFiber_i/wet_medium.dynamicViscosity(med_state_A_in);
-  Sc_a = wet_medium.dynamicViscosity(med_state_A_in)/(wet_medium.density(med_state_A_in)*D_H2O_Air);
-  Re_b = dry_medium.density(med_state_B_in)*v_b*d_hyd_b/dry_medium.dynamicViscosity(med_state_B_in);
-  Sc_b = dry_medium.dynamicViscosity(med_state_B_in)/(dry_medium.density(med_state_B_in)*D_H2O_Air);
-// Sherwood numbers
-// Wet side - Gnielinski correlation
-// Dry side - Costello correlation
-  Sh_wet1 = 3.66;
-  Sh_wet2 = 1.615*(Re_a*Sc_a*dFiber_i/L_fiber)^(1/3);
-  Sh_wet = (Sh_wet1^3 + 0.7^3 + (Sh_wet2 - 0.7)^3)^(1/3);
-  Phi = nFibers*dFiber_o^2/dHousing^2;
-  Sh_dry = (0.53 - 0.58*Phi)*Re_b^0.53*Sc_b^0.33;
-// Mass transfer coefficients
-  h_conv_a = Sh_wet*D_H2O_Air/dFiber_i;
-  h_conv_b = max(Sh_dry*D_H2O_Air/d_hyd_b, eps);
-// Resistances (series)
-  R_conv_a = 1.0/(h_conv_a*A_mem);
-  R_conv_b = 1.0/(h_conv_b*A_mem);
-  R_mem = ((dFiber_o - dFiber_i)/2)/(D_mem*A_mem);
-  beta_eff_a = 1/(R_conv_a + R_mem + R_conv_b);
-// NTU and effectiveness
-  NTU = beta_eff_a/max(V_dot_a, eps);
-  eta = if abs(VFR - 1.0) < 1e-6 then NTU/(1 + NTU) else (1 - exp((VFR - 1)*NTU))/(1 - VFR*exp((VFR - 1)*NTU));
-// Permation rate, based on Fick's law
-  m_perm = wet_medium.MMX[3]*eta*(wet_medium.density(med_state_A_in)*(1 - inStream(portA_in.Xi_outflow[1]) - inStream(portA_in.Xi_outflow[2]))/wet_medium.MMX[3] - dry_medium.density(med_state_B_in)*(1 - inStream(portB_in.Xi_outflow[1]) - inStream(portB_in.Xi_outflow[2]))/dry_medium.MMX[3])*V_dot_a;
-// First-order dynamics
-  Xi = m_perm/max(min(abs(portA_in.m_flow), abs(portB_in.m_flow)), eps);
-  der(Xi_state) = (Xi - Xi_state)/tau_perm;
-  m_perm_state = Xi_state*min(abs(portA_in.m_flow), abs(portB_in.m_flow));
-// Mass and pressure balances
-  portA_in.m_flow + portA_out.m_flow = m_perm_state;
-  portB_in.m_flow + portB_out.m_flow = -m_perm_state;
-  portA_in.p = portA_out.p;
-  portB_in.p = portB_out.p;
-// Species balances
-  XiA_out[1] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[1]))/max(abs(portA_out.m_flow), m_flow_min);
-  XiA_out[2] = (abs(portA_in.m_flow)*inStream(portA_in.Xi_outflow[2]))/max(abs(portA_out.m_flow), m_flow_min);
-  XiA_out_3 = 1 - XiA_out[1] - XiA_out[2];
-  XiB_out[1] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[1]))/max(abs(portB_out.m_flow), m_flow_min);
-  XiB_out[2] = (abs(portB_in.m_flow)*inStream(portB_in.Xi_outflow[2]))/max(abs(portB_out.m_flow), m_flow_min);
-  XiB_out_3 = 1 - XiB_out[1] - XiB_out[2];
-// Energy balance (enthalpy flow)
-  if m_perm_state > 0 then
-    perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_A_in.T, Media.Shomate.H2O_G)/wet_medium.MMX[3])*m_perm_state;
-  else
-    perm_enthalpy_flow = (Media.Shomate.enthalpy(med_state_B_in.T, Media.Shomate.H2O_G)/dry_medium.MMX[3])*m_perm_state;
-  end if;
-  if abs(portA_out.m_flow) > m_flow_min then
-    portA_out_h_outflow = (abs(portA_in.m_flow)*inStream(portA_in.h_outflow) - perm_enthalpy_flow)/abs(portA_out.m_flow);
-  else
-    portA_out_h_outflow = inStream(portA_in.h_outflow);
-  end if;
-  if abs(portB_out.m_flow) > m_flow_min then
-    portB_out_h_outflow = (abs(portB_in.m_flow)*inStream(portB_in.h_outflow) + perm_enthalpy_flow)/abs(portB_out.m_flow);
-  else
-    portB_out_h_outflow = inStream(portB_in.h_outflow);
-  end if;
-  med_state_A_out = wet_medium.setState_phX(portA_out.p, portA_out_h_outflow, XiA_out);
-  med_state_B_out = dry_medium.setState_phX(portB_out.p, portB_out_h_outflow, XiB_out);
-// Assign to ports
-  portA_out.h_outflow = wet_medium.specificEnthalpy(med_state_A_out);
-  portA_out.Xi_outflow = XiA_out;
-  portB_out.h_outflow = dry_medium.specificEnthalpy(med_state_B_out);
-  portB_out.Xi_outflow = XiB_out;
-  portA_in.h_outflow = inStream(portA_out.h_outflow);
-  portA_in.Xi_outflow = inStream(portA_out.Xi_outflow);
-  portB_in.h_outflow = inStream(portB_out.h_outflow);
-  portB_in.Xi_outflow = inStream(portB_out.Xi_outflow);
-  phi_A_out = wet_medium.relativeHumidity(med_state_A_out);
-  phi_B_out = dry_medium.relativeHumidity(med_state_B_out);
-  annotation(
-    Icon(coordinateSystem(preserveAspectRatio = false)),
-    Diagram,
-    Documentation(info = "<html><head></head><body><h1>Hollow Fiber Membrane Humidifier Model</h1>
+  
+  m_permeation_total = sum({transfer[c].m_transfer for c in 1:n});
+  
+  connect(wetVolume[1].port_a, portA_in);
+  connect(wetVolume[n].port_b, portA_out);
+  connect(dryVolume[n].port_b, portB_in);
+  connect(dryVolume[1].port_a, portB_out);
+  for i in 1:n-1 loop
+    connect(wetVolume[i].port_b, wetVolume[i + 1].port_a);
+    connect(dryVolume[i].port_b, dryVolume[i + 1].port_a);
+  end for;
+  for i in 1:n loop
+    wetVolume[i].r = 0;
+    dryVolume[i].r = 0;
+    connect(wetVolume[i].heatPort, conductors[i].port_a);
+    connect(dryVolume[i].heatPort, conductors[i].port_b);
 
-<p>
-This model represents a hollow fiber membrane humidifier based on the
-Number of Transfer Units (NTU) method for mass exchangers, as described in
-Pollak et al. (2023).
-The model simulates water vapor transport between a wet and dry gas stream
-in a counterflow configuration.
-</p>
+    transfer[i].wetState = wetVolume[i].medium.state;
+    transfer[i].dryState = dryVolume[i].medium.state;
 
-<h2>Model Overview</h2>
+    transfer[i].wetXi = wetVolume[i].medium.Xi;
+    transfer[i].dryXi = dryVolume[i].medium.Xi;
 
-<p>
-The humidifier is modeled as a lumped parameter mass exchanger where mass transfer
-is driven by a concentration difference of water vapor across a selective membrane.
-Only water vapor is assumed to permeate the membrane.
-</p><p>The model works by:</p><p>1. Calculate the geometry of the humidifier. The contact area for mass transfer is established.&nbsp;</p><p>2. The efficiency of mass transfer through the fibers are calculated using Reynolds number (describing flow regime) and Schmidt number (momentum vs diffusion).&nbsp;</p><p>3. Correlations are used to calculate mass transfer coefficient by Sherwood number. These are used to find how fast mass moves between fluid and membrane.&nbsp;</p><p>4. A resistive network describing the resistance for water vapor to move from the wet stream to the dry stream is established.&nbsp;</p><p>5. Based on flow rate, the resistance and geometry, we calculate the NTU. The NTU is the ratio of mass transfer capability to flow rate.&nbsp;</p><p>6. Then the amount of water moving through the membrane is calculated.&nbsp;</p><p>7. A dynamic effect is added by a first order transfer function.&nbsp;</p><p>8. Then mass, pressure, species, and energy is balanced so that the same that goes into the humidifier comes out.&nbsp;</p><ol>
+    transfer[i].wetFlow = wetVolume[i].port_a.m_flow;
+    transfer[i].dryFlow = dryVolume[i].port_a.m_flow;
 
-</ol>
+    wetVolume[i].membrane_m_flow = -transfer[i].m_transfer;
+    dryVolume[i].membrane_m_flow = transfer[i].m_transfer;
 
+    wetVolume[i].membrane_h_outflow = transfer[i].h_transfer;
+    dryVolume[i].membrane_h_outflow = transfer[i].h_transfer;
 
+    wetVolume[i].membrane_Xi = transfer[i].Xi_transfer;
+    dryVolume[i].membrane_Xi = transfer[i].Xi_transfer;
+    
+  end for;
 
-<h2>Governing Equations</h2>
+  annotation(Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>n</code></td><td>Integer</td><td>1</td><td>5</td><td>Number of axial volumes</td></tr>
+<tr><td><code>V_wet</code></td><td>SI.Volume</td><td>m3</td><td>1E-4</td><td>Wet-side gas volume</td></tr>
+<tr><td><code>V_dry</code></td><td>SI.Volume</td><td>m3</td><td>V_wet</td><td>Dry-side gas volume</td></tr>
+<tr><td><code>UA</code></td><td>SI.ThermalConductance</td><td>W/K</td><td>1000</td><td>Specific fluid-to-fluid conductance</td></tr>
+<tr><td><code>D_mem</code></td><td>SI.DiffusionCoefficient</td><td>m2/s</td><td>3.6e-7</td><td>Membrane diffusion coefficient</td></tr>
+<tr><td><code>waterIndex</code></td><td>Integer</td><td>1</td><td>3</td><td>Water species index; water must be the dependent species</td></tr>
+<tr><td><code>nFibers</code></td><td>Integer</td><td>1</td><td>488</td><td>Number of hollow fibers</td></tr>
+<tr><td><code>dFiber_i</code></td><td>SI.Diameter</td><td>m</td><td>0.9e-3</td><td>Inner fiber diameter</td></tr>
+<tr><td><code>dFiber_o</code></td><td>SI.Diameter</td><td>m</td><td>1.0e-3</td><td>Outer fiber diameter</td></tr>
+<tr><td><code>dHousing</code></td><td>SI.Diameter</td><td>m</td><td>39.2e-3</td><td>Inner shell diameter</td></tr>
+<tr><td><code>L_fiber</code></td><td>SI.Length</td><td>m</td><td>150.8e-3</td><td>Fiber length</td></tr>
+<tr><td><code>D_H2O_Air_ref</code></td><td>SI.DiffusionCoefficient</td><td>m2/s</td><td>2.6e-5</td><td>Reference water-air diffusion coefficient</td></tr>
+<tr><td><code>m_flow_nom</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>0.0004</td><td>Nominal mass flow per train</td></tr>
+<tr><td><code>dp_nominal</code></td><td>SI.PressureDifference</td><td>Pa</td><td>100</td><td>Nominal pressure drop</td></tr>
+<tr><td><code>wet_p_start</code></td><td>SI.Pressure</td><td>Pa</td><td>wet_medium.p_default</td><td>Initial wet-side pressure</td></tr>
+<tr><td><code>dry_p_start</code></td><td>SI.Pressure</td><td>Pa</td><td>dry_medium.p_default</td><td>Initial dry-side pressure</td></tr>
+<tr><td><code>wet_T_start</code></td><td>SI.Temperature</td><td>K</td><td>wet_medium.T_default</td><td>Initial wet-side temperature</td></tr>
+<tr><td><code>dry_T_start</code></td><td>SI.Temperature</td><td>K</td><td>dry_medium.T_default</td><td>Initial dry-side temperature</td></tr>
+<tr><td><code>wet_X_start</code></td><td>SI.MassFraction[wet_medium.nX]</td><td>1</td><td>wet_medium.X_default</td><td>Initial wet-side composition</td></tr>
+<tr><td><code>dry_X_start</code></td><td>SI.MassFraction[dry_medium.nX]</td><td>1</td><td>dry_medium.X_default</td><td>Initial dry-side composition</td></tr>
+<tr><td><code>massDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td>Modelica.Fluid.Types.Dynamics.FixedInitial</td><td>Formulation of mass balances</td></tr>
+<tr><td><code>energyDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td>Modelica.Fluid.Types.Dynamics.FixedInitial</td><td>Formulation of energy balances</td></tr></tbody></table><h2>2. Model description</h2><p>This model implements the Pollak et al. hollow-fiber membrane humidifier as two counter-current trains of <code>n</code> discretised fluid volumes (<code>wetVolume</code> on the fiber side and <code>dryVolume</code> on the shell side). Each paired cell exchanges water vapor through a <code>MembraneTransfer</code> block and heat through a <code>ThermalConductor</code>. The physical gas volumes provide the only dynamic holdup; there is no artificial first-order permeation state.</p><div><br></div><div>Positive <code>transfer[i].m_transfer</code> moves water from the wet train to the dry train. The signed transfer, its carried enthalpy, and its composition are connected to both cell volumes through their <code>membrane_m_flow</code>, <code>membrane_h_outflow</code>, and <code>membrane_Xi</code> inputs, where they enter the standard mass, species, and enthalpy balances implemented by <code>MembraneManifold</code>. Port outlet states are therefore computed by the cell media rather than assigned directly by the humidifier.</div><h3>Assumptions</h3><ul><li>Gas-phase water is the dependent medium species, selected by <code>waterIndex</code>.</li><li>The wet train flows from <code>portA_in</code> to <code>portA_out</code> and the dry train counter-currently from <code>portB_in</code> to <code>portB_out</code>.</li><li>Pressure drop is represented by each cell's flow resistance, sized from <code>dp_nominal</code> and <code>m_flow_nom</code>.</li><li>The Pollak Sherwood correlations and membrane resistance are applied locally to each axial cell by the instantiated <code>MembraneTransfer</code> components.</li></ul><h2>3. Governing equations and references</h2><p>The following representative equation is implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>m_permeation_total = sum({transfer[c].m_transfer for c in 1:n});</pre><p>Reference: Pollak et al., <i>Steady state and dynamic simulation of a small-scale hollow fiber membrane humidifier</i>.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>m_permeation_total</code></td><td>Output</td><td>Real</td><td>kg/s</td><td>Total net water permeation rate, positive from wet to dry</td></tr>
+<tr><td><code>phi_wet_out</code></td><td>Output</td><td>Real</td><td>1</td><td>Wet-side outlet relative humidity (mole fraction)</td></tr>
+<tr><td><code>phi_dry_out</code></td><td>Output</td><td>Real</td><td>1</td><td>Dry-side outlet relative humidity (mole fraction)</td></tr></tbody></table></body></html>"),
 
-<h3>NTU Definition</h3>
+  Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Line(points = {{-40, 80}, {-40, -80}}, thickness = 0.5), Line(points = {{40, 80}, {40, -80}}, thickness = 0.5), Line(points = {{-40, 80}, {-34, 80}}, thickness = 0.5), Line(points = {{-40, -80}, {-34, -80}}, thickness = 0.5), Line(points = {{34, 80}, {40, 80}}, thickness = 0.5), Line(points = {{34, -80}, {40, -80}}, thickness = 0.5), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, 60}, {20, 40}}), Ellipse(origin = {-6, 50}, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Ellipse(origin = {6, 50}, rotation = 180, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Line(origin = {0, 50}, points = {{6, 3}, {-6, -3}}), Line(origin = {0, 50}, points = {{6, -3}, {-6, 3}}), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -40}, {20, -60}}), Ellipse(origin = {-6, -50}, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Ellipse(origin = {6, -50}, rotation = 180, extent = {{-3, 3}, {3, -3}}, startAngle = 90, endAngle = 270, closure = EllipseClosure.None), Line(origin = {0, -50}, points = {{6, 3}, {-6, -3}}), Line(origin = {0, -50}, points = {{6, -3}, {-6, 3}}), Line(points = {{-100, 50}, {-20, 50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{20, 50}, {100, 50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{100, -50}, {20, -50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{-20, -50}, {-100, -50}}, color = {0, 127, 255}, thickness = 0.5, arrow = {Arrow.None, Arrow.Open}), Line(points = {{-8, 40}, {-8, 12}}, color = {255, 0, 0}, thickness = 0.5), Rectangle(fillColor = {192, 192, 192}, fillPattern = FillPattern.Backward, extent = {{-13, 12}, {-3, -12}}), Line(points = {{-8, -12}, {-8, -40}}, color = {255, 0, 0}, thickness = 0.5), Line(points = {{10, 40}, {10, 12}}, color = {0, 0, 255}, thickness = 0.5), Rectangle(lineColor = {0, 0, 255}, fillColor = {170, 213, 255}, fillPattern = FillPattern.Forward, extent = {{5, 12}, {15, -12}}), Line(points = {{10, 8}, {10, -8}}, color = {0, 0, 255}, thickness = 0.75, arrow = {Arrow.None, Arrow.Filled}), Line(points = {{10, -12}, {10, -40}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-25, 75}, {25, 63}}, textString = "V_wet/n"), Text(extent = {{-25, -63}, {25, -75}}, textString = "V_dry/n"), Text(extent = {{-38, 8}, {-14, -8}}, textString = "UA/n", horizontalAlignment = TextAlignment.Right), Text(extent = {{17, 12}, {56, -2}}, textString = "Membrane", horizontalAlignment = TextAlignment.Left), Text(textColor = {0, 0, 255}, extent = {{17, -2}, {62, -16}}, textString = "m_H2O", horizontalAlignment = TextAlignment.Left), Text(textColor = {0, 127, 255}, extent = {{-20, 94}, {20, 82}}, textString = "Wet side"), Text(textColor = {0, 127, 255}, extent = {{-20, -82}, {20, -94}}, textString = "Dry side"), Line(origin = {-18, 0},points = {{10, 8}, {10, -8}}, color = {238, 46, 47}, thickness = 0.75, arrow = {Arrow.Filled, Arrow.Filled})}));
 
-<pre>NTU = βeff · A / V̇a
-</pre>
-
-<p>
-where βeff is the effective mass transfer coefficient and A is the membrane area.
-</p>
-
-<h3>Mass Transfer Effectiveness</h3>
-
-<p>
-For counterflow operation, the effectiveness is given by:</p><pre>η =   NTU / (1 + NTU),                  if VFR = 1;</pre><pre>      (1 − exp((VFR − 1) · NTU)) /
-      (1 − VFR · exp((VFR − 1) · NTU)), otherwise
-</pre>
-
-<h3>Permeation Rate</h3>
-
-<p>
-The steady-state water vapor transfer is calculated using:
-</p>
-
-<pre>ṁperm = M_H2O · η · (c_b − c_a) · V̇a
-</pre>
-
-<p>
-where c_a and c_b are the water vapor concentrations on the wet and dry side.
-</p>
-
-<h2>Mass Transfer</h2>
-
-<p>
-The overall mass transfer resistance is modeled as three resistances in series:
-</p>
-
-<pre>Reff = Rconv,wet + Rmem + Rconv,dry
-βeff = 1 / Reff
-</pre>
-
-<p>
-Convective resistances are calculated using Sherwood correlations:
-</p>
-
-<ul>
-<li>Wet side: Gnielinski-type correlation for tube flow</li>
-<li>Dry side: Costello correlation for shell-side flow</li>
-</ul>
-
-<h2>Dynamic Extension</h2>
-
-<p>
-A first-order dynamic model is introduced to capture transient effects:
-</p>
-
-<pre>Ξ = ṁperm / min(ṁa, ṁb)
-
-dΞstate/dt = (Ξ − Ξstate) / τperm
-</pre>
-
-<p>
-The dynamic permeation rate is:
-</p>
-
-<pre>ṁperm,state = Ξstate · min(ṁa, ṁb)
-</pre>
-
-<p>
-This captures observed transient behavior.
-</p>
-
-<h2>Assumptions</h2>
-
-<ul>
-<li>Flow only from in to out ports for both wet and dry side</li><li>Only water vapor is assumed to permeate the membrane</li>
-<li>No pressure drop is considered</li>
-<li>No heat transfer is included</li>
-<li>Ideal mixture behavior is assumed</li>
-<li>Uniform flow distribution across fibers</li></ul><div><h2>Future developement / Improvements</h2><ul><li>No volume inside humidifier. This introduces instant changes in outflow conditions for wet side. Wet side is normally vented for fuel cell applications, but still makes it difficult to validate the whole model.&nbsp;</li><li>Heat transfer between the streams and pressure drop should be added.&nbsp;</li><li>Effect of liquid water (exhaust of FC) should be investigated.&nbsp;</li><li>Medium handling can be generalized. Currently \"hardcoded\" solutions thats fits the MoistAir model in VirtualFCS, but will likely crash with other mediums. Species indexes is i.e. hardcoded.&nbsp;</li><li>Support flow reversal. Some manual back-assignments for the ports are included now using inStream() operator. Likely crashing if flow reversal is attempted.&nbsp;</li><li>Could be split into submodels for NTU, mass transfer, geometry.. Would be more adaptable in future.&nbsp;</li></ul></div><ul>
-</ul>
-
-<h2>References</h2>
-
-<p>
-Based on:
-<br>
-Pollak et al. (2023),
-<i>Steady State and Dynamic Simulation of a Small-Scale Hollow Fiber Membrane Humidifier</i>.
-</p>
-
-</body></html>", revisions = "<html><head></head><body>Initial development: 06.05.2026<div><br></div><div>Last update: 06.05.2026</div></body></html>"));
 end Humidifier;
