@@ -1,45 +1,32 @@
 within VirtualFCS.Examples.VehicleExamples;
 model RangeExtenderHybridVehicle
-  extends Modelica.Icons.Example;
-  inner Modelica.Fluid.System system annotation (
-    Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable VirtualFCS.Powertrains.RangeExtenderPowerTrain powerTrain(C_bat_pack=50, SOC_init=0.5, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation (
-    Placement(visible = true, transformation(origin={58,3.55271e-15},    extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN="Mirai", useRegenerativeBreaking = true) annotation (
-    Placement(visible = true, transformation(origin={-2,0},   extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  VirtualFCS.Vehicles.DriveCycle driveCycle(cycle= "NEDC") annotation (
-    Placement(visible = true, transformation(origin = {-60, -6.66134e-16}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-
+  extends PartialVehicleExample(speed(cycle="NEDC"),
+                                vehicle(VN = "Mirai", useRegenerativeBreaking = true),
+                                redeclare Powertrains.RangeExtenderPowerTrain powertrain(C_bat_pack=50, SOC_init=0.5, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320));
 
   Real fuel_consumption(start = 0) "The total fuel consumption at the end of simulation";
   Modelica.Units.SI.Mass hydrogen_mass_init(start = 0) "Initial value of hydrogen mass in tank";
   Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
 equation
   when time > 0.1 then
-    hydrogen_mass_init = powerTrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m;
+    hydrogen_mass_init = powertrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m;
   end when;
   when terminal() then
-    fuel_consumption = (hydrogen_mass_init - powerTrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m)/max((vehicleProfile.x * 0.00001), 0.01);
+    fuel_consumption = (hydrogen_mass_init - powertrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m)/max((vehicle.x * 0.00001), 0.01);
   end when;
-  if vehicleProfile.useRegenerativeBreaking then
-    if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (powerTrain.Power_del_DC_DC *(1 - (powerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)),0);
+  if vehicle.useRegenerativeBreaking then
+    if vehicle.P > 0 then
+      eta_vehicle = max(((vehicle.P) / max((vehicle.P + (powertrain.Power_del_DC_DC *(1 - (powertrain.eta_drivetrain))) + (vehicle.F_drag * vehicle.v) + (vehicle.F_accel * vehicle.v) + (vehicle.F_roll * vehicle.v) + (vehicle.P * (1 - vehicle.eff_drivetrain))), 0.00001)),0);
     else
-      eta_vehicle = max(((abs(vehicleProfile.P)) / max(abs(vehicleProfile.P) + (abs(powerTrain.Power_del_DC_DC) *(1 - (powerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (abs(vehicleProfile.F_accel) * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (abs(vehicleProfile.P) * (1 - vehicleProfile.eff_brake)), 0.00001)), 0);
+      eta_vehicle = max(((abs(vehicle.P)) / max(abs(vehicle.P) + (abs(powertrain.Power_del_DC_DC) *(1 - (powertrain.eta_drivetrain))) + (vehicle.F_drag * vehicle.v) + (abs(vehicle.F_accel) * vehicle.v) + (vehicle.F_roll * vehicle.v) + (abs(vehicle.P) * (1 - vehicle.eff_brake)), 0.00001)), 0);
     end if;
   else
-    if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (powerTrain.Power_del_DC_DC *(1 - (powerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)), 0);
+    if vehicle.P > 0 then
+      eta_vehicle = max(((vehicle.P) / max((vehicle.P + (powertrain.Power_del_DC_DC *(1 - (powertrain.eta_drivetrain))) + (vehicle.F_drag * vehicle.v) + (vehicle.F_accel * vehicle.v) + (vehicle.F_roll * vehicle.v) + (vehicle.P * (1 - vehicle.eff_drivetrain))), 0.00001)), 0);
     else
       eta_vehicle = 0;
     end if;
   end if;
-  connect(driveCycle.y, vehicleProfile.vehicleVelocity) annotation (
-    Line(points={{-36.9,0},{-27.2,0}},  color = {0, 0, 127}));
-  connect(vehicleProfile.pin_p, powerTrain.pin_p) annotation (
-    Line(points={{16.9,10.5},{42,10.5},{42,10},{40,10}},    color = {0, 0, 255}));
-  connect(vehicleProfile.pin_n, powerTrain.pin_n) annotation (
-    Line(points={{16.9,-10.5},{42,-10.5},{42,-10},{40,-10}},    color = {0, 0, 255}));
   annotation(experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-04, Interval = 1));
-annotation(Documentation(info = "<html><p>This example applies the NEDC drive cycle to a Mirai-profile range-extender vehicle. A battery starting at SOC = 0.5 (50 Ah, 320 V nominal, 250 V to 360 V limits) supplies the drive while the fuel-cell generator extends the operating range.</p></html>"));
+annotation(Documentation(info = "<html><p>This example applies the NEDC drive cycle to a Mirai-vehicle range-extender vehicle. A battery starting at SOC = 0.5 (50 Ah, 320 V nominal, 250 V to 360 V limits) supplies the drive while the fuel-cell generator extends the operating range.</p></html>"));
 end RangeExtenderHybridVehicle;
