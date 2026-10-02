@@ -1,11 +1,10 @@
 within VirtualFCS.Examples.VehicleExamples;
 model BatteryElectricVehicle
   extends PartialVehicleExample(speed(cycle="NEDC"),
-                                vehicle(VN = "Mirai"),
                                 powertrain(C_bat_pack = 200, SOC_init = 0.9, V_max_bat_pack = 360, V_min_bat_pack = 300, V_nom_bat_pack = 320));
   Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
 equation
-  if vehicle.useRegenerativeBreaking then
+  if vehicle.useRegenerativeBraking then
     if vehicle.P > 0 then
       eta_vehicle = max(((vehicle.P) / max((vehicle.P + (powertrain.Power_del_DC_DC * (1 - (powertrain.eta_drivetrain))) + (vehicle.F_drag * vehicle.v) + (vehicle.F_accel * vehicle.v) + (vehicle.F_roll * vehicle.v) + (vehicle.P * (1 - vehicle.eff_drivetrain))), 0.00001)), 0);
     else

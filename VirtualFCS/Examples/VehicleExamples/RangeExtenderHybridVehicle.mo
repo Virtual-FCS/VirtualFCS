@@ -1,7 +1,6 @@
 within VirtualFCS.Examples.VehicleExamples;
 model RangeExtenderHybridVehicle
   extends PartialVehicleExample(speed(cycle="NEDC"),
-                                vehicle(VN = "Mirai", useRegenerativeBreaking = true),
                                 redeclare Powertrains.RangeExtenderPowerTrain powertrain(C_bat_pack=50, SOC_init=0.5, V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320));
 
   Real fuel_consumption(start = 0) "The total fuel consumption at the end of simulation";
@@ -14,7 +13,7 @@ equation
   when terminal() then
     fuel_consumption = (hydrogen_mass_init - powertrain.fuelCellSystem.subSystemHydrogen.tankHydrogen.m)/max((vehicle.x * 0.00001), 0.01);
   end when;
-  if vehicle.useRegenerativeBreaking then
+  if vehicle.useRegenerativeBraking then
     if vehicle.P > 0 then
       eta_vehicle = max(((vehicle.P) / max((vehicle.P + (powertrain.Power_del_DC_DC *(1 - (powertrain.eta_drivetrain))) + (vehicle.F_drag * vehicle.v) + (vehicle.F_accel * vehicle.v) + (vehicle.F_roll * vehicle.v) + (vehicle.P * (1 - vehicle.eff_drivetrain))), 0.00001)),0);
     else
