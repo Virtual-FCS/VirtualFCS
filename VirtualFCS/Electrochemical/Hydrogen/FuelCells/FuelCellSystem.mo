@@ -33,7 +33,7 @@ model FuelCellSystem
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {1, -47}, extent = {{-11, -11}, {11, 11}})));
   replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(subSystemHydrogenControl(pressure_H2_set = p_H2_set), redeclare package Anode_Medium = Anode_Medium)  annotation(
-    Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
+    Placement(transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
 equation
@@ -54,15 +54,13 @@ equation
   connect(fuelCell.coolant_in, subSystemCooling.to_stack) annotation(
     Line(points = {{-8, -3}, {-8, -18}, {-6, -18}, {-6, -34}}, color = {0, 127, 255}));
   connect(subSystemHydrogen.toStack, fuelCell.anode_in) annotation(
-    Line(points = {{-58, 26}, {-40, 26}, {-40, 40}, {-29, 40}}, color = {0, 127, 255}));
+    Line(points = {{-58, 28}, {-40, 28}, {-40, 40}, {-29, 40}}, color = {0, 127, 255}));
   connect(subSystemHydrogen.fromStack, fuelCell.anode_out) annotation(
-    Line(points = {{-58, 14}, {-40, 14}, {-40, 2}, {-29, 2}}, color = {0, 127, 255}));
+    Line(points = {{-58, 12}, {-40, 12}, {-40, 2}, {-29, 2}}, color = {0, 127, 255}));
   connect(subSystemAir.toStack, fuelCell.cathode_in) annotation(
     Line(points = {{58, 26}, {40, 26}, {40, 40}, {29, 40}}, color = {0, 127, 255}));
   connect(subSystemAir.fromStack, fuelCell.cathode_out) annotation(
     Line(points = {{58, 14}, {40, 14}, {40, 2}, {29, 2}}, color = {0, 127, 255}));
-  connect(currentSensor.i, subSystemHydrogen.stackCurrent) annotation(
-    Line(points = {{-50, 70}, {-70, 70}, {-70, 32}}, color = {0, 0, 127}));
   connect(currentSensor.i, subSystemAir.stackCurrent) annotation(
     Line(points = {{-50, 70}, {-70, 70}, {-70, 84}, {65, 84}, {65, 31}}, color = {0, 0, 127}));
   connect(subSystemAir.pin_p, batterySystem.pin_p) annotation(
@@ -73,10 +71,12 @@ equation
     Line(points = {{6, -56}, {6, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-4, -56}, {-4, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
-  connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation(
-    Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-78, 24}, {-92, 24}, {-92, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
+  connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
+  connect(currentSensor.i, subSystemHydrogen.stackCurrent) annotation(
+    Line(points = {{-50, 70}, {-70, 70}, {-70, 32}}, color = {0, 0, 127}));
 protected
   Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
     Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));

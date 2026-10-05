@@ -2,7 +2,7 @@ within VirtualFCS.SubSystems.Hydrogen;
 
 model SubSystemHydrogen
   outer Modelica.Fluid.System system "System properties";
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialMedium;
   parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
   parameter Integer N_cells = 180 "FC stack number of cells";
   parameter Modelica.Units.SI.VolumeFlowRate V_flow_HRB_min = 1e-7 "Minimum volume flow of the Hydrogen Recirculation Blower";
@@ -83,8 +83,8 @@ equation
   connect(temp_h2_from_stack.port, fromStack) annotation(
     Line(points = {{102, -64}, {100, -64}, {100, -80}, {152, -80}}, color = {0, 127, 255}));
   annotation(
-    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-27, 58}, extent = {{-17, 6}, {25, -8}}, textString = "Pressure regulator"), Text(origin = {54, 23}, extent = {{-28, 13}, {42, -15}}, textString = "Hydrogen recirculation blower")}),
-    Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H2")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
+    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 150}}, initialScale = 0.1), graphics = {Text(origin = {-27, 58}, extent = {{-17, 6}, {25, -8}}, textString = "Pressure regulator"), Text(origin = {54, 23}, extent = {{-28, 13}, {42, -15}}, textString = "Hydrogen recirculation blower")}),
+    Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H₂")}),
     Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and input-side physical interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>A_tank_H2</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td>2</td><td>H2 tank surface area</td></tr>
 <tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td>180</td><td>FC stack number of cells</td></tr>
 <tr><td><code>V_flow_HRB_min</code></td><td>Modelica.Units.SI.VolumeFlowRate</td><td>-</td><td>1e-7</td><td>Minimum volume flow of the Hydrogen Recirculation Blower</td></tr>
