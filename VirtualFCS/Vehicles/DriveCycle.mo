@@ -19,7 +19,7 @@ protected
                        fileName = if cycle == "Custom" then custom_fileName else loadResource("modelica://VirtualFCS.Resources.DataDriveCycles/"+cycle+".mat"), 
                        smoothness = Modelica.Blocks.Types.Smoothness.LinearSegments, 
                        tableName = if cycle == "Custom" then custom_tableName else cycle, 
-                       tableOnFile = true) annotation (
+                       tableOnFile = true, timeEvents = Modelica.Blocks.Types.TimeEvents.AtDiscontinuities) annotation (
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
 
 equation
