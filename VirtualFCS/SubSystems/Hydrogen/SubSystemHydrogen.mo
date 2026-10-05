@@ -33,7 +33,7 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-98, 50}, extent = {{-20, 20}, {20, -20}}, rotation = -90)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -50}, extent = {{13, 14}, {-13, -14}}, rotation = -90)));
-  Modelica.Fluid.Valves.ValveCompressible valveH2Purge(redeclare package Medium = Anode_Medium, allowFlowReversal = true, checkValve = true, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, p_nominal = 2.5*100000) annotation(
+  Modelica.Fluid.Valves.ValveLinear valveH2Purge(redeclare package Medium = Anode_Medium, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01) annotation(
     Placement(transformation(origin = {-36, -80}, extent = {{14, -14}, {-14, 14}})));
   VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-28, 50}, extent = {{-10, 10}, {10, -10}})));
