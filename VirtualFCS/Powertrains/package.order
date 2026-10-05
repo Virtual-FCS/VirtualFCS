@@ -1,6 +1,5 @@
 Examples
-BatteryPowerTrain
-ECMSPowerTrain
-RangeExtenderPowerTrain_woDeg
 PowertrainInterface
+BatteryPowertrain
+RangeExtenderPowertrain_ECMS
 RangeExtenderPowertrain

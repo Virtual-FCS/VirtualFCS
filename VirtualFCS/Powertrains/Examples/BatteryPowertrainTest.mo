@@ -4,7 +4,7 @@ model BatteryPowertrainTest
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation(
     Placement(transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}})));
-  replaceable BatteryPowerTrain powerTrain(SOC_init = 0.7)  annotation(
+  replaceable BatteryPowertrain powerTrain(batterySystem(SOC_init = 0.8))  annotation(
     Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}})));
   Electrical.PowerSource powerSource annotation(
     Placement(transformation(origin = {-30, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));

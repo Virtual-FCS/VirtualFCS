@@ -1,0 +1,8 @@
+within VirtualFCS.Examples.VehicleExamples;
+
+model RangeExtenderHybridVehicle_ECMS
+  extends RangeExtenderHybridVehicle(redeclare Powertrains.RangeExtenderPowertrain_ECMS rangeExtenderPowertrain);
+
+equation
+
+end RangeExtenderHybridVehicle_ECMS;
