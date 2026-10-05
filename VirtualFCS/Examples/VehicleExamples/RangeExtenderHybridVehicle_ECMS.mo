@@ -1,7 +1,7 @@
 within VirtualFCS.Examples.VehicleExamples;
 
 model RangeExtenderHybridVehicle_ECMS
-  extends RangeExtenderHybridVehicle(redeclare Powertrains.RangeExtenderPowertrain_ECMS rangeExtenderPowertrain);
+  extends BatteryElectricVehicle(redeclare Powertrains.RangeExtenderPowertrain_ECMS powertrain(batterySystem(C_bat_pack = 10, V_max_bat_pack=600)));
 
 equation
 
