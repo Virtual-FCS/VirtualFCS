@@ -37,7 +37,7 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-36, -80}, extent = {{14, -14}, {-14, 14}})));
   VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-28, 50}, extent = {{-10, 10}, {10, -10}})));
-  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium, eta_is = 0.35) annotation(
+  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium, eta = 0.35) annotation(
     Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
   Modelica.Fluid.Sensors.Temperature temp_h2_from_stack(redeclare package Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {102, -54}, extent = {{-10, -10}, {10, 10}})));
