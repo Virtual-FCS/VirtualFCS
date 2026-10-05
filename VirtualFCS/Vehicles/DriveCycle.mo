@@ -41,7 +41,7 @@ model DriveCycle
 protected
   Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, 
                                                         fileName = profile_file(cycle, custom_fileName), 
-                                                        smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments, 
+                                                        smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative, 
                                                         tableName = profile_variable(cycle, custom_tableName), 
                                                         tableOnFile = true) annotation (
     Placement(visible = true, transformation(origin = {-1, 0}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
