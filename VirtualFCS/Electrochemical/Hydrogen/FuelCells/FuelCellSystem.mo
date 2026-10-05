@@ -21,7 +21,8 @@ model FuelCellSystem
   Modelica.Units.SI.Power Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v) "Power consumed by the BOP components";
   Real eta_sys_HHV(unit = "100") "Fuel cell system efficiency High Heating Value";
   Real eta_sys_LHV(unit = "100") "Fuel cell system efficiency Low Heating Value";
-
+  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
+    Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation (
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
@@ -36,6 +37,8 @@ model FuelCellSystem
     Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {65, -85}, extent = {{-5, -5}, {5, 5}})));
 equation
   eta_sys_HHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2HHV)*100, eta_max);
   eta_sys_LHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2LHV)*100, eta_max);
@@ -77,9 +80,10 @@ equation
     Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-78, 24}, {-92, 24}, {-92, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{46, -74}, {66, -74}, {66, -80}}, color = {0, 0, 255}));
 protected
-  Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temperatureSensor annotation (
-    Placement(transformation(origin = {-40, -20}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  
   Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor annotation (
     Placement(transformation(origin = {-40, 70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   annotation (
