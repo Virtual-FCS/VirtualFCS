@@ -63,17 +63,9 @@ equation
   F_T = F_drag + F_accel + F_roll;
   P = F_T*v;
   if useRegenerativeBreaking then
-    if P >= 0 then
-      powerOutput = P;
-    else
-      powerOutput = P*eff_brake;
-    end if;
+    powerOutput = noEvent(if P >= 0 then P else P*eff_brake);
   else
-    if P >= 0 then
-      powerOutput = P;
-    else
-      powerOutput = 0;
-    end if;
+    powerOutput = noEvent(if P >= 0 then P else 0);
   end if;
   connect(pin_p, powerSource.p) annotation(
     Line(points = {{72, 34}, {40, 34}, {40, 10}}, color = {0, 0, 255}));
