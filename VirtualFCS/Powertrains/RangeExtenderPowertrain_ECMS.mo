@@ -4,7 +4,7 @@ model RangeExtenderPowertrain_ECMS
   
 
 extends Powertrains.BatteryPowertrain;
-  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Cathode_Medium = Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
 
   parameter Integer N_cells = 42 "Number of cells in stack";

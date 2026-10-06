@@ -3,7 +3,7 @@ within VirtualFCS.Powertrains;
 model RangeExtenderPowertrain
 
   extends Powertrains.BatteryPowertrain;
-  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Cathode_Medium = Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
 
   Electrochemical.Hydrogen.FuelCells.FuelCellSystem fuelCellSystem(redeclare package Cathode_Medium = Cathode_Medium, redeclare package Anode_Medium = Anode_Medium, p_air_set = 200000, p_H2_set = 200000, N_cells = 42, V_tank_H2 = 0.606, p_tank_H2 = 3000000, redeclare SubSystems.Air.SubSystemAir subSystemAir(redeclare VirtualFCS.Fluid.CompressorSimple compressor(redeclare package Medium = Cathode_Medium), p_set = 2e5, redeclare VirtualFCS.Fluid.Humidifier humidifier(redeclare package dry_medium = Cathode_Medium, redeclare package wet_medium = Cathode_Medium, L_fiber = 0.3, UA = 40, V_dry = 0.003, V_wet = 0.001, dFiber_i(displayUnit = "mm"), dFiber_o(displayUnit = "mm") = 0.0011, dHousing(displayUnit = "mm") = 0.14, dp_nominal = 1e4, m_flow_nom = 0.1, n = 1, nFibers = 4000)), fuelCell(redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossSimple activation, anode(R_flow = 10000), cathode(R_flow = 10000), redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.MassTransportLossSimple mass_transport, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.OhmicResistance ohmic, redeclare VirtualFCS.Electrochemical.Hydrogen.ECM.VSourceNernst v_source))  annotation(
