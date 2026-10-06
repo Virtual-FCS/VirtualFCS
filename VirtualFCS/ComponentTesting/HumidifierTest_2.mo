@@ -11,13 +11,13 @@ extends Modelica.Icons.Example;
   
   replaceable package dry_medium = VirtualFCS.Media.CathodeAir;
   replaceable package wet_medium = VirtualFCS.Media.CathodeAir;
-  Modelica.Fluid.Sources.MassFlowSource_T dry_source(redeclare package Medium = dry_medium, m_flow = 0.0004, nPorts = 1, X = {0.24, 0.76, 0}, T = 353.15) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T dry_source(redeclare package Medium = dry_medium, m_flow = 0.1, nPorts = 1, X = {0.24, 0.76, 0}, T = 353.15) annotation(
     Placement(transformation(origin = {32, -20}, extent = {{-120, -10}, {-100, 10}})));
   Modelica.Fluid.Sources.MassFlowSource_T wet_source(redeclare package Medium = wet_medium, nPorts = 1, use_m_flow_in = true, use_X_in = true, T = 353.15, use_T_in = true) annotation(
     Placement(transformation(origin = {0, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
   Modelica.Fluid.Sources.FixedBoundary dry_sink(redeclare package Medium = dry_medium, nPorts = 1, p = 2e5) annotation(
     Placement(transformation(origin = {90, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Fluid.Humidifier humidifier(redeclare package dry_medium = dry_medium, redeclare package wet_medium = wet_medium, n = 2, V_wet = 0.001, V_dry = 0.003, UA = 0.4, nFibers = 7000, dFiber_o = 1.1e-3, dHousing(displayUnit = "mm") = 0.14, L_fiber = 0.3, m_flow_nom = 0.1, dp_nominal = 1e4) annotation(
+  Fluid.Humidifier humidifier(redeclare package dry_medium = dry_medium, redeclare package wet_medium = wet_medium, n = 4, V_wet = 0.001, V_dry = 0.003, UA = 0.4, nFibers = 7000, dFiber_o = 1.1e-3, dHousing(displayUnit = "mm") = 0.14, L_fiber = 0.3, m_flow_nom = 0.1, dp_nominal = 1e4) annotation(
     Placement(transformation(origin = {0, -20}, extent = {{-20, -20}, {20, 20}})));
   Fluid.RelativeHumiditySensor sink_dry(redeclare package Medium = dry_medium) annotation(
     Placement(transformation(origin = {50, 10}, extent = {{-10, -10}, {10, 10}})));
@@ -25,7 +25,7 @@ extends Modelica.Icons.Example;
     Placement(transformation(origin = {-20, -60}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
   Modelica.Fluid.Sources.FixedBoundary wet_sink(redeclare package Medium = dry_medium, nPorts = 1, p = 1.8e5) annotation(
     Placement(transformation(origin = {0, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Sources.Sine mass_flow(offset = 0.0004, amplitude = 0.00003, f(displayUnit = "mHz") = 0.05, startTime = 50)  annotation(
+  Modelica.Blocks.Sources.Sine mass_flow(offset = 0.1, amplitude = 0.05, f(displayUnit = "mHz") = 0.05, startTime = 50)  annotation(
     Placement(transformation(origin = {50, 50}, extent = {{10, -10}, {-10, 10}})));
   Modelica.Blocks.Sources.Sine temperature(amplitude = 10, f(displayUnit = "mHz") = 0.04, offset = 343, startTime = 40) annotation(
     Placement(transformation(origin = {30, 70}, extent = {{10, -10}, {-10, 10}})));
