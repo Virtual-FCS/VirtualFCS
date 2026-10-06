@@ -22,14 +22,13 @@ PressureRegulatorTest
 PressureRegulatorTest_v2
 PumpElectricDCTest
 RecirculationBlowerTest
-ReversiblePotentialTest
 SimplePumpTest
 SubSystemAirTest
 SubSystemAirTest_2
 SubSystemAirWithFuelCellTest
 SubSystemCoolingTest
+SubSystemCoolingWithFuelCellTest
 SubSystemHydrogenWithFuelCellTest
 SubSystemHydrogenControlTest
 SubSystemHydrogenTest
-SubSystemCoolingWithFuelCellTest
 ECMS_Experiment_Testing

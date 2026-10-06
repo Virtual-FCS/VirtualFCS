@@ -1,8 +1,8 @@
 within VirtualFCS.SubSystems.Air;
 
-model SubSystemAir
-outer Modelica.Fluid.System system "System properties";
-  replaceable package Medium = Media.CathodeAir;
+model SubSystemAir "Subsystem regulating pressure and flowrate of air to a fuel cell stack"
+  outer Modelica.Fluid.System system "System properties";
+  replaceable package Medium = Media.MoistAir;
   import Modelica.Constants.F;
   constant Modelica.Units.SI.MoleFraction xO2 = 0.21 "Standard molar fraction of oxygen in air";
   constant Modelica.Units.SI.MolarMass MM_O2 = Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM "(kg O2 / mol O2) Molar mass molecular oxygen";
@@ -28,7 +28,7 @@ outer Modelica.Fluid.System system "System properties";
     Placement(transformation(origin = {90, 30}, extent = {{-10, -10}, {10, 10}}, rotation = -0)));
   Modelica.Blocks.Math.Gain current_to_mass_flow(k = N_cells*lambda*MM_O2/n_O2/F/xO2) annotation(
     Placement(transformation(origin = {-80, 60}, extent = {{-10, -10}, {10, 10}})));
-  replaceable Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0), p_nominal = 2.5e5) annotation(
+  replaceable Modelica.Fluid.Valves.ValveLinear valve(redeclare package Medium = Medium, dp_nominal(displayUnit = "bar") = 1.5e5, m_flow_nominal = 0.3, opening(start = 0)) annotation(
     Placement(transformation(origin = {-50, -60}, extent = {{-10, 10}, {10, -10}}, rotation = -180)));
   Modelica.Blocks.Continuous.LimPID PID_valve(controllerType = Modelica.Blocks.Types.SimpleController.PI, yMax = 1, yMin = 0, k = -1e-4, Ti = 2) annotation(
     Placement(transformation(origin = {-26, -36}, extent = {{10, -10}, {-10, 10}})));

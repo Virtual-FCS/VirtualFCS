@@ -2,7 +2,7 @@ within VirtualFCS.SubSystems;
 
 model FuelCellSubSystems
   outer Modelica.Fluid.System system "System properties";
-  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Cathode_Medium = Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
   replaceable package Coolant_Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
 

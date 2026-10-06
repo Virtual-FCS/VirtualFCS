@@ -4,11 +4,11 @@ model PEMElectrolyserTest
   extends Modelica.Icons.Example;
   Hydrogen.Electrolysers.PEMElectrolyser ely annotation(
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
-  Modelica.Fluid.Sources.Boundary_pT cathode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.WetHydrogen, p = 3e6) annotation(
+  Modelica.Fluid.Sources.Boundary_pT cathode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.MoistHydrogen, p = 3e6) annotation(
     Placement(transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Fluid.Sources.Boundary_pT anode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_p_in = true, p = 1e5, X = {0, 0, 1}) annotation(
+  Modelica.Fluid.Sources.Boundary_pT anode_outlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.MoistAir, use_p_in = true, p = 1e5, X = {0, 0, 1}) annotation(
     Placement(transformation(origin = {70, -10}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  Modelica.Fluid.Sources.MassFlowSource_T anode_inlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, m_flow = 3e-3, X = {0, 0, 1}, T = 323.15) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T anode_inlet(nPorts = 1, redeclare package Medium = VirtualFCS.Media.MoistAir, m_flow = 3e-3, X = {0, 0, 1}, T = 323.15) annotation(
     Placement(transformation(origin = {70, 30}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Electrical.Analog.Sources.StepCurrent stepCurrent(I = 50, startTime = 0.5) annotation(
     Placement(transformation(origin = {0, 50}, extent = {{-10, -10}, {10, 10}})));

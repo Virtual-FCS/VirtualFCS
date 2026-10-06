@@ -2,6 +2,7 @@ within VirtualFCS.Electrical;
 model DCConverterSwitch "DC controlled single phase DC/AC converter"
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin1;
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin2;
+  extends Modelica.Electrical.PowerConverters.Icons.Converter;
   parameter Modelica.Units.SI.Voltage vDCref = 48 "Reference DC source voltage";
   parameter Modelica.Units.SI.Time Ti = 1E-6 "Internal integration time constant";
   Modelica.Electrical.Analog.Sources.SignalVoltage signalVoltage annotation (

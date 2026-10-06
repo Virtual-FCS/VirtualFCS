@@ -1,7 +1,7 @@
 within VirtualFCS.Electrochemical.Hydrogen.Electrolysers;
 
 model PEMElectrolyser
-  extends VirtualFCS.Electrochemical.Hydrogen.Electrolysers.ElectrolyserInterface(redeclare package Anode_Medium = Media.CathodeAir, redeclare package Cathode_Medium = Media.WetHydrogen);
+  extends VirtualFCS.Electrochemical.Hydrogen.Electrolysers.ElectrolyserInterface(redeclare package Anode_Medium = Media.MoistAir, redeclare package Cathode_Medium = Media.MoistHydrogen);
   import Modelica.Constants.F "Faraday constant";
   import Modelica.Constants.R "Universal gas constant";
   import SI = Modelica.Units.SI;
@@ -21,9 +21,9 @@ model PEMElectrolyser
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-100, 120}, extent = {{20, -20}, {-20, 20}}, rotation = -90)));
 
-  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, MMs = Cathode_Medium.MMX, nu = {1, 2*n_drag}, useHeatPort = true, X_start = {0.9, 0.1}) annotation(
+  replaceable Manifold cathode(redeclare package Medium = Cathode_Medium, MMX = Cathode_Medium.MMX, nu = {1, 2*n_drag}, useHeatPort = true, X_start = {0.9, 0.1}) annotation(
     Placement(transformation(origin = {-90, -3.55271e-15}, extent = {{-30, -30}, {30, 30}}, rotation = -90)));
-  replaceable Manifold anode(redeclare package Medium = Anode_Medium, MMs = Anode_Medium.MMX, nu = {0.5, 0, -(1 + 2*n_drag)}, useHeatPort = true, X_start = {0, 0, 1}) annotation(
+  replaceable Manifold anode(redeclare package Medium = Anode_Medium, MMX = Anode_Medium.MMX, nu = {0.5, 0, -(1 + 2*n_drag)}, useHeatPort = true, X_start = {0, 0, 1}) annotation(
     Placement(transformation(origin = {90, 0}, extent = {{30, -30}, {-30, 30}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor(T(start = 293.15, fixed = true), C = 50) annotation(
     Placement(transformation(origin = {-43, -63}, extent = {{-17, -17}, {17, 17}})));

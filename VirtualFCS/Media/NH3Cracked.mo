@@ -8,7 +8,7 @@ extends BaseShoMix(
   substanceNames = {"hydrogen", "nitrogen", "ammonia"}, 
   reference_X = {0.01, 0.01, 0.98},  // NB! These are MASS fractions, not molar.
   sh_params= {Shomate.H2, Shomate.N2, Shomate.NH3_G, Shomate.H2O_L},
-  MMs = {
+  MMX = {
       Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
       Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM, 
       Modelica.Media.IdealGases.Common.SingleGasesData.NH3.MM} "Molar weights of the medium species",

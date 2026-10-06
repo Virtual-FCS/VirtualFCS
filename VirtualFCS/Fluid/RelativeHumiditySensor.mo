@@ -1,7 +1,7 @@
 within VirtualFCS.Fluid;
 
 model RelativeHumiditySensor
-  extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(redeclare package Medium = Media.CathodeAir);
+  extends Modelica.Fluid.Sensors.BaseClasses.PartialAbsoluteSensor(redeclare package Medium = Media.MoistAir);
   extends Modelica.Icons.RoundSensor;
 
   Modelica.Blocks.Interfaces.RealOutput phi(final quantity="MoleFraction", final unit="1") annotation(

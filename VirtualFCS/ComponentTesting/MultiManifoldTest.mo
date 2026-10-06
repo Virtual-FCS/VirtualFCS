@@ -7,9 +7,9 @@ model MultiManifoldTest
   parameter Real lambda = 3 "Reactant excess ratio";
   parameter Modelica.Units.SI.Voltage V_cell = 0.7 "Single-cell voltage";
 
-  Electrochemical.Hydrogen.Manifold cathode(useHeatPort = true, redeclare package Medium = VirtualFCS.Media.CathodeAir, nu = {-0.5, 0, 1}, MMs = VirtualFCS.Media.CathodeAir.MMs, V = 1E-2, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial)  annotation(
+  Electrochemical.Hydrogen.Manifold cathode(useHeatPort = true, redeclare package Medium = VirtualFCS.Media.MoistAir, nu = {-0.5, 0, 1}, MMX = VirtualFCS.Media.MoistAir.MMX, V = 1E-2, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial)  annotation(
     Placement(transformation(origin = {30, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Electrochemical.Hydrogen.Manifold anode(useHeatPort = true, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nu = {-1}, MMs = {0.002}, V = 1E-2, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial)  annotation(
+  Electrochemical.Hydrogen.Manifold anode(useHeatPort = true, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nu = {-1}, MMX = {0.002}, V = 1E-2, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial)  annotation(
     Placement(transformation(origin = {-30, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow extractedPower annotation(
     Placement(transformation(origin = {0, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -19,7 +19,7 @@ model MultiManifoldTest
     Placement(transformation(origin = {-70, 80}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sources.MassFlowSource_T hydrogen(nPorts = 1, redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, use_m_flow_in = true) annotation(
     Placement(transformation(origin = {-30, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Fluid.Sources.MassFlowSource_T air(nPorts = 1, redeclare package Medium = VirtualFCS.Media.CathodeAir, use_m_flow_in = true) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T air(nPorts = 1, redeclare package Medium = VirtualFCS.Media.MoistAir, use_m_flow_in = true) annotation(
     Placement(transformation(origin = {30, 10}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Math.Gain anode_gain(k = lambda*0.002) annotation(
     Placement(transformation(origin = {-22, 52}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
@@ -27,7 +27,7 @@ model MultiManifoldTest
     Placement(transformation(origin = {38, 52}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Fluid.Sources.FixedBoundary anode_outlet(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2, nPorts = 1)  annotation(
     Placement(transformation(origin = {-30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Fluid.Sources.FixedBoundary cathode_outlet(redeclare package Medium = VirtualFCS.Media.CathodeAir, nPorts = 1)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary cathode_outlet(redeclare package Medium = VirtualFCS.Media.MoistAir, nPorts = 1)  annotation(
     Placement(transformation(origin = {30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Blocks.Math.Gain power_gain(k = -2*F*V_cell) annotation(
     Placement(transformation(origin = {0, 51}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));

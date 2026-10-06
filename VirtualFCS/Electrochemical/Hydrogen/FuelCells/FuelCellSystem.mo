@@ -13,7 +13,7 @@ model FuelCellSystem
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.606 "H2 tank volume"; // 15 kg @ 300 bar from VFCS D4.1
   parameter Modelica.Units.SI.AbsolutePressure p_tank_H2 = 30000000 "H2 tank initial pressure";
   // Mediums
-  replaceable package Cathode_Medium = Media.CathodeAir;
+  replaceable package Cathode_Medium = Media.MoistAir;
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
   // Power and efficiency calculations
   Modelica.Units.SI.Power Power_system = Power_stack-Power_BOP "Power delivered from the FC system";
@@ -34,7 +34,7 @@ model FuelCellSystem
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
     Placement(transformation(origin = {1, -47}, extent = {{-11, -11}, {11, 11}})));
   replaceable SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(subSystemHydrogenControl(pressure_H2_set = p_H2_set), redeclare package Anode_Medium = Anode_Medium)  annotation(
-    Placement(transformation(origin = {-70, 20}, extent = {{-15, -10}, {15, 10}}, rotation = -90)));
+    Placement(transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
@@ -57,9 +57,9 @@ equation
   connect(fuelCell.coolant_in, subSystemCooling.to_stack) annotation(
     Line(points = {{-8, -3}, {-8, -18}, {-6, -18}, {-6, -34}}, color = {0, 127, 255}));
   connect(subSystemHydrogen.toStack, fuelCell.anode_in) annotation(
-    Line(points = {{-58, 26}, {-40, 26}, {-40, 40}, {-29, 40}}, color = {0, 127, 255}));
+    Line(points = {{-58, 28}, {-40, 28}, {-40, 40}, {-29, 40}}, color = {0, 127, 255}));
   connect(subSystemHydrogen.fromStack, fuelCell.anode_out) annotation(
-    Line(points = {{-58, 14}, {-40, 14}, {-40, 2}, {-29, 2}}, color = {0, 127, 255}));
+    Line(points = {{-58, 12}, {-40, 12}, {-40, 2}, {-29, 2}}, color = {0, 127, 255}));
   connect(subSystemAir.toStack, fuelCell.cathode_in) annotation(
     Line(points = {{58, 26}, {40, 26}, {40, 40}, {29, 40}}, color = {0, 127, 255}));
   connect(subSystemAir.fromStack, fuelCell.cathode_out) annotation(
