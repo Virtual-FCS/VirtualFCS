@@ -125,7 +125,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   // Non-dimensional and transport variables
   Modelica.Units.SI.Velocity v_gas[N] "Gas mixture velocity (m/s)";
   Real Re[N] "Reynolds number";
-  Real Da[N] "Damkoehler number. Reaction rate vs convective mass transfer";
   Real f[N] "Friction factor";
   Modelica.Units.SI.DynamicViscosity mu_mix[N] "Mixture dynamic viscosity";
   Modelica.Units.SI.SpecificHeatCapacity cp_mix[N] "Mixture specific heat capacity";
@@ -134,9 +133,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Modelica.Units.SI.SpecificEnergy h_inlet "Mixture inlet specific enthalpy";
   Modelica.Units.SI.Temperature T_in "Mixture inlet temperature";
   Modelica.Units.SI.SpecificEnthalpy h_feed_seg1 "Specific enthalpy of the feed composition at the pressure and temperature of segment 1";
-  
-  AmmoniaMedium.BaseProperties medium_inlet "Medium in the source";
-  AmmoniaMedium.BaseProperties medium_outlet "Medium in the source";
   
   // Reaction rate
   function rate
@@ -190,7 +186,7 @@ equation
     v_gas[i] = m_flow_face[i]/(rho_mix[i]*A_flow);
     Re[i] = rho_mix[i]*abs(v_gas[i])*D_tubes/mu_mix[i];
     f[i] = f_nominal;
-    Da[i] = k0*exp(-Ea/R/T[i])*noEvent(max(P_tot[i], 1))^(a + b)*m_cat_seg*N/noEvent(max(abs(m_flow_face[1])/MM_NH3, Modelica.Constants.eps));
+   
 // Reaction rate, limited by the NH3 inventory of the segment so that it cannot become negative
     r_rxn[i] = max(0, min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), n_NH3[i]/(tau_rxn_min*m_cat_seg)));
     R_NH3[i] = r_rxn[i]*m_cat_seg;
@@ -247,16 +243,6 @@ equation
   port_b.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[N], T[N], {w_NH3[N], w_H2[N]}));
   port_b.Xi_outflow = {w_NH3[N], w_H2[N]};
   m_flow_balance = port_a.m_flow + port_b.m_flow - der(sum(m_tot));
-  
-  //Inlet/outlet monitoring
-   port_a.p          = medium_inlet.p;
-   port_a.h_outflow  = medium_inlet.h;
-   port_a.Xi_outflow = medium_inlet.Xi;
-   
-   port_b.p          = medium_outlet.p;
-   port_b.h_outflow  = medium_outlet.h;
-   port_b.Xi_outflow = medium_outlet.Xi;
-
   annotation(
     Documentation(info = "<html>
 <p>Dynamic version of <code>AmmoniaCracker</code>. The reactor is discretised into <code>N</code> segments and each segment is treated as a lumped control volume following the

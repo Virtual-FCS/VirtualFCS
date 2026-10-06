@@ -1,9 +1,11 @@
 within VirtualFCS.SubSystems.Hydrogen;
 
 model SubSystemHydrogen
+  import Modelica.Constants.pi;
   outer Modelica.Fluid.System system "System properties";
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
-  parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
+  parameter Modelica.Units.SI.Area A_tank_H2 = 4*pi*(3*V_tank_H2/4/pi)^(2/3) "H2 tank surface area";
+  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "Hydrogen tank volume";
   parameter Integer N_cells = 180 "FC stack number of cells";
   parameter Modelica.Units.SI.VolumeFlowRate V_flow_HRB_min = 1e-7 "Minimum volume flow of the Hydrogen Recirculation Blower";
   parameter Real RR = 1.3 "Hydrogen recirculation ratio";
@@ -30,7 +32,7 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-125, 107}, extent = {{17, -17}, {-17, 17}}, rotation = -90)));
-  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = 0.13, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 2, p_start = P_H2_tank_start, use_HeatTransfer = true, use_portsData = false) annotation(
+  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 2, p_start = P_H2_tank_start, use_HeatTransfer = true, use_portsData = false) annotation(
     Placement(transformation(origin = {-98, 50}, extent = {{-20, 20}, {20, -20}}, rotation = -90)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -50}, extent = {{13, 14}, {-13, -14}}, rotation = -90)));
