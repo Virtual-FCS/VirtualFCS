@@ -18,8 +18,8 @@ model CrackedAmmonia
   end BaseProperties;
   
   // Parameters from Stull (1947) as quoted in NIST
-  function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
-  //function saturationPressure = clausiusClapeyron(T_boil=239.8, L=23400);
+  //function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
+  function saturationPressure = clausiusClapeyron(T_boil=239.8, L=23400);
 
   // Convenience variables to index arrays within class
   constant Integer Ammonia = 1 "Index of ammonia (in substanceNames, massFractions X, etc.)";

@@ -40,7 +40,7 @@ model NH3CrackerFCS_6_dyn
     Placement(transformation(origin = {56, -58}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Fluid.Sources.FixedBoundary tailSink(redeclare package Medium = AmmoniaMedium, nPorts = 1, p = P_out_PSA) annotation(
     Placement(transformation(origin = {74, -88}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Blocks.Sources.Constant heat(k = 1e4) annotation(
+  Modelica.Blocks.Sources.Constant heat(k = 1e5) annotation(
     Placement(transformation(origin = {-45, 87}, extent = {{-7, -7}, {7, 7}})));
   Fluid.ValveCheck ammoniaFeedCheck(redeclare package Medium = AmmoniaMedium, m_flow_nominal = m_feed_max, dp_nominal = dp_check_valve_nominal) annotation(
     Placement(transformation(origin = {22, 52}, extent = {{-6, -6}, {6, 6}})));
@@ -56,7 +56,7 @@ model NH3CrackerFCS_6_dyn
     Placement(transformation(origin = {-42, -50}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {-24, -62}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Ramp ramp(duration = 20, height = -0.08, offset = 0.1, startTime = 20) annotation(
+  Modelica.Blocks.Sources.Ramp ramp(duration = 20, height = -0.09, offset = 0.1, startTime = 20) annotation(
     Placement(transformation(origin = {-68, -38}, extent = {{-8, -8}, {8, 8}})));
   // Hold the nominal NH3 feed below the tank set-point, then taper it to zero over dp_feed_control.
   Modelica.Fluid.Sensors.Pressure p_H2_tank(redeclare package Medium = HydrogenMedium) annotation(
@@ -80,7 +80,7 @@ model NH3CrackerFCS_6_dyn
     Placement(transformation(origin = {-92, 74}, extent = {{-10, -10}, {10, 10}})));
   VirtualFCS.Fluid.SimplePump ammoniaPump(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {-60, 36}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Sources.Constant NH3_mf1(k = 0.02) annotation(
+  Modelica.Blocks.Sources.Constant NH3_mf1(k = 0.0005) annotation(
     Placement(transformation(origin = {-71, 55}, extent = {{-7, -7}, {7, 7}})));
   Modelica.Electrical.Analog.Sources.ConstantVoltage voltageSource(V = 48) annotation(
     Placement(transformation(origin = {-58, 4}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));

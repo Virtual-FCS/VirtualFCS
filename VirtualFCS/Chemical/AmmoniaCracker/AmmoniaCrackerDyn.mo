@@ -60,6 +60,7 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Modelica.Units.SI.Pressure dp_small = 1e3 "Regularization range of the face pressure drop (Pa)";
   parameter Modelica.Units.SI.Time tau_rxn_min = 0.05 "Minimum time in which the NH3 inventory of a segment may be consumed (limits the reaction rate)";
   parameter Modelica.Units.SI.Pressure dp_inlet_nominal = 0 "Pressure loss of the inlet header/distributor at m_flow_nominal (added to the inlet face)";
+  parameter Modelica.Units.SI.Pressure dp_outlet_nominal = 0 "Pressure loss of the outlet header at m_flow_nominal (added to the outlet face)";
   parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 0.3 "Nominal feed mass flow rate used to scale dp_inlet_nominal";
   parameter Modelica.Units.SI.MassFlowRate m_flow_small = 1e-3 "Flow range over which the upwind face composition switches smoothly between the two neighbours";
   parameter Modelica.Units.SI.DynamicViscosity mu_nominal = 3.5e-5 "Viscosity used to evaluate the friction factor at nominal flow";
@@ -224,7 +225,7 @@ equation
   w_N2_face[N + 1] = 1 - w_NH3_face[N + 1] - w_H2_face[N + 1];
 // Quadratic friction coefficients of the faces (half a segment at the inlet and outlet faces)
   k_face[1] = f[1]*(dz/2)/(2*D_tubes*rho_mix[1]*A_flow^2) + dp_inlet_nominal/m_flow_nominal^2;
-  k_face[N + 1] = f[N]*(dz/2)/(2*D_tubes*rho_mix[N]*A_flow^2);
+  k_face[N + 1] = f[N]*(dz/2)/(2*D_tubes*rho_mix[N]*A_flow^2) + dp_outlet_nominal/m_flow_nominal^2;
   for j in 2:N loop
     k_face[j] = f[j - 1]*dz/(2*D_tubes*rho_mix[j - 1]*A_flow^2);
   end for;
