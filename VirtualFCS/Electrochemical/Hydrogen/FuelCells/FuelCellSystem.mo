@@ -64,6 +64,8 @@ equation
     Line(points = {{58, 26}, {40, 26}, {40, 40}, {29, 40}}, color = {0, 127, 255}));
   connect(subSystemAir.fromStack, fuelCell.cathode_out) annotation(
     Line(points = {{58, 14}, {40, 14}, {40, 2}, {29, 2}}, color = {0, 127, 255}));
+  connect(currentSensor.i, subSystemHydrogen.stackCurrent) annotation(
+    Line(points = {{-50, 70}, {-70, 70}, {-70, 32}}, color = {0, 0, 127}));
   connect(currentSensor.i, subSystemAir.stackCurrent) annotation(
     Line(points = {{-50, 70}, {-70, 70}, {-70, 84}, {65, 84}, {65, 31}}, color = {0, 0, 127}));
   connect(subSystemAir.pin_p, batterySystem.pin_p) annotation(
@@ -74,6 +76,8 @@ equation
     Line(points = {{6, -56}, {6, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemCooling.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-4, -56}, {-4, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
+  connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-78, 24}, {-92, 24}, {-92, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
   connect(batterySystem.pin_n, ground.p) annotation(
