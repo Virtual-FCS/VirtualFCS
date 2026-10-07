@@ -50,6 +50,8 @@ model HeatSinkTest2 "Simple model to test the HeatSink model"
     offset=0,
     startTime=0)
     annotation (Placement(transformation(extent={{-134,28},{-114,48}})));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {42, 52}, extent = {{-4, -4}, {4, 4}})));
 equation
   connect(temperature1.port, heatSink.port_a) annotation (
     Line(points = {{-12, -14}, {-12, 0}, {0, 0}}));
@@ -71,6 +73,9 @@ equation
     annotation (Line(points={{-113,38},{-80,38},{-80,22}}, color={0,0,127}));
   connect(temperature2.T, heatSink.Stack_temperature) annotation (Line(points={
           {55,-24},{48,-24},{48,29.6},{41.6,29.6}}, color={0,0,127}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{24, 58}, {42, 58}, {42, 56}}, color = {0, 0, 255}));
+
 annotation (
   experiment(StopTime = 500, Interval = 0.5, Tolerance = 1e-6));
 annotation(Documentation(info = "<html><p>This alternative heat-sink test applies periodic trapezoids: coolant temperature varies from 293.15 K to 373.15 K and coolant flow from 0 to 0.2 kg/s. Both signals use 130 s rise/fall times and a 300 s period.</p><p>The battery starts at SOC = 0.9 with 59 V to 61 V limits and 60 V nominal voltage.</p></html>"));

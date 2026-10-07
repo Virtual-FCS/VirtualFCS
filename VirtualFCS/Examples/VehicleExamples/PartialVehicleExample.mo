@@ -9,7 +9,7 @@ partial model PartialVehicleExample
     Placement(transformation(origin = {-60, 0}, extent = {{-20, -20}, {20, 20}})));
   Vehicles.VehicleProfile vehicle annotation (
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-20, -20}, {20, 20}})));
-  replaceable VirtualFCS.Powertrains.BatteryPowerTrain powertrain annotation (
+  replaceable VirtualFCS.Powertrains.BatteryPowertrain powertrain annotation (
     Placement(visible = true, transformation(origin = {60, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 
 equation  

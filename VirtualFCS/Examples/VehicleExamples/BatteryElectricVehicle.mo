@@ -3,7 +3,7 @@ model BatteryElectricVehicle
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Vehicles.DriveCycle driveCycle annotation (
+  replaceable VirtualFCS.Vehicles.DriveCycle driveCycle annotation (
     Placement(visible = true, transformation(origin = {-60, -3.55271e-15}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   replaceable VirtualFCS.Powertrains.BatteryPowertrain powertrain annotation (
     Placement(visible = true, transformation(origin = {60, -3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));

@@ -11,6 +11,8 @@ model DC_converterTest "Simple model to test the DC_converter"
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.RealExpression realExpression(y = 100)  annotation (
     Placement(visible = true, transformation(origin = {42, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-38, 0}, extent = {{-8, -8}, {8, 8}}, rotation = -90)));
 equation
   connect(batterySystem.pin_n, dC_converter.pin_nFC) annotation (
     Line(points={{-4.4,40.4},{-10,40.4},{-10,10}},  color = {0, 0, 255}));
@@ -23,6 +25,10 @@ equation
   connect(realExpression.y, dC_converter.I_Ref) annotation (
     Line(points={{31,0},{22,0},{22,0.1},{11.5,0.1}},
                                       color = {0, 0, 127}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{-4, 40}, {-18, 40}, {-18, 0}, {-30, 0}}, color = {0, 0, 255}));
+  connect(batterySystem1.pin_n, ground.p) annotation(
+    Line(points = {{-4, -40}, {-18, -40}, {-18, 0}, {-30, 0}}, color = {0, 0, 255}));
   annotation (
     experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
 annotation(Documentation(info = "<html><p>This test applies a constant 100 A current reference to the DC converter while two default battery systems are connected to its DC sides.</p></html>"));

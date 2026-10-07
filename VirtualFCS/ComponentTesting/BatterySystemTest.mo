@@ -8,6 +8,8 @@ model BatterySystemTest
     Placement(transformation(origin = {56, 86}, extent = {{10, -10}, {-10, 10}})));
   Electrical.PowerSource powerSource annotation(
     Placement(transformation(origin = {4, 30}, extent = {{10, 10}, {-10, -10}}, rotation = -0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-32, -6}, extent = {{-4, -4}, {4, 4}})));
 equation
   connect(powerSource.n, batterySystem.pin_n) annotation(
     Line(points = {{-6, 30}, {-10, 30}, {-10, 16}, {-4, 16}, {-4, 4}}, color = {0, 0, 255}));
@@ -15,6 +17,8 @@ equation
     Line(points = {{14, 30}, {24, 30}, {24, 16}, {14, 16}, {14, 4}}, color = {0, 0, 255}));
   connect(P_values.y, powerSource.P) annotation(
     Line(points = {{46, 86}, {4, 86}, {4, 36}}, color = {0, 0, 127}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{-4, 4}, {-32, 4}, {-32, -2}}, color = {0, 0, 255}));
   annotation(
     experiment(StartTime = 0, StopTime = 20000, Tolerance = 1e-06, Interval = 0.5),
   Diagram);

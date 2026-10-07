@@ -13,6 +13,8 @@ model CycleBatteryPack_Lumped "Example demonstrating constant-current constant-v
     Placement(visible = true, transformation(origin = {50, -50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped liIonBatteryPack_Lumped(SOC_init = 0.99) annotation (
     Placement(visible = true, transformation(origin = {0.56663, -25.0444}, extent = {{-18.0666, -10.84}, {18.0666, 12.0444}}, rotation = 0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-34, -32}, extent = {{-6, -6}, {6, 6}})));
 equation
   connect(fixedTemperature.port, liIonBatteryPack_Lumped.heatBoundary) annotation (
     Line(points = {{40, -50}, {6, -50}, {6, -34}, {6, -34}}, color = {191, 0, 0}));
@@ -28,6 +30,8 @@ equation
     Line(points = {{-14, 84}, {-16, 84}, {-16, 60}, {-10, 60}, {-10, 48}, {-10, 48}}, color = {0, 0, 255}));
   connect(pulseCurrent.p, BMS.pin_p_load) annotation (
     Line(points = {{16, 84}, {18, 84}, {18, 60}, {12, 60}, {12, 48}, {12, 48}}, color = {0, 0, 255}));
+  connect(liIonBatteryPack_Lumped.pin_n, ground.p) annotation(
+    Line(points = {{-10, -14}, {-34, -14}, {-34, -26}}, color = {0, 0, 255}));
   annotation (
     Documentation(info = "<html><p>This example cycles a lumped Li-ion battery pack with a pulse current between -200 A and +200 A over 7200 s. The pack starts at SOC = 0.99 and is evaluated with BMS voltage limits of 40 V and 54 V.</p><p>The lumped formulation represents the summed pack behavior without individual cell states. Use the composite-pack example for cell-level behavior such as cell balancing.</p></html>"),
     experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));

@@ -14,7 +14,7 @@ model JoystickDriveInput
     Placement(visible = true, transformation(origin = {30, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Add add annotation (
     Placement(visible = true, transformation(origin = {-10, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput setVelocity annotation (
+  Modelica.Blocks.Interfaces.RealOutput y annotation (
     Placement(visible = true, transformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter(uMax = maxVelocity, uMin = minVelocity) annotation (
     Placement(visible = true, transformation(origin = {82, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -31,7 +31,7 @@ equation
     Line(points = {{-63.5, 3}, {-56, 3}, {-56, 9.5}, {-54, 9.5}, {-54, 12.75}, {-52, 12.75}, {-52, 16}}, color = {0, 0, 127}));
   connect(joystickRoadElectricVehicleControl.ctl_accelerate, gain1.u) annotation (
     Line(points = {{-63.5, -6}, {-56, -6}, {-56, -10}, {-54, -10}, {-54, -12}, {-52, -12}, {-52, -14}}, color = {0, 0, 127}));
-  connect(limiter.y, setVelocity) annotation (
+  connect(limiter.y, y) annotation (
     Line(points = {{94, 0}, {104, 0}, {104, 0}, {110, 0}}, color = {0, 0, 127}));
   connect(integrator.y, gain2.u) annotation (
     Line(points = {{42, 0}, {50, 0}, {50, 0}, {50, 0}}, color = {0, 0, 127}));

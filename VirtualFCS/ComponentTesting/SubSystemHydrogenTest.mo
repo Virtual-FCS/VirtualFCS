@@ -6,7 +6,7 @@ model SubSystemHydrogenTest "Example to evaluate the performance of the hydrogen
   inner Modelica.Fluid.System system annotation (
     Placement(visible = true, transformation(origin = {-90, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2;
-  Modelica.Blocks.Math.Gain reactionRate(k = subSystemHydrogen.N_cell/2/F) annotation (
+  Modelica.Blocks.Math.Gain reactionRate(k = subSystemHydrogen.N_cells/2/F) annotation (
     Placement(visible = true, transformation(origin = {-34, 80}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
   SubSystems.Hydrogen.SubSystemHydrogen subSystemHydrogen(redeclare package Anode_Medium = Anode_Medium)  annotation (
     Placement(transformation(origin = {0,0}, extent = {{-30, -20}, {30, 20}})));
@@ -16,21 +16,25 @@ model SubSystemHydrogenTest "Example to evaluate the performance of the hydrogen
     Placement(visible = true, transformation(origin = {-76, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Electrochemical.Hydrogen.Manifold manifold(redeclare package Medium = Anode_Medium, nu = {-1}, MMX = {0.002})  annotation(
     Placement(transformation(origin = {0, 60}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-44, -64}, extent = {{-6, -6}, {6, 6}})));
 equation
-  connect(batterySystem.pin_p, subSystemHydrogen.pin_p) annotation(
-    Line(points = {{8.8, -40.8}, {9.00004, -40.8}, {9.00004, -18.6666}}, color = {0, 0, 255}));
-  connect(batterySystem.pin_n, subSystemHydrogen.pin_n) annotation(
-    Line(points = {{-8.8, -40.8}, {-6.99996, -40.8}, {-6.99996, -18.6666}}, color = {0, 0, 255}));
   connect(trapezoid.y, reactionRate.u) annotation(
     Line(points = {{-65, 80}, {-43.6, 80}}, color = {0, 0, 127}));
-  connect(trapezoid.y, subSystemHydrogen.stackCurrent) annotation(
-    Line(points = {{-64, 80}, {-60, 80}, {-60, 0}, {-22, 0}}, color = {0, 0, 127}));
-  connect(subSystemHydrogen.toStack, manifold.port_a) annotation(
-    Line(points = {{-10, 24}, {-10, 60}}, color = {0, 127, 255}));
-  connect(manifold.port_b, subSystemHydrogen.fromStack) annotation(
-    Line(points = {{10, 60}, {10, 24}}, color = {0, 127, 255}));
   connect(reactionRate.y, manifold.r) annotation(
     Line(points = {{-26, 80}, {0, 80}, {0, 68}}, color = {0, 0, 127}));
+  connect(trapezoid.y, subSystemHydrogen.stackCurrent) annotation(
+    Line(points = {{-64, 80}, {-60, 80}, {-60, 0}, {-32, 0}}, color = {0, 0, 127}));
+  connect(manifold.port_a, subSystemHydrogen.toStack) annotation(
+    Line(points = {{-10, 60}, {-16, 60}, {-16, 24}}, color = {0, 127, 255}));
+  connect(manifold.port_b, subSystemHydrogen.fromStack) annotation(
+    Line(points = {{10, 60}, {16, 60}, {16, 24}}, color = {0, 127, 255}));
+  connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
+    Line(points = {{-8, -18}, {-8, -40}}, color = {0, 0, 255}));
+  connect(subSystemHydrogen.pin_p, batterySystem.pin_p) annotation(
+    Line(points = {{16, -18}, {8, -18}, {8, -40}}, color = {0, 0, 255}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{-8, -40}, {-44, -40}, {-44, -58}}, color = {0, 0, 255}));
   annotation (
     Diagram,
     Icon,
