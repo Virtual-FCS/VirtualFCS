@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Fluid.Examples;
 
 model CompressorTest
   extends Modelica.Icons.Example;

@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Fluid.Examples;
 
 model ManifoldTest
   extends Modelica.Icons.Example;

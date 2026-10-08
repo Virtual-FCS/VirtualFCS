@@ -1,1 +1,9 @@
+CompressorTest
+ElectricCompressorTest
+HumidifierTest
+ManifoldTest
+MixingVolumeTest
+MultiManifoldTest
+PumpElectricDCTest
 SeparatorTest
+SimplePumpTest

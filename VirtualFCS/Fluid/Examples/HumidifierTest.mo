@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Fluid.Examples;
 
 model HumidifierTest "Pollak humidifier test case using the volume model"
   extends Modelica.Icons.Example;

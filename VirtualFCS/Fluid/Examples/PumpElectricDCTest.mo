@@ -1,4 +1,5 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Fluid.Examples;
+
 model PumpElectricDCTest "Simple model to test the PumpElectricDC model"
   extends Modelica.Icons.Example;
   replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater
