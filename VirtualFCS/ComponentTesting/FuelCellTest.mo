@@ -53,5 +53,23 @@ equation
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03));
-annotation(Documentation(info = "<html><p>This test applies a load step from 3 ohm to 0.6 ohm at 30 s to a 42-cell fuel cell. The hydrogen inlet is 3e5 Pa, the air outlet is 2.5e5 Pa, and the air flow is 0.003 kg/s.</p><p>The glycol coolant enters at 323.15 K with a flow of 0.05 kg/s. </p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test applies a load step from 3 ohm to 0.6 ohm at 30 s to a 42-cell fuel cell. The hydrogen inlet is 3e5 Pa, the air outlet is 2.5e5 Pa, and the air flow is 0.003 kg/s.</p><p>The glycol coolant enters at 323.15 K with a flow of 0.05 kg/s. </p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>fc</code> (Electrochemical.Hydrogen.FuelCells.FuelCell), <code>hydrogen_source</code> (Modelica.Fluid.Sources.FixedBoundary), <code>air_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>resistor</code> (Modelica.Electrical.Analog.Basic.VariableResistor), <code>system</code> (Modelica.Fluid.System), <code>coolant_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>coolant_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>air_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>currentSensor</code> (Modelica.Electrical.Analog.Sensors.CurrentSensor), <code>R_values</code> (Modelica.Blocks.Sources.Step).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>-</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end FuelCellTest;

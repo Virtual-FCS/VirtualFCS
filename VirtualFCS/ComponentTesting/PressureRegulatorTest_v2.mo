@@ -63,5 +63,22 @@ equation
     Line(points={{-33,-80},{8,-80}},      color = {0, 0, 127}));
   annotation (
     experiment(StopTime = 2000, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>This alternative pressure-regulator test starts with 70 MPa upstream pressure in a 0.13 m3 volume and 202650 Pa downstream pressure in a 0.2 m3 volume. From 25 s, the downstream flow excitation follows a 0.1 Hz sine-derived signal with amplitude 500 and offset 225.</p><p>The pressure setpoint and thermal boundary are 202650 Pa and 293.15 K.</p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This alternative pressure-regulator test starts with 70 MPa upstream pressure in a 0.13 m3 volume and 202650 Pa downstream pressure in a 0.2 m3 volume. From 25 s, the downstream flow excitation follows a 0.1 Hz sine-derived signal with amplitude 500 and offset 225.</p><p>The pressure setpoint and thermal boundary are 202650 Pa and 293.15 K.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>pressureRegulator</code> (VirtualFCS.Fluid.PressureRegulator), <code>volume</code> (Modelica.Fluid.Vessels.ClosedVolume), <code>realExpression</code> (Modelica.Blocks.Sources.RealExpression), <code>closedVolume</code> (Modelica.Fluid.Vessels.ClosedVolume), <code>pressure</code> (Modelica.Fluid.Sensors.Pressure), <code>pressure1</code> (Modelica.Fluid.Sensors.Pressure), <code>bodyRadiation</code> (Modelica.Thermal.HeatTransfer.Components.BodyRadiation), <code>convection</code> (Modelica.Thermal.HeatTransfer.Components.Convection), <code>realExpression1</code> (Modelica.Blocks.Sources.RealExpression), <code>fixedTemperature</code> (Modelica.Thermal.HeatTransfer.Sources.FixedTemperature), <code>teeJunctionIdeal</code> (Modelica.Fluid.Fittings.TeeJunctionIdeal), <code>boundary</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>gain</code> (Modelica.Blocks.Math.Gain), <code>sine</code> (Modelica.Blocks.Sources.Sine).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end PressureRegulatorTest_v2;

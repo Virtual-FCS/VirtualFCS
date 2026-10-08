@@ -41,5 +41,23 @@ equation
     Line(points = {{-70, -10}, {-70, -10}, {-70, -50}, {-42, -50}, {-42, -50}}, color = {255, 0, 255}));
   annotation(
     Icon(graphics = {Rectangle(origin = {5, -49}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {-7, -45}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{-13, 13}, {27, 13}, {7, -7}, {-13, 13}}), Rectangle(origin = {5, 29}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {7, 41}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{-13, 13}, {27, 13}, {7, -9}, {-13, 13}}), Rectangle(origin = {71, -49}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Rectangle(origin = {-61, -49}, fillColor = {56, 56, 56}, fillPattern = FillPattern.Solid, extent = {{-35, 39}, {25, -21}}), Polygon(origin = {-63, -31}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{17, 9}, {-3, 29}, {-3, -11}, {17, 9}}), Polygon(origin = {87, -7}, rotation = 180, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{27, 53}, {27, 13}, {7, 33}, {27, 53}})}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Inputs and input-side interfaces</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>keyboardInput</code></td><td>Input</td><td>KeyboardInput</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p>Keyboard-based user input block that integrates up and down commands into a bounded throttle signal.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>y</code></td><td>Output</td><td>RealOutput</td><td>km/h</td><td>km/h</td></tr></tbody></table></body></html>"));
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Keyboard-based user input block that integrates up and down commands into a bounded throttle signal.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>integrator</code> (Modelica.Blocks.Continuous.Integrator), <code>booleanToReal</code> (Modelica.Blocks.Math.BooleanToReal), <code>booleanToReal1</code> (Modelica.Blocks.Math.BooleanToReal), <code>product</code> (Modelica.Blocks.Math.Product), <code>add</code> (Modelica.Blocks.Math.Add), <code>integrator1</code> (Modelica.Blocks.Continuous.Integrator), <code>Gain</code> (Modelica.Blocks.Sources.Constant), <code>keyboardInput</code> (Modelica_DeviceDrivers.Blocks.InputDevices.KeyboardInput), <code>realtimeSynchronize</code> (Modelica_DeviceDrivers.Blocks.OperatingSystem.RealtimeSynchronize).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>keyboardInput</code></td><td>Observed variable</td><td>Modelica_DeviceDrivers.Blocks.InputDevices.KeyboardInput</td><td>-</td><td></td></tr>
+<tr><td><code>y</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>km/h</td><td>km/h</td></tr>
+</table>
+</body>
+</html>"));
 end ThrottleKeys;

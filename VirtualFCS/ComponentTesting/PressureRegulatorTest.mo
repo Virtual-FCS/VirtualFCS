@@ -50,5 +50,22 @@ equation
           255}));
   annotation (
     experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>This test evaluates pressure regulation from a 35 MPa hydrogen upstream volume of 0.13 m3 to a downstream volume of 10 m3. The downstream boundary is held at 202650 Pa; the thermal boundary is 293.15 K with convection conductance 12.</p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test evaluates pressure regulation from a 35 MPa hydrogen upstream volume of 0.13 m3 to a downstream volume of 10 m3. The downstream boundary is held at 202650 Pa; the thermal boundary is 293.15 K with convection conductance 12.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>pressureRegulator</code> (VirtualFCS.Fluid.PressureRegulator), <code>volume</code> (Modelica.Fluid.Vessels.ClosedVolume), <code>realExpression</code> (Modelica.Blocks.Sources.RealExpression), <code>closedVolume</code> (Modelica.Fluid.Vessels.ClosedVolume), <code>pressure</code> (Modelica.Fluid.Sensors.Pressure), <code>pressure1</code> (Modelica.Fluid.Sensors.Pressure), <code>bodyRadiation</code> (Modelica.Thermal.HeatTransfer.Components.BodyRadiation), <code>convection</code> (Modelica.Thermal.HeatTransfer.Components.Convection), <code>realExpression1</code> (Modelica.Blocks.Sources.RealExpression), <code>fixedTemperature</code> (Modelica.Thermal.HeatTransfer.Sources.FixedTemperature).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end PressureRegulatorTest;

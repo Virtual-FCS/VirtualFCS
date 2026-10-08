@@ -56,10 +56,10 @@ equation
   connect(currentController.feedForward, measuredSpeedInput) annotation(
     Line(points = {{-12, -12}, {-12, -36}, {-88, -36}, {-88, -64}}, color = {0, 0, 127}));
   annotation(
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>driveData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower</td><td>-</td><td><br></td><td></td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>setSpeedInput</code></td><td>Input</td><td>RealInput</td><td>-</td><td></td></tr>
-<tr><td><code>measuredSpeedInput</code></td><td>Input</td><td>RealInput</td><td>-</td><td></td></tr>
-<tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>pwr_pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p>This is a partial model of a controlled DC PM drive.</p>
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This is a partial model of a controlled DC PM drive.</p>
 <p>
 Electrical power is fed to the motor via a DC-DC inverter.
 The level of detail of the DC-DC inverter may be chosen from ideal averaging or switching.
@@ -68,9 +68,27 @@ The current controller is parameterized according to the absolute optimum.
 </p>
 <p>
 Further reading:
-<a href=\"&quot;modelica://Modelica/Resources/Documentation/Electrical/Machines/DriveControl.pdf&quot;\">Tutorial at the Modelica Conference 2017</a>
-</p><p>This model is adapted from the DC PM drive control model used in the Modelica Standard Library.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>pwr_pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"),
+<a href=\"modelica://Modelica/Resources/Documentation/Electrical/Machines/DriveControl.pdf\">Tutorial at the Modelica Conference 2017</a>
+</p><p>This model is adapted from the DC PM drive control model used in the Modelica Standard Library.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>armatureInverter</code> (Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter), <code>currentController</code> (Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI), <code>tau2i</code> (Modelica.Blocks.Math.Gain), <code>speedController</code> (Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI), <code>preFilter</code> (Modelica.Blocks.Continuous.FirstOrder).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>driveData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower</td><td>-</td><td><code>-</code></td><td></td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>setSpeedInput</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>measuredSpeedInput</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pwr_pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>pwr_pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+</table>
+</body>
+</html>"),
     Diagram(coordinateSystem(extent = {{-200, -100}, {100, 100}})),
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-87, 9}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -21}}, textString = "s"), Text(origin = {-3, 73}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -17}}, textString = "pwr"), Text(origin = {73, 9}, textColor = {255, 255, 255}, extent = {{-19, 11}, {35, -23}}, textString = "m"), Text(origin = {-5, -57}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -19}}, textString = "out"), Text(origin = {161, 84}, textColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}));
 end DCMotorControlRecirculationBlower;

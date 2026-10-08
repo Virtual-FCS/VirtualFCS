@@ -130,22 +130,46 @@ equation
   annotation(
     Icon(graphics = {Rectangle(origin = {4, -9}, fillColor = {85, 170, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-104, 49}, {96, -31}}), Rectangle(origin = {104, 4}, fillColor = {200, 200, 200}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-4, 20}, {10, -28}}), Text(origin = {-19, 70}, lineColor = {0, 0, 255}, extent = {{-37, 18}, {57, -32}}, textString = "%name"), Text(origin = {-79, 10}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {57, -32}}, textString = "-"), Text(origin = {87, 2}, lineColor = {255, 255, 255}, extent = {{-37, 18}, {31, -16}}, textString = "+")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>mass</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td>0.08</td><td>Mass of the cell</td></tr>
-<tr><td><code>coolingArea</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td>0.00143</td><td>Surface area for cooling</td></tr>
-<tr><td><code>specificHeatCapacity</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>1000</td><td>Specific Heat Capacity</td></tr>
-<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td></td><td>1</td></tr>
-<tr><td><code>chargeCapacity</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td>2.6</td><td>Battery Cell Capacity</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>heatPort</code></td><td>Input-side interface</td><td>HeatPort_a</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2>The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the impedance due to electrochemical reactions and the internal resistance of a lithium ion cell. The model comes pre-programmed with default parameters for lithium iron phosphate (LFP) battery cells.<div>
-<div><font face=\"&quot;Arial&quot;\"><br></font></div><div><font face=\"&quot;Arial&quot;\">The model includes a <a href=\"&quot;modelica://VirtualFCS.Control.ChargeCounter&quot;\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery via a charge-counting method.</font></div>
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the impedance due to electrochemical reactions and the internal resistance of a lithium ion cell. The model comes pre-programmed with default parameters for lithium iron phosphate (LFP) battery cells.<div>
+<div><font face=\"Arial\"><br></font></div><div><font face=\"Arial\">The model includes a <a href=\"modelica://VirtualFCS.Control.ChargeCounter\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery via a charge-counting method.</font></div>
 <div><div><br></div><div>The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard <i>et al.</i> [1], and is parameterized to the LFP chemistry by default.</div><div>
 
 <br>
-<span style=\"&quot;font-size:\" 12px;&quot;=\"\">The battery pack is assumed to have a uniform temperature with a thermal mass based on its heat capacity, Cp, and mass m_bat_pack. The heat generated from passing current through the battery is calculated according to the&nbsp;</span><i style=\"&quot;font-size:\" 12px;&quot;=\"\">Heat Generation</i><span style=\"&quot;font-size:\" 12px;&quot;=\"\">&nbsp;equation below. The provided heatPort allows connection to cooling systems or other relevant temperature boundary conditions.</span></div></div></div><div><br></div><div><b><u>References</u></b></div><div><!--StartFragment--><div class=\"&quot;csl-bib-body&quot;\" style=\"&quot;line-height:\" 2;=\"\" &quot;=\"\">
-  <div class=\"&quot;csl-entry&quot;\" style=\"&quot;clear:\" left;=\"\" &quot;=\"\">
-    <div class=\"&quot;csl-left-margin&quot;\" style=\"&quot;float:\" left;=\"\" padding-right:=\"\" 0.5em;text-align:=\"\" right;=\"\" width:=\"\" 1em;&quot;=\"\">1. Vichard, L. <i>et al.</i> A method to estimate battery SOH indicators based on vehicle operating data only. <i>Energy</i> <b>225</b>, 120235 (2021).</div>
+<span style=\"font-size:\" 12px;&quot;=\"\">The battery pack is assumed to have a uniform temperature with a thermal mass based on its heat capacity, Cp, and mass m_bat_pack. The heat generated from passing current through the battery is calculated according to the&nbsp;</span><i style=\"font-size:\" 12px;&quot;=\"\">Heat Generation</i><span style=\"font-size:\" 12px;&quot;=\"\">&nbsp;equation below. The provided heatPort allows connection to cooling systems or other relevant temperature boundary conditions.</span></div></div></div><div><br></div><div><b><u>References</u></b></div><div><!--StartFragment--><div class=\"csl-bib-body\" style=\"line-height:\" 2;=\"\" &quot;=\"\">
+  <div class=\"csl-entry\" style=\"clear:\" left;=\"\" &quot;=\"\">
+    <div class=\"csl-left-margin\" style=\"float:\" left;=\"\" padding-right:=\"\" 0.5em;text-align:=\"\" right;=\"\" width:=\"\" 1em;&quot;=\"\">1. Vichard, L. <i>et al.</i> A method to estimate battery SOH indicators based on vehicle operating data only. <i>Energy</i> <b>225</b>, 120235 (2021).</div>
   </div>
-  <span class=\"&quot;Z3988&quot;\" title=\"&quot;url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.energy.2021.120235&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=A%20method%20to%20estimate%20battery%20SOH%20indicators%20based%20on%20vehicle%20operating%20data%20only&amp;rft.jtitle=Energy&amp;rft.stitle=Energy&amp;rft.volume=225&amp;rft.aufirst=L.&amp;rft.aulast=Vichard&amp;rft.au=L.%20Vichard&amp;rft.au=A.%20Ravey&amp;rft.au=P.%20Venet&amp;rft.au=F.%20Harel&amp;rft.au=S.%20Pelissier&amp;rft.au=D.%20Hissel&amp;rft.date=2021-06-15&amp;rft.pages=120235&amp;rft.issn=0360-5442&amp;rft.language=en&quot;\"></span>
-</div><!--EndFragment--></div><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>OCV.v = a1 + b1 * (-log(chargeCounter.SOC))^m1 + c1*chargeCounter.SOC + d1*exp(n1*(chargeCounter.SOC -1));
-heatSource.Q_flow = abs((OCV.v - pin_p.v) * abs(sensorCurrent.i));
-P_bat= pin_p.v * sensorCurrent.i;</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+  <span class=\"Z3988\" title=\"url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.energy.2021.120235&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=A%20method%20to%20estimate%20battery%20SOH%20indicators%20based%20on%20vehicle%20operating%20data%20only&amp;rft.jtitle=Energy&amp;rft.stitle=Energy&amp;rft.volume=225&amp;rft.aufirst=L.&amp;rft.aulast=Vichard&amp;rft.au=L.%20Vichard&amp;rft.au=A.%20Ravey&amp;rft.au=P.%20Venet&amp;rft.au=F.%20Harel&amp;rft.au=S.%20Pelissier&amp;rft.au=D.%20Hissel&amp;rft.date=2021-06-15&amp;rft.pages=120235&amp;rft.issn=0360-5442&amp;rft.language=en\"></span>
+</div><!--EndFragment--></div>
+<h2>Governing Equations</h2>
+<pre>a1 = 3.135;
+b1 = -0.685;
+c1 = -1.342;
+d1 = 1.734;
+m1 = 0.478;
+n1 = 0.4;
+OCV.v = a1 + b1*(-log(chargeCounter.SOC))^m1 + c1*chargeCounter.SOC + d1*exp(n1*(chargeCounter.SOC - 1));
+heatSource.Q_flow = abs((OCV.v - pin_p.v)*abs(sensorCurrent.i));
+P_bat = pin_p.v*sensorCurrent.i;</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>mass</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>0.08</code></td><td>Mass of the cell</td></tr>
+<tr><td><code>coolingArea</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>0.00143</code></td><td>Surface area for cooling</td></tr>
+<tr><td><code>specificHeatCapacity</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Initial State of Charge</td></tr>
+<tr><td><code>chargeCapacity</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td><code>2.6</code></td><td>Battery Cell Capacity</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</table>
+</body>
+</html>"));
 end LiIonCell;

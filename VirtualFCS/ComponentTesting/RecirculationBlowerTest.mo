@@ -34,5 +34,22 @@ equation
     Line(points = {{-4, 60}, {-22, 60}}, color = {0, 0, 255}));
   annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>This test drives the recirculation blower with a sine command of amplitude 0.2, offset 1, and frequency 0.01 Hz, enabled from 1 s. The hydrogen inlet pressure is fixed at 200000 Pa.</p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test drives the recirculation blower with a sine command of amplitude 0.2, offset 1, and frequency 0.01 Hz, enabled from 1 s. The hydrogen inlet pressure is fixed at 200000 Pa.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>batterySystem</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>boundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>fixedBoundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>sine</code> (Modelica.Blocks.Sources.Sine), <code>realExpression</code> (Modelica.Blocks.Sources.RealExpression), <code>recirculationBlower</code> (VirtualFCS.Fluid.RecirculationBlower), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end RecirculationBlowerTest;

@@ -90,12 +90,30 @@ equation
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-44, 70}, textColor = {255, 255, 255}, extent = {{-22, 12}, {112, -142}}, textString = "Air")}),
     Diagram(coordinateSystem(initialScale = 0.1)), 
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and input-side physical interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td>42</td><td>Number of cells in the stack</td></tr>
-<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td>3</td><td>Air excess ratio</td></tr>
-<tr><td><code>p_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td>200000</td><td>Target cathodic pressure</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>fromStack</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
-<tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>stackCurrent</code></td><td>Input</td><td>RealInput</td><td>A</td><td>A</td></tr></tbody></table><h2>2. Model description</h2><p><b>SubSystemAir</b> supplies cathode air to a fuel-cell stack and regulates the stack-side pressure.</p><h3>Composition</h3><p>The subsystem contains an electric compressor, a pressure sensor, an outlet valve, a pressure set-point source, and PI control. The compressor is powered through the electrical pins; its outlet feeds the stack through <code>toStack</code>, while <code>fromStack</code> returns the cathode flow to the environment.</p><h3>Working principle</h3><p>The stack-current input is converted to an estimated air mass-flow demand using the cell count and air excess ratio <code>lambda</code>. Compressor control supplies the required flow, while the valve and pressure controller regulate the cathode pressure toward <code>p_set</code>. The environment boundary uses the global system ambient pressure and temperature.</p><p>The compressor and valve are replaceable. Controller gains and nominal flow values are tuned for a particular stack and should be checked when changing stack size, manifold volume, or operating conditions.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from extended classes or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>toStack</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
-<tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p><b>SubSystemAir</b> supplies cathode air to a fuel-cell stack and regulates the stack-side pressure.</p><h3>Composition</h3><p>The subsystem contains an electric compressor, a pressure sensor, an outlet valve, a pressure set-point source, and PI control. The compressor is powered through the electrical pins; its outlet feeds the stack through <code>toStack</code>, while <code>fromStack</code> returns the cathode flow to the environment.</p><h3>Working principle</h3><p>The stack-current input is converted to an estimated air mass-flow demand using the cell count and air excess ratio <code>lambda</code>. Compressor control supplies the required flow, while the valve and pressure controller regulate the cathode pressure toward <code>p_set</code>. The environment boundary uses the global system ambient pressure and temperature.</p><p>The compressor and valve are replaceable. Controller gains and nominal flow values are tuned for a particular stack and should be checked when changing stack size, manifold volume, or operating conditions.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>environment</code> (Modelica.Fluid.Sources.FixedBoundary), <code>pressureSensor</code> (Modelica.Fluid.Sensors.Pressure), <code>current_to_mass_flow</code> (Modelica.Blocks.Math.Gain), <code>valve</code> (Modelica.Fluid.Valves.ValveLinear), <code>PID_valve</code> (Modelica.Blocks.Continuous.LimPID), <code>pressure_set_point</code> (Modelica.Blocks.Sources.Constant), <code>compressor</code> (Fluid.ElectricCompressor), <code>tempCompressorOut</code> (Modelica.Fluid.Sensors.Temperature), <code>humidifier</code> (Fluid.NonHumidifier), <code>phi_dry_in</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>phi_wet_in</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>phi_dry_out</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>phi_wet_out</code> (VirtualFCS.Fluid.RelativeHumiditySensor).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>Air excess ratio</td></tr>
+<tr><td><code>p_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>Target cathodic pressure</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>A</td><td>A</td></tr>
+<tr><td><code>toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</table>
+</body>
+</html>"));
 
 
 end SubSystemAir;

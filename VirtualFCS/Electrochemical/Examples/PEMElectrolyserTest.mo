@@ -40,5 +40,25 @@ equation
 
 annotation(
     experiment(StartTime = 0, StopTime = 150, Tolerance = 1e-06, Interval = 0.1),
-  Documentation(info = "<html><head></head><body>This is a simple test of a PEM electrolyser with variable current pushed through it while undergoing pressurisation.<div>Note that the sources and sinks are implemented with \"hard\" constraints rather than physical valves to simplify the example; it is easy to realise non-physical conditions if e.g. the pressure ramp is too fast (producing backflow into the stack).</div></body></html>"));
+  Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+This is a simple test of a PEM electrolyser with variable current pushed through it while undergoing pressurisation.<div>Note that the sources and sinks are implemented with \"hard\" constraints rather than physical valves to simplify the example; it is easy to realise non-physical conditions if e.g. the pressure ramp is too fast (producing backflow into the stack).</div>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>ely</code> (Hydrogen.Electrolysers.PEMElectrolyser), <code>cathode_outlet</code> (Modelica.Fluid.Sources.Boundary_pT), <code>anode_outlet</code> (Modelica.Fluid.Sources.Boundary_pT), <code>anode_inlet</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>stepCurrent</code> (Modelica.Electrical.Analog.Sources.StepCurrent), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>system</code> (Modelica.Fluid.System), <code>ramp</code> (Modelica.Blocks.Sources.Ramp).</p><pre>H_in = abs(anode_inlet.ports[1].m_flow)*anode_inlet.ports[1].h_outflow;
+H_out = H_out_anode + H_out_cathode;
+H_out_anode = abs(anode_outlet.ports[1].m_flow)*ely.port_anode_b.h_outflow;
+H_out_cathode = abs(cathode_outlet.ports[1].m_flow)*ely.port_cathode_b.h_outflow;</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end PEMElectrolyserTest;

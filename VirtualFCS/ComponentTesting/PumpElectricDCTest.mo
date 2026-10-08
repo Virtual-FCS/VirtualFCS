@@ -90,5 +90,22 @@ annotation (
       Interval=0.5,
       Tolerance=1e-06,
       __Dymola_Algorithm="Dassl"));
-annotation(Documentation(info = "<html><p>This test drives an electric DC pump with a trapezoidal control beginning at 50 s. The signal has amplitude 1, rise and fall times of 100 s, width 100 s, and a 400 s period.</p><p>The water circuit uses five parallel channels, a 1 m by 0.003 m inlet pipe, a 0.2 m by 0.01 m downstream pipe, and a 60 V nominal battery supply with 58 V to 62 V limits.</p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test drives an electric DC pump with a trapezoidal control beginning at 50 s. The signal has amplitude 1, rise and fall times of 100 s, width 100 s, and a 400 s period.</p><p>The water circuit uses five parallel channels, a 1 m by 0.003 m inlet pipe, a 0.2 m by 0.01 m downstream pipe, and a 60 V nominal battery supply with 58 V to 62 V limits.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>boundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>fixedBoundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>batterySystem</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>sine1</code> (Modelica.Blocks.Sources.Sine), <code>abs1</code> (Modelica.Blocks.Math.Abs), <code>pumpElectricDC</code> (VirtualFCS.Fluid.PumpElectricDC), <code>trapezoid</code> (Modelica.Blocks.Sources.Trapezoid), <code>massFlowRate</code> (Modelica.Fluid.Sensors.MassFlowRate), <code>pipeCoolant</code> (Modelica.Fluid.Pipes.DynamicPipe), <code>pipe</code> (Modelica.Fluid.Pipes.DynamicPipe), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end PumpElectricDCTest;

@@ -188,5 +188,79 @@ equation
     annotation (Line(points={{-79.4,22},{-74,22},{-74,-10}}, color={0,0,127}));
   annotation (
     Icon(graphics={  Text(origin = {-4, -12}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Text(origin = {17, 123}, extent = {{3, 5}, {-3, -5}}, textString = "text"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-16.7, 56.9}, {19.3, 56.9}, {5, 11.8}, {28.4, 11.8}, {-18.7, -56.5}, {-20, -56}, {-5.3, -6}, {-28.5, -6}, {-16.7, 56.9}})}, coordinateSystem(initialScale = 0.1)));
-annotation(Documentation(info = "<html><p>This test assembles a 343 V HV-bus ECMS powertrain with a 280-cell, 300 A nominal fuel-cell stack and a 200 Ah battery starting at SOC = 0.5. The battery limits are 240 V to 403.2 V.</p><p>The ECMS restricts fuel-cell current to 5 A to 130 A and battery current to -99 A to 360 A, with SOC limits 0.25 to 0.8 and mu = 0.6. The electrical power demand is provided through the external bus interface; no local drive-cycle source or experiment horizon is defined.</p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test assembles a 343 V HV-bus ECMS powertrain with a 280-cell, 300 A nominal fuel-cell stack and a 200 Ah battery starting at SOC = 0.5. The battery limits are 240 V to 403.2 V.</p><p>The ECMS restricts fuel-cell current to 5 A to 130 A and battery current to -99 A to 360 A, with SOC limits 0.25 to 0.8 and mu = 0.6. The electrical power demand is provided through the external bus interface; no local drive-cycle source or experiment horizon is defined.</p>
+<h2>Governing Equations</h2>
+<pre>eta_DC_DC = 1;
+Power_del_DC_DC = converter.dc_p1.i * converter.dc_p1.v;
+Power_FC = fuelCellSystem.pin_n.i * fuelCellSystem.pin_p.v;
+Power_batt = batterySystem.pin_n.i * batterySystem.pin_p.v;
+if Power_del_DC_DC &gt; 0 then eta_drivetrain = min(max(((Power_del_DC_DC)/max((Power_FC + Power_batt + ((Power_FC * (1-(fuelCellSystem.eta_FC_sys)))+ (Power_batt * (1-(batterySystem.eta_batt)))+ (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0),1);
+else eta_drivetrain = min(max(((-Power_del_DC_DC)/max((Power_FC -Power_batt + ((Power_FC * (1-(fuelCellSystem.eta_FC_sys))) - (Power_batt * (1-(batterySystem.eta_batt))) - (Power_del_DC_DC * (1-(eta_DC_DC))))), 0.000001)), 0), 1);
+end if;
+connect(pin_n, ground.p);
+connect(converter.dc_n2, batterySystem.pin_n);
+connect(converter.dc_p2, batterySystem.pin_p);
+connect(converter.dc_n1, pin_n);
+connect(dC_converter.pin_pBus, fuelCellSystem.pin_p);
+connect(dC_converter.pin_nBus, fuelCellSystem.pin_n);
+connect(dC_converter.pin_nFC, batterySystem.pin_n);
+connect(dC_converter.pin_pFC, batterySystem.pin_p);
+connect(converter.dc_p1, pin_p);
+connect(division.y, product1.u1);
+connect(fc_V.y, division.u2);
+connect(bat_V.y, division.u1);
+connect(getBatteryVoltage.y, eMS_ECMS.inputBatteryVoltage);
+connect(getPowerDemand.y, eMS_ECMS.inputPowerDemand);
+connect(getP_H2.y, eMS_ECMS.inputP_H2);
+connect(getP_O2.y, eMS_ECMS.inputP_O2);
+connect(batterySystem.sensorOutput, eMS_ECMS.inputSOC);
+connect(product1.y, dC_converter.I_Ref);
+connect(eMS_ECMS.controlSetCurrent, product1.u2);
+connect(getFcTemp.y, eMS_ECMS.inputFCTemp);
+connect(getBatteryCurrent.y, gain.u);
+connect(gain.y, eMS_ECMS.inputBatteryCurrent);</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power_del_DC_DC</code></td><td>Power delivered from the DC/DC converter</td></tr>
+<tr><td><code>Power_FC</code></td><td>Power delivered from the FC system</td></tr>
+<tr><td><code>Power_batt</code></td><td>Power delivered from the batt system</td></tr>
+<tr><td><code>eta_drivetrain</code></td><td>Efficiency of the drivetrain</td></tr>
+<tr><td><code>eta_DC_DC</code></td><td>Efficiency of the DC/DC converter</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>m_powertrain</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>fuelCellSystem.m_FC_system + batterySystem.m_bat_pack</code></td><td>-</td></tr>
+<tr><td><code>V_HV_Bus</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>343</code></td><td>Voltage of the HV Bus</td></tr>
+<tr><td><code>V_tank_H2</code></td><td>Modelica.Units.SI.Volume</td><td>m3</td><td><code>0.13</code></td><td>H2 tank volume</td></tr>
+<tr><td><code>p_tank_H2</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>35000000</code></td><td>H2 tank initial pressure</td></tr>
+<tr><td><code>m_FC_stack</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>14.3</code></td><td>FC stack mass</td></tr>
+<tr><td><code>L_FC_stack</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.255</code></td><td>FC stack length</td></tr>
+<tr><td><code>W_FC_stack</code></td><td>Modelica.Units.SI.Breadth</td><td>-</td><td><code>0.760</code></td><td>FC stack width</td></tr>
+<tr><td><code>H_FC_stack</code></td><td>Modelica.Units.SI.Height</td><td>-</td><td><code>0.060</code></td><td>FC stack height</td></tr>
+<tr><td><code>vol_FC_stack</code></td><td>Modelica.Units.SI.Volume</td><td>m3</td><td><code>L_FC_stack * W_FC_stack * H_FC_stack</code></td><td>FC stack volume</td></tr>
+<tr><td><code>I_nom_FC_stack</code></td><td>Modelica.Units.SI.ElectricCurrent</td><td>A</td><td><code>300</code></td><td>FC stack nominal current</td></tr>
+<tr><td><code>I_rated_FC_stack</code></td><td>Modelica.Units.SI.ElectricCurrent</td><td>A</td><td><code>1.7 * I_nom_FC_stack</code></td><td>FC stack maximum operating current</td></tr>
+<tr><td><code>N_FC_stack</code></td><td>Integer</td><td>1</td><td><code>280</code></td><td>FC stack number of cells</td></tr>
+<tr><td><code>m_bat_pack</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>100</code></td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.6</code></td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>Modelica.Units.SI.Breadth</td><td>-</td><td><code>0.45</code></td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>Modelica.Units.SI.Height</td><td>-</td><td><code>0.1</code></td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>240</code></td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>336</code></td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>403.2</code></td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>-</td><td><code>200</code></td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Battery pack initial state of charge</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</table>
+</body>
+</html>"));
 end ECMSPowerTrain_test;

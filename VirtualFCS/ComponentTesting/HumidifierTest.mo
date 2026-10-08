@@ -57,5 +57,22 @@ equation
     Line(points = {{24, -56}, {0, -56}, {0, -22}}, color = {0, 127, 255}));
   annotation(
     experiment(StopTime = 400, StartTime = 0, Tolerance = 1e-06, Interval = 0.1),
-    Diagram);
+    Diagram,
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Pollak humidifier test case using the volume model.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>dry_air_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>wet_air_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>dry_air_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>wet_air_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>step_m_flow</code> (Modelica.Blocks.Sources.Step), <code>step_O2</code> (Modelica.Blocks.Sources.Step), <code>step_N2</code> (Modelica.Blocks.Sources.Step), <code>step_H2O</code> (Modelica.Blocks.Sources.Step), <code>sensorDrySink</code> (Fluid.RelativeHumiditySensor), <code>sensorWetSink</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>sensorDrySource</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>sensorWetSource</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>humidifier</code> (Fluid.Humidifier).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end HumidifierTest;

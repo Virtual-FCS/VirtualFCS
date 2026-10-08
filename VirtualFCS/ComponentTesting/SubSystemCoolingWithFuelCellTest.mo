@@ -65,5 +65,25 @@ equation
     Line(points = {{-10, -80}, {-60, -80}, {-60, 60}, {-30, 60}}, color = {0, 0, 255}));
 annotation(
     experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 0.833333));
-annotation(Documentation(info = "<html><p>This test couples the cooling subsystem to a 42-cell fuel cell. It uses lambda = 3, 2.5e5 Pa air pressure, 7.5e-5 kg/s air flow, 320 K stack temperature, 323.15 K coolant start temperature, and a 24 V supply.</p><p>The load resistance steps from 30 ohm to 50 ohm at 250 s.</p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test couples the cooling subsystem to a 42-cell fuel cell. It uses lambda = 3, 2.5e5 Pa air pressure, 7.5e-5 kg/s air flow, 320 K stack temperature, 323.15 K coolant start temperature, and a 24 V supply.</p><p>The load resistance steps from 30 ohm to 50 ohm at 250 s.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>fc</code> (Electrochemical.Hydrogen.FuelCells.FuelCell), <code>hydrogen</code> (Modelica.Fluid.Sources.FixedBoundary), <code>air_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>resistor</code> (Modelica.Electrical.Analog.Basic.VariableResistor), <code>system</code> (Modelica.Fluid.System), <code>air_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>currentSensor</code> (Modelica.Electrical.Analog.Sensors.CurrentSensor), <code>R_values</code> (Modelica.Blocks.Sources.Step), <code>subSystemCooling</code> (SubSystems.Cooling.SubSystemCooling), <code>T_sensor</code> (Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor), <code>V_source</code> (Modelica.Electrical.Analog.Sources.ConstantVoltage).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>-</td></tr>
+<tr><td><code>P_air</code></td><td>Real</td><td>1</td><td><code>2.5e5</code></td><td>-</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+<tr><td><code>T_stack</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>320</code></td><td>Stack temperature</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end SubSystemCoolingWithFuelCellTest;

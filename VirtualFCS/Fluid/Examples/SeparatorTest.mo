@@ -53,5 +53,22 @@ equation
 
 annotation(
     experiment(StartTime = 0, StopTime = 20, Tolerance = 1e-06, Interval = 0.002),
-  Documentation(info = "<html><head></head><body>This example implements a separator layout with level and pressure control.<div>The input is initially 50% water in dry air, allowing the separator to fill, after which only dry air is fed, evaporating the water and emptying the separator again.</div></body></html>"));
+  Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+This example implements a separator layout with level and pressure control.<div>The input is initially 50% water in dry air, allowing the separator to fill, after which only dry air is fed, evaporating the water and emptying the separator again.</div>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>sink</code> (Modelica.Fluid.Sources.Boundary_pT), <code>system</code> (Modelica.Fluid.System), <code>valve_liq</code> (Modelica.Fluid.Valves.ValveIncompressible), <code>valve_gas</code> (Modelica.Fluid.Valves.ValveCompressible), <code>PID_level</code> (Modelica.Blocks.Continuous.LimPID), <code>PID_pressure</code> (Modelica.Blocks.Continuous.LimPID), <code>pressure_reference</code> (Modelica.Blocks.Sources.Constant), <code>level_reference</code> (Modelica.Blocks.Sources.Constant), <code>cut_water</code> (Modelica.Blocks.Sources.CombiTimeTable).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end SeparatorTest;

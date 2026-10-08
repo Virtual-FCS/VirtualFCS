@@ -64,5 +64,22 @@ equation
 
 annotation (
   experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>This test applies a 0.01 Hz sine control to the coolant pump from 10 s, with amplitude 0.14 and offset 0.15. The coolant inlet is initially 100 K above the default temperature and the thermal setpoint is 350 K.</p><p>The battery starts at SOC = 0.9 with 23 V to 27 V limits and 25 V nominal voltage. </p></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>This test applies a 0.01 Hz sine control to the coolant pump from 10 s, with amplitude 0.14 and offset 0.15. The coolant inlet is initially 100 K above the default temperature and the thermal setpoint is 350 K.</p><p>The battery starts at SOC = 0.9 with 23 V to 27 V limits and 25 V nominal voltage. </p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>pumpElectricDC</code> (VirtualFCS.Fluid.PumpElectricDC), <code>system</code> (Modelica.Fluid.System), <code>boundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>fixedBoundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>batterySystem</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>sine</code> (Modelica.Blocks.Sources.Sine), <code>heatSink</code> (VirtualFCS.Thermal.HeatSink), <code>temperature</code> (Modelica.Fluid.Sensors.Temperature), <code>temperature1</code> (Modelica.Fluid.Sensors.Temperature), <code>temperature2</code> (Modelica.Fluid.Sensors.Temperature), <code>realExpression</code> (Modelica.Blocks.Sources.RealExpression), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end HeatSinkTest;
