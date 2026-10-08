@@ -32,22 +32,21 @@ equation
     Line(points = {{50, 8}, {60, 8}}, color = {0, 127, 255}));
   annotation(
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 0.06),
-  Documentation(info = "<html>
-<body>
+  Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 This test verifies the operation of a Compressor object in combination with an applied constant torque applied on its shaft, a mixing volume with mass and energy hold-up at the outlet, and an orifice leading air back to the environment to realise a pressure drop.<div><br></div><div>Note that the compressor is using its heatPort to simulate adiabatic operation.</div><div><br></div><div>For correct initialisation, the pressure of the compressor outlet (i.e. the mixing volume) is set to 1% higher than the environment's at start; this avoid spurious solutions in the calculation of the compressor.</div>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>environment</code> (Modelica.Fluid.Sources.FixedBoundary), <code>compressor</code> (Fluid.Compressor), <code>torque</code> (Modelica.Mechanics.Rotational.Sources.Torque), <code>orifice</code> (Modelica.Fluid.Fittings.SimpleGenericOrifice), <code>constant_tau</code> (Modelica.Blocks.Sources.Constant), <code>mixvol</code> (Fluid.MixingVolume).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end CompressorTest;

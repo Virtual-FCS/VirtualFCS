@@ -11,11 +11,10 @@ model CrackedAmmonia
          Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM}
   );
-  
   // Parameters from Stull (1947) as quoted in NIST
   function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
 
-  // Convenience variables to index arrays within class
+// Convenience variables to index arrays within class
   constant Integer Ammonia = 1 "Index of ammonia (in substanceNames, massFractions X, etc.)";
   constant Integer Hydrogen = 2 "Index of hydrogen (in substanceNames, massFractions X, etc.)";
   constant Integer Nitrogen = 3 "Index of nitrogen (in substanceNames, massFractions X, etc.)";
@@ -299,22 +298,21 @@ Correlation from Perry's Chemical Engineer's Handbook, 7th edition, table 2-30.<
 </html>"));
 end liquidDensity;
 
-  annotation(Documentation(info = "<html>
-<body>
+  annotation(Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>Condensing ammonia/hydrogen/nitrogen mixture. Ammonia is the only condensable species; hydrogen and nitrogen remain in the gas phase. The reference composition is given as mass fractions. Saturation pressure uses the Antoine correlation, and gas and liquid caloric properties use Shomate correlations. A direct single-condensable solution replaces the iterative Rachford-Rice flash calculation. The medium inherits its phase balance and state definition from PartialCondensingMixture.</p>
 <h2>Governing Equations</h2>
-<p>The behavior is defined by <code>PartialCondensingMixture</code>.</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end CrackedAmmonia;

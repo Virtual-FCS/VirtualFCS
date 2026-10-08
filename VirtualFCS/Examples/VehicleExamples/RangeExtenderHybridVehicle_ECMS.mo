@@ -5,22 +5,21 @@ model RangeExtenderHybridVehicle_ECMS
 
 equation
 
-  annotation(Documentation(info = "<html>
-<body>
+  annotation(Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>Vehicle drive-cycle example using the battery-electric vehicle assembly with the powertrain redeclared as RangeExtenderPowertrain_ECMS. Fuel-cell and battery power sharing is selected by the ECMS controller during the prescribed driving cycle.</p>
 <h2>Governing Equations</h2>
-<p>The behavior is defined by <code>BatteryElectricVehicle</code>.</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end RangeExtenderHybridVehicle_ECMS;

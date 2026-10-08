@@ -29,23 +29,22 @@ equation
   connect(fixedTemperature.port, liIonBatteryPack_Composite.heatBoundary) annotation (
     Line(points = {{40, -50}, {6, -50}, {6, -30}, {6, -30}, {6, -30}}, color = {191, 0, 0}));
   annotation (
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This example cycles a composite Li-ion pack containing three parallel strings of three series cells (3p3s). A pulse current alternates between -3.3 A and +3.3 A over a 7200 s experiment.</p><p>The pack starts at ambient temperature, uses a lower BMS voltage limit of 9 V, and exposes each cell individually. Use the lumped-pack example when cell-level resolution is not required.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>pulseCurrent</code> (Modelica.Electrical.Analog.Sources.PulseCurrent), <code>BMS</code> (VirtualFCS.Control.BatteryManagementSystem), <code>getSOC_init</code> (Modelica.Blocks.Sources.RealExpression), <code>getChargeCapacity</code> (Modelica.Blocks.Sources.RealExpression), <code>fixedTemperature</code> (Modelica.Thermal.HeatTransfer.Sources.FixedTemperature), <code>liIonBatteryPack_Composite</code> (VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"),
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryPack_Composite;

@@ -38,24 +38,23 @@ equation
     Line(points = {{72, -6}, {72, 0}, {100, 0}}, color = {0, 127, 255}));
   annotation(
     Icon(graphics = {Polygon(origin = {-50, 0}, points = {{-10, 40}, {-10, -40}, {50, 0}, {-10, 40}}), Polygon(origin = {50, 0}, points = {{10, 40}, {10, -40}, {-50, 0}, {10, 40}}), Line(origin = {0, 30}, points = {{0, -30}, {0, 30}}), Line(origin = {-80, 0}, points = {{-20, 0}, {20, 0}, {20, 0}}), Line(origin = {80, 0}, points = {{20, 0}, {-20, 0}}), Line(origin = {40, 29}, points = {{-40, 31}, {40, 31}, {40, -31}})}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 The PressureRegulator model is designed to reduce the pressure from a high-pressure source on the upstream side to a lower pressure on the downstream side by regulating the opening in a compressible fluid valve. Regulation of the valve opening is managed using a PID controller.
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>valveCompressible</code> (Modelica.Fluid.Valves.ValveCompressible), <code>pressure_sensor</code> (Modelica.Fluid.Sensors.Pressure), <code>pid</code> (Modelica.Blocks.Continuous.LimPID).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>Input</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>setDownstreamPressure</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>Output</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end PressureRegulator;

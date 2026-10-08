@@ -40,7 +40,7 @@ equation
     Icon,
     Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
-This example is intended as a means to evaluate the performance of the hydrogen subsystem both for optimization and troubleshooting purposes.<div><br></div><div><b><br></b></div><div><b>Description</b></div><div><p class=\"MsoNormal\">The model has three parts (1) input (includes fuel cell current and its conversion to hydrogen mass flow rate), (2) hydrogen subsystem (includes hydrogen tank, pressure regulator, recirculation blower, purge valve and control system), and (3) power supply (battery system).&nbsp;</p><p class=\"MsoNormal\"><br></p><p class=\"MsoNormal\"><b>References to base model/related packages<o:p></o:p></b></p><p class=\"MsoNormal\"><span lang=\"NO-BOK\" style=\"mso-ansi-language:NO-BOK\"><o:p>&nbsp;</o:p></span><a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl\">Subsystem Hydrogen Control</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a>,&nbsp;<a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">Pressure Regulator</a>,&nbsp;<a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>&nbsp;and <a href=\"modelica://VirtualFCS.Electrochemical.Battery.BatterySystem\">Battery System</a></p>
+This example is intended as a means to evaluate the performance of the hydrogen subsystem both for optimization and troubleshooting purposes.<div><br></div><div><b><br></b></div><div><b>Description</b></div><div><p class=\"MsoNormal\">The model has three parts (1) input (includes fuel cell current and its conversion to hydrogen mass flow rate), (2) hydrogen subsystem (includes hydrogen tank, pressure regulator, recirculation blower, purge valve and control system), and (3) power supply (battery system).&nbsp;</p><p class=\"MsoNormal\"></p>
 
 <p class=\"MsoListParagraphCxSpMiddle\" style=\"margin-left:108.0pt;mso-add-space:
 auto;text-indent:-108.0pt;mso-text-indent-alt:-9.0pt;mso-list:l0 level3 lfo1\"><o:p></o:p></p>
@@ -66,7 +66,7 @@ text-indent:-18.0pt;mso-list:l0 level2 lfo1\"><o:p></o:p></p>
 
 <!--EndFragment--></div>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>reactionRate</code> (Modelica.Blocks.Math.Gain), <code>subSystemHydrogen</code> (SubSystems.Hydrogen.SubSystemHydrogen), <code>batterySystem</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>trapezoid</code> (Modelica.Blocks.Sources.Trapezoid), <code>manifold</code> (Electrochemical.Hydrogen.Manifold), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
 <tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>

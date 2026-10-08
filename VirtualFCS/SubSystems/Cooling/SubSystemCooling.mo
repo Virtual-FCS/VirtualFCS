@@ -70,31 +70,30 @@ equation
     Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {9, -11}, textColor = {255, 255, 255}, extent = {{-81, 89}, {65, -55}}, textString = "Cool")}, coordinateSystem(initialScale = 0.1, extent = {{-100, -100}, {100, 100}})),
     experiment(StopTime = 600, Interval = 0.1, Tolerance = 1e-06, StartTime = 0),
     Diagram(coordinateSystem(extent = {{-100, 120}, {120, -100}})),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p><b>SubSystemCooling</b> circulates coolant through a fuel-cell stack and controls both stack and reservoir temperature.</p><h3>Composition</h3><p>The model consists of an open coolant reservoir, a replaceable pump, coolant temperature sensors, a prescribed cooling-heat input, and two controllers. The stack is connected through <code>from_stack</code> and <code>to_stack</code>; <code>pin_p</code> and <code>pin_n</code> supply the pump electrically.</p><h3>Working principle</h3><p>The stack-temperature PI controller adjusts pump flow to track <code>T_stack_set</code>. A second proportional controller uses the reservoir temperature error to calculate the cooling heat-flow command. The reservoir starts at <code>tank_fill_fraction</code> of its specified height and at 323.15 K.</p><p>Tank dimensions, fill level, coolant medium, stack set point, and reservoir set point are configurable. Controller limits and tuning should be checked for the connected stack and coolant circuit.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>coolantReservoir</code> (Modelica.Fluid.Vessels.OpenTank), <code>coolingRate</code> (Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow), <code>tempCoolantIn</code> (Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor), <code>targetStackT</code> (Modelica.Blocks.Sources.RealExpression), <code>PI_stack</code> (Modelica.Blocks.Continuous.LimPID), <code>P_coolant</code> (Modelica.Blocks.Continuous.LimPID), <code>targetReservoirT</code> (Modelica.Blocks.Sources.RealExpression), <code>pump2</code> (Fluid.SimplePump), <code>tempCoolantOut</code> (Modelica.Fluid.Sensors.Temperature).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>T_stack_set</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>353</code></td><td>Target stack temperature</td></tr>
 <tr><td><code>T_coolant_set</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>300</code></td><td>Target coolant reservoir temperature</td></tr>
 <tr><td><code>tank_height</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.5</code></td><td>Height of the cooling tank</td></tr>
 <tr><td><code>tank_diameter</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.2</code></td><td>Height of the cooling tank</td></tr>
 <tr><td><code>tank_fill_fraction</code></td><td>Real</td><td>1</td><td><code>0.8</code></td><td>Fraction of coolant in the tank</td></tr>
 <tr><td><code>tank_csa</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>Modelica.Constants.pi * (tank_diameter/2)^2</code></td><td>Tank cross section area</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>from_stack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
 <tr><td><code>stackTemperature</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>to_stack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end SubSystemCooling;

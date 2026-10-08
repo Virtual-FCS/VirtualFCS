@@ -62,7 +62,7 @@ equation
 <h2>Model Description and References</h2>
 <p>Pollak humidifier test case using the volume model.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>dry_air_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>wet_air_source</code> (Modelica.Fluid.Sources.MassFlowSource_T), <code>dry_air_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>wet_air_sink</code> (Modelica.Fluid.Sources.FixedBoundary), <code>step_m_flow</code> (Modelica.Blocks.Sources.Step), <code>step_O2</code> (Modelica.Blocks.Sources.Step), <code>step_N2</code> (Modelica.Blocks.Sources.Step), <code>step_H2O</code> (Modelica.Blocks.Sources.Step), <code>sensorDrySink</code> (Fluid.RelativeHumiditySensor), <code>sensorWetSink</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>sensorDrySource</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>sensorWetSource</code> (VirtualFCS.Fluid.RelativeHumiditySensor), <code>humidifier</code> (Fluid.Humidifier).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
 <tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>

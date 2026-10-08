@@ -40,24 +40,22 @@ equation
   connect(C_in.n, source.n) annotation(
     Line(points = {{-30, -12}, {-66, -12}}, color = {0, 0, 255}));
   annotation(
-    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-
-annotation(Documentation(info = "<html>
-<body>
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This test drives the averaged boost converter with a 10 Hz sinusoidal duty command of amplitude 0.4 and offset 0.5. It uses a 100 V source, 10 ohm load, 0.1 ohm internal resistance, 20 uF input capacitor, and a 323.15 K thermal boundary.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>booster</code> (Electrical.AveragedBoostConverter), <code>R</code> (Modelica.Electrical.Analog.Basic.Resistor), <code>R_internal</code> (Modelica.Electrical.Analog.Basic.Resistor), <code>source</code> (Modelica.Electrical.Analog.Sources.ConstantVoltage), <code>sine</code> (Modelica.Blocks.Sources.Sine), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>T</code> (Modelica.Thermal.HeatTransfer.Sources.FixedTemperature), <code>C_in</code> (Modelica.Electrical.Spice3.Basic.C_Capacitor).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end AveragedBoostConverterTest;

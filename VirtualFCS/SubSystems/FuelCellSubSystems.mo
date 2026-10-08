@@ -65,20 +65,19 @@ equation
     Line(points = {{-8, -60}, {-10, -60}, {-10, -50}, {-66, -50}, {-66, -18}}));
   annotation(
     Icon(graphics = {Text(origin = {-31, -100}, lineColor = {0, 0, 255}, extent = {{-105, 8}, {167, -40}}, textString = "%name"), Rectangle(extent = {{-100, 100}, {100, -100}}), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-82, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "H2"), Text(origin = {-2, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Cool"), Text(origin = {80, 60}, lineColor = {255, 255, 255}, extent = {{-22, 10}, {22, -10}}, textString = "Air")}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p><b>FuelCellSubSystems</b> is the integrated balance-of-plant assembly around a fuel-cell stack.</p><h3>Composition</h3><p>It combines <a href=\"modelica://VirtualFCS.SubSystems.Air.SubSystemAir\">SubSystemAir</a>, <a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>, and <a href=\"modelica://VirtualFCS.SubSystems.Cooling.SubSystemCooling\">SubSystemCooling</a>. The three assemblies provide the cathode air, anode hydrogen, and coolant paths; the stack-current and stack-temperature inputs are distributed to the relevant controls.</p><h3>Interfaces and purpose</h3><p>The external fluid ports are grouped as <code>air_toStack</code>/<code>air_fromStack</code>, <code>H2_toStack</code>/<code>H2_fromStack</code>, and <code>coolant_toStack</code>/<code>coolant_fromStack</code>. Electrical pins power the subsystem components. Use this class when a system model needs a single replaceable balance-of-plant interface; use the individual subsystem classes when testing or replacing one line independently.</p><p>The cell count and three fluid media are replaceable. Verify controller tuning and medium compatibility for the selected fuel-cell stack.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>subSystemHydrogen</code> (Hydrogen.SubSystemHydrogen), <code>subSystemAir</code> (VirtualFCS.SubSystems.Air.SubSystemAir), <code>subSystemCooling</code> (Cooling.SubSystemCooling), <code>batterySystem</code> (Electrochemical.Battery.BatterySystem).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>399</code></td><td>FC stack number of cells</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>H2_toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>stackTemperature</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>air_toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
@@ -87,7 +86,7 @@ equation
 <tr><td><code>H2_fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>air_fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>coolant_fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end FuelCellSubSystems;

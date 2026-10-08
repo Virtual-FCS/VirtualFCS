@@ -63,8 +63,7 @@ equation
   annotation(
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{100, 100}, {20, 20}}, color = {0, 0, 255}), Line(points = {{-20, -20}, {-100, -100}}, color = {0, 0, 255}), Text(origin = {-2, -142}, textColor = {128, 128, 128}, extent = {{-40, 80}, {40, 60}}, textString = "DC bus"), Text(textColor = {0, 0, 255}, extent = {{-100, 20}, {100, -20}}, textString = "%name"), Text(origin = {0, 146}, textColor = {128, 128, 128}, extent = {{-40, -60}, {40, -80}}, textString = "Fuel cell")}),
     Diagram(coordinateSystem(preserveAspectRatio = false)),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This is a model of an ideal DC-DC inverter based on a power balance achieved by an integral controller.</p>
 <p>The setup is similar to the Modelica Standard Library's IdealDcDc, but with the key differences that:</p>
@@ -74,22 +73,22 @@ equation
 <li>Due to a programming bug (or feature?), setting a positive current reference will result in inverted polarity in the output. This is because the program makes power on both sides equal, but one should be entering and the other exiting.</li>
 </ul>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>signalCurrent_FC</code> (Modelica.Electrical.Analog.Sources.SignalCurrent), <code>power_FC</code> (Modelica.Electrical.Analog.Sensors.PowerSensor), <code>power_DCbus</code> (Modelica.Electrical.Analog.Sensors.PowerSensor), <code>deadTime</code> (Modelica.Blocks.Continuous.FirstOrder), <code>feedback</code> (Modelica.Blocks.Math.Feedback), <code>powerController</code> (Modelica.Blocks.Continuous.Integrator), <code>signalCurrent_DCbus</code> (Modelica.Electrical.Analog.Sources.SignalCurrent).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>Td</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1e-2</code></td><td>Dead time</td></tr>
 <tr><td><code>Ti</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1e-6</code></td><td>Time constant of integral power controller</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>pin_pFC</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
 <tr><td><code>pin_pBus</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
 <tr><td><code>I_Ref</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>pin_nFC</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
 <tr><td><code>pin_nBus</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end DC_converter;

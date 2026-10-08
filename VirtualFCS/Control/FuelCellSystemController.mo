@@ -26,30 +26,29 @@ equation
     Line(points = {{-74, -84}, {-70, -84}, {-70, -62}, {-54, -62}}, color = {0, 0, 127}));
 
 annotation(
-    Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {0, 120}, textColor = {0, 0, 255}, extent = {{-140, 20}, {140, -20}}, textString = "%name")}));
-  annotation(Documentation(info = "<html>
-<body>
+    Icon(graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {0, 120}, textColor = {0, 0, 255}, extent = {{-140, 20}, {140, -20}}, textString = "%name")}),
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>Converts requested fuel-cell power into a current reference by dividing by the measured stack voltage. The divisor is limited to at least 0.1 V, preventing a zero-voltage division. The resulting current reference drives the DC converter; this block does not impose an additional current limit.</p><h3>Assembly</h3><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Component</th><th>Model</th><th>Description</th></tr>
+<tbody><tr><th>Component</th><th>Model</th><th>Description</th></tr>
 <tr><td><code>division</code></td><td><code>Modelica.Blocks.Math.Division</code></td><td>-</td></tr>
 <tr><td><code>max</code></td><td><code>Modelica.Blocks.Math.Max</code></td><td>-</td></tr>
 <tr><td><code>const</code></td><td><code>Modelica.Blocks.Sources.Constant</code></td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>division</code> (Modelica.Blocks.Math.Division), <code>max</code> (Modelica.Blocks.Math.Max), <code>const</code> (Modelica.Blocks.Sources.Constant).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>setCurrent</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>A</td><td>Fuel-cell current reference</td></tr>
 <tr><td><code>setPower</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>W</td><td>Requested fuel-cell power</td></tr>
 <tr><td><code>fcVoltage</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>V</td><td>Measured fuel-cell stack voltage</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end FuelCellSystemController;

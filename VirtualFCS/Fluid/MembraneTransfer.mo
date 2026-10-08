@@ -149,18 +149,10 @@ equation
           Media.Shomate.H2O_G)
         /dry_medium.MMX[waterIndex];
 
-  annotation(Documentation(info = "<html>
-<body>
+  annotation(Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This model calculates the water mass and enthalpy transfer across the membrane for a single paired wet/dry cell of the discretised <code>Humidifier</code>. It implements the Pollak et al. hollow-fiber correlations, computing the wet-side (fiber bore) and dry-side (shell gap) mass-transfer coefficients from Reynolds, Schmidt, and Sherwood numbers, then combines them with the membrane diffusion resistance into an overall mass-transfer coefficient <code>beta_eff</code>.</p><div><br></div><div>An NTU-effectiveness method converts <code>beta_eff</code> and the wet-side volumetric flow into a transfer effectiveness, which is applied to the wet/dry water-vapor density difference to obtain the signed water mass flow <code>m_transfer</code> (positive from wet to dry side). The membrane area, and therefore <code>beta_eff</code>, is divided by <code>n</code> since each instance only represents one of the <code>n</code> axial cells sharing the total fiber geometry.</div><div><br></div><div>The transferred enthalpy <code>h_transfer</code> is evaluated at the upstream side's temperature (wet side if <code>m_transfer &gt;= 0</code>, dry side otherwise) using the Shomate correlation for gaseous water. This model is instantiated once per axial cell, driven by the states of the paired <code>MembraneManifold</code> volumes.</div><p>The wet-side and dry-side mass flows are filtered independently by first-order states wetFlow_f and dryFlow_f with time constant tau_flow. Their initial values are wetFlow_start and dryFlow_start. The filtered flow magnitudes, rather than the instantaneous port flows, drive the volume-flow, Reynolds-number, and Sherwood-number correlations. This reduces rapid pressure-flow feedback into membrane transfer; it does not introduce a separate permeation-rate state.</p><h3>References</h3><p>Reference: Pollak et al., <i>Steady state and dynamic simulation of a small-scale hollow fiber membrane humidifier</i>.</p>
-<h2>Governing Equations</h2>
-<pre>wetDensity = wet_medium.density(wetState);
-dryDensity = dry_medium.density(dryState);
-wetTemperature = wet_medium.temperature(wetState);
-dryTemperature = dry_medium.temperature(dryState);
-wetPressure = wet_medium.pressure(wetState);
-dryPressure = dry_medium.pressure(dryState);
-tau_flow*der(wetFlow_f) = wetFlow - wetFlow_f;
+<h2>Governing Equations</h2><pre>tau_flow*der(wetFlow_f) = wetFlow - wetFlow_f;
 tau_flow*der(dryFlow_f) = dryFlow - dryFlow_f;
 A_mem = nFibers*L_fiber*Modelica.Constants.pi*dFiber_o;
 A_c_fibers = nFibers*Modelica.Constants.pi*dFiber_i^2/4;
@@ -184,15 +176,15 @@ NTU = beta_eff/max(wetVolumeFlow,V_flow_min);
 effectiveness = NTU/(1 + NTU);
 m_transfer = wet_medium.MMX[waterIndex]*effectiveness*(wetDensity*(1 - sum(wetXi))/wet_medium.MMX[waterIndex]-dryDensity*(1 - sum(dryXi))/dry_medium.MMX[waterIndex])*wetVolumeFlow;
 h_transfer = if m_transfer &gt;= 0 then Media.Shomate.enthalpy( wetTemperature, Media.Shomate.H2O_G) /wet_medium.MMX[waterIndex] else Media.Shomate.enthalpy( dryTemperature, Media.Shomate.H2O_G) /dry_medium.MMX[waterIndex];</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Quantity</th><th>Description</th></tr>
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
 <tr><td><code>m_transfer</code></td><td>Mass flow from wet to dry side</td></tr>
 <tr><td><code>h_transfer</code></td><td>Specific enthalpy of transferred water</td></tr>
 <tr><td><code>wetFlow_f</code></td><td>Filtered wet-side flow</td></tr>
 <tr><td><code>dryFlow_f</code></td><td>Filtered dry-side flow</td></tr>
-</table>
+</tbody></table>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>waterIndex</code></td><td>Integer</td><td>1</td><td><code>3</code></td><td>Water species index; water must be the dependent species</td></tr>
 <tr><td><code>nFibers</code></td><td>Integer</td><td>1</td><td><code>488</code></td><td>Number of hollow fibers</td></tr>
 <tr><td><code>dFiber_i</code></td><td>SI.Diameter</td><td>m</td><td><code>0.9e-3</code></td><td>Inner fiber diameter</td></tr>
@@ -210,10 +202,10 @@ h_transfer = if m_transfer &gt;= 0 then Media.Shomate.enthalpy( wetTemperature, 
 <tr><td><code>tau_flow</code></td><td>SI.Time</td><td>s</td><td><code>0.5</code></td><td>Time constant of the flow filter feeding the transfer correlations</td></tr>
 <tr><td><code>wetFlow_start</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td><code>1e-3</code></td><td>Initial filtered wet-side flow</td></tr>
 <tr><td><code>dryFlow_start</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td><code>1e-3</code></td><td>Initial filtered dry-side flow</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>wetState</code></td><td>Input signal</td><td>wet_medium.ThermodynamicState</td><td>-</td><td>Thermodynamic state of the paired wet-side cell</td></tr>
 <tr><td><code>dryState</code></td><td>Input signal</td><td>dry_medium.ThermodynamicState</td><td>-</td><td>Thermodynamic state of the paired dry-side cell</td></tr>
 <tr><td><code>wetXi</code></td><td>Input signal</td><td>SI.MassFraction[wet_medium.nXi]</td><td>1</td><td>Independent composition of the wet-side cell</td></tr>
@@ -223,7 +215,7 @@ h_transfer = if m_transfer &gt;= 0 then Media.Shomate.enthalpy( wetTemperature, 
 <tr><td><code>m_transfer</code></td><td>Output signal</td><td>SI.MassFlowRate</td><td>kg/s</td><td>Mass flow from wet to dry side</td></tr>
 <tr><td><code>h_transfer</code></td><td>Output signal</td><td>SI.SpecificEnthalpy</td><td>J/kg</td><td>Specific enthalpy of transferred water</td></tr>
 <tr><td><code>Xi_transfer</code></td><td>Output signal</td><td>SI.MassFraction[wet_medium.nXi]</td><td>1</td><td>Independent composition of transferred water (zero; water is the dependent species)</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end MembraneTransfer;

@@ -23,23 +23,23 @@ equation
   connect(sine.y, subSystemHydrogenControl.stackCurrent) annotation(
     Line(points = {{-58, 30}, {-38, 30}, {-38, 12}, {-22, 12}}, color = {0, 0, 127}));
 
-annotation (experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html>
-<body>
+annotation(
+    experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6),
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This test exercises hydrogen subsystem control with a fuel-cell signal varying sinusoidally at 0.1 Hz (amplitude 100, offset 300). Hydrogen control inputs use cosine signals at 0.2 Hz (amplitude 15, offset 45) and 0.3 Hz (amplitude 20, offset 50), enabled from 2 s.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>subSystemHydrogenControl</code> (SubSystems.Hydrogen.SubSystemHydrogenControl), <code>sine</code> (Modelica.Blocks.Sources.Sine), <code>cosine</code> (Modelica.Blocks.Sources.Cosine), <code>multiplex2</code> (Modelica.Blocks.Routing.Multiplex2), <code>cosine1</code> (Modelica.Blocks.Sources.Cosine), <code>system</code> (Modelica.Fluid.System).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end SubSystemHydrogenControlTest;

@@ -79,23 +79,8 @@ equation
     Line(points = {{-98, -130}, {-44, -130}, {-44, -76}}, color = {0, 0, 127}));
   annotation(Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
-<p>Fuel-cell/battery range-extender powertrain using equivalent-consumption minimization (ECMS). The controller selects the fuel-cell contribution from power demand, battery state of charge, and operating measurements, and sends a power request to FuelCellSystemController, which generates the DC-converter current reference. The controller receives battery voltage and current together with total power demand and fuel-cell operating measurements. The declared stack cell count is passed to the fuel-cell system and ECMS controller.</p><h3>Assembly</h3><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tbody><tr><th>Component</th><th>Model</th><th>Description</th></tr>
-<tr><td><code>fuelCellSystem</code></td><td><code>Electrochemical.Hydrogen.FuelCells.FuelCellSystem</code></td><td>-</td></tr>
-<tr><td><code>dC_converter</code></td><td><code>VirtualFCS.Electrical.DC_converter</code></td><td>-</td></tr>
-<tr><td><code>multiSensor</code></td><td><code>Modelica.Electrical.Analog.Sensors.MultiSensor</code></td><td>-</td></tr>
-<tr><td><code>ground1</code></td><td><code>Modelica.Electrical.Analog.Basic.Ground</code></td><td>-</td></tr>
-<tr><td><code>ems_ecms</code></td><td><code>Control.ECMS.EMS_ECMS</code></td><td>-</td></tr>
-<tr><td><code>getBatteryVoltage</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>getBatteryCurrent</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>getPowerDemand</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>getFcTemp</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>getP_H2</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>getP_O2</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>get_phi</code></td><td><code>Modelica.Blocks.Sources.RealExpression</code></td><td>-</td></tr>
-<tr><td><code>fuelCellSystemController</code></td><td><code>VirtualFCS.Control.FuelCellSystemController</code></td><td>-</td></tr>
-</tbody></table>
-<h2>Governing Equations</h2>
+<p>Fuel-cell/battery range-extender powertrain using equivalent-consumption minimization (ECMS). The controller selects the fuel-cell contribution from power demand, battery state of charge, and operating measurements, and sends a power request to FuelCellSystemController, which generates the DC-converter current reference. The controller receives battery voltage and current together with total power demand and fuel-cell operating measurements. The declared stack cell count is passed to the fuel-cell system and ECMS controller.</p>
+<h2>Governing Equations</h2><div>-</div>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
 <tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>

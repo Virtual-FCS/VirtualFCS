@@ -16,18 +16,16 @@ model Manifold "Fuel cell manifold"
 annotation(
     Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}), Rectangle(origin = {-12, 12}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -20}, {20, 20}}), Rectangle( origin = {-6, 6},fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -20}, {20, 20}}), Rectangle( fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -20}, {20, 20}}), Rectangle(origin = {6, -6}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -20}, {20, 20}}), Rectangle(origin = {12, -12}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-20, -20}, {20, 20}}), Line(origin = {13, -8}, points = {{15, 12}, {-15, 12}, {-15, 4}, {15, 4}, {15, -4}, {-15, -4}, {-15, -12}, {15, -12}, {15, -12}, {15, -12}, {15, -20}, {-15, -20}})}),
   Diagram(graphics),
-  Documentation(info = "<html>
-<body>
+  Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 This is a specialisation of MixingVolume that implements chemical reactions.<div>The rate of reaction [mol/s] is provided by the r input; this modifies the holdup of each species depending on their stoichiometric coefficient nu and molar masses MMX.</div><div><br></div><div><b>Note </b>that there is no enforcement that the stoichiometric coefficients are balanced: if the reaction is not balanced, the Manifold <i>must</i>&nbsp;be either:</div><div><ul><li>Set to zero reaction rate, or</li><li>Have the heatPort deactivated so that temperature is set to parameter T, or</li><li>Be connected through the heatPort to another Manifold with the same reaction rate and whose stoichiometry balances the first one.</li></ul><div>The last case is the one implemented e.g. in fuel cells between anode and cathode.</div></div><div><br></div><div>An unbalanced reaction occuring in isolation is not a physically meaningful model, and will produce nonsensical results, typically with extremely high or low temperatures, often leading to numerical crashes.</div>
-<h2>Governing Equations</h2>
-<p>The behavior is defined by <code>Fluid.MixingVolume</code>.</p><pre>productions[Medium.nX] = r * nu .* MMX;</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Quantity</th><th>Description</th></tr>
+<h2>Governing Equations</h2><pre>productions[Medium.nX] = r * nu .* MMX;</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
 <tr><td><code>productions</code></td><td>Mass production of medium species</td></tr>
-</table>
+</tbody></table>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>energyDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>system.energyDynamics</code></td><td>Formulation of energy balance (inherited)</td></tr>
 <tr><td><code>massDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>Modelica.Fluid.Types.Dynamics.FixedInitial</code></td><td>Formulation of mass balance (inherited)</td></tr>
 <tr><td><code>substanceDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>massDynamics</code></td><td>Formulation of substance balance (inherited)</td></tr>
@@ -45,17 +43,17 @@ This is a specialisation of MixingVolume that implements chemical reactions.<div
 <tr><td><code>R_flow</code></td><td>Modelica.Fluid.Types.HydraulicResistance</td><td>-</td><td><code>1000</code></td><td>Resistance to mass flow (inherited)</td></tr>
 <tr><td><code>nu</code></td><td>Real[Medium.nX]</td><td>1</td><td><code>zeros(Medium.nX)</code></td><td>Reaction stoichiometric coefficients</td></tr>
 <tr><td><code>MMX</code></td><td>Modelica.Units.SI.MolarMass[Medium.nX]</td><td>kg/mol</td><td><code>zeros(Medium.nX)</code></td><td>Molar masses of components</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>fluidVolume</code></td><td>Input signal</td><td>Modelica.Units.SI.Volume</td><td>m3</td><td>Volume</td></tr>
 <tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Fluid connector a (positive design flow direction is from port_a to port_b)</td></tr>
 <tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Fluid connector b (positive design flow direction is from port_a to port_b)</td></tr>
 <tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
 <tr><td><code>r</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>mol/s</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 
 end Manifold;

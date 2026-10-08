@@ -66,26 +66,25 @@ equation
   annotation (
     Icon(graphics={  Rectangle(origin = {-100, 100}, fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {300, -300}}), Text(origin = {2, 137}, lineColor = {255, 255, 255}, extent = {{-74, 31}, {74, -31}}, textString = "Battery"), Text(origin = {-4, -101}, lineColor = {255, 255, 255}, extent = {{-74, 31}, {74, -31}}, textString = "Load"), Text(origin = {-7, 253}, lineColor = {0, 0, 255}, extent = {{-181, 45}, {181, -45}}, textString = "%name")}, coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 The voltage limiter block enforces user-defined upper and lower voltage limits for battery cells and packs.&nbsp;
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>voltageSensor</code> (Modelica.Electrical.Analog.Sensors.VoltageSensor), <code>greaterThreshold</code> (Modelica.Blocks.Logical.GreaterThreshold), <code>lessThreshold</code> (Modelica.Blocks.Logical.LessThreshold), <code>and1</code> (Modelica.Blocks.Logical.And), <code>switchVotageSource</code> (Modelica.Electrical.Analog.Ideal.IdealTwoWaySwitch), <code>upperVoltageSource</code> (Modelica.Electrical.Analog.Sources.ConstantVoltage), <code>constantVoltage</code> (Modelica.Electrical.Analog.Sources.ConstantVoltage), <code>idealCommutingSwitch</code> (Modelica.Electrical.Analog.Ideal.IdealTwoWaySwitch), <code>lessThreshold1</code> (Modelica.Blocks.Logical.LessThreshold).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>upperVoltageLimit</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>3.6</code></td><td>Upper Voltage Limit</td></tr>
 <tr><td><code>lowerVoltageLimit</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>2.0</code></td><td>Lower Voltage Limit</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>pin_p_battery</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
 <tr><td><code>pin_p_load</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
 <tr><td><code>pin_n_battery</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
 <tr><td><code>pin_n_load</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end VoltageLimiter;

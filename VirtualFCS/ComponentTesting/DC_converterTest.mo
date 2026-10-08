@@ -29,24 +29,23 @@ equation
     Line(points = {{-4, 40}, {-18, 40}, {-18, 0}, {-30, 0}}, color = {0, 0, 255}));
   connect(batterySystem1.pin_n, ground.p) annotation(
     Line(points = {{-4, -40}, {-18, -40}, {-18, 0}, {-30, 0}}, color = {0, 0, 255}));
-  annotation (
-    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1));
-annotation(Documentation(info = "<html>
-<body>
+  annotation(
+    experiment(StartTime = 0, StopTime = 600, Tolerance = 1e-6, Interval = 1),
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This test applies a constant 100 A current reference to the DC converter while two default battery systems are connected to its DC sides.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>batterySystem</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>batterySystem1</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>dC_converter</code> (VirtualFCS.Electrical.DC_converter), <code>system</code> (Modelica.Fluid.System), <code>realExpression</code> (Modelica.Blocks.Sources.RealExpression), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end DC_converterTest;

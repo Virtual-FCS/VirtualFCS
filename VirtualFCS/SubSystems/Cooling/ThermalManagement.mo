@@ -75,23 +75,22 @@ equation
     Icon(graphics = {Rectangle(origin = {0, -1}, fillColor = {85, 0, 255}, fillPattern = FillPattern.HorizontalCylinder, lineThickness = 4, extent = {{-98, 99}, {98, -99}}), Text(origin = {0, 1}, textColor = {255, 255, 255}, extent = {{-76, 65}, {76, -65}}, textString = "Thermal Sub-System")}, coordinateSystem(extent = {{-100, -100}, {100, 100}})),
     version = "1",
     conversion(noneFromVersion = ""),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p><b>ThermalManagement</b> is a compact cooling-loop example that transfers heat from a hot-water circuit to a separate coolant circuit.</p><h3>Composition and operation</h3><p>A heat exchanger connects the hot-water ports <code>HotWaterIn</code>/<code>HotWaterOut</code> to the coolant loop. The coolant loop contains a pump, temperature sensors, fixed-temperature source and sink boundaries, and a PI controller. The controller compares the cold-side temperature with a 328.15 K set point and commands the pump within a 0.2 to 0.5 flow range.</p><p>The hot-water and coolant media are replaceable. The 48 V source and boundary conditions are example values for system-level thermal-management studies.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>CoolantSink</code> (Modelica.Fluid.Sources.Boundary_pT), <code>CoolantSource</code> (Modelica.Fluid.Sources.Boundary_pT), <code>THotIn</code> (Modelica.Fluid.Sensors.TemperatureTwoPort), <code>THotOut</code> (Modelica.Fluid.Sensors.TemperatureTwoPort), <code>TColdOut</code> (Modelica.Fluid.Sensors.TemperatureTwoPort), <code>T_setpoint</code> (Modelica.Blocks.Sources.Constant), <code>pump_coolant</code> (Fluid.SimplePump), <code>voltageSource</code> (Modelica.Electrical.Analog.Sources.ConstantVoltage), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>pi</code> (Modelica.Blocks.Continuous.PI), <code>error_flow</code> (Modelica.Blocks.Math.Add), <code>limiter</code> (Modelica.Blocks.Nonlinear.Limiter), <code>hex</code> (Fluid.HeatExchanger).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>HotWaterIn</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
 <tr><td><code>HotWaterOut</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end ThermalManagement;

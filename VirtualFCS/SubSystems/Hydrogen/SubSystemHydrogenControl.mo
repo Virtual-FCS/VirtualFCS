@@ -55,29 +55,28 @@ equation
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={Text(origin = {-8, 257}, textColor = {0, 0, 255}, extent = {{-264, 69}, {264, -69}}, textString = "%name"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 2, extent = {{-200, 200}, {200, -200}}, radius = 50), Text(  textColor = {255, 0, 0},extent = {{-200, 100}, {200, -100}}, textString = "H₂
 Control")}),
-Documentation(info = "<html>
-<body>
+Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p><b>SubSystemHydrogenControl</b> generates the three commands required by the hydrogen supply assembly: hydrogen feed pressure, purge-valve opening, and recirculation-blower speed.</p><h3>Working principle</h3><p>The stack-current input is converted to an estimated hydrogen flow using the cell count and recirculation ratio <code>RR</code>. A minimum-flow path prevents the commanded blower flow from reaching zero. A pressure controller uses the measured blower speed and requested flow to calculate the blower-speed command, while <a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">PurgeValveControl</a> determines purge operation.</p><h3>Interfaces</h3><p><code>p_h2_set</code> provides the pressure-regulator set point, <code>purge_set</code> controls the purge valve, and <code>pumpSpeed_set</code> controls the recirculation blower. The pressure target, cell count, recirculation ratio, minimum flow, and measured blower speed are inputs or parameters of the control arrangement.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>purgeValveControl</code> (VirtualFCS.Control.PurgeValveControl), <code>setH2Pressure</code> (Modelica.Blocks.Sources.Constant), <code>pumpSpeedControl_PID</code> (Modelica.Blocks.Continuous.LimPID), <code>max</code> (Modelica.Blocks.Math.Max), <code>minFlow</code> (Modelica.Blocks.Sources.Constant), <code>currentToFlow</code> (Modelica.Blocks.Math.Gain).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>pressure_H2_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>Set H2 Pressure</td></tr>
 <tr><td><code>RR</code></td><td>Real</td><td>1</td><td><code>1.3</code></td><td>Hydrogen recirculation ratio (recirculated/consumed)</td></tr>
 <tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>180</code></td><td>Number of cells in stack</td></tr>
 <tr><td><code>minimumFlow</code></td><td>Modelica.Units.SI.MassFlowRate</td><td>kg/s</td><td><code>1.22e-05</code></td><td>minimum hydrogen flow</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>pumpSpeed_measured</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>p_h2_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
 <tr><td><code>purge_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
 <tr><td><code>pumpSpeed_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end SubSystemHydrogenControl;

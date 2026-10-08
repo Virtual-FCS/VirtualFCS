@@ -64,17 +64,16 @@ equation
     Line(points = {{-40, 6}, {-20, 6}, {-20, 10}, {0, 10}}, color = {0, 0, 255}));
   annotation(
     experiment(StopTime = 1, Interval = 1e-05, Tolerance = 1e-06, StartTime = 0),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This example demonstrates the switching on of a resistive load operated by a step up chopper.
 DC output voltage is equal to <code>1/(1 - dutyCycle)</code> times the input voltage.
 Plot current <code>currentSensor.i</code>, averaged current <code>meanCurrent.y</code>, total voltage <code>voltageSensor.v</code> and voltage <code>meanVoltage.v</code>.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>source</code> (Modelica.Electrical.Analog.Sources.ConstantVoltage), <code>chopper</code> (Electrical.ChopperStepUpDown), <code>currentSensor</code> (Modelica.Electrical.Analog.Sensors.CurrentSensor), <code>voltageSensor</code> (Modelica.Electrical.Analog.Sensors.VoltageSensor), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>signalPWM</code> (Modelica.Electrical.PowerConverters.DCDC.Control.SignalPWM), <code>meanCurrent</code> (Modelica.Blocks.Math.Mean), <code>meanVoltage</code> (Modelica.Blocks.Math.Mean), <code>capacitor</code> (Modelica.Electrical.Analog.Basic.Capacitor), <code>loadResistor</code> (Modelica.Electrical.Analog.Basic.Resistor), <code>dutycycle</code> (Modelica.Blocks.Sources.Ramp).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>f</code></td><td>Modelica.Units.SI.Frequency</td><td>Hz</td><td><code>1000</code></td><td>Switching frequency</td></tr>
 <tr><td><code>Vsource</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>60</code></td><td>Source voltage</td></tr>
 <tr><td><code>L</code></td><td>Modelica.Units.SI.Inductance</td><td>H</td><td><code>25e-3</code></td><td>Chopper internal inductance</td></tr>
@@ -83,12 +82,12 @@ Plot current <code>currentSensor.i</code>, averaged current <code>meanCurrent.y<
 <tr><td><code>ILoad</code></td><td>Modelica.Units.SI.Current</td><td>A</td><td><code>1.2</code></td><td>Load current</td></tr>
 <tr><td><code>RLoad</code></td><td>Modelica.Units.SI.Resistance</td><td>Ohm</td><td><code>V0/ILoad</code></td><td>Load resistance</td></tr>
 <tr><td><code>V0</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>Vsource*dutyCycle</code></td><td>No-load output voltage</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end ChopperTest;

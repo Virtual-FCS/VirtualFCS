@@ -34,24 +34,23 @@ equation
   connect(batterySystem.pin_n, ground.p) annotation(
     Line(points = {{4, 52}, {24, 52}, {24, 48}}, color = {0, 0, 255}));
 
-annotation (
-  experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html>
-<body>
+annotation(
+    experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6),
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This test connects the pre-heater between fluid boundaries at 506625 Pa inlet and 476228 Pa outlet. The pipe length is 100 m and the water medium and 25 V nominal battery use model defaults.</p><p>No explicit flow, fluid temperature, or time-varying excitation is prescribed. The experiment runs from 0 to 600 s with 0.5 s output intervals.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>preHeater</code> (VirtualFCS.Thermal.PreHeater), <code>boundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>fixedBoundary</code> (Modelica.Fluid.Sources.FixedBoundary), <code>batterySystem</code> (VirtualFCS.Electrochemical.Battery.BatterySystem), <code>temperature</code> (Modelica.Fluid.Sensors.Temperature), <code>temperature1</code> (Modelica.Fluid.Sensors.Temperature), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end PreHeaterTest;

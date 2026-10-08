@@ -57,24 +57,23 @@ equation
     Line(points = {{88, 28}, {88, 28}, {88, -6}, {6, -6}, {6, -16}, {6, -16}}, color = {0, 0, 255}));
 annotation(
     Diagram,
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>DC motor with closed-loop speed control. The model converts a speed command into electrical drive power and mechanical shaft torque.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>speedSensor</code> (Modelica.Mechanics.Rotational.Sensors.SpeedSensor), <code>gain1</code> (Modelica.Blocks.Math.Gain), <code>dcpm</code> (Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet), <code>currentController</code> (Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI), <code>preFilter</code> (Modelica.Blocks.Continuous.FirstOrder), <code>tau2i</code> (Modelica.Blocks.Math.Gain), <code>armatureInverter</code> (Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter), <code>speedController</code> (Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.LimitedPI).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>driveData</code></td><td>Utilities.ParameterRecords.EVDriveData</td><td>-</td><td><code>-</code></td><td></td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
 <tr><td><code>control_input</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
 <tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end SpeedControlledDCMotor;

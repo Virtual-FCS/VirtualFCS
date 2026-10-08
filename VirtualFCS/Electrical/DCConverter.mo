@@ -65,29 +65,28 @@ equation
     defaultComponentName = "converter",
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "hi"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "lo"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "=")}),
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This is an ideal DC/DC converter with internal resistances.</p>
 <p>Input voltage is set programmatically by parameter <tt>vDCref</tt>, but that does not do what you would expect since it does not account for the effect of the internal resistor; input voltage will be different from the reference one. </p>
 <p>Input voltage is not set and constant through a simulation, though, since if current changes so does the internal resistance loss on the input side.</p>
 <p>The output power sensor does not include the loss from resistor1, making output power a bit lower than measured.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>signalVoltage</code> (Modelica.Electrical.Analog.Sources.SignalVoltage), <code>currentSensor</code> (Modelica.Electrical.Analog.Sensors.CurrentSensor), <code>product</code> (Modelica.Blocks.Math.Product), <code>feedback</code> (Modelica.Blocks.Math.Feedback), <code>powerSensor</code> (Modelica.Electrical.Analog.Sensors.PowerSensor), <code>integrator</code> (Modelica.Blocks.Continuous.Integrator), <code>resistor2</code> (Modelica.Electrical.Analog.Basic.Resistor), <code>resistor</code> (Modelica.Electrical.Analog.Basic.Resistor), <code>realExpression</code> (Modelica.Blocks.Sources.RealExpression), <code>variableCurrentSource</code> (Modelica.Electrical.Analog.Sources.SignalCurrent).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>vDCref</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>48</code></td><td>Reference DC source voltage</td></tr>
 <tr><td><code>Ti</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1E-6</code></td><td>Internal integration time constant</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><code>dc_p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
 <tr><td><code>dc_n1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
 <tr><td><code>dc_p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
 <tr><td><code>dc_n2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end DCConverter;

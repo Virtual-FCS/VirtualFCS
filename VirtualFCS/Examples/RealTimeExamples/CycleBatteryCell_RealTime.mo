@@ -49,23 +49,22 @@ equation
   connect(pulseCurrent.n, BMS.pin_p_load) annotation (
     Line(points = {{18, 80}, {40, 80}, {40, 58}, {10, 58}, {10, 48}, {12, 48}}, color = {0, 0, 255}));
   annotation (
-    Documentation(info = "<html>
-<body>
+    Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
 <p>This real-time example applies alternating -2.2 A and +2.2 A galvanostatic pulses to a Li-ion cell. Each pulse lasts 15 s within a 30 s period.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for real-time scheduling and I/O.</p>
 <h2>Governing Equations</h2>
-<p>The assembly connects <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>liIonCell</code> (VirtualFCS.Electrochemical.Battery.LiIonCell), <code>pulseCurrent</code> (Modelica.Electrical.Analog.Sources.PulseCurrent), <code>getChargeCapacity</code> (Modelica.Blocks.Sources.RealExpression), <code>getSOC_init</code> (Modelica.Blocks.Sources.RealExpression), <code>BMS</code> (VirtualFCS.Control.BatteryManagementSystem), <code>convection</code> (Modelica.Thermal.HeatTransfer.Components.Convection), <code>bodyRadiation</code> (Modelica.Thermal.HeatTransfer.Components.BodyRadiation), <code>fixedTemperature</code> (Modelica.Thermal.HeatTransfer.Sources.FixedTemperature), <code>setConvectiveCoefficient</code> (Modelica.Blocks.Sources.RealExpression), <code>realtimeSynchronize</code> (Modelica_DeviceDrivers.Blocks.OperatingSystem.RealtimeSynchronize).</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"),
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 120, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell_RealTime;

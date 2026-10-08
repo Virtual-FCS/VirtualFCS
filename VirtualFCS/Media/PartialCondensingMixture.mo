@@ -52,7 +52,7 @@ partial model PartialCondensingMixture
     Modelica.Units.SI.MolarMass MM_liq = MMX*Xmol_liq "Molar mass of liquid phase";
     Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas "Molar mass of gas phase";
 
-    // The following functions are specific to the fluid and need to be specified in child classes
+// The following functions are specific to the fluid and need to be specified in child classes
     Modelica.Units.SI.Density d_liq = liquidDensity(state_liq) "Density of liquid phase";
     Modelica.Units.SI.Density d_gas = gasDensity(state_gas) "Density of gas phase";
     Modelica.Units.SI.SpecificEnthalpy h_liq = liquidSpecificEnthalpy(state_liq) "Specific enthalpy of liquid phase";
@@ -409,8 +409,8 @@ end h_offset;
   algorithm
     state.p := p;
     state.Xi := X[1:nXi];
-    // Debugging code, 
-    /*if h_offset(T_min, p, h, X)*h_offset(T_max, p, h, X) >= 0 then
+// Debugging code,
+/*if h_offset(T_min, p, h, X)*h_offset(T_max, p, h, X) >= 0 then
       Modelica.Utilities.Streams.print("Same-sign error in setState_phX");
       Modelica.Utilities.Streams.print("p="+String(p)+", h="+String(h));
       for i in 1:nXi loop
@@ -671,8 +671,8 @@ end invertedKs;
     if beta_mol >= 1 then
       Xmol_gas := Xmol;
     elseif abs(beta_mol) < eps then
-      // If both iK and beta_mol = 0, I get a division by zero with the general formula
-      // beta = 0 means only liquid, so Xmol=0 for all non-condensables
+// If both iK and beta_mol = 0, I get a division by zero with the general formula
+// beta = 0 means only liquid, so Xmol=0 for all non-condensables
       Xmol_gas := {if iK[i] > eps then Xmol[i]/(iK[i] + beta_mol*(1.0.-iK[i])) else 0.0 for i in 1:nX};
     else
       Xmol_gas := Xmol ./ (iK + beta_mol*(1.0.-iK));
@@ -1341,22 +1341,21 @@ end isentropicEnthalpy;
 </html>"));
 end setSmoothState;
 
-  annotation(Documentation(info = "<html>
-<body>
+  annotation(Documentation(info = "<html><head></head><body>
 <h2>Model Description and References</h2>
-<p>Partial medium model for a gas/liquid mixture described by pressure, temperature, and independent mass fractions. Phase equilibrium is calculated with inverted equilibrium constants and a Rachford-Rice flash fraction. Gas and liquid compositions are converted between mole and mass fractions, and bulk density, enthalpy, and internal energy are obtained by phase-weighted mixing. Concrete media must supply saturation, density, and caloric property functions. The pTX state representation does not resolve the non-unique phase fraction at a pure substance&#x27;s boiling point.</p>
+<p>Partial medium model for a gas/liquid mixture described by pressure, temperature, and independent mass fractions. Phase equilibrium is calculated with inverted equilibrium constants and a Rachford-Rice flash fraction. Gas and liquid compositions are converted between mole and mass fractions, and bulk density, enthalpy, and internal energy are obtained by phase-weighted mixing. Concrete media must supply saturation, density, and caloric property functions. The pTX state representation does not resolve the non-unique phase fraction at a pure substance's boiling point.</p>
 <h2>Governing Equations</h2>
-<p>The behavior is defined by <code>Modelica.Media.Interfaces.PartialMedium</code>.</p>
+<p>-</p>
 <h2>Parameters</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
+</tbody></table>
 <h2>Interfaces and Connections</h2>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
-<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
 <tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
-</table>
-</body>
-</html>"));
+</tbody></table>
+
+</body></html>"));
 end PartialCondensingMixture;
