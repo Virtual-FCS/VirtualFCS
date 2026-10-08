@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.SubSystems.Examples;
 model SubSystemHydrogenControlTest "Simple model to test the SubSystemHydrogenControl model"
   extends Modelica.Icons.Example;
   SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl annotation (

@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.SubSystems.Examples;
 
 model SubSystemCoolingTest "Simple model to test the compressor component"
   extends Modelica.Icons.Example;

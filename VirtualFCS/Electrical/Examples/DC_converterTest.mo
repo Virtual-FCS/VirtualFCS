@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Electrical.Examples;
 model DC_converterTest "Simple model to test the DC_converter"
   extends Modelica.Icons.Example;
   VirtualFCS.Electrochemical.Battery.BatterySystem batterySystem annotation (

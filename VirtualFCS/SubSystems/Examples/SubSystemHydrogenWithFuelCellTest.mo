@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.SubSystems.Examples;
 
 model SubSystemHydrogenWithFuelCellTest
   extends Modelica.Icons.Example;

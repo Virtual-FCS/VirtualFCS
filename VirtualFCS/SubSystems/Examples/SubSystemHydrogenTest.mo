@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.SubSystems.Examples;
 
 model SubSystemHydrogenTest "Example to evaluate the performance of the hydrogen subsystem."
   extends Modelica.Icons.Example;

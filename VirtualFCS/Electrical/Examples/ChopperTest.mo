@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Electrical.Examples;
 
 model ChopperTest "Step up chopper with resistive load"
   extends Modelica.Icons.Example;
