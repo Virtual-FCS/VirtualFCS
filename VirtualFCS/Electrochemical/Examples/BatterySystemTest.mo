@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Electrochemical.Examples;
 
 model BatterySystemTest
   extends Modelica.Icons.Example;

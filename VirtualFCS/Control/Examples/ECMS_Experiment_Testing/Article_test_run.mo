@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting.ECMS_Experiment_Testing;
+within VirtualFCS.Control.Examples.ECMS_Experiment_Testing;
 model Article_test_run
   extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system

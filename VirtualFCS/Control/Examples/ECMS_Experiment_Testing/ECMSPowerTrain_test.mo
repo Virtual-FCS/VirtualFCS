@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting.ECMS_Experiment_Testing;
+within VirtualFCS.Control.Examples.ECMS_Experiment_Testing;
 model ECMSPowerTrain_test
   // System
   outer Modelica.Fluid.System system "System properties";

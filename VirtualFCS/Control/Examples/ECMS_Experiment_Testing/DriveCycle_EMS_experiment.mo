@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting.ECMS_Experiment_Testing;
+within VirtualFCS.Control.Examples.ECMS_Experiment_Testing;
 model DriveCycle_EMS_experiment
   import Modelica.Blocks.Tables.Internal;
   ////////////////////// Choose speed_profile  //////////////////////////////////////////////////////

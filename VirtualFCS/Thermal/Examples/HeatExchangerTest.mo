@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Thermal.Examples;
 
 model HeatExchangerTest
   extends Modelica.Icons.Example;

@@ -1,4 +1,4 @@
-within VirtualFCS.ComponentTesting;
+within VirtualFCS.Electrochemical.Examples;
 
 model FuelCellSystemTest
   extends Modelica.Icons.Example;

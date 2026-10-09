@@ -4,6 +4,7 @@ HumidifierTest
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest
+PressureRegulatorTest
 PumpElectricDCTest
 SeparatorTest
 SimplePumpTest
