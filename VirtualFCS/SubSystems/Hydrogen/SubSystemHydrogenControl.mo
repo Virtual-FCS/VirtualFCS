@@ -16,7 +16,7 @@ model SubSystemHydrogenControl
     Placement(transformation(origin = {0, 160}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent annotation (
     Placement(visible = true, transformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Continuous.LimPID pumpSpeedControl_PID(yMin = 0)  annotation(
+  Modelica.Blocks.Continuous.LimPID pumpSpeedControl_PID(yMin = 0, yMax = 1, y(nominal = 1e-4))  annotation(
     Placement(transformation(origin = {0, -60}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Interfaces.RealOutput p_h2_set annotation(
     Placement(transformation(origin = {220, 160}, extent = {{-20, -20}, {20, 20}}), iconTransformation(origin = {220, 140}, extent = {{-20, -20}, {20, 20}})));

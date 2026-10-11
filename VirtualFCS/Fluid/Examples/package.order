@@ -1,6 +1,7 @@
 CompressorTest
 ElectricCompressorTest
 HumidifierTest
+HumidifierTest_2
 ManifoldTest
 MixingVolumeTest
 MultiManifoldTest

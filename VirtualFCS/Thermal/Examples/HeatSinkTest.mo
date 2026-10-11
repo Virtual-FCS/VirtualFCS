@@ -27,6 +27,8 @@ model HeatSinkTest "Simple model to test the HeatSink model"
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={96,44})));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-51, 23}, extent = {{-3, -3}, {3, 3}})));
 equation
   connect(batterySystem.pin_n, pumpElectricDC.pin_n) annotation (
     Line(points={{-40.4,30.4},{-40.4,20},{-40.2,20},{-40.2,11.2}},
@@ -57,6 +59,9 @@ equation
   connect(heatSink.pin_n, pumpElectricDC.pin_n) annotation (Line(points={{28,
           34.8},{-6,34.8},{-6,24},{-40.4,24},{-40.4,20},{-40.2,20},{-40.2,11.2}},
         color={0,0,255}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{-40, 30}, {-50, 30}, {-50, 26}}, color = {0, 0, 255}));
+
 annotation (
   experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
 annotation(Documentation(info = "<html><p>This test applies a 0.01 Hz sine control to the coolant pump from 10 s, with amplitude 0.14 and offset 0.15. The coolant inlet is initially 100 K above the default temperature and the thermal setpoint is 350 K.</p><p>The battery starts at SOC = 0.9 with 23 V to 27 V limits and 25 V nominal voltage. </p></html>"));

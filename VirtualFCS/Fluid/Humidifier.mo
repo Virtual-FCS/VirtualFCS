@@ -13,9 +13,9 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
 
   parameter Integer n(min = 1) = 5 "Number of axial volumes";
   parameter SI.Volume V_wet = 1E-4 "Wet-side gas volume" annotation (
-    Dialog(group = "Physical parameters")); //Consider calculating this from the already input physical parameters
+    Dialog(group = "Physical parameters"));
   parameter SI.Volume V_dry = V_wet "Dry-side gas volume" annotation (
-    Dialog(group = "Physical parameters")); //Consider calculating this from the already input physical parameters
+    Dialog(group = "Physical parameters"));
   parameter SI.ThermalConductance UA = 1000 "Specific fluid-to-fluid conductance" annotation (
     Dialog(group = "Physical parameters"));
   parameter SI.DiffusionCoefficient D_mem = 3.6e-7 "Membrane diffusion coefficient" annotation (
@@ -31,7 +31,7 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
     Dialog(group = "Physical parameters"));
   parameter SI.Length L_fiber = 150.8e-3 "Fiber length" annotation (
     Dialog(group = "Physical parameters"));
-  parameter SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5"Reference water-air diffusion coefficient" annotation (
+  parameter SI.DiffusionCoefficient D_H2O_Air_ref = 2.6e-5 "Reference water-air diffusion coefficient" annotation (
     Dialog(group = "Physical parameters"));
   constant SI.Pressure atm_P = 101325 "Reference pressure";
   constant SI.Temperature atm_T = 298.15 "Reference temperature";
@@ -40,6 +40,8 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
   constant SI.Velocity k_mass_min = 1e-12 "Minimum mass-transfer coefficient";
   parameter SI.MassFlowRate m_flow_nom = 0.0004 "Nominal mass flow per train";
   parameter SI.PressureDifference dp_nominal = 100 "Nominal pressure drop";
+  parameter SI.Time tau_flow = 0.5 "Time constant of the flow filter feeding the membrane transfer. Introduced to improve sim time at conditions far from nominal" annotation (
+    Dialog(group = "Dynamics"));
 
   parameter SI.Pressure wet_p_start = wet_medium.p_default "Initial wet-side pressure" annotation (
     Dialog(tab = "Initialization", group = "Initialization"));
@@ -52,6 +54,8 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
   parameter SI.MassFraction wet_X_start[wet_medium.nX] = wet_medium.X_default "Initial wet-side composition" annotation (
     Dialog(tab = "Initialization", group = "Initialization"));
   parameter SI.MassFraction dry_X_start[dry_medium.nX] = dry_medium.X_default "Initial dry-side composition" annotation (
+    Dialog(tab = "Initialization", group = "Initialization"));
+  parameter SI.MassFlowRate m_flow_start = m_flow_nom "Initial filtered flow on both trains" annotation (
     Dialog(tab = "Initialization", group = "Initialization"));
   parameter Modelica.Fluid.Types.Dynamics massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial "Formulation of mass balances" annotation (
     Dialog(group = "Dynamics"));
@@ -93,6 +97,7 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
     each nFibers = nFibers,
     each dFiber_i = dFiber_i,
     each dFiber_o = dFiber_o,
+    each dHousing = dHousing,
     each L_fiber = L_fiber,
     each D_mem = D_mem,
     each D_H2O_Air_ref = D_H2O_Air_ref,
@@ -101,12 +106,13 @@ model Humidifier "Discretised hollow-fiber membrane humidifier with fluid holdup
     each m_flow_min = m_flow_min,
     each V_flow_min = V_flow_min,
     each k_mass_min = k_mass_min,
-    each n = n);
+    each n = n,
+    each tau_flow = tau_flow,
+    each wetFlow_start = m_flow_start,
+    each dryFlow_start = -m_flow_start);
     
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor conductors[n](each G = UA/n);
 
-  SI.MassFraction transfer_Xi_wet[wet_medium.nXi] = zeros(wet_medium.nXi);
-  SI.MassFraction transfer_Xi_dry[dry_medium.nXi] = zeros(dry_medium.nXi);
   output SI.MoleFraction phi_wet_out = wet_medium.relativeHumidity(wetVolume[n].medium.state);
   output SI.MoleFraction phi_dry_out = dry_medium.relativeHumidity(dryVolume[1].medium.state);
 

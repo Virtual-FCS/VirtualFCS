@@ -57,6 +57,8 @@ model PumpElectricDCTest "Simple model to test the PumpElectricDC model"
     modelStructure=Modelica.Fluid.Types.ModelStructure.a_v_b,
     use_HeatTransfer=true)                                                                                                                                                                              annotation (
     Placement(visible = true, transformation(origin={76,-70},    extent = {{20, -80}, {0, -60}}, rotation = 180)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-59, 37}, extent = {{-5, -5}, {5, 5}})));
 equation
   connect(sine1.y, abs1.u) annotation (
     Line(points={{-59,-70},{-42,-70}},      color = {0, 0, 127}));
@@ -80,6 +82,9 @@ equation
   connect(pipe.port_b, fixedBoundary.ports[1]) annotation (Line(points={{76,
           -7.21645e-16},{79,-7.21645e-16},{79,6.66134e-16},{82,6.66134e-16}},
         color={0,127,255}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{-50, 48}, {-59, 48}, {-59, 42}}, color = {0, 0, 255}));
+
 annotation (
   experiment(
       StopTime=1200,

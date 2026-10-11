@@ -25,7 +25,7 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-66, 106}, extent = {{18, -18}, {-18, 18}}, rotation = -90)));
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 12) annotation(
     Placement(transformation(origin = {25, 106}, extent = {{24, -14}, {-24, 14}})));
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 2000000, minimumFlow = V_flow_HRB_min, RR = RR) annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 200000, minimumFlow = V_flow_HRB_min, RR = RR) annotation(
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-125, 107}, extent = {{17, -17}, {-17, 17}}, rotation = -90)));

@@ -18,10 +18,11 @@ equation
     Line(points = {{-78, -10}, {-62, -10}, {-62, -24}}, color = {0, 0, 127}));
   connect(cosine1.y, multiplex2.u2[1]) annotation (
     Line(points = {{-78, -50}, {-62, -50}, {-62, -36}}, color = {0, 0, 127}));
-  connect(multiplex2.y, subSystemHydrogenControl.signalInterface_H2) annotation (
-    Line(points = {{-38, -30}, {-32, -30}, {-32, -12}, {-22, -12}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(sine.y, subSystemHydrogenControl.signalInterface_FC) annotation (
-    Line(points = {{-58, 30}, {-42, 30}, {-42, 12}, {-22, 12}}, color = {0, 0, 127}));
+  connect(multiplex2.y[1], subSystemHydrogenControl.pumpSpeed_measured) annotation(
+    Line(points = {{-38, -30}, {-32, -30}, {-32, -14}, {-22, -14}}, color = {0, 0, 127}));
+  connect(sine.y, subSystemHydrogenControl.stackCurrent) annotation(
+    Line(points = {{-58, 30}, {-38, 30}, {-38, 12}, {-22, 12}}, color = {0, 0, 127}));
+
 annotation (experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
 annotation(Documentation(info = "<html><p>This test exercises hydrogen subsystem control with a fuel-cell signal varying sinusoidally at 0.1 Hz (amplitude 100, offset 300). Hydrogen control inputs use cosine signals at 0.2 Hz (amplitude 15, offset 45) and 0.3 Hz (amplitude 20, offset 50), enabled from 2 s.</p></html>"));
 end SubSystemHydrogenControlTest;

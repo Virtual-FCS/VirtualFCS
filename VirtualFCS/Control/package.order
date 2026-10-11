@@ -9,3 +9,4 @@ PurgeValveControl
 VoltageLimiter
 ECMS
 TwoPhasedPWM
+FuelCellSystemController
