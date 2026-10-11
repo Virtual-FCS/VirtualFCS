@@ -17,6 +17,8 @@ model RecirculationBlowerTest "Simple model to test the recirculation blower mod
     Placement(visible = true, transformation(origin = {50, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   VirtualFCS.Fluid.RecirculationBlower recirculationBlower annotation (
     Placement(visible = true, transformation(origin = {1.77636e-15, -1.77636e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  Modelica.Electrical.Analog.Basic.Ground ground annotation(
+    Placement(transformation(origin = {-22, 58}, extent = {{-2, -2}, {2, 2}})));
 equation
   connect(boundary.ports[1], recirculationBlower.Input) annotation (
     Line(points = {{-60, 0}, {-18, 0}}, color = {0, 170, 0}, thickness = 1));
@@ -28,6 +30,8 @@ equation
     Line(points={{-4.4,60.4},{-4.4,40},{-10,40},{-10,14}},    color = {0, 0, 255}));
   connect(batterySystem.pin_p, recirculationBlower.pin_p) annotation (
     Line(points={{4.4,60.4},{4.4,40},{10,40},{10,14}},    color = {0, 0, 255}));
+  connect(batterySystem.pin_n, ground.p) annotation(
+    Line(points = {{-4, 60}, {-22, 60}}, color = {0, 0, 255}));
   annotation (
   experiment(StopTime = 600, Interval = 0.5, Tolerance = 1e-6));
 annotation(Documentation(info = "<html><p>This test drives the recirculation blower with a sine command of amplitude 0.2, offset 1, and frequency 0.01 Hz, enabled from 1 s. The hydrogen inlet pressure is fixed at 200000 Pa.</p></html>"));

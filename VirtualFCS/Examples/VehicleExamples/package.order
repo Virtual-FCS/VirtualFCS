@@ -1,5 +1,4 @@
-PartialVehicleExample
 BatteryElectricVehicle
 BatteryElectricVehicle_JoystickControl
-ECMSHybridVehicle
 RangeExtenderHybridVehicle
+RangeExtenderHybridVehicle_ECMS

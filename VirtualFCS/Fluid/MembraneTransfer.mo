@@ -30,6 +30,10 @@ model MembraneTransfer "Calculates membrane mass and enthalpy transfer for one c
 
   parameter Integer n = 10 "Total number of humidifier cells";
 
+  parameter SI.Time tau_flow = 0.5 "Time constant of the flow filter feeding the transfer correlations";
+  parameter SI.MassFlowRate wetFlow_start = 1e-3 "Initial filtered wet-side flow";
+  parameter SI.MassFlowRate dryFlow_start = 1e-3 "Initial filtered dry-side flow";
+
   input wet_medium.ThermodynamicState wetState;
   input dry_medium.ThermodynamicState dryState;
 
@@ -46,6 +50,9 @@ model MembraneTransfer "Calculates membrane mass and enthalpy transfer for one c
     "Specific enthalpy of transferred water";
 
   output SI.MassFraction Xi_transfer[wet_medium.nXi];
+
+  SI.MassFlowRate wetFlow_f(start = wetFlow_start, fixed = true) "Filtered wet-side flow";
+  SI.MassFlowRate dryFlow_f(start = dryFlow_start, fixed = true) "Filtered dry-side flow";
 
 protected
   SI.Area A_mem;
@@ -85,6 +92,9 @@ protected
 
 equation
 
+  tau_flow*der(wetFlow_f) = wetFlow - wetFlow_f;
+  tau_flow*der(dryFlow_f) = dryFlow - dryFlow_f;
+
   A_mem = nFibers*L_fiber*Modelica.Constants.pi*dFiber_o;
 
   A_c_fibers = nFibers*Modelica.Constants.pi*dFiber_i^2/4;
@@ -97,9 +107,9 @@ equation
 
   Xi_transfer = zeros(wet_medium.nXi);
 
-  wetVolumeFlow = max(abs(wetFlow),m_flow_min)/wetDensity;
+  wetVolumeFlow = max(abs(wetFlow_f),m_flow_min)/wetDensity;
 
-  dryVolumeFlow = max(abs(dryFlow),m_flow_min)/dryDensity;
+  dryVolumeFlow = max(abs(dryFlow_f),m_flow_min)/dryDensity;
 
   wetVelocity = wetVolumeFlow/A_c_fibers;
 

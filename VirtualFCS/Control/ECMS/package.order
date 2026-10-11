@@ -1,5 +1,5 @@
 EMS_ECMS
-calcFCV
 bruteForceMinimization
-calcCost
-calcFcEfficiency
+fcVoltage
+costFunction
+efficiencyFC
