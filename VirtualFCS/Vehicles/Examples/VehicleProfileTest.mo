@@ -2,7 +2,7 @@ within VirtualFCS.Vehicles.Examples;
 
 model VehicleProfileTest
   extends Modelica.Icons.Example;
-  VehicleProfile vehicleProfile(VN = "UserDefined", m_user_defined = 1200)  annotation(
+  VehicleProfile vehicleProfile(m = 1200)  annotation(
     Placement(transformation(extent = {{-21, -21}, {21, 21}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(amplitude = 100, rising = 20, width = 20, falling = 20, period = 80, startTime = 20)  annotation(
     Placement(transformation(origin = {-80, 0}, extent = {{-14, -14}, {14, 14}})));

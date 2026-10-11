@@ -7,7 +7,7 @@ model BatteryElectricVehicle
     Placement(visible = true, transformation(origin = {-60, -3.55271e-15}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   replaceable VirtualFCS.Powertrains.BatteryPowertrain powertrain annotation (
     Placement(visible = true, transformation(origin = {60, -3.55271e-15}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Vehicles.VehicleProfile vehicleProfile(VN = "Mirai") annotation (
+  Vehicles.VehicleProfile vehicleProfile annotation (
     Placement(visible = true, transformation(origin = {4.44089e-16, -7.54952e-15}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
 equation
   connect(vehicleProfile.pin_n, powertrain.pin_n) annotation (
