@@ -14,7 +14,44 @@ model MembraneManifold "Manifold with a selective membrane source"
     "Independent composition carried by membrane mass";
 
 equation
-  annotation(Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td colspan=\"&quot;5&quot;\">No user-settable parameters are declared.</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>membrane_m_flow</code></td><td>Input</td><td>Real</td><td>kg/s</td><td>Signed mass flow through the membrane; positive into the volume</td></tr>
-<tr><td><code>membrane_h_outflow</code></td><td>Input</td><td>Real</td><td>J/kg</td><td>Specific enthalpy carried by membrane mass</td></tr>
-<tr><td><code>membrane_Xi</code></td><td>Input</td><td>Real[Medium.nXi]</td><td>1</td><td>Independent composition carried by membrane mass</td></tr></tbody></table><h2>2. Model description</h2><p>This component extends the VirtualFCS fuel-cell <code>Manifold</code> directly. It adds a signed selective membrane source to the manifold's existing mass, species, and enthalpy balances. A positive <code>membrane_m_flow</code> adds mass to the volume and a negative value removes it. The original manifold model is otherwise unchanged.</p><div><br></div><div>The inherited manifold determines port outflow states and provides the existing hydraulic resistance, fluid holdup, and conditional heat port. This component is used as the wet-side and dry-side cell volume in <code>Humidifier</code>, where the membrane inputs are driven by a paired <code>MembraneTransfer</code> instance.</div><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended <code>Manifold</code> model, with the membrane source terms added to its mass (<code>mb_flow</code>), species (<code>mbXi_flow</code>), and enthalpy (<code>Hb_flow</code>) balances.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td colspan=\"&quot;5&quot;\">No matching outputs are declared.</td></tr></tbody></table></body></html>"));
+  annotation(Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This component extends the VirtualFCS fuel-cell <code>Manifold</code> directly. It adds a signed selective membrane source to the manifold's existing mass, species, and enthalpy balances. A positive <code>membrane_m_flow</code> adds mass to the volume and a negative value removes it. The original manifold model is otherwise unchanged.</p><div><br></div><div>The inherited manifold determines port outflow states and provides the existing hydraulic resistance, fluid holdup, and conditional heat port. This component is used as the wet-side and dry-side cell volume in <code>Humidifier</code>, where the membrane inputs are driven by a paired <code>MembraneTransfer</code> instance.</div>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>energyDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>system.energyDynamics</code></td><td>Formulation of energy balance (inherited)</td></tr>
+<tr><td><code>massDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>Modelica.Fluid.Types.Dynamics.FixedInitial</code></td><td>Formulation of mass balance (inherited)</td></tr>
+<tr><td><code>substanceDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>massDynamics</code></td><td>Formulation of substance balance (inherited)</td></tr>
+<tr><td><code>traceDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>massDynamics</code></td><td>Formulation of trace substance balance (inherited)</td></tr>
+<tr><td><code>p_start</code></td><td>Medium.AbsolutePressure</td><td>Pa</td><td><code>system.p_start</code></td><td>Start value of pressure (inherited)</td></tr>
+<tr><td><code>use_T_start</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>= true, use T_start, otherwise h_start (inherited)</td></tr>
+<tr><td><code>T_start</code></td><td>Medium.Temperature</td><td>K</td><td><code>if use_T_start then system.T_start else Medium.temperature_phX(p_start, h_start, X_start)</code></td><td>Start value of temperature (inherited)</td></tr>
+<tr><td><code>h_start</code></td><td>Medium.SpecificEnthalpy</td><td>J/kg</td><td><code>if use_T_start then Medium.specificEnthalpy_pTX(p_start, T_start, X_start) else Medium.h_default</code></td><td>Start value of specific enthalpy (inherited)</td></tr>
+<tr><td><code>X_start</code></td><td>Medium.MassFraction[Medium.nX]</td><td>1</td><td><code>Medium.X_default</code></td><td>Start value of mass fractions m_i/m (inherited)</td></tr>
+<tr><td><code>C_start</code></td><td>Medium.ExtraProperty[Medium.nC]</td><td>-</td><td><code>Medium.C_default</code></td><td>Start value of trace substances (inherited)</td></tr>
+<tr><td><code>allowFlowReversal</code></td><td>Boolean</td><td>1</td><td><code>system.allowFlowReversal</code></td><td>= true to allow flow reversal, false restricts to design direction (port_a -&gt; port_b) (inherited)</td></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+<tr><td><code>V</code></td><td>Modelica.Units.SI.Volume</td><td>m3</td><td><code>1E-3</code></td><td>Manifold total volume (inherited)</td></tr>
+<tr><td><code>R_flow</code></td><td>Modelica.Fluid.Types.HydraulicResistance</td><td>-</td><td><code>1000</code></td><td>Resistance to mass flow (inherited)</td></tr>
+<tr><td><code>nu</code></td><td>Real[Medium.nX]</td><td>1</td><td><code>zeros(Medium.nX)</code></td><td>Reaction stoichiometric coefficients (inherited)</td></tr>
+<tr><td><code>MMX</code></td><td>Modelica.Units.SI.MolarMass[Medium.nX]</td><td>kg/mol</td><td><code>zeros(Medium.nX)</code></td><td>Molar masses of components (inherited)</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>membrane_m_flow</code></td><td>Input signal</td><td>Modelica.Units.SI.MassFlowRate</td><td>kg/s</td><td>Signed mass flow through the membrane; positive into the volume</td></tr>
+<tr><td><code>membrane_h_outflow</code></td><td>Input signal</td><td>Modelica.Units.SI.SpecificEnthalpy</td><td>J/kg</td><td>Specific enthalpy carried by membrane mass</td></tr>
+<tr><td><code>membrane_Xi</code></td><td>Input signal</td><td>Modelica.Units.SI.MassFraction[Medium.nXi]</td><td>1</td><td>Independent composition carried by membrane mass</td></tr>
+<tr><td><code>fluidVolume</code></td><td>Input signal</td><td>Modelica.Units.SI.Volume</td><td>m3</td><td>Volume</td></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Fluid connector a (positive design flow direction is from port_a to port_b)</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Fluid connector b (positive design flow direction is from port_a to port_b)</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+<tr><td><code>r</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end MembraneManifold;

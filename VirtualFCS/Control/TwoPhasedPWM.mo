@@ -48,8 +48,25 @@ annotation(
     Diagram(graphics),
     Icon(graphics = {Line(origin = {2, 52}, points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {2, 52}, points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255})}),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>f</code></td><td>SI.Frequency</td><td>Hz</td><td>1000</td><td>Switching frequency</td></tr>
-<tr><td><code>theta</code></td><td>SI.Angle</td><td>rad</td><td>0</td><td>Phase angle of the two signals</td></tr>
-<tr><td><code>startTime</code></td><td>SI.Time</td><td>s</td><td>0</td><td>Start time</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>D</code></td><td>Input</td><td>RealInput</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p>Two-phase pulse-width modulation block for generating complementary switching commands from a duty-cycle request.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>PWM_1</code></td><td>Output</td><td>BooleanOutput</td><td>-</td><td></td></tr>
-<tr><td><code>PWM_2</code></td><td>Output</td><td>BooleanOutput</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Two-phase pulse-width modulation block for generating complementary switching commands from a duty-cycle request.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>f</code></td><td>Modelica.Units.SI.Frequency</td><td>Hz</td><td><code>1000</code></td><td>Switching frequency</td></tr>
+<tr><td><code>theta</code></td><td>Modelica.Units.SI.Angle</td><td>rad</td><td><code>0</code></td><td>Phase angle of the two signals</td></tr>
+<tr><td><code>startTime</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>0</code></td><td>Start time</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>D</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>PWM_1</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.BooleanOutput</td><td>-</td><td></td></tr>
+<tr><td><code>PWM_2</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.BooleanOutput</td><td>-</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end TwoPhasedPWM;

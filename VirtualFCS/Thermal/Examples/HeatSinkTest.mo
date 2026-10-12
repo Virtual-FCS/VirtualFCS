@@ -62,7 +62,23 @@ equation
   connect(batterySystem.pin_n, ground.p) annotation(
     Line(points = {{-40, 30}, {-50, 30}, {-50, 26}}, color = {0, 0, 255}));
 
-annotation (
-  experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>This test applies a 0.01 Hz sine control to the coolant pump from 10 s, with amplitude 0.14 and offset 0.15. The coolant inlet is initially 100 K above the default temperature and the thermal setpoint is 350 K.</p><p>The battery starts at SOC = 0.9 with 23 V to 27 V limits and 25 V nominal voltage. </p></html>"));
+annotation(
+    experiment(StopTime = 100, Interval = 0.5, Tolerance = 1e-6),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test applies a 0.01 Hz sine control to the coolant pump from 10 s, with amplitude 0.14 and offset 0.15. The coolant inlet is initially 100 K above the default temperature and the thermal setpoint is 350 K.</p><p>The battery starts at SOC = 0.9 with 23 V to 27 V limits and 25 V nominal voltage. </p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end HeatSinkTest;

@@ -22,6 +22,22 @@ equation
     Line(points = {{0, 14}, {0, 59}}, color = {0, 0, 127}));
 annotation(
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
-  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>This test feeds a 1 m3 manifold with 1 kg/s and a constant reaction rate of 5. The outlet pressure is set to ambient, the reaction coefficients are nu = {-0.5, 0, 1}, and no heat port is used.</p></html>"));
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test feeds a 1 m3 manifold with 1 kg/s and a constant reaction rate of 5. The outlet pressure is set to ambient, the reaction coefficients are nu = {-0.5, 0, 1}, and no heat port is used.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end ManifoldTest;

@@ -77,4 +77,21 @@ equation
     Line(points = {{-98, -114}, {-54, -114}, {-54, -76}}, color = {0, 0, 127}));
   connect(get_phi.y, ems_ecms.input_phi) annotation(
     Line(points = {{-98, -130}, {-44, -130}, {-44, -76}}, color = {0, 0, 127}));
+  annotation(Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Fuel-cell/battery range-extender powertrain using equivalent-consumption minimization (ECMS). The controller selects the fuel-cell contribution from power demand, battery state of charge, and operating measurements, and sends a power request to FuelCellSystemController, which generates the DC-converter current reference. The controller receives battery voltage and current together with total power demand and fuel-cell operating measurements. The declared stack cell count is passed to the fuel-cell system and ECMS controller.</p>
+<h2>Governing Equations</h2><div>-</div>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in stack</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+</body></html>"));
 end RangeExtenderPowertrain_ECMS;

@@ -65,10 +65,28 @@ equation
     defaultComponentName = "converter",
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "hi"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "lo"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "=")}),
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>vDCref</code></td><td>SI.Voltage</td><td>V</td><td>48</td><td>Reference DC source voltage</td></tr>
-<tr><td><code>Ti</code></td><td>SI.Time</td><td>s</td><td>1E-6</td><td>Internal integration time constant</td></tr></tbody></table><h2>2. Model description</h2>
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
 <p>This is an ideal DC/DC converter with internal resistances.</p>
 <p>Input voltage is set programmatically by parameter <tt>vDCref</tt>, but that does not do what you would expect since it does not account for the effect of the internal resistor; input voltage will be different from the reference one. </p>
 <p>Input voltage is not set and constant through a simulation, though, since if current changes so does the internal resistance loss on the input side.</p>
-<p>The output power sensor does not include the loss from resistor1, making output power a bit lower than measured.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td colspan=\"&quot;5&quot;\">No matching inputs are declared.</td></tr></tbody></table></body></html>"));
+<p>The output power sensor does not include the loss from resistor1, making output power a bit lower than measured.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>vDCref</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>48</code></td><td>Reference DC source voltage</td></tr>
+<tr><td><code>Ti</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1E-6</code></td><td>Internal integration time constant</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>dc_p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>dc_p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+</tbody></table>
+
+</body></html>"));
 end DCConverter;

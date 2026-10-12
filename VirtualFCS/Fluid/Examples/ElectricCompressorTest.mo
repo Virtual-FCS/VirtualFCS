@@ -56,6 +56,22 @@ equation
     Line(points = {{2, 10}, {30, 10}, {30, -18}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 20, Tolerance = 1e-06, Interval = 0.06),
-    Diagram);
-annotation(Documentation(info = "<html><p>This test starts the compressor at 0.001 kg/s and steps the commanded mass flow to 0.301 kg/s at 10 s.</p><p>The bench uses a 48 V supply, a 2e5 Pa pressure setpoint, a 2.5e5 Pa nominal valve pressure, and a 1 m3 manifold at 353.15 K. The nominal flow is 0.3 kg/s with a 1.5e5 Pa nominal pressure difference.</p></html>"));
+    Diagram,
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test starts the compressor at 0.001 kg/s and steps the commanded mass flow to 0.301 kg/s at 10 s.</p><p>The bench uses a 48 V supply, a 2e5 Pa pressure setpoint, a 2.5e5 Pa nominal valve pressure, and a 1 m3 manifold at 353.15 K. The nominal flow is 0.3 kg/s with a 1.5e5 Pa nominal pressure difference.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end ElectricCompressorTest;

@@ -58,6 +58,22 @@ equation
   connect(subSystemAir.stackCurrent, currentSensor.i) annotation(
     Line(points = {{46, 12}, {46, 40}, {22, 40}}, color = {0, 0, 127}));
   annotation(
-    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
-annotation(Documentation(info = "<html><p>This test couples the air subsystem to a 42-cell fuel cell with 0.075 kg/s air feed, 1 kg/s coolant, 323.15 K coolant inlet, and a 24 V subsystem supply.</p><p>A load-resistance step from 30 ohm to 50 ohm is scheduled at 250 s.</p></html>"));
+    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test couples the air subsystem to a 42-cell fuel cell with 0.075 kg/s air feed, 1 kg/s coolant, 323.15 K coolant inlet, and a 24 V subsystem supply.</p><p>A load-resistance step from 30 ohm to 50 ohm is scheduled at 250 s.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemAirWithFuelCellTest;

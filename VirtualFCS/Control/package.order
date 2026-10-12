@@ -4,7 +4,6 @@ BatteryManagementSystem
 ChargeCounter
 DCMotorControlPumpElectricDC
 DCMotorControlRecirculationBlower
-EMS_FC
 EnergyManagementSystem
 PurgeValveControl
 VoltageLimiter

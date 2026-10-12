@@ -22,7 +22,25 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
 
   redeclare model extends BaseProperties "Base properties of cathodic air"
       Modelica.Units.SI.MoleFraction phi = Xmol_gas[Water] / (saturationPressure(state.T)/state.p);
-  end BaseProperties;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Base properties of cathodic air.</p>
+<h2>Governing Equations</h2>
+<p>The behavior is defined by <code>BaseProperties</code>.</p><pre>phi = Xmol_gas[Water] / (saturationPressure(state.T)/state.p);</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end BaseProperties;
 
 
   redeclare function flashVaporisation
@@ -35,7 +53,32 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
     assert(abs(iK[Water]-1) > eps, "flashVaporisation: boiling point reached, Rachford-Rice is indetermined.");
     beta_mol := (1-Xmol[Water])*iK[Water]/max((iK[Water]-1), eps);
     annotation(
-      Documentation(info = "<html><head></head><body>We redeclare this function to use the fact that there is a single condensing phase in this model, making it possible to obtain a direct solution to the Rachford-Rice equation.</body></html>"));
+      Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+We redeclare this function to use the fact that there is a single condensing phase in this model, making it possible to obtain a direct solution to the Rachford-Rice equation.
+<h2>Governing Equations</h2>
+<pre>assert(abs(iK[Water]-1) &gt; eps, &quot;flashVaporisation: boiling point reached, Rachford-Rice is indetermined.&quot;);
+beta_mol := (1-Xmol[Water])*iK[Water]/max((iK[Water]-1), eps);</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Xmol</code></td><td>Mole Fractions</td></tr>
+<tr><td><code>iK</code></td><td>Inverted equilibrium constants, XL[i] = iK[i]*XG[i]</td></tr>
+<tr><td><code>beta_mol</code></td><td>Generalised gas fraction</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>Xmol</code></td><td>Input signal</td><td>Modelica.Units.SI.MoleFraction[nX]</td><td>1</td><td>Mole Fractions</td></tr>
+<tr><td><code>iK</code></td><td>Input signal</td><td>Real[nX]</td><td>1</td><td>Inverted equilibrium constants, XL[i] = iK[i]*XG[i]</td></tr>
+<tr><td><code>beta_mol</code></td><td>Output signal</td><td>Real</td><td>1</td><td>Generalised gas fraction</td></tr>
+</table>
+</body>
+</html>"));
   end flashVaporisation;
 
 
@@ -43,7 +86,25 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
     import Modelica.Constants.eps;
   algorithm
     iK := {0.0, 0.0, state.p/saturationPressure(state.T)};
-  end invertedKs;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Inverted Ks calculation, evaluating <code>iK</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>iK := {0.0, 0.0, state.p/saturationPressure(state.T)};</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end invertedKs;
 
   function relativeHumidity
     extends Modelica.Icons.Function;
@@ -57,7 +118,31 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
     Modelica.Units.SI.MoleFraction Xmol_gas[nX] = gasMolarFractions(beta_mol, Xmol, iK);
   algorithm
     phi := Xmol_gas[Water]*state.p/saturationPressure(state.T);
-  end relativeHumidity;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Relative Humidity calculation, evaluating <code>phi</code> from <code>state</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>X[nX] = cat(1, state.Xi, {1-sum(state.Xi)});
+Xmol[nX] = massToMoleFractions(X);
+iK[nX] = invertedKs(state);
+beta_mol = flashVaporisation(Xmol, iK);
+Xmol_gas[nX] = gasMolarFractions(beta_mol, Xmol, iK);
+phi := Xmol_gas[Water]*state.p/saturationPressure(state.T);</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>state</code></td><td>Input signal</td><td>ThermodynamicState</td><td>-</td><td>-</td></tr>
+<tr><td><code>phi</code></td><td>Output signal</td><td>Modelica.Units.SI.MoleFraction</td><td>1</td><td>Hydration factor in the ohmic-loss correlation</td></tr>
+</table>
+</body>
+</html>"));
+end relativeHumidity;
 
 
   redeclare function extends gasSpecificHeatCapacityCp
@@ -66,13 +151,49 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
     Modelica.Units.SI.MassFraction X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
   algorithm
     cp_gas := sum(X_gas[i] * Shomate.heat_capacity(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);
-  end gasSpecificHeatCapacityCp;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Gas Specific Heat Capacity Cp calculation, evaluating <code>cp_gas</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
+cp_gas := sum(X_gas[i] * Shomate.heat_capacity(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end gasSpecificHeatCapacityCp;
 
   redeclare function extends liquidSpecificHeatCapacityCp
   algorithm
     cp_liq := Shomate.heat_capacity(state_liq.T, Shomate.H2O_L) / MMX[Water];
     annotation(
-    Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div>
+<h2>Governing Equations</h2>
+<pre>cp_liq := Shomate.heat_capacity(state_liq.T, Shomate.H2O_L) / MMX[Water];</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
   end liquidSpecificHeatCapacityCp;
 
 
@@ -82,13 +203,49 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
     Modelica.Units.SI.MassFraction X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
   algorithm
     h_gas := sum(X_gas[i] * Shomate.enthalpy(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);
-  end gasSpecificEnthalpy;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Gas Specific Enthalpy calculation, evaluating <code>h_gas</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
+h_gas := sum(X_gas[i] * Shomate.enthalpy(state_gas.T, sh[i]) / MMX[i] for i in 1:nX);</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end gasSpecificEnthalpy;
 
   redeclare function extends liquidSpecificEnthalpy
   algorithm
     h_liq := Shomate.enthalpy(state_liq.T, Shomate.H2O_L) / MMX[Water];
   annotation(
-      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+      Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div>
+<h2>Governing Equations</h2>
+<pre>h_liq := Shomate.enthalpy(state_liq.T, Shomate.H2O_L) / MMX[Water];</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
   end liquidSpecificEnthalpy;
   
 
@@ -101,13 +258,49 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
   algorithm
     s_gas := X_gas*{Shomate.entropy(state_gas.T, sh[i])/MMX[i] for i in 1:nX}
            - R*(X_gas./MMX)*{log(max(X_gas[i], eps))+log(state_gas.p/reference_p) for i in 1:nX};
-  end gasSpecificEntropy;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Gas Specific Entropy calculation, evaluating <code>s_gas</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
+s_gas := X_gas*{Shomate.entropy(state_gas.T, sh[i])/MMX[i] for i in 1:nX} - R*(X_gas./MMX)*{log(max(X_gas[i], eps))+log(state_gas.p/reference_p) for i in 1:nX};</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end gasSpecificEntropy;
 
   redeclare function extends liquidSpecificEntropy
   algorithm
     s_liq := Shomate.entropy(state_liq.T, Shomate.H2O_L) / MMX[Water];
   annotation(
-      Documentation(info = "<html><head></head><body>Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div></body></html>"));
+      Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+Calculated from <a href=\"https://webbook.nist.gov/cgi/cbook.cgi?ID=C7732185&amp;Units=SI&amp;Mask=2&amp;Type=JANAFL&amp;Table=on#JANAFL\">NIST Shomate equation</a>.<div>Note we did not include the H parameter, since we want to include the enthalpy of formation.</div>
+<h2>Governing Equations</h2>
+<pre>s_liq := Shomate.entropy(state_liq.T, Shomate.H2O_L) / MMX[Water];</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
   end liquidSpecificEntropy;
 
   
@@ -118,13 +311,51 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
     Modelica.Units.SI.MolarMass MM_gas = 1/sum(X_gas./MMX);
   algorithm
     d_gas := state_gas.p/((R/MM_gas)*state_gas.T);
-  end gasDensity;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Gas Density calculation, evaluating <code>d_gas</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>X_gas[nX] = cat(1, state_gas.Xi, {1-sum(state_gas.Xi)});
+MM_gas = 1/sum(X_gas./MMX);
+d_gas := state_gas.p/((R/MM_gas)*state_gas.T);</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end gasDensity;
   
   redeclare function extends liquidDensity
     import Modelica.Media.Water.IF97_Utilities.rho_pT;
   algorithm
     d_liq := rho_pT(state_liq.p, state_liq.T, 1); // Last "1" specifies liquid phase explicitly
-  end liquidDensity;
+    annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>Liquid Density calculation, evaluating <code>d_liq</code>. The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>d_liq := rho_pT(state_liq.p, state_liq.T, 1);</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
+end liquidDensity;
 
 
   redeclare function extends dynamicViscosity
@@ -137,10 +368,25 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
         Modelica.Units.Conversions.to_degC(1273.15),
         Modelica.Units.Conversions.to_degC(state.T));
     annotation (smoothOrder=2, Documentation(info="<html>
-  <p>Dynamic viscosity is computed from temperature using a simple polynomial for dry air. Range of validity is from 123.15 K to 1273.15 K. The influence of pressure and moisture is neglected.</p>
+<body>
+<h2>Model Description and References</h2>
+<p>Dynamic viscosity is computed from temperature using a simple polynomial for dry air. Range of validity is from 123.15 K to 1273.15 K. The influence of pressure and moisture is neglected.</p>
   <p>Source: VDI Waermeatlas, 8th edition.</p>
   <p>Imported from Modelica.Media.Air.MoistAir, since a variable nitrogen-oxygen ratio will not have a major impact.</p>
-  </html>"));
+<h2>Governing Equations</h2>
+<pre>eta := 1e-6*Modelica.Math.Polynomials.evaluateWithRange( {9.7391102886305869E-15,-3.1353724870333906E-11,4.3004876595642225E-08, -3.8228016291758240E-05,5.0427874367180762E-02,1.7239260139242528E+01}, Modelica.Units.Conversions.to_degC(123.15), Modelica.Units.Conversions.to_degC(1273.15), Modelica.Units.Conversions.to_degC(state.T));</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
   end dynamicViscosity;
   
   redeclare function extends thermalConductivity
@@ -154,10 +400,25 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
         Modelica.Units.Conversions.to_degC(state.T));
   
     annotation (smoothOrder=2, Documentation(info="<html>
-  <p>Thermal conductivity is computed from temperature using a simple polynomial for dry air. Range of validity is from 123.15 K to 1273.15 K. The influence of pressure and moisture is neglected.</p>
+<body>
+<h2>Model Description and References</h2>
+<p>Thermal conductivity is computed from temperature using a simple polynomial for dry air. Range of validity is from 123.15 K to 1273.15 K. The influence of pressure and moisture is neglected.</p>
   <p>Source: VDI Waermeatlas, 8th edition.</p>
   <p>Imported from Modelica.Media.Air.MoistAir, since a variable nitrogen-oxygen ratio will not have a major impact.</p>
-  </html>"));
+<h2>Governing Equations</h2>
+<pre>lambda := 1e-3*Modelica.Math.Polynomials.evaluateWithRange( {6.5691470817717812E-15,-3.4025961923050509E-11,5.3279284846303157E-08, -4.5340839289219472E-05,7.6129675309037664E-02,2.4169481088097051E+01}, Modelica.Units.Conversions.to_degC(123.15), Modelica.Units.Conversions.to_degC(1273.15), Modelica.Units.Conversions.to_degC(state.T));</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
   end thermalConductivity;
 
   annotation(

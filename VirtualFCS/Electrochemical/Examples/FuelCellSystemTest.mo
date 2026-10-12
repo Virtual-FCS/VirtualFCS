@@ -28,6 +28,22 @@ equation
     Line(points = {{-58, 70}, {0, 70}, {0, 52}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.012),
-    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>This integrated fuel-cell system test ramps the electrical load resistance from 3 ohm to 0.01 ohm over 20 s, starting at 20 s. </p><p>The cathode and anode flow resistances are 10000 and the compressor starts at 0.01 kg/s. </p></html>"));
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This integrated fuel-cell system test ramps the electrical load resistance from 3 ohm to 0.01 ohm over 20 s, starting at 20 s. </p><p>The cathode and anode flow resistances are 10000 and the compressor starts at 0.01 kg/s. </p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end FuelCellSystemTest;

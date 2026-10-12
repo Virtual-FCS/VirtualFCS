@@ -55,6 +55,22 @@ equation
   connect(limiter.y, signalCurrent.i) annotation (
     Line(points = {{-26, 84}, {0, 84}, {0, 84}, {0, 84}}, color = {0, 0, 127}));
   annotation (
-    Documentation(info = "<html><p>This real-time example lets the user control Li-ion cell current with the keyboard up and down keys. The current is limited to -4.4 A to +4.4 A.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for keyboard input and real-time scheduling.</p></html>"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This real-time example lets the user control Li-ion cell current with the keyboard up and down keys. The current is limited to -4.4 A to +4.4 A.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for keyboard input and real-time scheduling.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell_UserControl;

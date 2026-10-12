@@ -65,6 +65,23 @@ equation
   connect(ground.p, V_source.n) annotation(
     Line(points = {{-30, 60}, {-80, 60}, {-80, 10}}, color = {0, 0, 255}));
 annotation(
-    experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 1));
-annotation(Documentation(info = "<html><p>This test couples the hydrogen subsystem to a 42-cell fuel cell. The fuel-cell load resistance steps from -8 ohm to 2 ohm at 250 s.</p><p>The air feed is 0.075 kg/s with a 2e5 Pa outlet, the anode starts at 1e5 Pa, and coolant enters at 323.15 K and 1 kg/s. The hydrogen subsystem is supplied at 24 V and uses a proportional pressure regulator.</p></html>"));
+    experiment(StartTime = 0, StopTime = 500, Tolerance = 1e-06, Interval = 1),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test couples the hydrogen subsystem to a 42-cell fuel cell. The fuel-cell load resistance steps from -8 ohm to 2 ohm at 250 s.</p><p>The air feed is 0.075 kg/s with a 2e5 Pa outlet, the anode starts at 1e5 Pa, and coolant enters at 323.15 K and 1 kg/s. The hydrogen subsystem is supplied at 24 V and uses a proportional pressure regulator.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>-</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemHydrogenWithFuelCellTest;

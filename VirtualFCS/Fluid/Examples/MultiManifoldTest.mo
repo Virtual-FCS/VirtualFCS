@@ -61,6 +61,23 @@ equation
   connect(power_gain.u, reactionRate.y) annotation(
     Line(points = {{0, 58}, {0, 80}, {-59, 80}}, color = {0, 0, 127}));
 annotation(
-    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002));
-annotation(Documentation(info = "<html><p>This test connects anode and cathode manifolds with reaction-derived flows. The reaction rate steps from 0.1 to 1 at 0.5 s; lambda = 3 and cell voltage = 0.7 V determine the resulting flow rates.</p><p>Both manifold volumes are 0.01 m3 and share a heat port. </p></html>"));
+    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-06, Interval = 0.002),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test connects anode and cathode manifolds with reaction-derived flows. The reaction rate steps from 0.1 to 1 at 0.5 s; lambda = 3 and cell voltage = 0.7 V determine the resulting flow rates.</p><p>Both manifold volumes are 0.01 m3 and share a heat port. </p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>Reactant excess ratio</td></tr>
+<tr><td><code>V_cell</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>0.7</code></td><td>Single-cell voltage</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end MultiManifoldTest;

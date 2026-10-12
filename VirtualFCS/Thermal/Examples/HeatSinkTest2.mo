@@ -76,7 +76,23 @@ equation
   connect(batterySystem.pin_n, ground.p) annotation(
     Line(points = {{24, 58}, {42, 58}, {42, 56}}, color = {0, 0, 255}));
 
-annotation (
-  experiment(StopTime = 500, Interval = 0.5, Tolerance = 1e-6));
-annotation(Documentation(info = "<html><p>This alternative heat-sink test applies periodic trapezoids: coolant temperature varies from 293.15 K to 373.15 K and coolant flow from 0 to 0.2 kg/s. Both signals use 130 s rise/fall times and a 300 s period.</p><p>The battery starts at SOC = 0.9 with 59 V to 61 V limits and 60 V nominal voltage.</p></html>"));
+annotation(
+    experiment(StopTime = 500, Interval = 0.5, Tolerance = 1e-6),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This alternative heat-sink test applies periodic trapezoids: coolant temperature varies from 293.15 K to 373.15 K and coolant flow from 0 to 0.2 kg/s. Both signals use 130 s rise/fall times and a 300 s period.</p><p>The battery starts at SOC = 0.9 with 59 V to 61 V limits and 60 V nominal voltage.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end HeatSinkTest2;
