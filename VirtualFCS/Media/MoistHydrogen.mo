@@ -13,7 +13,6 @@ package MoistHydrogen "Media model for hydrogen containing water vapour"
   
   import saturationPressure = Modelica.Media.Air.ReferenceMoistAir.Utilities.Water95_Utilities.psat;
   //function saturationPressure = antoine(A=5+4.6543, B=1435.264, C=-64.848);
-
   // Convenience variables to index arrays within class
   constant Integer Hydrogen = 1 "Index of hydrogen (in substanceNames, massFractions X, etc.)";
   constant Integer Water = 2 "Index of water (in substanceNames, massFractions X, etc.)";
@@ -122,6 +121,7 @@ package MoistHydrogen "Media model for hydrogen containing water vapour"
     import Modelica.Media.Water.IF97_Utilities.rho_pT;
   algorithm
     d_liq := rho_pT(state_liq.p, state_liq.T, 1); // Last "1" specifies liquid phase explicitly
-  end liquidDensity;
+  end liquidDensity;annotation(
+    Documentation(info = "<html><head></head><body>This medium is appropriate for hydrogen in presence of water, e.g. fuel-cell anode or electrolyser cathode.<div>It is very similar in structure to <tt>MoistAir</tt>, only it has only hydrogen as incondensable gas.</div></body></html>"));
 
 end MoistHydrogen;

@@ -14,7 +14,7 @@ partial model PartialCondensingMixture
     Modelica.Units.SI.AbsolutePressure p "Absolute pressure of medium";
     Modelica.Units.SI.Temperature T "Temperature of medium";
     Modelica.Units.SI.MassFraction[nXi] Xi(start=reference_X[1:nXi]) "Mass fractions (= (component mass)/total mass  m_i/m)";
-      annotation( Documentation(info = "<html><head></head><body><div>To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.</div><div>Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.</div><div>If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T), which is an onerous operation since Shomate equations are polynomials of T and would need to be solved iteratively:</div><div>this it possible but numerically onerous.</div><div>It would also be possible to calculate new direct correlations T(h), but this becomes rapidly a larger job.</div><div>Since pure freezing or boiling water is an extremely rare case in the systems we study, we use the more convenient option.</div></body></html>"));
+      annotation( Documentation(info = "<html><head></head><body><div>To keep things simple, we assume that pTX is a sufficient representation of the thermodynamic state.</div><div>Strictly speaking, it isn't, since there are corner cases like water at 0 or 100 C.</div><div>If we were to handle these cases correctly we should use h instead of T, but then we need to invert h(T), which is an onerous operation since Shomate equations are polynomials of T and would need to be solved iteratively: this it possible but numerically onerous.</div><div>It would also be possible to calculate new direct correlations T(h), but this becomes rapidly a larger job.</div><div>Since pure freezing or boiling water is an extremely rare case in the systems we study, we use the more convenient option.</div></body></html>"));
   end ThermodynamicState;
   
   redeclare model extends BaseProperties(final standardOrderComponents = true,
@@ -33,7 +33,7 @@ partial model PartialCondensingMixture
     Modelica.Units.SI.MolarMass MM_liq = MMX*Xmol_liq "Molar mass of liquid phase";
     Modelica.Units.SI.MolarMass MM_gas = MMX*Xmol_gas "Molar mass of gas phase";
 
-    // The following functions are specific to the fluid and need to be specified in child classes
+// The following functions are specific to the fluid and need to be specified in child classes
     Modelica.Units.SI.Density d_liq = liquidDensity(state_liq) "Density of liquid phase";
     Modelica.Units.SI.Density d_gas = gasDensity(state_gas) "Density of gas phase";
     Modelica.Units.SI.SpecificEnthalpy h_liq = liquidSpecificEnthalpy(state_liq) "Specific enthalpy of liquid phase";
@@ -138,8 +138,8 @@ partial model PartialCondensingMixture
   algorithm
     state.p := p;
     state.Xi := X[1:nXi];
-    // Debugging code, 
-    /*if h_offset(T_min, p, h, X)*h_offset(T_max, p, h, X) >= 0 then
+// Debugging code,
+/*if h_offset(T_min, p, h, X)*h_offset(T_max, p, h, X) >= 0 then
       Modelica.Utilities.Streams.print("Same-sign error in setState_phX");
       Modelica.Utilities.Streams.print("p="+String(p)+", h="+String(h));
       for i in 1:nXi loop
@@ -196,7 +196,7 @@ partial model PartialCondensingMixture
     dbeta_mol := (sum((1-iK[i])/D[i]*dXmol[i] - Xmol[i]/D[i]^2*diK[i] for i in 1:nX)) / S;
   annotation(
       Documentation(info = "<html><head></head><body>Differential of the Rachford-Rice relation for flash equilibria:<div>h(β) = Σ<sub>i</sub> z<sub>i</sub>/(iK<sub>i</sub>+β(1-iK<sub>i</sub>) = 0</div><div><br></div><div>Having defined the convenience variables:</div><div>D<sub>i</sub>=iK<sub>i</sub>+β(1-iK<sub>i</sub>)</div><div>S = Σ<sub>i</sub> (1-iK<sub>i</sub>)<sup>2</sup>z<sub>i</sub>/D<sub>i</sub></div><div><sub><br></sub></div><div>The differential is then dβ = Σ<sub>i</sub>(1-iK<sub>i</sub>)/(S*D<sub>i</sub>) dz<sub>i</sub> - z<sub>i</sub>/(S*D<sub>i</sub><sup>2</sup>) diK<sub>i</sub></div><div><sub><br></sub></div><div>If you need to verify this, either find pen and paper, or use Maxima and enter <pre>diff( z*(1-iK)/(iK+b*(1-iK)));</pre></div></body></html>"));
-end flashVaporisation_der;
+  end flashVaporisation_der;
 
   function vaporisationRatio
     extends Modelica.Icons.Function;
@@ -241,7 +241,7 @@ end flashVaporisation_der;
     Xmol_gas := {Xmol[i] / max(iK[i] + beta_real*(1.0 - iK[i]), eps) for i in 1:nX};
   annotation(
       Documentation(info = "<html><head></head><body>Given a generalised molar vaporisation ratio β, molar fractions X<sub>mol</sub>&nbsp;and inverted equilibrium constants iK, the function returns the corresponding molar fractions in the gas phase.<div>Note that, if β≥1 (i.e. only gas), the gas concentrations are simply the overall ones.</div><div><br></div><div>The case of β≤0 is a bit more thorny since no gas phase exist, and the gas fractions do not have a physical meaning, but must be defined nevertheless to ensure continuity of variables.</div><div>The main problem occurs when β=0, since the denominator of the main formula would collapse to zero for all incondensables, which already have iK=0 by definition of incondensables. Of course there cannot be incondensables present if β=0, but 0/0 would still produce an error.</div></body></html>"));
-end gasMolarFractions;
+  end gasMolarFractions;
   
   function liquidMolarFractions
     extends Modelica.Icons.Function;
@@ -257,7 +257,7 @@ end gasMolarFractions;
     Xmol_liq := Xmol_liq / sum(Xmol_liq);
   annotation(
       Documentation(info = "<html><head></head><body>Given a generalised molar vaporisation ratio β, molar fractions X<sub>mol</sub> and inverted equilibrium constants iK, the function returns the corresponding molar fractions in the liquid phase.<div>Note that, if β≤0 (i.e. only liquid), the liquid concentrations are simply the overall ones.</div><div><br></div><div>The case of β≥1 is a bit more thorny since no liquid phase exist, and the liquid fractions do not have a physical meaning, but must be defined nevertheless to ensure continuity of variables.</div><div>The algorithm first attempts to use iK*X<sub>mol</sub>&nbsp;as the composition of the first droplet to form, but before normalising by dividing by Σ iK*X<sub>mol</sub>, it checks whether the array is zero: this happens in corner cases such as dry air. In that case, it assumes a liquid composition of iK/Σ iK, which is the limit for the overall fractions of all condensable species tending to zero at the same rate.</div></body></html>"));
-end liquidMolarFractions;
+  end liquidMolarFractions;
 
 
   function gasConstant "Gas constant for the gas phase"
@@ -440,6 +440,8 @@ end liquidMolarFractions;
           p=Modelica.Media.Common.smoothStep(x, state_a.p, state_b.p, x_small),
           T=Modelica.Media.Common.smoothStep(x, state_a.T, state_b.T, x_small),
           Xi=Modelica.Media.Common.smoothStep(x, state_a.Xi, state_b.Xi, x_small));
-  end setSmoothState;
+  end setSmoothState;annotation(
+    Documentation(info = "<html><head></head><body>This extension of <tt>PartialMedium</tt> models a mixture of multiple components, several of which may or may not condense into liquid phase.<div>This can be used to model e.g. condensing air in a fuel cell's cathode, the anodic loop of a PEM electrolyser and ammonia-air systems.</div><div>Note that condensation is inherently an extra calculation, and gas mixtures or pure liquids should be preferred when possible.</div><h2>Derived classes</h2><div>To implement your medium, you need to provide implementations for the following:</div><div><ul><li>Molar masses <tt>MMX</tt>, reference composition <tt>reference_X</tt>&nbsp;(note: <i>mass</i> fractions, not molar!), and component names <tt>substanceNames</tt>;</li><li><tt>invertedKs</tt>, a function providing the inverse of equilibrium constants K<sub>i</sub>, i.e. the ratios of <u><i>molar</i></u> fraction in gas vs. in liquid. The reason why the function provides K<sub>i</sub><sup>-1</sup> instead of K<sub>i</sub>&nbsp;directly is that we want to allow modelling of incondensable gases, for which K<sub>i</sub>=
+<!--StartFragment--><span id=\"symbol\" class=\"symbol large\">∞; providing</span> K<sub>i</sub><sup>-1</sup>=0 allows to avoid dealing with infinity in calculations and the headaches that come with it.</li><li><tt>(gas|liquid)SpecificHeatCapacityCp</tt>, <tt>(gas|liquid)SpecificEnthalpy</tt>, <tt>(gas|liquid)SpecificEntropy</tt>, <tt>(gas|liquid)Density</tt>: these thermodynamic functions provide the indicated quantities for either phase. Note that their argument is a <tt>ThermodynamicState</tt> <i>already</i>&nbsp;referring to the relevant phase, to reduce the times the equilibrium calculations are run.</li></ul></div><div><h2>Implementation</h2><div>The model uses a <a href=\"https://en.wikipedia.org/wiki/Flash_evaporation#Equilibrium_flash_of_a_multi-component_liquid\">Rachford-Rice equation</a>&nbsp;to calculate the equilibrium compositions for both phases (and whether there is one or both phases).</div><div>Rachford-Rice is an implicit equation and as such it is inherently <b>computationally onerous</b>; if your mixture has only one condensable component (e.g. water), it may be worth it to replace the implementation of <tt>flashVaporisation</tt> with a direct approach to achieve better computational performance.</div><h2>Utilities</h2></div><div>The model provides some useful functions:</div><div><ul><li><tt>massToMoleFractions</tt> and <tt>moleToMassFractions</tt>, to convert composition arrays between the two systems; Modelica uses mostly mass internally, but data is typically available on a mole basis.</li><li><tt>antoine</tt> and <tt>clausiusClapeyron</tt>, to calculate vapour pressure with the respective equation.</li></ul><h2>Reference</h2></div><!--StartFragment--><!--EndFragment--><div>Whitson, Curtis H., and Michael L. Michelsen. <a href=\"https://www.researchgate.net/publication/223072443_The_Negative_Flash\">\"The negative flash.\" </a><i>Fluid phase equilibria</i> 53 (1989): 51-71.</div><div><br></div></body></html>"));
 
 end PartialCondensingMixture;

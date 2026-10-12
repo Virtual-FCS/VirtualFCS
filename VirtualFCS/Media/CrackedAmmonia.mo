@@ -11,11 +11,10 @@ model CrackedAmmonia
          Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM}
   );
-  
   // Parameters from Stull (1947) as quoted in NIST
   function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
 
-  // Convenience variables to index arrays within class
+// Convenience variables to index arrays within class
   constant Integer Ammonia = 1 "Index of ammonia (in substanceNames, massFractions X, etc.)";
   constant Integer Hydrogen = 2 "Index of hydrogen (in substanceNames, massFractions X, etc.)";
   constant Integer Nitrogen = 3 "Index of nitrogen (in substanceNames, massFractions X, etc.)";
@@ -110,6 +109,8 @@ model CrackedAmmonia
     d_liq := C[1]/C[2]^(1+(1-state_liq.T/C[3])^C[4]) / 1000 * MMX[Ammonia];
   annotation(
       Documentation(info = "<html><head></head><body>Correlation from Perry's Chemical Engineer's Handbook, 7th edition, table 2-30.<div>The original formula produces results in kmol/m<sup>3</sup>&nbsp;as a function of temperatures only, which are corrected to kg/m<sup>3</sup>&nbsp;in the code.</div></body></html>"));
-end liquidDensity;
+end liquidDensity;annotation(
+    Documentation(info = "<html><head></head><body>This medium represents a mix of ammonia and its cracking products, nitrogen and hydrogen. Only ammonia is condensable.<div>Note that thermochemical data for liquid ammonia is not available from NIST, and was calculated from data in Perry's with a Python script stored in Utilities.</div>
+</body></html>"));
 
 end CrackedAmmonia;
