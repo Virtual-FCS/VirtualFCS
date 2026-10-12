@@ -667,16 +667,10 @@ end invertedKs;
     input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
     input Real[nX] iK "Inverted equilibrium constants";
     output Modelica.Units.SI.MoleFraction[nX] Xmol_gas "Gas molar compositions";
+  protected
+    Modelica.Units.SI.MoleFraction beta_real = min(max(beta_mol, 0.0), 1.0) "Physically true vaporisation ratio";
   algorithm
-    if beta_mol >= 1 then
-      Xmol_gas := Xmol;
-    elseif abs(beta_mol) < eps then
-// If both iK and beta_mol = 0, I get a division by zero with the general formula
-// beta = 0 means only liquid, so Xmol=0 for all non-condensables
-      Xmol_gas := {if iK[i] > eps then Xmol[i]/(iK[i] + beta_mol*(1.0.-iK[i])) else 0.0 for i in 1:nX};
-    else
-      Xmol_gas := Xmol ./ (iK + beta_mol*(1.0.-iK));
-    end if;
+    Xmol_gas := {Xmol[i] / max(iK[i] + beta_real*(1.0 - iK[i]), eps) for i in 1:nX};
   annotation(
       Documentation(info = "<html>
 <body>
@@ -717,19 +711,11 @@ end gasMolarFractions;
     input Modelica.Units.SI.MoleFraction[nX] Xmol "Overall molar compositions";
     input Real[nX] iK "Inverted equilibrium constants";
     output Modelica.Units.SI.MoleFraction[nX] Xmol_liq "Liquid molar compositions";
+  protected
+    Modelica.Units.SI.MoleFraction beta_real = min(max(beta_mol, 0.0), 1.0) "Physically true vaporisation ratio";
   algorithm
-    if beta_mol >= 1 then
-      Xmol_liq := iK.*Xmol;
-      if max(Xmol_liq) < eps then
-        Xmol_liq := iK / sum(iK) "Handle corner case with no condensables in mixture";
-      else
-        Xmol_liq := Xmol_liq / sum(Xmol_liq) "Normalise if we know it is nonzero";
-      end if;
-    elseif beta_mol <= 0 then
-      Xmol_liq := Xmol;
-    else
-      Xmol_liq := (iK.*Xmol) ./ (iK + beta_mol*(1.0.-iK));
-    end if;
+    Xmol_liq :=  {iK[i]*(Xmol[i] + eps) / max(iK[i] + beta_real*(1.0 - iK[i]), eps) for i in 1:nX};
+    Xmol_liq := Xmol_liq / sum(Xmol_liq);
   annotation(
       Documentation(info = "<html>
 <body>

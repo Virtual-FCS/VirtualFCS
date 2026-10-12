@@ -22,7 +22,7 @@ equation
 
   pin_p.i + pin_n.i = 0 "No capacitive element";
   
-  head = (port_b.p - port_a.p)/ Medium.density(Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow)) / g_n "Definition of head";
+  head = (port_b.p - port_a.p)/ Medium.density(Medium.setState_phX(port_a.p, inStream(port_a.h_outflow), inStream(port_a.Xi_outflow))) / g_n "Definition of head, with inlet density";
 
   eta*power = u * head * g_n "Relation between head and power";
   annotation(
