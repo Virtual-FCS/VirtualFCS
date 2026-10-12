@@ -43,4 +43,22 @@ equation
     Line(points = {{2, -70}, {74, -70}, {74, 34}, {10, 34}, {10, 14}}, color = {0, 0, 127}));
   connect(fuelCellSystem.pin_n, ground1.p) annotation(
     Line(points = {{46, -20}, {30, -20}}, color = {0, 0, 255}));
+  annotation(Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Battery-electric powertrain augmented with a hydrogen fuel-cell range extender. The fuel-cell system supplies the battery bus through a controlled DC converter. Battery measurements feed the replaceable energy-management system, whose power request is converted to a current command using the measured fuel-cell voltage. The fuel-cell air subsystem uses CompressorSimple and a one-cell membrane Humidifier. The converter flow-delay output starts at 1 A to avoid a zero-flow compressor initialization. In this assembly, the converter's FC-named pins connect to the battery and its Bus-named pins connect to the fuel-cell system.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+</body></html>"));
 end RangeExtenderPowertrain;

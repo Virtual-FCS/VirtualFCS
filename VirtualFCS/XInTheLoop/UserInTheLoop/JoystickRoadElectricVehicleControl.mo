@@ -55,7 +55,25 @@ equation
     Line(points = {{62, 80}, {66, 80}, {66, 80}, {68, 80}}, color = {0, 0, 127}));
   connect(abs1.y, ctl_brake) annotation (
     Line(points = {{92, 80}, {104, 80}, {104, 80}, {110, 80}}, color = {0, 0, 127}));
-annotation(Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>joystickInput</code></td><td>Input</td><td>JoystickInput</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p>User-in-the-loop vehicle controller that converts joystick acceleration and braking commands into bounded control signals.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>ctl_accelerate</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr>
-<tr><td><code>ctl_Steering</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr>
-<tr><td><code>ctl_brake</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<p>User-in-the-loop vehicle controller that converts joystick acceleration and braking commands into bounded control signals.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>realtimeSynchronize</code> (Modelica_DeviceDrivers.Blocks.OperatingSystem.RealtimeSynchronize), <code>steeringRateLimiter</code> (Modelica.Blocks.Nonlinear.SlewRateLimiter), <code>joystickInput</code> (Modelica_DeviceDrivers.Blocks.InputDevices.JoystickInput), <code>switch1</code> (Modelica.Blocks.Logical.Switch), <code>switch</code> (Modelica.Blocks.Logical.Switch), <code>greaterEqualThreshold</code> (Modelica.Blocks.Logical.GreaterEqualThreshold), <code>lessEqualThreshold</code> (Modelica.Blocks.Logical.LessEqualThreshold), <code>const</code> (Modelica.Blocks.Sources.Constant), <code>accelerationRateLimiter</code> (Modelica.Blocks.Nonlinear.SlewRateLimiter), <code>abs1</code> (Modelica.Blocks.Math.Abs).</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>joystickInput</code></td><td>Observed variable</td><td>Modelica_DeviceDrivers.Blocks.InputDevices.JoystickInput</td><td>-</td><td></td></tr>
+<tr><td><code>ctl_accelerate</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>ctl_Steering</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>ctl_brake</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+</table>
+</body>
+</html>"));
 end JoystickRoadElectricVehicleControl;

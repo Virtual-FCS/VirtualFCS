@@ -42,6 +42,22 @@ equation
     experiment(StopTime = 20, Interval = 0.5, Tolerance = 1e-06, StartTime = 0),
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
     Icon(coordinateSystem(extent = {{-100, -100}, {100, 80}})),
-    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>This test steps the applied heat flow from 0 W to 6000 W at 10 s. The coolant system starts at 300 K and 101325 Pa with 0.1 kg/s flow; the pipe starts at 363.15 K and uses 1 m length and 0.01 m diameter.</p><p>The electrical supply is 24 V and the stack PI controller has Ti = 5. </p></html>"));
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test steps the applied heat flow from 0 W to 6000 W at 10 s. The coolant system starts at 300 K and 101325 Pa with 0.1 kg/s flow; the pipe starts at 363.15 K and uses 1 m length and 0.01 m diameter.</p><p>The electrical supply is 24 V and the stack PI controller has Ti = 5. </p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemCoolingTest;

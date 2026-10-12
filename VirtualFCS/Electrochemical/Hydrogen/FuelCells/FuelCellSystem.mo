@@ -88,10 +88,39 @@ protected
     Placement(transformation(origin = {-40, 70}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   annotation (
     Icon(graphics={  Text(origin = {-6, -250}, textColor = {0, 0, 255}, extent = {{-150, 120}, {150, 150}}, textString = "%name"), Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Rectangle(origin = {-55, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {58.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, 60.5}, {9, -61}}), Rectangle(origin = {-40, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-29.8, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-19.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {-8.7, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {1.5, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {12.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {22.1, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {32.3, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}}), Rectangle(origin = {42.9, -1}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-3, 46.9}, {4.2, -47}})}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>p_air_set</code></td><td>SI.AbsolutePressure</td><td>Pa</td><td>200000</td><td>air outlet set pressure</td></tr>
-<tr><td><code>p_H2_set</code></td><td>SI.AbsolutePressure</td><td>Pa</td><td>200000</td><td>H2 outlet set pressure</td></tr>
-<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td>42</td><td>FC stack number of cells</td></tr>
-<tr><td><code>V_tank_H2</code></td><td>SI.Volume</td><td>m3</td><td>0.606</td><td>H2 tank volume</td></tr>
-<tr><td><code>p_tank_H2</code></td><td>SI.AbsolutePressure</td><td>Pa</td><td>30000000</td><td>H2 tank initial pressure</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2>The FuelCellSystem class packages together a FuelCell object and three different subsystems to control&nbsp;hydrogen, air, and coolant feeds into and out of the fuel cell. A battery object provides power to the subsystems.<h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>eta_sys_HHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2HHV)*100, eta_max);
-eta_sys_LHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2LHV)*100, eta_max);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+The FuelCellSystem class packages together a FuelCell object and three different subsystems to control&nbsp;hydrogen, air, and coolant feeds into and out of the fuel cell. A battery object provides power to the subsystems.
+<h2>Governing Equations</h2>
+<pre>Power_system = Power_stack-Power_BOP;
+Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v);
+Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v);
+eta_sys_HHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2HHV)*100, eta_max);
+eta_sys_LHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2LHV)*100, eta_max);
+Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor;</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power_system</code></td><td>Power delivered from the FC system</td></tr>
+<tr><td><code>Power_stack</code></td><td>Power delivered from the FC stack</td></tr>
+<tr><td><code>Power_BOP</code></td><td>Power consumed by the BOP components</td></tr>
+<tr><td><code>eta_sys_HHV</code></td><td>Fuel cell system efficiency High Heating Value</td></tr>
+<tr><td><code>eta_sys_LHV</code></td><td>Fuel cell system efficiency Low Heating Value</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>p_air_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>air outlet set pressure</td></tr>
+<tr><td><code>p_H2_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>H2 outlet set pressure</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>FC stack number of cells</td></tr>
+<tr><td><code>V_tank_H2</code></td><td>Modelica.Units.SI.Volume</td><td>m3</td><td><code>0.606</code></td><td>H2 tank volume</td></tr>
+<tr><td><code>p_tank_H2</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>30000000</code></td><td>H2 tank initial pressure</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</table>
+</body>
+</html>"));
 end FuelCellSystem;

@@ -49,5 +49,21 @@ equation
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{88, -38}, {88, -38}})}),
     Icon(coordinateSystem(extent = {{-100, -100}, {100, 80}})),
     __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
-  Documentation(info = "<html><head></head><body>This test case tests the operation of the air subsystem against a simple manifold.<div>Note that, if you set a reaction rate larger than zero, you <i>must</i>&nbsp;deactivate the manifold's heat port, or connect it to some constant or prescribed temperature source.</div><div>This is because the reaction makes matter \"disappear\" without changing the enthalpy content, and therefore the enthalpy balance will become nonsensical; this balance works only when multiple manifolds (e.g. cathode and anode) with matching stoichiometric coefficients are connected.</div></body></html>"));
+  Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+This test case tests the operation of the air subsystem against a simple manifold.<div>Note that, if you set a reaction rate larger than zero, you <i>must</i>&nbsp;deactivate the manifold's heat port, or connect it to some constant or prescribed temperature source.</div><div>This is because the reaction makes matter \"disappear\" without changing the enthalpy content, and therefore the enthalpy balance will become nonsensical; this balance works only when multiple manifolds (e.g. cathode and anode) with matching stoichiometric coefficients are connected.</div>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemAirTest;

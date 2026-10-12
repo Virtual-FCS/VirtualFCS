@@ -1,10 +1,26 @@
-﻿within VirtualFCS.UsersGuide;
+within VirtualFCS.UsersGuide;
 model Acknowledgements
   extends Modelica.Icons.Information;
 equation
 
   annotation (
-    Documentation(info = "<html><head></head><body><div><span style=\"font-size: 12px;\">The following people have directly contributed to the implementation of the Virtual-FCS library.</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=YyXXh8UAAAAJ&amp;hl=en\">Dr. Simon Clark</a>, SINTEF Industry, Norway</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=mlhoJ9wAAAAJ&amp;hl=en&amp;oi=ao\">Dr. Yash Raka</a>, SINTEF Industry, Norway</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=Lb7P3pwAAAAJ&amp;hl=en&amp;oi=ao\">Dr. Michael R. Gerhardt</a>, SINTEF Industry, Norway</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=VtrKOXUAAAAJ&amp;hl=en&amp;oi=ao\">Dr. Loic Vichard</a>, UBFC, France</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>Amelie Pinard, France</div><div><br></div><div><span style=\"font-size: 12px;\">Many others have contributed by other means than model implementation. Specifically, w</span><span style=\"font-size: 12px;\">e thank <a href=\"https://scholar.google.com/citations?user=96ato0cAAAAJ&amp;hl=it\">Dr. Federico Zenith</a> (SINTEF Digital), <a href=\"https://scholar.google.com/citations?user=usI_z3IAAAAJ&amp;hl=it&amp;oi=ao\">Dr. Alejandro Oyarce Barnett</a> (SINTEF Industry), <a href=\"https://scholar.google.com/citations?user=I83c1BcAAAAJ&amp;hl=it&amp;oi=ao\">Dr. Nadia Steiner</a> (UBFC) and <a href=\"https://scholar.google.com/citations?user=C0YhMpsAAAAJ&amp;hl=it&amp;oi=ao\">Dr. Daniel Hissel</a> (UBFC) for the helpful discussions.&nbsp;</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div>This project has received funding from the Fuel Cells and Hydrogen 2 Joint Undertaking under grant agreement No 875087. This Joint Undertaking receives support from the European Union’s Horizon 2020 research and innovation programme, Hydrogen Europe and Hydrogen Europe research.</div><div><br></div><div><br></div><div><span style=\"font-size: 12px;\"><br></span></div>
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<div><span style=\"font-size: 12px;\">The following people have directly contributed to the implementation of the Virtual-FCS library.</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=YyXXh8UAAAAJ&amp;hl=en\">Dr. Simon Clark</a>, SINTEF Industry, Norway</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=mlhoJ9wAAAAJ&amp;hl=en&amp;oi=ao\">Dr. Yash Raka</a>, SINTEF Industry, Norway</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=Lb7P3pwAAAAJ&amp;hl=en&amp;oi=ao\">Dr. Michael R. Gerhardt</a>, SINTEF Industry, Norway</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span><a href=\"https://scholar.google.no/citations?user=VtrKOXUAAAAJ&amp;hl=en&amp;oi=ao\">Dr. Loic Vichard</a>, UBFC, France</div><div>•<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>Amelie Pinard, France</div><div><br></div><div><span style=\"font-size: 12px;\">Many others have contributed by other means than model implementation. Specifically, w</span><span style=\"font-size: 12px;\">e thank <a href=\"https://scholar.google.com/citations?user=96ato0cAAAAJ&amp;hl=it\">Dr. Federico Zenith</a> (SINTEF Digital), <a href=\"https://scholar.google.com/citations?user=usI_z3IAAAAJ&amp;hl=it&amp;oi=ao\">Dr. Alejandro Oyarce Barnett</a> (SINTEF Industry), <a href=\"https://scholar.google.com/citations?user=I83c1BcAAAAJ&amp;hl=it&amp;oi=ao\">Dr. Nadia Steiner</a> (UBFC) and <a href=\"https://scholar.google.com/citations?user=C0YhMpsAAAAJ&amp;hl=it&amp;oi=ao\">Dr. Daniel Hissel</a> (UBFC) for the helpful discussions.&nbsp;</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div>This project has received funding from the Fuel Cells and Hydrogen 2 Joint Undertaking under grant agreement No 875087. This Joint Undertaking receives support from the European Union’s Horizon 2020 research and innovation programme, Hydrogen Europe and Hydrogen Europe research.</div><div><br></div><div><br></div><div><span style=\"font-size: 12px;\"><br></span></div>
 <img src=\"modelica://VirtualFCS/../docs/imgEuropeFlag.jpg\" style=\"width:3cm\">
-</body></html>"));
+<h2>Governing Equations</h2>
+<p>The behavior is defined by <code>Modelica.Icons.Information</code>.</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end Acknowledgements;

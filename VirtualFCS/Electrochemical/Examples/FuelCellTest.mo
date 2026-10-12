@@ -52,6 +52,23 @@ equation
   connect(resistor.R, R_values.y) annotation(
     Line(points = {{0, 72}, {0, 80}, {39, 80}}, color = {0, 0, 127}));
   annotation(
-    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03));
-annotation(Documentation(info = "<html><p>This test applies a load step from 3 ohm to 0.6 ohm at 30 s to a 42-cell fuel cell. The hydrogen inlet is 3e5 Pa, the air outlet is 2.5e5 Pa, and the air flow is 0.003 kg/s.</p><p>The glycol coolant enters at 323.15 K with a flow of 0.05 kg/s. </p></html>"));
+    experiment(StartTime = 0, StopTime = 60, Tolerance = 1e-06, Interval = 0.03),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test applies a load step from 3 ohm to 0.6 ohm at 30 s to a 42-cell fuel cell. The hydrogen inlet is 3e5 Pa, the air outlet is 2.5e5 Pa, and the air flow is 0.003 kg/s.</p><p>The glycol coolant enters at 323.15 K with a flow of 0.05 kg/s. </p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>-</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end FuelCellTest;

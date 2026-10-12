@@ -49,6 +49,22 @@ equation
   connect(pulseCurrent.n, BMS.pin_p_load) annotation (
     Line(points = {{18, 80}, {40, 80}, {40, 58}, {10, 58}, {10, 48}, {12, 48}}, color = {0, 0, 255}));
   annotation (
-    Documentation(info = "<html><p>This real-time example applies alternating -2.2 A and +2.2 A galvanostatic pulses to a Li-ion cell. Each pulse lasts 15 s within a 30 s period.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for real-time scheduling and I/O.</p></html>"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This real-time example applies alternating -2.2 A and +2.2 A galvanostatic pulses to a Li-ion cell. Each pulse lasts 15 s within a 30 s period.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for real-time scheduling and I/O.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 120, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell_RealTime;

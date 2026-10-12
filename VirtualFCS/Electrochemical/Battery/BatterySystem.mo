@@ -55,16 +55,10 @@ equation
           -15.6579}},                                                                 color = {0, 0, 255}));
   annotation (
     Icon(graphics={   Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Polygon(origin = {-33, -2}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{29, 38}, {29, 28}, {-19, 28}, {-19, -28}, {25, -28}, {29, -38}, {-21, -38}, {-29, -30}, {-29, 28}, {-21, 38}, {-5, 38}, {29, 38}}), Ellipse(origin = {-53, 27}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, -9}, {9, 9}}, startAngle = 30, endAngle = 200, closure = EllipseClosure.Chord), Ellipse(origin = {-53, -31}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-9, -9}, {9, 9}}, startAngle = 160, endAngle = 330, closure = EllipseClosure.Chord), Polygon(origin = {3, 0}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{0, 50}, {24, -3.5}, {3.5, -3.5}, {3.5, -50}, {-22, 12.5}, {0, 12.5}, {0, 50}, {0, 50}}), Polygon(origin = {44, -2}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-28, 38}, {12, 38}, {20, 32}, {20, 14.5}, {26, 14.5}, {32.5, 8}, {32.5, -8}, {26, -14}, {20, -14}, {20, -32}, {14, -37.5}, {-31.5, -37.5}, {-31.5, -28}, {10.5, -28}, {10.5, 28}, {-24, 28}, {-28, 38}, {-28, 38}}), Ellipse(origin = {57, 29}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = -10, endAngle = 170, closure = EllipseClosure.Chord), Ellipse(origin = {69.5, 5.5}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = -10, endAngle = 170, closure = EllipseClosure.Chord), Ellipse(origin = {69.5, -9}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = 180, endAngle = 370, closure = EllipseClosure.Chord), Ellipse(origin = {57, -32.5}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-7, -7}, {7, 7}}, startAngle = 180, endAngle = 370, closure = EllipseClosure.Chord)}),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>m_bat_pack</code></td><td>SI.Mass</td><td>kg</td><td>100</td><td>Mass of the pack</td></tr>
-<tr><td><code>L_bat_pack</code></td><td>SI.Length</td><td>m</td><td>0.6</td><td>Battery pack length</td></tr>
-<tr><td><code>W_bat_pack</code></td><td>SI.Breadth</td><td>m</td><td>0.45</td><td>Battery pack width</td></tr>
-<tr><td><code>H_bat_pack</code></td><td>SI.Height</td><td>m</td><td>0.1</td><td>Battery pack height</td></tr>
-<tr><td><code>Cp_bat_pack</code></td><td>SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>1000</td><td>Specific Heat Capacity</td></tr>
-<tr><td><code>V_min_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>240</td><td>Battery pack minimum voltage</td></tr>
-<tr><td><code>V_nom_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>336</td><td>Battery pack nominal voltage</td></tr>
-<tr><td><code>V_max_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>403.2</td><td>Battery pack maximum voltage</td></tr>
-<tr><td><code>C_bat_pack</code></td><td>NonSI.ElectricCharge_Ah</td><td>Ah</td><td>200</td><td>Battery pack nominal capacity</td></tr>
-<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td>0.5</td><td>Battery pack initial state of charge</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><!--[if gte mso 9]><xml>
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<!--[if gte mso 9]><xml>
  <o:OfficeDocumentSettings>
   <o:AllowPNG/>
  </o:OfficeDocumentSettings>
@@ -725,8 +719,37 @@ equation
 
 <!--StartFragment-->
 
-<p class=\"&quot;MsoNormal&quot;\"><font face=\"&quot;Arial&quot;\" size=\"&quot;4&quot;\">The BatterySystem class packages together a&nbsp;</font><a href=\"&quot;modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped&quot;\" style=\"&quot;font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">lumped model of a lithium-ion battery pack</a><font face=\"&quot;Arial&quot;\" size=\"&quot;4&quot;\">&nbsp;and a&nbsp;</font><a href=\"&quot;modelica://VirtualFCS.Control.BatteryManagementSystem&quot;\" style=\"&quot;font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">battery management system</a><font face=\"&quot;Arial&quot;\" size=\"&quot;4&quot;\">. This class can be directly integrated into a powertrain model, for example in <a href=\"&quot;modelica://VirtualFCS.Powertrains.BatteryPowertrain&quot;\">BatteryPowertrain</a> and <a href=\"&quot;modelica://VirtualFCS.Powertrains.RangeExtenderPowertrain&quot;\">RangeExtenderPowertrain</a>.</font></p>
+<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">The BatterySystem class packages together a&nbsp;</font><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\" style=\"font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">lumped model of a lithium-ion battery pack</a><font face=\"Arial\" size=\"4\">&nbsp;and a&nbsp;</font><a href=\"modelica://VirtualFCS.Control.BatteryManagementSystem\" style=\"font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">battery management system</a><font face=\"Arial\" size=\"4\">. This class can be directly integrated into a powertrain model, for example in <a href=\"modelica://VirtualFCS.Powertrains.BatteryPowerTrain\">BatteryPowerTrain</a> and <a href=\"modelica://VirtualFCS.Powertrains.RangeExtenderPowerTrain\">RangeExtenderPowerTrain</a>.</font></p>
 
-<!--EndFragment--><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)), 0.9);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>sensorOutput</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+<!--EndFragment-->
+<h2>Governing Equations</h2>
+<pre>Power = pin_p.i*pin_p.v;
+eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)), 0.9);</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power</code></td><td>Battery delivered power</td></tr>
+<tr><td><code>eta_batt</code></td><td>Battery efficiency, calculated by assuming loss in terms of heat</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>m_bat_pack</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>100</code></td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.6</code></td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>Modelica.Units.SI.Breadth</td><td>m</td><td><code>0.45</code></td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>Modelica.Units.SI.Height</td><td>m</td><td><code>0.1</code></td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>240</code></td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>336</code></td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>403.2</code></td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td><code>200</code></td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Battery pack initial state of charge</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>sensorOutput</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+</table>
+</body>
+</html>"));
 end BatterySystem;

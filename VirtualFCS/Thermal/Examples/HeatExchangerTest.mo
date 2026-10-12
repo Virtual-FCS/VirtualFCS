@@ -24,6 +24,22 @@ equation
   connect(hex.port_b2, sink_2.ports[1]) annotation(
     Line(points = {{0, -20}, {0, -60}}, color = {0, 127, 255}));
 annotation(
-    experiment(StartTime = 0, StopTime = 2, Tolerance = 1e-06, Interval = 0.004));
-annotation(Documentation(info = "<html><p>This test runs 1 kg/s water at 353.15 K through one side of a 50-cell heat exchanger while 1 kg/s air flows on the other side. The sink pressure and temperature conditions use Boundary_pT defaults.</p></html>"));
+    experiment(StartTime = 0, StopTime = 2, Tolerance = 1e-06, Interval = 0.004),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test runs 1 kg/s water at 353.15 K through one side of a 50-cell heat exchanger while 1 kg/s air flows on the other side. The sink pressure and temperature conditions use Boundary_pT defaults.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end HeatExchangerTest;

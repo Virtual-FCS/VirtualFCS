@@ -90,18 +90,34 @@ equation
     Line(points = {{-63.4, 40}, {-44, 40}}, color = {0, 0, 127}));
   annotation(
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Ellipse(origin = {-2, -15}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 3, extent = {{-78, 95}, {82, -65}}), Line(origin = {40, 40}, points = {{-40, 40}, {40, -40}, {40, -40}}, thickness = 3), Line(origin = {40, -40}, points = {{-40, -40}, {40, 40}, {40, 40}}, thickness = 3)}),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>driveData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DriveDataCpump</td><td>-</td><td><br></td><td></td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>Input</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr>
-<tr><td><code>contol_input</code></td><td>Input</td><td>RealInput</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><div><p class=\"&quot;MsoNormal&quot;\"><b>References to base model/related packages</b></p><p class=\"&quot;MsoNormal&quot;\"><a href=\"&quot;modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet&quot;\">Permanent Magnet DC Motor</a>, <a href=\"&quot;modelica://Modelica.Fluid.Machines.PrescribedPump&quot;\">Prescribed Pump</a>, <a href=\"&quot;modelica://VirtualFCS.Control.DCMotorControl&quot;\">DC Motor Control</a></p><p class=\"&quot;MsoNormal&quot;\"><o:p></o:p></p>
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<div><p class=\"MsoNormal\"><b>References to base model/related packages</b></p><p class=\"MsoNormal\"><a href=\"modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet\">Permanent Magnet DC Motor</a>, <a href=\"modelica://Modelica.Fluid.Machines.PrescribedPump\">Prescribed Pump</a>, <a href=\"modelica://VirtualFCS.Control.DCMotorControl\">DC Motor Control</a></p><p class=\"MsoNormal\"><o:p></o:p></p>
 
-<p class=\"&quot;MsoNormal&quot;\"><b>Description</b></p><p class=\"&quot;MsoNormal&quot;\">The model has three parts input (volume flow rate, control signal motor speed), subcomponents (<a href=\"&quot;modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet&quot;\">Permanent Magnet DC Motor</a>,&nbsp;<a href=\"&quot;modelica://Modelica.Fluid.Machines.PrescribedPump&quot;\">Prescribed Pump</a>,&nbsp;<a href=\"&quot;modelica://VirtualFCS.Control.DCMotorControl&quot;\">DC Motor Control</a>), and output (pump outlet volume flow rate and sensors (inlet&nbsp;volume flow rate and pump speed).</p><p class=\"&quot;MsoNormal&quot;\"><b><o:p></o:p></b></p>
+<p class=\"MsoNormal\"><b>Description</b></p><p class=\"MsoNormal\">The model has three parts input (volume flow rate, control signal motor speed), subcomponents (<a href=\"modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet\">Permanent Magnet DC Motor</a>,&nbsp;<a href=\"modelica://Modelica.Fluid.Machines.PrescribedPump\">Prescribed Pump</a>,&nbsp;<a href=\"modelica://VirtualFCS.Control.DCMotorControl\">DC Motor Control</a>), and output (pump outlet volume flow rate and sensors (inlet&nbsp;volume flow rate and pump speed).</p><p class=\"MsoNormal\"><b><o:p></o:p></b></p>
 
-<p class=\"&quot;MsoNormal&quot;\">The inlet volume flow rate is measured and depending on the rotational speed estimated by the&nbsp;<a href=\"&quot;modelica://VirtualFCS.Control.DCMotorControl&quot;\">DC Motor Control</a>&nbsp;the&nbsp;<a href=\"&quot;modelica://Modelica.Fluid.Machines.PrescribedPump&quot;\">Prescribed Pump</a>&nbsp;changes the flow rate accordingly. &nbsp;</p><p class=\"&quot;MsoNormal&quot;\"><b>List of components</b></p><p class=\"&quot;MsoNormal&quot;\"><o:p></o:p></p>
+<p class=\"MsoNormal\">The inlet volume flow rate is measured and depending on the rotational speed estimated by the&nbsp;<a href=\"modelica://VirtualFCS.Control.DCMotorControl\">DC Motor Control</a>&nbsp;the&nbsp;<a href=\"modelica://Modelica.Fluid.Machines.PrescribedPump\">Prescribed Pump</a>&nbsp;changes the flow rate accordingly. &nbsp;</p></div>
+<h2>Governing Equations</h2>
+<pre>torque.tau = -9.5488*pump.W_total/pump.N;
+Power_PumpElectricDC = pin_p.i*pin_p.v;</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power_PumpElectricDC</code></td><td>The power consumed by the PumpElectricDC</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>driveData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DriveDataCpump</td><td>-</td><td><code>-</code></td><td></td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>Input</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>contol_input</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>Output</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>sensors</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput[2]</td><td>-</td><td>-</td></tr>
+</tbody></table>
 
-<p class=\"&quot;MsoNormal&quot;\"><a href=\"&quot;modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet&quot;\">Permanent Magnet DC Motor</a>,&nbsp;<a href=\"&quot;modelica://Modelica.Fluid.Machines.PrescribedPump&quot;\">Prescribed Pump</a>,&nbsp;<a href=\"&quot;modelica://VirtualFCS.Control.DCMotorControl&quot;\">DC Motor Control</a>, <a href=\"&quot;modelica://Modelica.Mechanics.Rotational.Sensors.SpeedSensor&quot;\">Speed Sensor</a>, <a href=\"&quot;modelica://Modelica.Fluid.Sensors.VolumeFlowRate&quot;\">Volume Flow Rate Sensor</a>.</p>
-
-<p class=\"&quot;MsoNormal&quot;\"><br></p></div><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>torque.tau = -9.5488*pump.W_total/pump.N;
-Power_PumpElectricDC =pin_p.i*pin_p.v;</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>sensors[2]</code></td><td>Output</td><td>RealOutput</td><td>-</td><td></td></tr>
-<tr><td><code>Output</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+</body></html>"));
 end PumpElectricDC;

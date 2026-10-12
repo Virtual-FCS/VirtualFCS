@@ -18,6 +18,22 @@ equation
     Line(points = {{-60, 0}, {-20, 0}}, color = {0, 127, 255}));
   annotation(
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
-    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
-annotation(Documentation(info = "<html><p>This test feeds a 1 m3 mixing volume with 1 kg/s at 303.15 K and X = {0, 1, 0}. The outlet is connected to an ambient-pressure boundary and the heat port is enabled.</p><p>Ambient pressure and the initial volume temperature are inherited from the connected boundary and volume defaults. </p></html>"));
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test feeds a 1 m3 mixing volume with 1 kg/s at 303.15 K and X = {0, 1, 0}. The outlet is connected to an ambient-pressure boundary and the heat port is enabled.</p><p>Ambient pressure and the initial volume temperature are inherited from the connected boundary and volume defaults. </p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end MixingVolumeTest;

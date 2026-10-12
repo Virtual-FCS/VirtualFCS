@@ -21,6 +21,22 @@ equation
     Line(points = {{-4, 4}, {-32, 4}, {-32, -2}}, color = {0, 0, 255}));
   annotation(
     experiment(StartTime = 0, StopTime = 20000, Tolerance = 1e-06, Interval = 0.5),
-  Diagram);
-annotation(Documentation(info = "<html><p>This test applies a battery power demand of 25.8 kW from 0 to 10000 s, then steps it to -26.2 kW at 10000 s. The battery starts at SOC = 0.99. </p><p>The electrical source is connected directly to the battery system; battery electrical and thermal parameters otherwise use their model defaults.</p></html>"));
+    Diagram,
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This test applies a battery power demand of 25.8 kW from 0 to 10000 s, then steps it to -26.2 kW at 10000 s. The battery starts at SOC = 0.99. </p><p>The electrical source is connected directly to the battery system; battery electrical and thermal parameters otherwise use their model defaults.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end BatterySystemTest;

@@ -126,41 +126,58 @@ equation
     Icon(graphics = {Rectangle(origin = {0, -15}, fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-130, 85}, {130, -75}}), Rectangle(origin = {0, 85}, fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-150, 15}, {150, -15}}), Text(origin = {68, 93}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {10, -19}}, textString = "+"), Text(origin = {-74, 105}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {52, -41}}, textString = "-"), Text(origin = {-34, -103}, lineColor = {0, 0, 255}, extent = {{-22, 15}, {86, -41}}, textString = "%name")}, coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     version = "",
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>m_bat_pack</code></td><td>SI.Mass</td><td>kg</td><td>100</td><td>Mass of the pack</td></tr>
-<tr><td><code>L_bat_pack</code></td><td>SI.Length</td><td>m</td><td>0.6</td><td>Battery pack length</td></tr>
-<tr><td><code>W_bat_pack</code></td><td>SI.Breadth</td><td>m</td><td>0.45</td><td>Battery pack width</td></tr>
-<tr><td><code>H_bat_pack</code></td><td>SI.Height</td><td>m</td><td>0.1</td><td>Battery pack height</td></tr>
-<tr><td><code>Cp_bat_pack</code></td><td>SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>1000</td><td>Specific Heat Capacity</td></tr>
-<tr><td><code>V_min_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>37.5</td><td>Battery pack minimum voltage</td></tr>
-<tr><td><code>V_nom_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>48</td><td>Battery pack nominal voltage</td></tr>
-<tr><td><code>V_max_bat_pack</code></td><td>SI.Voltage</td><td>V</td><td>54.75</td><td>Battery pack maximum voltage</td></tr>
-<tr><td><code>C_bat_pack</code></td><td>NonSI.ElectricCharge_Ah</td><td>Ah</td><td>200</td><td>Battery pack nominal capacity</td></tr>
-<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td>0.5</td><td>Battery pack initial state of charge</td></tr>
-<tr><td><code>heatTransferCoefficient</code></td><td>SI.CoefficientOfHeatTransfer</td><td>-</td><td>7.8 * 10 ^ 0.78</td><td>HeatTransferCoefficient (W/(m2.K))</td></tr>
-<tr><td><code>N_s</code></td><td>Real</td><td>1</td><td>ceil(V_max_bat_pack / V_chem_max)</td><td></td></tr>
-<tr><td><code>V_chem_max</code></td><td>SI.Voltage</td><td>V</td><td>3.65</td><td></td></tr>
-<tr><td><code>a1</code></td><td>SI.Voltage</td><td>V</td><td>3.39</td><td></td></tr>
-<tr><td><code>b1</code></td><td>Real</td><td>1</td><td>-1e-4</td><td></td></tr>
-<tr><td><code>c1</code></td><td>SI.Voltage</td><td>V</td><td>-7.46e-2</td><td></td></tr>
-<tr><td><code>d1</code></td><td>SI.Voltage</td><td>V</td><td>5.82e-3</td><td></td></tr>
-<tr><td><code>e1</code></td><td>SI.Voltage</td><td>V</td><td>-2.75e-2</td><td></td></tr>
-<tr><td><code>f1</code></td><td>SI.Voltage</td><td>V</td><td>2.30e-2</td><td></td></tr>
-<tr><td><code>g1</code></td><td>SI.Voltage</td><td>V</td><td>-4.71e-2</td><td></td></tr>
-<tr><td><code>h1</code></td><td>SI.Voltage</td><td>V</td><td>-0.02</td><td></td></tr>
-<tr><td><code>i1</code></td><td>SI.LinearTemperatureCoefficient</td><td>-</td><td>-0.002</td><td></td></tr>
-<tr><td><code>R_O</code></td><td>SI.Resistance</td><td>Ohm</td><td>0.024</td><td>Ohmic Resistance</td></tr>
-<tr><td><code>R1_0</code></td><td>SI.Resistance</td><td>Ohm</td><td>0.0006</td><td>First RC Resistance</td></tr>
-<tr><td><code>R2_0</code></td><td>SI.Resistance</td><td>Ohm</td><td>0.008</td><td>Second RC Resistance</td></tr>
-<tr><td><code>C1_0</code></td><td>SI.Capacitance</td><td>F</td><td>5700</td><td>First RC Capacitance</td></tr>
-<tr><td><code>C2_0</code></td><td>SI.Capacitance</td><td>F</td><td>54300</td><td>Second RC Capacitance</td></tr>
-<tr><td><code>A_cool_bat_pack</code></td><td>SI.Area</td><td>m2</td><td>L_bat_pack * W_bat_pack</td><td></td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>heatPort</code></td><td>Input-side interface</td><td>HeatPort_a</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><div><font face=\"&quot;Arial&quot;\">This model describes a lithium-ion battery pack as a lumped version of the&nbsp;<a href=\"&quot;modelica://VirtualFCS.Electrochemical.Battery.LiIonCell&quot;\">LiIonCell model</a>. The primary difference is that the open-circuit voltage (OCV) is scaled by the number of cells in series in the stack, estimated as the battery pack maximum voltage divided by the maximum voltage of a single cell (</font><i style=\"&quot;font-size:\" 12px;&quot;=\"\">V<sub>max,bat pack</sub></i><span style=\"&quot;font-size:\" 12px;&quot;=\"\">/</span><i style=\"&quot;font-size:\" 12px;&quot;=\"\">V<sub>chem,max</sub></i><span style=\"&quot;font-family:\" arial;&quot;=\"\">).</span></div><div><font face=\"&quot;Arial&quot;\"><br></font></div><div><font face=\"&quot;Arial&quot;\">The model includes a <a href=\"&quot;modelica://VirtualFCS.Control.ChargeCounter&quot;\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery.</font></div><div>
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<div><font face=\"Arial\">This model describes a lithium-ion battery pack as a lumped version of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. The primary difference is that the open-circuit voltage (OCV) is scaled by the number of cells in series in the stack, estimated as the battery pack maximum voltage divided by the maximum voltage of a single cell (</font><i style=\"font-size:\" 12px;&quot;=\"\">V<sub>max,bat pack</sub></i><span style=\"font-size:\" 12px;&quot;=\"\">/</span><i style=\"font-size:\" 12px;&quot;=\"\">V<sub>chem,max</sub></i><span style=\"font-family:\" arial;&quot;=\"\">).</span></div><div><font face=\"Arial\"><br></font></div><div><font face=\"Arial\">The model includes a <a href=\"modelica://VirtualFCS.Control.ChargeCounter\">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery.</font></div><div>
 
 
 
 
-<font face=\"&quot;Arial&quot;\"><br>
-The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard&nbsp;<i>et al.</i>&nbsp;[1], and is parameterized to the LFP chemistry by default.</font></div><div><br></div><div>The battery pack is assumed to have a uniform temperature with a thermal mass based on its heat capacity, Cp, and mass m_bat_pack. The heat generated from passing current through the battery is calculated according to the <i>Heat Generation</i>&nbsp;equation below. Heat is assumed to enter or leave the battery via convection and radiation on an area equivalent to the bottom wall of the pack. The ambient temperature is determined by the connection to the heatBoundary.</div><div><br></div><div><br></div><div><div><b><u><font face=\"&quot;Arial&quot;\">References</font></u></b></div><div><div class=\"&quot;csl-bib-body&quot;\" style=\"&quot;line-height:\" 2;&quot;=\"\"><div class=\"&quot;csl-entry&quot;\" style=\"&quot;clear:\" left;&quot;=\"\"><div class=\"&quot;csl-left-margin&quot;\" style=\"&quot;float:\" left;=\"\" padding-right:=\"\" 0.5em;=\"\" text-align:=\"\" right;=\"\" width:=\"\" 1em;&quot;=\"\"><font face=\"&quot;Arial&quot;\">1.&nbsp;</font><span style=\"font-family: Arial;\">Vichard, L.&nbsp;</span><i style=\"font-family: Arial;\">et al.</i><span style=\"font-family: Arial;\">&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;</span><i style=\"font-family: Arial;\">Energy</i><span style=\"font-family: Arial;\">&nbsp;</span><b style=\"font-family: Arial;\">225</b><span style=\"font-family: Arial;\">, 120235 (2021).</span></div></div></div></div></div><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>OCV.v = N_s * (a1 + b1 * (20 - (heatPort.T - 273.15)) * 1 / chargeCounter.SOC + c1 / sqrt(chargeCounter.SOC) + d1 * chargeCounter.SOC + e1 * log(chargeCounter.SOC) + f1 * log(1.01 - chargeCounter.SOC) + g1 * log(1.001 - chargeCounter.SOC) + h1 * exp(i1 * (heatPort.T - 273.15)));
-heatSource.Q_flow = abs((OCV.v - pin_p.v) * sensorCurrent.i);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>heatBoundary</code></td><td>Output-side interface</td><td>HeatPort_b</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+<font face=\"Arial\"><br>
+The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard&nbsp;<i>et al.</i>&nbsp;[1], and is parameterized to the LFP chemistry by default.</font></div><div><br></div><div>The battery pack is assumed to have a uniform temperature with a thermal mass based on its heat capacity, Cp, and mass m_bat_pack. The heat generated from passing current through the battery is calculated according to the <i>Heat Generation</i>&nbsp;equation below. Heat is assumed to enter or leave the battery via convection and radiation on an area equivalent to the bottom wall of the pack. The ambient temperature is determined by the connection to the heatBoundary.</div><div><br></div><div><br></div><div><div><b><u><font face=\"Arial\">References</font></u></b></div><div><div class=\"csl-bib-body\" style=\"line-height:\" 2;&quot;=\"\"><div class=\"csl-entry\" style=\"clear:\" left;&quot;=\"\"><div class=\"csl-left-margin\" style=\"float:\" left;=\"\" padding-right:=\"\" 0.5em;=\"\" text-align:=\"\" right;=\"\" width:=\"\" 1em;&quot;=\"\"><font face=\"Arial\">1.&nbsp;</font><span style=\"font-family: Arial;\">Vichard, L.&nbsp;</span><i style=\"font-family: Arial;\">et al.</i><span style=\"font-family: Arial;\">&nbsp;A method to estimate battery SOH indicators based on vehicle operating data only.&nbsp;</span><i style=\"font-family: Arial;\">Energy</i><span style=\"font-family: Arial;\">&nbsp;</span><b style=\"font-family: Arial;\">225</b><span style=\"font-family: Arial;\">, 120235 (2021).</span></div></div></div></div></div>
+<h2>Governing Equations</h2>
+<pre>vol_bat_pack = L_bat_pack*W_bat_pack*H_bat_pack;
+C_rate = pin_p.i/C_bat_pack;
+OCV.v = N_s*(a1 + b1*(20 - (heatPort.T - 273.15))*1/chargeCounter.SOC + c1/sqrt(chargeCounter.SOC) + d1*chargeCounter.SOC + e1*log(chargeCounter.SOC) + f1*log(1.01 - chargeCounter.SOC) + g1*log(1.001 - chargeCounter.SOC) + h1*exp(i1*(heatPort.T - 273.15)));
+heatSource.Q_flow = abs((OCV.v - pin_p.v)*sensorCurrent.i);</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>C_rate</code></td><td>Cycle rate</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>m_bat_pack</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>100</code></td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.6</code></td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>Modelica.Units.SI.Breadth</td><td>m</td><td><code>0.45</code></td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>Modelica.Units.SI.Height</td><td>m</td><td><code>0.1</code></td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>37.5</code></td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>48</code></td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>54.75</code></td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td><code>200</code></td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Battery pack initial state of charge</td></tr>
+<tr><td><code>heatTransferCoefficient</code></td><td>Modelica.Units.SI.CoefficientOfHeatTransfer</td><td>-</td><td><code>7.8*10^0.78</code></td><td>HeatTransferCoefficient (W/(m2.K))</td></tr>
+<tr><td><code>N_s</code></td><td>Real</td><td>1</td><td><code>ceil(V_max_bat_pack/V_chem_max)</code></td><td></td></tr>
+<tr><td><code>V_chem_max</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>3.65</code></td><td></td></tr>
+<tr><td><code>a1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>3.39</code></td><td></td></tr>
+<tr><td><code>b1</code></td><td>Real</td><td>1</td><td><code>-1e-4</code></td><td></td></tr>
+<tr><td><code>c1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-7.46e-2</code></td><td></td></tr>
+<tr><td><code>d1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>5.82e-3</code></td><td></td></tr>
+<tr><td><code>e1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-2.75e-2</code></td><td></td></tr>
+<tr><td><code>f1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>2.30e-2</code></td><td></td></tr>
+<tr><td><code>g1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-4.71e-2</code></td><td></td></tr>
+<tr><td><code>h1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-0.02</code></td><td></td></tr>
+<tr><td><code>i1</code></td><td>Modelica.Units.SI.LinearTemperatureCoefficient</td><td>-</td><td><code>-0.002</code></td><td></td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>heatBoundary</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b</td><td>K; W</td><td></td></tr>
+</table>
+</body>
+</html>"));
 end LiIonBatteryPack_Lumped;

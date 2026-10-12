@@ -64,9 +64,30 @@ equation
     Line(points = {{-40, 6}, {-20, 6}, {-20, 10}, {0, 10}}, color = {0, 0, 255}));
   annotation(
     experiment(StopTime = 1, Interval = 1e-05, Tolerance = 1e-06, StartTime = 0),
-    Documentation(info = "<html>
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
 <p>This example demonstrates the switching on of a resistive load operated by a step up chopper.
 DC output voltage is equal to <code>1/(1 - dutyCycle)</code> times the input voltage.
 Plot current <code>currentSensor.i</code>, averaged current <code>meanCurrent.y</code>, total voltage <code>voltageSensor.v</code> and voltage <code>meanVoltage.v</code>.</p>
-</html>"));
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>f</code></td><td>Modelica.Units.SI.Frequency</td><td>Hz</td><td><code>1000</code></td><td>Switching frequency</td></tr>
+<tr><td><code>Vsource</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>60</code></td><td>Source voltage</td></tr>
+<tr><td><code>L</code></td><td>Modelica.Units.SI.Inductance</td><td>H</td><td><code>25e-3</code></td><td>Chopper internal inductance</td></tr>
+<tr><td><code>C</code></td><td>Modelica.Units.SI.Capacitance</td><td>F</td><td><code>20e-6</code></td><td>Smoothing capacitance</td></tr>
+<tr><td><code>dutyCycle</code></td><td>Real</td><td>1</td><td><code>0.20</code></td><td>Duty cycle</td></tr>
+<tr><td><code>ILoad</code></td><td>Modelica.Units.SI.Current</td><td>A</td><td><code>1.2</code></td><td>Load current</td></tr>
+<tr><td><code>RLoad</code></td><td>Modelica.Units.SI.Resistance</td><td>Ohm</td><td><code>V0/ILoad</code></td><td>Load resistance</td></tr>
+<tr><td><code>V0</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>Vsource*dutyCycle</code></td><td>No-load output voltage</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end ChopperTest;

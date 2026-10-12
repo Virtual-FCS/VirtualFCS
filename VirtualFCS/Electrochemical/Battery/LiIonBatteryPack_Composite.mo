@@ -61,14 +61,38 @@ equation
   annotation(
     Icon(graphics = {Rectangle(origin = {0, -15}, fillColor = {200, 200, 200}, fillPattern = FillPattern.Solid, extent = {{-130, 85}, {130, -75}}), Rectangle(origin = {0, 85}, fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-150, 15}, {150, -15}}), Text(origin = {68, 93}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {10, -19}}, textString = "+"), Text(origin = {-74, 105}, lineColor = {255, 255, 255}, extent = {{-22, 15}, {52, -41}}, textString = "-"), Text(origin = {-34, -103}, lineColor = {0, 0, 255}, extent = {{-22, 15}, {86, -41}}, textString = "%name")}, coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
     Diagram(coordinateSystem(initialScale = 0.05, extent = {{-150, -90}, {150, 100}})),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td></td><td>1</td></tr>
-<tr><td><code>p</code></td><td>Integer</td><td>1</td><td>5</td><td>Number of Cells in Parallel</td></tr>
-<tr><td><code>s</code></td><td>Integer</td><td>1</td><td>10</td><td>Number of Cells in Series</td></tr>
-<tr><td><code>coolingArea</code></td><td>SI.Area</td><td>m2</td><td>p * s * liIonCell[1].coolingArea</td><td>Cooling Area</td></tr>
-<tr><td><code>heatTransferCoefficient</code></td><td>SI.CoefficientOfHeatTransfer</td><td>-</td><td>7.8 * 10 ^ 0.78</td><td>HeatTransferCoefficient (W/(m2.K))</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>heatPort</code></td><td>Input-side interface</td><td>HeatPort_a</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><div>This model describes a lithium-ion battery pack as a composite of several separate instances of the&nbsp;<a href=\"&quot;modelica://VirtualFCS.Electrochemical.Battery.LiIonCell&quot;\">LiIonCell model</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investigations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<div>This model describes a lithium-ion battery pack as a composite of several separate instances of the&nbsp;<a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell model</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investigations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div>
 
 <br>
-This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face=\"&quot;Consolas&quot;\">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span style=\"&quot;font-family:\" consolas;&quot;=\"\">pin_p</span>&nbsp;and&nbsp;<span style=\"&quot;font-family:\" consolas;&quot;=\"\">pin_n</span>.</div><div><br></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack. The ambient temperature T<sub>0</sub> is determined by connection to the heatBoundary.</div><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>chargeCapacity = p * liIonCell[1].chargeCapacity;</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>heatBoundary</code></td><td>Output-side interface</td><td>HeatPort_b</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face=\"Consolas\">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span style=\"font-family:\" consolas;&quot;=\"\">pin_p</span>&nbsp;and&nbsp;<span style=\"font-family:\" consolas;&quot;=\"\">pin_n</span>.</div><div><br></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack. The ambient temperature T<sub>0</sub> is determined by connection to the heatBoundary.</div>
+<h2>Governing Equations</h2>
+<pre>chargeCapacity = p*liIonCell[1].chargeCapacity;
+for i in 1:p loop connect(pin_n, liIonCell[s*(i - 1) + 1].pin_n);
+connect(pin_p, liIonCell[i*s].pin_p);
+end for;
+for i in 1:p loop for j in 1:s - 1 loop connect(liIonCell[s*(i - 1) + j].pin_p, liIonCell[s*(i - 1) + j + 1].pin_n);
+end for;
+end for;
+<br></pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Initial State of Charge</td></tr>
+<tr><td><code>p</code></td><td>Integer</td><td>1</td><td><code>5</code></td><td>Number of Cells in Parallel</td></tr>
+<tr><td><code>s</code></td><td>Integer</td><td>1</td><td><code>10</code></td><td>Number of Cells in Series</td></tr>
+<tr><td><code>coolingArea</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>p*s*liIonCell[1].coolingArea</code></td><td>Cooling Area</td></tr>
+<tr><td><code>heatTransferCoefficient</code></td><td>Modelica.Units.SI.CoefficientOfHeatTransfer</td><td>-</td><td><code>7.8*10^0.78</code></td><td>HeatTransferCoefficient (W/(m2.K))</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>heatBoundary</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b</td><td>K; W</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end LiIonBatteryPack_Composite;

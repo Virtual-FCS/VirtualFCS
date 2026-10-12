@@ -39,9 +39,25 @@ equation
     Line(points = {{65, 0}, {70, 0}}, color = {0, 0, 127}));
   annotation(
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-6, Interval = 0.1),
-    Icon(graphics = {Rectangle(lineColor = {95, 30, 27}, fillColor = {190, 60, 55}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Ellipse(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-49.5, 49.5}, {49.5, -49.5}}), Ellipse(fillColor = {190, 60, 55}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-39, 39}, {39, -39}}), Polygon(origin = {0, 29}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-5.1, 13}, {5.1, 13}, {9.9, -20}, {-9.9, -20}, {-5.1, 13}}), Polygon(origin = {25, -10}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-8, 12.85}, {15, -2}, {11, -11.8}, {-15, -3.9}, {-8, 12.85}}), Polygon(origin = {-26, -10}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-13, -1.4}, {8, 12.4}, {14, -4.4}, {-8, -11.1}, {-13, -1.4}}), Ellipse(fillColor = {190, 60, 55}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-19.5, 19.5}, {19.5, -19.5}}), Ellipse(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.4, 14.4}, {14.4, -14.4}}), Ellipse(fillColor = {190, 60, 55}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-6.5, 6.5}, {6.5, -6.5}})}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>R_accel</code></td><td>Real</td><td>1</td><td>6</td><td></td></tr>
-<tr><td><code>R_decel</code></td><td>Real</td><td>1</td><td>-4.5</td><td></td></tr>
-<tr><td><code>maxVelocity</code></td><td>SI.Velocity</td><td>m/s</td><td>200</td><td></td></tr>
-<tr><td><code>minVelocity</code></td><td>SI.Velocity</td><td>m/s</td><td>0</td><td><br></td></tr></tbody></table><h3><br></h3><h2>2. Model description</h2><p>Vehicle drive input that converts joystick commands into acceleration and braking requests and integrates them into a bounded velocity command.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>setVelocity</code></td><td>Output</td><td>RealOutput</td><td>km/h</td><td></td></tr></tbody></table></body></html>"));
+    Icon(graphics = {Text(origin = {-5, 123}, textColor = {0, 0, 255}, extent = {{-121, 23}, {121, -23}}, textString = "%name"), Rectangle(lineColor = {95, 30, 27}, fillColor = {190, 60, 55}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Ellipse(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-49.5, 49.5}, {49.5, -49.5}}), Ellipse(fillColor = {190, 60, 55}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-39, 39}, {39, -39}}), Polygon(origin = {0, 29}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-5.1, 13}, {5.1, 13}, {9.9, -20}, {-9.9, -20}, {-5.1, 13}}), Polygon(origin = {25, -10}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-8, 12.85}, {15, -2}, {11, -11.8}, {-15, -3.9}, {-8, 12.85}}), Polygon(origin = {-26, -10}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-13, -1.4}, {8, 12.4}, {14, -4.4}, {-8, -11.1}, {-13, -1.4}}), Ellipse(fillColor = {190, 60, 55}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-19.5, 19.5}, {19.5, -19.5}}), Ellipse(fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-14.4, 14.4}, {14.4, -14.4}}), Ellipse(fillColor = {190, 60, 55}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-6.5, 6.5}, {6.5, -6.5}})}, coordinateSystem(initialScale = 0.1)),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Vehicle drive input that converts joystick commands into acceleration and braking requests and integrates them into a bounded velocity command.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>R_accel</code></td><td>Real</td><td>1</td><td><code>6</code></td><td></td></tr>
+<tr><td><code>R_decel</code></td><td>Real</td><td>1</td><td><code>-4.5</code></td><td></td></tr>
+<tr><td><code>maxVelocity</code></td><td>Modelica.Units.SI.Velocity</td><td>m/s</td><td><code>200</code></td><td></td></tr>
+<tr><td><code>minVelocity</code></td><td>Modelica.Units.SI.Velocity</td><td>m/s</td><td><code>0</code></td><td></td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>y</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end JoystickDriveInput;
