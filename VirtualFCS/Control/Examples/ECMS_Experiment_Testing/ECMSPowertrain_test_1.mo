@@ -263,4 +263,4 @@ connect(gain.y, eMS_ECMS.inputBatteryCurrent);</pre><table border=\"1\" cellspac
 </table>
 </body>
 </html>"));
-end ECMSPowerTrain_test;
+end ECMSPowertrain_test;
