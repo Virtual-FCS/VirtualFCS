@@ -15,7 +15,6 @@ MembraneManifold
 MembraneTransfer
 MixingVolume
 NonHumidifier
-PressureRegulator
 PumpElectricDC
 PumpInterface
 RelativeHumiditySensor
