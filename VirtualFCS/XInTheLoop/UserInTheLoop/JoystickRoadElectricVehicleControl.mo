@@ -55,7 +55,11 @@ equation
     Line(points = {{62, 80}, {66, 80}, {66, 80}, {68, 80}}, color = {0, 0, 127}));
   connect(abs1.y, ctl_brake) annotation (
     Line(points = {{92, 80}, {104, 80}, {104, 80}, {110, 80}}, color = {0, 0, 127}));
-annotation(Documentation(info = "<html>
+annotation(Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+            -100},{100,100}}), graphics={Bitmap(extent={{-86,-88},{88,88}},
+            fileName="modelica://Modelica_DeviceDrivers/Resources/Images/Icons/joystick.png"), Text(extent={
+              {-150,140},{150,100}}, textString="%name")}), 
+              Documentation(info = "<html>
 <body>
 <h2>Model Description and References</h2>
 <p>User-in-the-loop vehicle controller that converts joystick acceleration and braking commands into bounded control signals.</p>
