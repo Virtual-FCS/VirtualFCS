@@ -1,2 +1,12 @@
-SeparatorTest
+CompressorTest
+ElectricCompressorTest
+HumidifierTest
+HumidifierTest_2
+ManifoldTest
+MixingVolumeTest
+MultiManifoldTest
+PressureRegulatorTest
 PSATest
+PumpElectricDCTest
+SeparatorTest
+SimplePumpTest

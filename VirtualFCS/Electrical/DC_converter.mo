@@ -63,16 +63,32 @@ equation
   annotation(
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{100, 100}, {20, 20}}, color = {0, 0, 255}), Line(points = {{-20, -20}, {-100, -100}}, color = {0, 0, 255}), Text(origin = {-2, -142}, textColor = {128, 128, 128}, extent = {{-40, 80}, {40, 60}}, textString = "DC bus"), Text(textColor = {0, 0, 255}, extent = {{-100, 20}, {100, -20}}, textString = "%name"), Text(origin = {0, 146}, textColor = {128, 128, 128}, extent = {{-40, -60}, {40, -80}}, textString = "Fuel cell")}),
     Diagram(coordinateSystem(preserveAspectRatio = false)),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>Td</code></td><td>SI.Time</td><td>s</td><td>1e-2</td><td>Dead time</td></tr>
-<tr><td><code>Ti</code></td><td>SI.Time</td><td>s</td><td>1e-6</td><td>Time constant of integral power controller</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_pFC</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>pin_pBus</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>I_Ref</code></td><td>Input</td><td>RealInput</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2>
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
 <p>This is a model of an ideal DC-DC inverter based on a power balance achieved by an integral controller.</p>
 <p>The setup is similar to the Modelica Standard Library's IdealDcDc, but with the key differences that:</p>
 <ul>
 <li>This unit is output-current-controlled rather than voltage-controlled, meaning it <em>must</em> be connected to some kind of load in order to compile;</li>
 <li>The unit does not have internal grounding in the output, so a ground has to be attached there;</li>
 <li>Due to a programming bug (or feature?), setting a positive current reference will result in inverted polarity in the output. This is because the program makes power on both sides equal, but one should be entering and the other exiting.</li>
-</ul><h2>3. Governing equations and references</h2><p>Governing equations are inherited from the extended model or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_nFC</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>pin_nBus</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+</ul>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>Td</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1e-2</code></td><td>Dead time</td></tr>
+<tr><td><code>Ti</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1e-6</code></td><td>Time constant of integral power controller</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_pFC</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_pBus</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>I_Ref</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_nFC</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_nBus</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end DC_converter;

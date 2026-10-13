@@ -1,44 +1,64 @@
 within VirtualFCS.Fluid;
 
-model SimplePump "A simple isentropic compressor"
+model SimplePump "A simple pump for liquids or gases with small pressure difference"
   extends Fluid.PumpInterface(final useHeatPort = false, redeclare Modelica.Blocks.Interfaces.RealInput u(unit = "kg/s"));
-  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium "Medium in the component" annotation(
-    choicesAllMatching = true);
-  parameter Real eta_is = 0.8 "Isentropic efficiency of the pump";
-  Medium.BaseProperties medium_in, medium_out "Medium properties at inlet and outlet";
-  Modelica.Units.SI.Power power "The power consumed by the pump";
+  import Modelica.Constants.g_n;
+  parameter Real eta = 1.0 "Pumping efficiency";
+  
+  Modelica.Units.SI.Length head "The pump head in length of fluid column";
+  Modelica.Units.SI.Power power = (pin_p.v - pin_n.v)*(pin_p.i) "The power consumed by the pump";
+
 equation
-// All compositions are equal
-  medium_in.Xi = port_a.Xi_outflow;
-  medium_in.Xi = inStream(port_a.Xi_outflow);
-  medium_in.Xi = medium_out.Xi;
-  medium_out.Xi = port_b.Xi_outflow;
-// Bind inlet/outlet pressures
-  medium_in.p = port_a.p;
-  medium_out.p = port_b.p;
-// No-holdup model
-  port_a.m_flow + port_b.m_flow = 0;
-  u = port_a.m_flow;
-// Calculate T_in from enthalpy
-  medium_in.T = Medium.temperature_phX(medium_in.p, inStream(port_a.h_outflow), medium_in.X);
-// Assume isothermal pump
-  medium_out.T = medium_in.T;
-// Not supposed to be ever used
-  port_a.h_outflow = Medium.specificEnthalpy_pTX(port_a.p, medium_in.T, medium_in.X);
-  port_b.h_outflow = Medium.specificEnthalpy_pTX(port_b.p, medium_out.T, medium_out.X);
-// heatPort not used
-  LossPower = 0;
-// Power is equal volumetric flow times pressure difference
-  power = (pin_p.v - pin_n.v)*(pin_p.i);
-  power = (u/medium_out.d)*(port_b.p - port_a.p)/eta_is;
-  pin_p.i + pin_n.i = 0;
+  port_a.Xi_outflow = inStream(port_b.Xi_outflow) "No change in compositions";
+  port_b.Xi_outflow = inStream(port_a.Xi_outflow) "No change in compositions";
+
+  port_a.m_flow + port_b.m_flow = 0 "No mass holdup";
+  u = port_a.m_flow "Set mass flow directly";
+
+  port_a.h_outflow = inStream(port_b.h_outflow) + head*g_n;
+  port_b.h_outflow = inStream(port_a.h_outflow) + head*g_n;
+
+  LossPower = 0 "heatPort not used";
+
+  pin_p.i + pin_n.i = 0 "No capacitive element";
+  
+  head = (port_b.p - port_a.p)/ Medium.density(Medium.setState_phX(port_a.p, inStream(port_a.h_outflow), inStream(port_a.Xi_outflow))) / g_n "Definition of head, with inlet density";
+
+  eta*power = u * head * g_n "Relation between head and power";
   annotation(
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>eta_is</code></td><td>Real</td><td>1</td><td>0.8</td><td>Isentropic efficiency of the pump</td></tr></tbody></table><h2>2. Model description</h2><p>Simplified electrically driven pump with an isentropic efficiency relation between fluid pressure rise, volumetric flow, and electrical power.</p><h2>3. Governing equations and references</h2><p>The following representative equations are implemented directly. Equations inherited through <code>extends</code> and component connections also contribute to the complete model balance.</p><pre>medium_in.Xi = port_a.Xi_outflow;
-medium_in.Xi = inStream(port_a.Xi_outflow);
-medium_in.Xi = medium_out.Xi;
-medium_out.Xi = port_b.Xi_outflow;
-medium_in.p = port_a.p;
-medium_out.p = port_b.p;
-port_a.m_flow + port_b.m_flow = 0;
-u = port_a.m_flow;</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td colspan=\"&quot;5&quot;\">No matching inputs are declared.</td></tr></tbody></table></body></html>"));
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>A bare-bones model for a pump. The input <i>u</i> sets the mass flow directly. The pump must be connected to a DC power supply providing voltage.</p><p>The model has one parameter, efficiency <i>η</i>, which defaults to 100%.</p><p>The pump has no holdup and is meant to be directional, with the higher pressure to be found at <tt>port_b.</tt></p><p><i>Note:</i>&nbsp;this model can be used only with either incompressible media (liquids) or with gases with minimal pressure drop (e.g. fans and blowers). To faithfully model significant pressure drops in gas phase, use a Compressor.</p>
+<h2>Governing Equations</h2>
+<pre>power = (pin_p.v - pin_n.v)*(pin_p.i);
+port_a.m_flow + port_b.m_flow = 0 \"No mass holdup\";
+port_a.h_outflow = inStream(port_b.h_outflow) + head*g_n;
+port_b.h_outflow = inStream(port_a.h_outflow) + head*g_n;
+LossPower = 0;
+pin_p.i + pin_n.i = 0;
+head = (port_b.p - port_a.p)/ Medium.density(Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow)) / g_n;
+eta*power = u * head * g_n;</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>head</code></td><td>The pump head in length of fluid column</td></tr>
+<tr><td><code>power</code></td><td>The power consumed by the pump</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+<tr><td><code>eta</code></td><td>Real</td><td>1</td><td><code>1.0</code></td><td>Pumping efficiency</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>u</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td>Control input, can be replaced by whatever the manipulated variable is</td></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>-</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end SimplePump;

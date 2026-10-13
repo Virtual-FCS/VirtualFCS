@@ -15,7 +15,6 @@ model PEMELfluid "Generic fluid on anode and cathode of a PEM electrolyser"
   
   import saturationPressure = Modelica.Media.Air.ReferenceMoistAir.Utilities.Water95_Utilities.psat;
   //function saturationPressure = antoine(A=5+4.6543, B=1435.264, C=-64.848);
-
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
   constant Integer Nitrogen = 2 "Index of nitrogen (in substanceNames, massFractions X, etc.)";
@@ -129,6 +128,7 @@ model PEMELfluid "Generic fluid on anode and cathode of a PEM electrolyser"
     import Modelica.Media.Water.IF97_Utilities.rho_pT;
   algorithm
     d_liq := rho_pT(state_liq.p, state_liq.T, 1); // Last "1" specifies liquid phase explicitly
-  end liquidDensity;
+  end liquidDensity;annotation(
+    Documentation(info = "<html><head></head><body>This medium is an extension of <tt>MoistAir</tt> in which also hydrogen is included in the gas phase.<div>This allows this medium to model hydrogen contamination and cross-over through PEM membranes.</div></body></html>"));
 
 end PEMELfluid;

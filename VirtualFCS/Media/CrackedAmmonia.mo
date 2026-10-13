@@ -11,7 +11,6 @@ model CrackedAmmonia
          Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM}
   );
-  
   redeclare model extends BaseProperties "Base properties of cathodic air"
       Modelica.Units.SI.MoleFraction phi = Xmol_gas[Ammonia] / (saturationPressure(state.T)/state.p);
       Modelica.Units.SI.Pressure p_sat = saturationPressure(state.T);
@@ -21,7 +20,7 @@ model CrackedAmmonia
   //function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
   function saturationPressure = clausiusClapeyron(T_boil=239.8, L=23400);
 
-  // Convenience variables to index arrays within class
+// Convenience variables to index arrays within class
   constant Integer Ammonia = 1 "Index of ammonia (in substanceNames, massFractions X, etc.)";
   constant Integer Hydrogen = 2 "Index of hydrogen (in substanceNames, massFractions X, etc.)";
   constant Integer Nitrogen = 3 "Index of nitrogen (in substanceNames, massFractions X, etc.)";
@@ -119,10 +118,14 @@ model CrackedAmmonia
       Documentation(info = "<html><head></head><body>Correlation from Perry's Chemical Engineer's Handbook, 7th edition, table 2-30.<div>The original formula produces results in kmol/m<sup>3</sup>&nbsp;as a function of temperatures only, which are corrected to kg/m<sup>3</sup>&nbsp;in the code.</div></body></html>"));
 end liquidDensity;
 
-redeclare function extends dynamicViscosity
+  redeclare function extends dynamicViscosity
       "Return dynamic viscosity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
   algorithm
     eta := 3.5e-5;
   end dynamicViscosity;
+  
+annotation(
+    Documentation(info = "<html><head></head><body>This medium represents a mix of ammonia and its cracking products, nitrogen and hydrogen. Only ammonia is condensable.<div>Note that thermochemical data for liquid ammonia is not available from NIST, and was calculated from data in Perry's with a Python script stored in Utilities.</div>
+</body></html>"));
 
 end CrackedAmmonia;

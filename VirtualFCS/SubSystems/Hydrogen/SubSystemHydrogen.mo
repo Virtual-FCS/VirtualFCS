@@ -3,7 +3,7 @@ within VirtualFCS.SubSystems.Hydrogen;
 model SubSystemHydrogen
   import Modelica.Constants.pi;
   outer Modelica.Fluid.System system "System properties";
-  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialPureSubstance;
+  replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialMedium;
   parameter Modelica.Units.SI.Area A_tank_H2 = 4*pi*(3*V_tank_H2/4/pi)^(2/3) "H2 tank surface area";
   parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "Hydrogen tank volume";
   parameter Integer N_cells = 180 "FC stack number of cells";
@@ -28,7 +28,7 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-66, 106}, extent = {{18, -18}, {-18, 18}}, rotation = -90)));
   Modelica.Blocks.Sources.RealExpression setConvectiveCoefficient(y = 12) annotation(
     Placement(transformation(origin = {25, 106}, extent = {{24, -14}, {-24, 14}})));
-  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 2000000, minimumFlow = V_flow_HRB_min, RR = RR) annotation(
+  VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl subSystemHydrogenControl(N_cells = N_cells, pressure_H2_set = 200000, minimumFlow = V_flow_HRB_min, RR = RR) annotation(
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-125, 107}, extent = {{17, -17}, {-17, 17}}, rotation = -90)));
@@ -36,11 +36,11 @@ model SubSystemHydrogen
     Placement(transformation(origin = {-98, 50}, extent = {{-20, 20}, {20, -20}}, rotation = -90)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -50}, extent = {{13, 14}, {-13, -14}}, rotation = -90)));
-  Modelica.Fluid.Valves.ValveCompressible valveH2Purge(redeclare package Medium = Anode_Medium, allowFlowReversal = true, checkValve = true, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01, p_nominal = 2.5*100000) annotation(
+  Modelica.Fluid.Valves.ValveLinear valveH2Purge(redeclare package Medium = Anode_Medium, dp_nominal(displayUnit = "Pa") = 10000, m_flow_nominal = 0.01) annotation(
     Placement(transformation(origin = {-36, -80}, extent = {{14, -14}, {-14, 14}})));
   VirtualFCS.Fluid.PressureRegulator pressureRegulator(redeclare package Medium = Anode_Medium) annotation(
     Placement(transformation(origin = {-28, 50}, extent = {{-10, 10}, {10, -10}})));
-  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium, eta_is = 0.35) annotation(
+  Fluid.SimplePump HRB(redeclare package Medium = Anode_Medium, eta = 0.35) annotation(
     Placement(transformation(origin = {40, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
   Modelica.Fluid.Sensors.Temperature temp_h2_from_stack(redeclare package Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {102, -54}, extent = {{-10, -10}, {10, 10}})));
@@ -90,13 +90,30 @@ equation
   connect(toTank, tankHydrogen.ports[2]) annotation(
     Line(points = {{-150, 52}, {-138, 52}, {-138, 24}, {-70, 24}, {-70, 50}, {-78, 50}}));
   annotation(
-    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1), graphics = {Text(origin = {-27, 58}, extent = {{-17, 6}, {25, -8}}, textString = "Pressure regulator"), Text(origin = {54, 23}, extent = {{-28, 13}, {42, -15}}, textString = "Hydrogen recirculation blower")}),
-    Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H2")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and input-side physical interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>A_tank_H2</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td>2</td><td>H2 tank surface area</td></tr>
-<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td>180</td><td>FC stack number of cells</td></tr>
-<tr><td><code>V_flow_HRB_min</code></td><td>Modelica.Units.SI.VolumeFlowRate</td><td>-</td><td>1e-7</td><td>Minimum volume flow of the Hydrogen Recirculation Blower</td></tr>
-<tr><td><code>RR</code></td><td>Real</td><td>1</td><td>1.3</td><td>Hydrogen recirculation ratio</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>stackCurrent</code></td><td>Input</td><td>RealInput</td><td>A</td><td>A</td></tr>
-<tr><td><code>pin_p</code></td><td>Input-side interface</td><td>PositivePin</td><td>-</td><td></td></tr>
-<tr><td><code>fromStack</code></td><td>Input-side interface</td><td>FluidPort_a</td><td>-</td><td></td></tr></tbody></table><h2>2. Model description</h2><p><b>SubSystemHydrogen</b> supplies hydrogen to a fuel-cell anode and manages recirculation, pressure reduction, and purge flow.</p><h3>Composition</h3><p>The assembly contains a 0.13 m3 hydrogen tank, pressure regulator, recirculation blower, purge valve, mass-flow and temperature sensors, and a fixed-temperature tank heat-transfer model. Hydrogen enters the stack through <code>toStack</code> and returns through <code>fromStack</code>; <code>pin_p</code> and <code>pin_n</code> supply the blower and control hardware.</p><h3>Working principle</h3><p>Stack current is converted to hydrogen consumption and passed to <a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl\">SubSystemHydrogenControl</a>. The control block sets feed pressure, recirculation-blower speed, and purge-valve opening. The tank starts at 35 MPa, while exhaust hydrogen is discharged to the system ambient pressure.</p><p>The anode medium, cell count, recirculation ratio, tank area, and minimum blower flow are configurable. Pressure-control tuning and purge settings must be checked for the connected stack.</p><h2>3. Governing equations and references</h2><p>Governing equations are inherited from extended classes or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>pin_n</code></td><td>Output-side interface</td><td>NegativePin</td><td>-</td><td></td></tr>
-<tr><td><code>toStack</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr></tbody></table></body></html>"));
+    Diagram(coordinateSystem(extent = {{-150, -100}, {150, 150}}, initialScale = 0.1), graphics = {Text(origin = {-27, 58}, extent = {{-17, 6}, {25, -8}}, textString = "Pressure regulator"), Text(origin = {54, 23}, extent = {{-28, 13}, {42, -15}}, textString = "Hydrogen recirculation blower")}),
+    Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H₂")}),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p><b>SubSystemHydrogen</b> supplies hydrogen to a fuel-cell anode and manages recirculation, pressure reduction, and purge flow.</p><h3>Composition</h3><p>The assembly contains a 0.13 m3 hydrogen tank, pressure regulator, recirculation blower, purge valve, mass-flow and temperature sensors, and a fixed-temperature tank heat-transfer model. Hydrogen enters the stack through <code>toStack</code> and returns through <code>fromStack</code>; <code>pin_p</code> and <code>pin_n</code> supply the blower and control hardware.</p><h3>Working principle</h3><p>Stack current is converted to hydrogen consumption and passed to <a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl\">SubSystemHydrogenControl</a>. The control block sets feed pressure, recirculation-blower speed, and purge-valve opening. The tank starts at 35 MPa, while exhaust hydrogen is discharged to the system ambient pressure.</p><p>The anode medium, cell count, recirculation ratio, tank area, and minimum blower flow are configurable. Pressure-control tuning and purge settings must be checked for the connected stack.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>A_tank_H2</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>2</code></td><td>H2 tank surface area</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>180</code></td><td>FC stack number of cells</td></tr>
+<tr><td><code>V_flow_HRB_min</code></td><td>Modelica.Units.SI.VolumeFlowRate</td><td>m3/s</td><td><code>1e-7</code></td><td>Minimum volume flow of the Hydrogen Recirculation Blower</td></tr>
+<tr><td><code>RR</code></td><td>Real</td><td>1</td><td><code>1.3</code></td><td>Hydrogen recirculation ratio</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>A</td><td>A</td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemHydrogen;

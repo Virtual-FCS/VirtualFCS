@@ -1,5 +1,4 @@
 BatteryElectricVehicle
-RangeExtenderHybridVehicle
 BatteryElectricVehicle_JoystickControl
-ECMSHybridVehicle
-RangeExtenderHybridVehicle_woDeg
+RangeExtenderHybridVehicle
+RangeExtenderHybridVehicle_ECMS

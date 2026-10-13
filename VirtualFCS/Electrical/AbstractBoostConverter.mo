@@ -120,5 +120,26 @@ equation
   connect(commutator_B.heatPort, heatPort) annotation(
     Line(points = {{12, -10}, {20, -10}, {20, -100}, {0, -100}}, color = {191, 0, 0}));
 
-  annotation(Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and input-side physical interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td colspan=\"&quot;5&quot;\">No user-settable parameters are declared.</td></tr></tbody></table><h3>Inputs and input-side interfaces</h3><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>dc_p1</code></td><td>Input-side interface</td><td>PositivePin</td><td>V</td><td>Input positive terminal</td></tr><tr><td><code>dc_n1</code></td><td>Input-side interface</td><td>NegativePin</td><td>V</td><td>Input negative terminal</td></tr><tr><td><code>heatPort</code></td><td>Input-side interface</td><td>HeatPort_a</td><td>K/W</td><td>Optional thermal connection</td></tr></tbody></table><h2>2. Model description</h2>This is a class representing a generic DC-DC architecture with coupled inductors.<div>The abstract commutators can be specialised to actual switches, allowing study at short time scales, or to averaged components allowing integration within fuel-cell system models.</div><div><br></div><h3>Stability note</h3><div>Consistently with specifications, this model does <i>not</i>&nbsp;have an <b>input capacitor</b>, but this may be necessary to numerically stabilise the model into which this unit is integrated.</div><h2>3. Governing equations and references</h2><p>Governing equations are inherited from extended classes or enforced by instantiated components and their connected physical networks.</p><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>dc_p2</code></td><td>Output-side interface</td><td>PositivePin</td><td>V</td><td>Output positive terminal</td></tr><tr><td><code>dc_n2</code></td><td>Output-side interface</td><td>NegativePin</td><td>V</td><td>Output negative terminal</td></tr></tbody></table></body></html>"));
+  annotation(Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+This is a class representing a generic DC-DC architecture with coupled inductors.<div>The abstract commutators can be specialised to actual switches, allowing study at short time scales, or to averaged components allowing integration within fuel-cell system models.</div><div><br></div><h3>Stability note</h3><div>Consistently with specifications, this model does <i>not</i>&nbsp;have an <b>input capacitor</b>, but this may be necessary to numerically stabilise the model into which this unit is integrated.</div>
+<h2>Governing Equations</h2>
+<pre>-</pre>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>dc_p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+<tr><td><code>dc_p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+</tbody></table>
+
+</body></html>"));
 end AbstractBoostConverter;

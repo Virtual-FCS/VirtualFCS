@@ -161,6 +161,6 @@ equation
   connect(p_H2_filter.y, feedController.u_m) annotation(
     Line(points = {{-8, -90}, {-18, -90}, {-18, -98}, {-98, -98}, {-98, 46}, {-70, 46}, {-70, 52}}, color = {0, 0, 127}));
   annotation(
-    experiment(StopTime = 60, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"),
+    experiment(StopTime = 40, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"),
     Diagram);
 end NH3CrackerFCS;
