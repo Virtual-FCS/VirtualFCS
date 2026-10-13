@@ -1,6 +1,7 @@
 within VirtualFCS.Examples.Ships;
 
 model NH3CrackerFCS
+  extends Modelica.Icons.Example;
   inner Modelica.Fluid.System system;
   // Medium
   package AmmoniaMedium = Media.CrackedAmmonia;
