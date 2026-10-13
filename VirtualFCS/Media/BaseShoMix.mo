@@ -62,7 +62,6 @@ end ThermodynamicState;
       
       MM = molarMass(state); // Weighed average for all species, both phases
       R_s = gasConstant(state); // Gas constant valid only for gas phase
-
       state.p = p;
       state.T = T;
       state.Xi = Xi;
@@ -1195,14 +1194,7 @@ end specificHeatCapacityCv;
 end setSmoothState;
 
   annotation(
-    Documentation(info = "<html>
-<p>
-This package is a <strong>template</strong> for <strong>new medium</strong> models. For a new
-medium model just make a copy of this package, remove the
-\"partial\" keyword from the package and provide
-the information that is requested in the comments of the
-Modelica source.
-</p>
-</html>"));
+    Documentation(info = "<html><head></head><body><p><br></p>
+</body></html>"));
 
 end BaseShoMix;

@@ -14,7 +14,6 @@ package MoistAir "Medium model for cathodic air in PEM fuel cells"
   
   import saturationPressure = Modelica.Media.Air.ReferenceMoistAir.Utilities.Water95_Utilities.psat;
   //function saturationPressure = antoine(A=5+4.6543, B=1435.264, C=-64.848);
-
   // Convenience variables to index arrays within class
   constant Integer Oxygen = 1 "Index of oxygen (in substanceNames, massFractions X, etc.)";
   constant Integer Nitrogen = 2 "Index of nitrogen (in substanceNames, massFractions X, etc.)";
@@ -423,6 +422,6 @@ end liquidDensity;
 
   annotation(
     Documentation(info = "<html><head></head><body><p>
-This medium models air in fuel cells. This includes separate accounts of oxygen and nitrogen, in addition to tracking humidity and condensation.</p>
+This medium models air in fuel cells; it can also be used for e.g. the anodic side in PEM electrolysers.</p><p>The medium includes separate accounts of oxygen and nitrogen, in addition to tracking humidity and condensation.</p><p>Note that the class reimplements <tt>flashVaporisation</tt> with a direct formula to exploit the fact that only water is considered condensable.</p>
 </body></html>"));
 end MoistAir;

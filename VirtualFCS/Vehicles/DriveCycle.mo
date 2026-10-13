@@ -17,7 +17,7 @@ model DriveCycle
 protected
   CombiTimeTable table(extrapolation = Modelica.Blocks.Types.Extrapolation.Periodic, 
                        fileName = if cycle == "Custom" then custom_fileName else loadResource("modelica://VirtualFCS.Resources.DataDriveCycles/"+cycle+".mat"), 
-                       smoothness = Modelica.Blocks.Types.Smoothness.LinearSegments, 
+                       smoothness = Modelica.Blocks.Types.Smoothness.ContinuousDerivative, 
                        tableName = if cycle == "Custom" then custom_tableName else cycle, 
                        tableOnFile = true, timeEvents = Modelica.Blocks.Types.TimeEvents.AtDiscontinuities) annotation (
     Placement(transformation(extent = {{-20, -20}, {20, 20}})));
