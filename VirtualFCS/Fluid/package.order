@@ -13,7 +13,6 @@ MembraneManifold
 MembraneTransfer
 MixingVolume
 NonHumidifier
-PressureRegulator
 PSAInterface
 PSASimple
 PumpElectricDC
