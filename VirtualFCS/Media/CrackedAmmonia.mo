@@ -5,14 +5,20 @@ model CrackedAmmonia
     final mediumName = "Cracked ammonia",
     final substanceNames = {"ammonia", "hydrogen", "nitrogen"}, 
     final reference_X = {0.8, 0.1, 0.1},
-    Temperature(min = 195.5, max = 405.4, start = 298),
-    AbsolutePressure(min = 3E4, max = 1E6, start = 1E5),
+    Temperature(min = 195.5, max = 1273.15, start = 298),
+    AbsolutePressure(min = 3E4, max = 5E6, start = 1E5),
     MMX={Modelica.Media.IdealGases.Common.SingleGasesData.NH3.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM, 
          Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM}
   );
+  redeclare model extends BaseProperties "Base properties of cathodic air"
+      Modelica.Units.SI.MoleFraction phi = Xmol_gas[Ammonia] / (saturationPressure(state.T)/state.p);
+      Modelica.Units.SI.Pressure p_sat = saturationPressure(state.T);
+  end BaseProperties;
+  
   // Parameters from Stull (1947) as quoted in NIST
-  function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
+  //function saturationPressure = antoine(A=5+4.86886, B=1113.928, C=-10.409);
+  function saturationPressure = clausiusClapeyron(T_boil=239.8, L=23400);
 
 // Convenience variables to index arrays within class
   constant Integer Ammonia = 1 "Index of ammonia (in substanceNames, massFractions X, etc.)";
@@ -104,12 +110,21 @@ model CrackedAmmonia
   
   redeclare function extends liquidDensity
   protected
-    constant Real C[4] = {3.5383, 0.25443, 653.15, 0.1898};
+    constant Real C[4] = {3.5383, 0.25443, 405.65, 0.2888};
   algorithm
-    d_liq := C[1]/C[2]^(1+(1-state_liq.T/C[3])^C[4]) / 1000 * MMX[Ammonia];
+    // Perry's correlation gives kmol/m3: *1000 -> mol/m3, *MM (kg/mol) -> kg/m3 (approx. 610 kg/m3 at 293 K)
+    d_liq := C[1]/C[2]^(1+(max(1e-6,1-state_liq.T/C[3]))^C[4]) * 1000 * MMX[Ammonia];
   annotation(
       Documentation(info = "<html><head></head><body>Correlation from Perry's Chemical Engineer's Handbook, 7th edition, table 2-30.<div>The original formula produces results in kmol/m<sup>3</sup>&nbsp;as a function of temperatures only, which are corrected to kg/m<sup>3</sup>&nbsp;in the code.</div></body></html>"));
-end liquidDensity;annotation(
+end liquidDensity;
+
+  redeclare function extends dynamicViscosity
+      "Return dynamic viscosity as a function of the thermodynamic state record, valid from 123.15 K to 1273.15 K"
+  algorithm
+    eta := 3.5e-5;
+  end dynamicViscosity;
+  
+annotation(
     Documentation(info = "<html><head></head><body>This medium represents a mix of ammonia and its cracking products, nitrogen and hydrogen. Only ammonia is condensable.<div>Note that thermochemical data for liquid ammonia is not available from NIST, and was calculated from data in Perry's with a Python script stored in Utilities.</div>
 </body></html>"));
 

@@ -27,8 +27,7 @@ model FuelCellSystem
     Placement(visible = true, transformation(origin = {46, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation (
     Placement(visible = true, transformation(origin = {-40, 96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  replaceable FuelCell fuelCell(N_cells = N_cells, redeclare package Cathode_Medium = Cathode_Medium) annotation(
-    Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
+  replaceable FuelCell fuelCell(N_cells = N_cells, redeclare package Cathode_Medium = Cathode_Medium, redeclare package Anode_Medium = Anode_Medium)  annotation (Placement(transformation(origin = {0, -4}, extent = {{-40, -15}, {40, 65}})));
   replaceable SubSystems.Air.SubSystemAir subSystemAir(N_cells = N_cells, p_set = p_air_set, redeclare package Medium = Cathode_Medium)  annotation(
     Placement(transformation(origin = {70, 20}, extent = {{-10, 10}, {10, -10}}, rotation = -90)));
   replaceable SubSystems.Cooling.SubSystemCooling subSystemCooling annotation(
@@ -37,6 +36,8 @@ model FuelCellSystem
     Placement(transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Fluid.Interfaces.FluidPort_a toTank(redeclare package Medium = Anode_Medium)  annotation(
+    Placement(transformation(origin = {-96, 34}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-108, 34}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {65, -85}, extent = {{-5, -5}, {5, 5}})));
 equation
@@ -80,6 +81,8 @@ equation
     Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-78, 24}, {-92, 24}, {-92, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
+  connect(toTank, subSystemHydrogen.toTank) annotation(
+    Line(points = {{-96, 34}, {-74, 34}, {-74, 32}}));
   connect(batterySystem.pin_n, ground.p) annotation(
     Line(points = {{46, -74}, {66, -74}, {66, -80}}, color = {0, 0, 255}));
 protected

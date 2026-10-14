@@ -1,12 +1,15 @@
 within VirtualFCS.SubSystems.Hydrogen;
 
 model SubSystemHydrogen
+  import Modelica.Constants.pi;
   outer Modelica.Fluid.System system "System properties";
   replaceable package Anode_Medium = Modelica.Media.IdealGases.SingleGases.H2 constrainedby Modelica.Media.Interfaces.PartialMedium;
-  parameter Modelica.Units.SI.Area A_tank_H2 = 2 "H2 tank surface area";
+  parameter Modelica.Units.SI.Area A_tank_H2 = 4*pi*(3*V_tank_H2/4/pi)^(2/3) "H2 tank surface area";
+  parameter Modelica.Units.SI.Volume V_tank_H2 = 0.13 "Hydrogen tank volume";
   parameter Integer N_cells = 180 "FC stack number of cells";
   parameter Modelica.Units.SI.VolumeFlowRate V_flow_HRB_min = 1e-7 "Minimum volume flow of the Hydrogen Recirculation Blower";
   parameter Real RR = 1.3 "Hydrogen recirculation ratio";
+  parameter Modelica.Units.SI.Pressure P_H2_tank_start = 350e5 "Initial H2 tank pressure";
   Modelica.Fluid.Sources.Boundary_pT exhaustHydrogen(redeclare package Medium = Anode_Medium, nPorts = 1, p = system.p_ambient, use_T_in = false) annotation(
     Placement(transformation(origin = {-150, -80}, extent = {{-14, -14}, {14, 14}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent(unit = "A") annotation(

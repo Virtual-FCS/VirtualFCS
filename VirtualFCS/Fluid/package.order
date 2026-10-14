@@ -1,7 +1,5 @@
 UsersGuide
 Examples
-AmmoniaCracker
-AmmoniaCracker_2
 CompressorInterface
 Compressor
 CompressorSimple
@@ -15,8 +13,11 @@ MembraneManifold
 MembraneTransfer
 MixingVolume
 NonHumidifier
+PSAInterface
+PSASimple
 PumpElectricDC
 PumpInterface
 RelativeHumiditySensor
 Separator
 SimplePump
+ValveCheck
