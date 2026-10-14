@@ -36,7 +36,7 @@ model FuelCellSystem
     Placement(transformation(origin = {-70, 20}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Battery.BatterySystem batterySystem annotation(
     Placement(transformation(origin = {42, -84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
-  Modelica.Fluid.Interfaces.FluidPort_a toTank(redeclare package Medium = Anode_Medium)  annotation(
+  Modelica.Fluid.Interfaces.FluidPort_a toH2Tank(redeclare package Medium = Anode_Medium)  annotation(
     Placement(transformation(origin = {-96, 34}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-108, 34}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Electrical.Analog.Basic.Ground ground annotation(
     Placement(transformation(origin = {65, -85}, extent = {{-5, -5}, {5, 5}})));
@@ -81,7 +81,7 @@ equation
     Line(points = {{-78, 16}, {-86, 16}, {-86, -66}, {38, -66}, {38, -74}}, color = {0, 0, 255}));
   connect(subSystemHydrogen.pin_n, batterySystem.pin_n) annotation(
     Line(points = {{-78, 24}, {-92, 24}, {-92, -70}, {46, -70}, {46, -74}}, color = {0, 0, 255}));
-  connect(toTank, subSystemHydrogen.toTank) annotation(
+  connect(toH2Tank, subSystemHydrogen.toH2Tank) annotation(
     Line(points = {{-96, 34}, {-74, 34}, {-74, 32}}));
   connect(batterySystem.pin_n, ground.p) annotation(
     Line(points = {{46, -74}, {66, -74}, {66, -80}}, color = {0, 0, 255}));

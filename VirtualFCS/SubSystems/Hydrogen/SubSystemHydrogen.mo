@@ -30,7 +30,7 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-120, 100}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = 0.13, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 1, p_start = 35000000, use_HeatTransfer = true, use_portsData = false) annotation(
+  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = 0.13, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 2, p_start = 35000000, use_HeatTransfer = true, use_portsData = false) annotation(
     Placement(transformation(origin = {-98, 50}, extent = {{-20, 20}, {20, -20}}, rotation = -90)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -50}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
@@ -48,6 +48,9 @@ model SubSystemHydrogen
     Placement(transformation(origin = {0, 20}, extent = {{10, 10}, {-10, -10}})));
   Modelica.Blocks.Sources.Constant convectiveCoefficient(k = 12)  annotation(
     Placement(transformation(origin = {-50, 100}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
+  Modelica.Fluid.Interfaces.FluidPort_a toH2Tank(redeclare package Medium = Anode_Medium)  annotation(
+    Placement(transformation(origin = {-150, 52}, extent = {{-10, -10}, {10, 10}}), iconTransformation(origin = {-110, -42}, extent = {{-10, -10}, {10, 10}})));
+
 equation
   connect(fixedTemperature.port, bodyRadiation.port_b) annotation(
     Line(points = {{-130, 140}, {-130, 140}, {-120, 140}, {-120, 110}}, color = {191, 0, 0}));
@@ -95,6 +98,8 @@ equation
     Line(points = {{-20, 50}, {152, 50}}, color = {255, 0, 0}, thickness = 0.75));
   connect(convection.Gc, convectiveCoefficient.y) annotation(
     Line(points = {{-70, 100}, {-61, 100}}, color = {0, 0, 127}));
+  connect(toH2Tank, tankHydrogen.ports[2]) annotation(
+    Line(points = {{-150, 52}, {-138, 52}, {-138, 22}, {-70, 22}, {-70, 50}, {-78, 50}}));
   annotation(
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 150}}, initialScale = 0.1), graphics = {Text(origin = {54, 23}, extent = {{-28, 13}, {42, -15}}, textString = "Hydrogen recirculation blower")}),
     Icon(graphics = {Rectangle(fillColor = {0, 60, 101}, fillPattern = FillPattern.Solid, lineThickness = 1.5, extent = {{-100, 100}, {100, -100}}, radius = 35), Text(origin = {-78, 83}, textColor = {255, 255, 255}, extent = {{30, -23}, {128, -141}}, textString = "H₂")}),

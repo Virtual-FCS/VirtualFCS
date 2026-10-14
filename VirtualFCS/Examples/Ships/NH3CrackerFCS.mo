@@ -122,7 +122,7 @@ equation
     Line(points = {{-52, -50}, {-54, -50}, {-54, -66}, {-48, -66}, {-48, -72}}, color = {0, 0, 255}));
   connect(resistor.n, fcs.pin_n) annotation(
     Line(points = {{-32, -50}, {-34, -50}, {-34, -66}, {-38, -66}, {-38, -72}}, color = {0, 0, 255}));
-  connect(psa.product, fcs.toTank) annotation(
+  connect(psa.product, fcs.toH2Tank) annotation(
     Line(points = {{46, -58}, {36, -58}, {36, -79}, {-31, -79}}, color = {0, 127, 255}));
   connect(psa.product, p_H2_tank.port) annotation(
     Line(points = {{46, -58}, {46, -59}, {36, -59}, {36, -76}}, color = {0, 127, 255}));
