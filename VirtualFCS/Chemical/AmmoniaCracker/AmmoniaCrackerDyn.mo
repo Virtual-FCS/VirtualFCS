@@ -50,9 +50,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Modelica.Units.SI.SpecificHeatCapacity cp_wall = 500 "Tube wall material specific heat capacity (J/kg/K)";
  
   // Dynamics options
-  parameter Boolean constantTemperature = true "= true, the gas temperature is fixed at T_out_target (isothermal first step); = false, a dynamic energy balance is solved" annotation(
-    Evaluate = true,
-    choices(checkBox = true));
   parameter Modelica.Units.SI.Pressure p_start = 30e5 "Initial pressure in every segment";
   parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {NH3, H2, N2} in every segment";
  
@@ -91,7 +88,7 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Modelica.Units.SI.Mass m_H2[N](each start = X_start[idx_H2]*rho_start*V_seg, each fixed = true) "H2 inventory of each segment";
   Modelica.Units.SI.Mass m_N2[N](each start = X_start[idx_N2]*rho_start*V_seg, each fixed = true) "N2 inventory of each segment";
   Modelica.Units.SI.Mass m_NH3[N](each start = X_start[idx_NH3]*rho_start*V_seg, each fixed = true) "NH3 inventory of each segment";
-  Modelica.Units.SI.Temperature T[N](each start = T_start, each fixed = not constantTemperature) "Gas temperature of each segment (K)";
+  Modelica.Units.SI.Temperature T[N](each start = T_start, each fixed = false) "Gas temperature of each segment (K)";
  
   // Segment quantities
   Modelica.Units.SI.Mass m_tot[N] "Total gas inventory of each segment";
@@ -198,14 +195,11 @@ equation
     der(m_H2[i]) = m_flow_face[i]*w_H2_face[i] - m_flow_face[i + 1]*w_H2_face[i + 1] + nu_H2*R_NH3[i]*MM_H2;
     der(m_N2[i]) = m_flow_face[i]*w_N2_face[i] - m_flow_face[i + 1]*w_N2_face[i + 1] + nu_N2*R_NH3[i]*MM_N2;
 // Energy balance
-    if constantTemperature then
-      T[i] = T_out_target;
-    else
+
 // Only the streams entering the segment change its temperature (forward inflow through face i, reverse inflow through face i+1).
 // The feed term uses enthalpies so that the latent heat of a partly liquid feed is accounted for.
-      (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = noEvent(max(m_flow_face[i], 0))*(if i == 1 then h_inlet - h_feed_seg1 else cp_mix[i]*(T[i - 1] - T[i])) + noEvent(max(-m_flow_face[i + 1], 0))*cp_mix[i]*((if i == N then T[N] else T[i + 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
+(m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = noEvent(max(m_flow_face[i], 0))*(if i == 1 then h_inlet - h_feed_seg1 else cp_mix[i]*(T[i - 1] - T[i])) + noEvent(max(-m_flow_face[i + 1], 0))*cp_mix[i]*((if i == N then T[N] else T[i + 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
 
-    end if;
     heatPorts[i].T = T[i];
   end for;
 // Upwind (donor cell) face compositions for both flow directions (smooth switch within +-m_flow_small)
@@ -245,21 +239,117 @@ equation
   port_b.Xi_outflow = {w_NH3[N], w_H2[N]};
   m_flow_balance = port_a.m_flow + port_b.m_flow - der(sum(m_tot));
   annotation(
-    Documentation(info = "<html>
-<p>Dynamic version of <code>AmmoniaCracker</code>. The reactor is discretised into <code>N</code> segments and each segment is treated as a lumped control volume following the
-<code>Modelica.Fluid.Interfaces.PartialLumpedVolume</code> approach: species inventories are states, the pressure follows from the ideal gas equation of state applied to the
-inventory of the volume, and the flow between segments is driven by the pressure difference through a quadratic friction law. This makes the model capture transient
-pressure build-up (e.g. when the outlet is throttled or the feed flow changes).</p>
-<p>Kinetics (Realpe et al. 2023, DOI: 10.1039/d2re00408a) are unchanged with respect to <code>AmmoniaCracker</code>; the reaction rate is additionally limited by the NH3
-inventory of the segment so that the ammonia mass cannot become negative.</p>
-<p>Two temperature modes are available through <code>constantTemperature</code>:</p>
-<ul>
-<li><code>true</code> (default): every segment is kept at the inlet temperature <code>T_in</code> (isothermal first step).</li>
-<li><code>false</code>: a dynamic energy balance is solved per segment between the convective enthalpy transport, the endothermic heat of reaction
-<code>deltaH_rxn</code> and the heat supplied by the external model through the segmented heat port vector <code>heatPorts[N]</code>. The thermal inertia of the tube walls
-is included via <code>C_solid_seg</code>.</li>
-</ul>
-<p>Note that, unlike <code>AmmoniaCracker</code>, all balances use SI molar masses (kg/mol) and the total flow area of all tubes.</p>
-</html>"),
+    Documentation(info = "<html><head></head><body>
+<h2>1. Parameters and inputs</h2>
+<p>Parameters define the reactor geometry, initial inventories, thermal response, and regularization of transport and reaction rates. Types abbreviated as SI refer to Modelica.Units.SI. The medium must support the species order {NH3, H2, N2}, with NH3 and H2 as the two independent mass fractions.</p>
+<h3>Geometry and catalyst</h3>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N</code></td><td>Integer</td><td>1</td><td>50</td><td>Number of computational segments and heat ports; inherited from AmmoniaCrackerInterface</td></tr>
+<tr><td><code>H</code></td><td>SI.Length</td><td>m</td><td>12.0</td><td>Reactor height</td></tr>
+<tr><td><code>L</code></td><td>SI.Length</td><td>m</td><td>1.0</td><td>Reactor length used for tube layout and external surface area</td></tr>
+<tr><td><code>W</code></td><td>SI.Length</td><td>m</td><td>1.2</td><td>Reactor width</td></tr>
+<tr><td><code>pitch</code></td><td>SI.Length</td><td>m</td><td>10e-2</td><td>Separation between tubes</td></tr>
+<tr><td><code>z_head</code></td><td>Real</td><td>1</td><td>0.166</td><td>Fraction of reactor height reserved for headers</td></tr>
+<tr><td><code>D_tubes</code></td><td>SI.Length</td><td>m</td><td>10e-2</td><td>Tube diameter used in flow area and friction calculations</td></tr>
+<tr><td><code>t_tubes</code></td><td>SI.Length</td><td>m</td><td>5e-3</td><td>Tube wall thickness used in catalyst area and wall heat capacity</td></tr>
+<tr><td><code>W_cat</code></td><td>Real</td><td>g/m2</td><td>4</td><td>Catalyst mass per unit reaction area</td></tr>
+</tbody></table>
+<h3>Thermal conditions and initialization</h3>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>T_out_target</code></td><td>SI.Temperature</td><td>K</td><td>550 + 273.15</td><td>Reference temperature for the equilibrium constant; does not impose the outlet temperature</td></tr>
+<tr><td><code>T_start</code></td><td>SI.Temperature</td><td>K</td><td>550 + 273.15</td><td>Temperature start guess and reference for initial density; temperature states have fixed = false</td></tr>
+<tr><td><code>p_start</code></td><td>SI.Pressure</td><td>Pa</td><td>30e5</td><td>Reference pressure used to calculate the fixed initial species inventories</td></tr>
+<tr><td><code>X_start[3]</code></td><td>SI.MassFraction</td><td>1</td><td>{0.998, 0.001, 0.001}</td><td>Initial mass fractions {NH3, H2, N2}</td></tr>
+<tr><td><code>deltaH_rxn</code></td><td>SI.MolarEnergy</td><td>J/mol</td><td>46.0e3</td><td>Endothermic heat demand per mole of NH3 converted</td></tr>
+<tr><td><code>T_a</code></td><td>SI.Temperature</td><td>K</td><td>293.15</td><td>Ambient temperature in the segment heat-loss expression</td></tr>
+<tr><td><code>U_tot</code></td><td>SI.CoefficientOfHeatTransfer</td><td>W/(m2.K)</td><td>1</td><td>External heat-transfer coefficient</td></tr>
+<tr><td><code>rho_wall</code></td><td>SI.Density</td><td>kg/m3</td><td>7850</td><td>Tube wall material density</td></tr>
+<tr><td><code>cp_wall</code></td><td>SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td>500</td><td>Tube wall material specific heat capacity</td></tr>
+</tbody></table>
+<h3>Flow and numerical regularization</h3>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>dp_small</code></td><td>SI.Pressure</td><td>Pa</td><td>1e3</td><td>Pressure range for regularizing the square-root face flow law</td></tr>
+<tr><td><code>tau_rxn_min</code></td><td>SI.Time</td><td>s</td><td>0.05</td><td>Minimum inventory-consumption time used to limit reaction rate</td></tr>
+<tr><td><code>dp_inlet_nominal</code></td><td>SI.Pressure</td><td>Pa</td><td>0</td><td>Additional inlet header pressure drop at nominal flow</td></tr>
+<tr><td><code>dp_outlet_nominal</code></td><td>SI.Pressure</td><td>Pa</td><td>0</td><td>Additional outlet header pressure drop at nominal flow</td></tr>
+<tr><td><code>m_flow_nominal</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>0.3</td><td>Reference flow for header losses and nominal friction factor</td></tr>
+<tr><td><code>m_flow_small</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>1e-3</td><td>Range for smooth switching of donor-side face compositions</td></tr>
+<tr><td><code>mu_nominal</code></td><td>SI.DynamicViscosity</td><td>Pa.s</td><td>3.5e-5</td><td>Viscosity used to calculate the nominal Reynolds number</td></tr>
+</tbody></table>
+<h3>Calculated parameters</h3>
+<p>The following parameters are final and are calculated from the settings above.</p>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>k0</code></td><td>Real</td><td>-</td><td>3.33/3.6*1e10</td><td>Kinetic pre-exponential factor used by rate; see the rate-unit convention below</td></tr>
+<tr><td><code>z_tube</code></td><td>SI.Length</td><td>m</td><td>H*(1 - z_head)</td><td>Active tube length</td></tr>
+<tr><td><code>dz</code></td><td>SI.Length</td><td>m</td><td>z_tube/N</td><td>Segment length</td></tr>
+<tr><td><code>N_tubes_x</code></td><td>Integer</td><td>1</td><td>integer(floor((L + pitch)/(D_tubes + pitch)))</td><td>Number of tubes along the reactor length</td></tr>
+<tr><td><code>N_tubes_y</code></td><td>Integer</td><td>1</td><td>integer(floor((W + pitch)/(D_tubes + pitch)))</td><td>Number of tubes along the reactor width</td></tr>
+<tr><td><code>N_tubes</code></td><td>Integer</td><td>1</td><td>N_tubes_x*N_tubes_y</td><td>Total number of tubes</td></tr>
+<tr><td><code>A_r</code></td><td>SI.Area</td><td>m2</td><td>N_tubes*pi*(D_tubes - t_tubes)*z_tube</td><td>Catalyst-covered reaction area</td></tr>
+<tr><td><code>A_c</code></td><td>SI.Area</td><td>m2</td><td>pi*(D_tubes/2)^2</td><td>Cross-sectional area of one tube</td></tr>
+<tr><td><code>A_flow</code></td><td>SI.Area</td><td>m2</td><td>N_tubes*A_c</td><td>Total flow area of all tubes</td></tr>
+<tr><td><code>A_s</code></td><td>SI.Area</td><td>m2</td><td>2*(H*L + W*L + H*W)</td><td>External heat-loss surface area</td></tr>
+<tr><td><code>z[N]</code></td><td>SI.Length</td><td>m</td><td>{dz*i - dz/2 for i in 1:N}</td><td>Segment centre positions measured from the inlet</td></tr>
+<tr><td><code>V_seg</code></td><td>SI.Volume</td><td>m3</td><td>A_flow*dz</td><td>Gas volume per segment</td></tr>
+<tr><td><code>m_cat_seg</code></td><td>Real</td><td>g</td><td>W_cat*A_r/N</td><td>Catalyst mass per segment</td></tr>
+<tr><td><code>C_solid_seg</code></td><td>SI.HeatCapacity</td><td>J/K</td><td>N_tubes*pi*(D_tubes - t_tubes)*t_tubes*dz*rho_wall*cp_wall</td><td>Tube wall heat capacity per segment</td></tr>
+<tr><td><code>deltaG_0</code></td><td>Real</td><td>J/mol</td><td>95517 - 193.67*T_out_target - 0.035293*T_out_target^2 + 9.22*10e-6*T_out_target^3</td><td>Reference Gibbs-energy expression used for equilibrium</td></tr>
+<tr><td><code>k_eq</code></td><td>Real</td><td>1</td><td>exp(-deltaG_0/R/T_out_target)</td><td>Equilibrium constant evaluated at the reference temperature</td></tr>
+<tr><td><code>rho_start</code></td><td>SI.Density</td><td>kg/m3</td><td>p_start/(R*T_start*(X_start[2]/MM_H2 + X_start[3]/MM_N2 + X_start[1]/MM_NH3))</td><td>Ideal-gas density used for initial inventories</td></tr>
+<tr><td><code>Re_nominal</code></td><td>Real</td><td>1</td><td>m_flow_nominal*D_tubes/(A_flow*mu_nominal)</td><td>Nominal Reynolds number</td></tr>
+<tr><td><code>f_nominal</code></td><td>Real</td><td>1</td><td>frictionFactor(Re_nominal)</td><td>Friction factor applied at all segment faces</td></tr>
+</tbody></table>
+<h3>Inputs and input-side interfaces</h3>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>port_a</code></td><td>Nominal inlet; bidirectional</td><td>FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Feed pressure, mass flow, stream enthalpy, and composition; medium is AmmoniaMedium</td></tr>
+<tr><td><code>heatPorts[N]</code></td><td>Bidirectional thermal interface</td><td>HeatPorts_a</td><td>K; W</td><td>One heat port per segment, at the segment temperature; positive Q_flow supplies heat to the reactor</td></tr>
+</tbody></table>
+<p>No signal input connectors are declared. Heating and thermal boundary conditions are provided by connected thermal components.</p>
+<h2>2. Model description</h2>
+<p>AmmoniaCrackerDyn is a segmented catalytic ammonia-decomposition reactor for system-level transient studies. It represents the conversion of ammonia into hydrogen and nitrogen, gas accumulation, pressure-driven transport, and thermal response of the gas and tube walls. Applications include studying feed changes, outlet throttling, and coupling to distributed heaters, gas separation, and hydrogen-consuming equipment.</p>
+<p>Each of the N segments contains separate NH3, H2, and N2 mass inventories. Ideal-gas partial pressures determine segment pressure. Adjacent segments exchange mass through regularized quadratic pressure-loss laws, with half-segment friction at the inlet and outlet and optional additional header losses. Face compositions use a smoothed donor-cell formulation for forward and reverse flow. The friction factor is fixed at its nominal-flow value; the locally calculated Reynolds number is a diagnostic, not a friction feedback.</p>
+<p>A dynamic temperature balance is solved in every segment. Gas and tube wall share one temperature and a combined heat capacity. Heat supplied through heatPorts balances inflow thermal transport, endothermic reaction demand, and heat exchange with ambient. The forward inlet term uses the incoming stream enthalpy and the enthalpy of the feed composition at segment conditions. Internal transport uses a specific-heat approximation; at the outlet, reverse thermal inflow is approximated at the last segment temperature rather than using the external outlet stream enthalpy.</p>
+<p>Species inventories have fixed initial values calculated from p_start, T_start, and X_start. Temperature start values are not fixed, so the surrounding model must provide suitable initialization conditions. T_out_target is used to evaluate k_eq and is not a temperature constraint or an internal controller set-point.</p>
+<h2>3. Governing equations and references</h2>
+<p>The reaction stoichiometry per mole of ammonia consumed is NH3 -&gt; 1.5 H2 + 0.5 N2. Representative segment equations are:</p>
+<pre>m_tot[i] = m_NH3[i] + m_H2[i] + m_N2[i]
+P_tot[i] = (n_NH3[i] + n_H2[i] + n_N2[i])*R*T[i]/V_seg
+der(m_species[i]) = inlet species flow - outlet species flow
+                    + nu_species*R_NH3[i]*MM_species
+r_rxn[i] = max(0, min(rate(...), n_NH3[i]/(tau_rxn_min*m_cat_seg)))
+R_NH3[i] = r_rxn[i]*m_cat_seg
+Q_rxn[i] = deltaH_rxn*R_NH3[i]
+Q_loss[i] = U_tot*A_s/N*(T[i] - T_a)
+(m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i])
+  = inflow thermal transport - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow
+m_flow_face[j] = regRoot(upstream pressure - downstream pressure, dp_small)
+                 /sqrt(k_face[j])</pre>
+<p>The kinetic expression follows Realpe et al. (2023), <a href=\"https://doi.org/10.1039/d2re00408a\">doi:10.1039/d2re00408a</a>, with activation energy Ea = 1.54e5 J/mol and exponents a = 0.37 and b = -1.04 for the Co-Ba/CeO2 catalyst. Partial pressures are divided by 1e5 in the rate expression; NH3 and H2 pressure ratios are floored at 1e-6. Negative net kinetic rates are clipped to zero, so the model does not implement reverse ammonia synthesis. The inventory-based upper limit restricts ammonia consumption on the timescale tau_rxn_min.</p>
+<p>As implemented, r_rxn is interpreted as mol/(s.g_cat) and multiplied by m_cat_seg in grams. The k0 declaration describes its units as mol/(kg.s); this convention should be checked when changing or calibrating catalyst data. Species balances use SI molar masses MM_NH3 = 0.017, MM_H2 = 0.002, and MM_N2 = 0.028 kg/mol.</p>
+<p>The nominal friction factor uses 64/Re for laminar flow, a linear blend between Re = 2300 and 4000, and 0.3163*Re^(-0.25) above 4000. The function floors Re at 1e-3. Positive segment volumes, flow areas, nominal flow, regularization scales, and physically consistent initial compositions are required.</p>
+<p>The model follows a lumped-inventory approach similar to <a href=\"modelica://Modelica.Fluid.Interfaces.PartialLumpedVolume\">Modelica.Fluid.Interfaces.PartialLumpedVolume</a>, but implements its own species and approximate temperature balances rather than extending that class. Medium properties are supplied by <a href=\"modelica://VirtualFCS.Media.CrackedAmmonia\">CrackedAmmonia</a> by default.</p>
+<h2>4. Outputs</h2>
+<p>No signal output connectors are declared. The nominal outlet and selected internal variables are available below. Array indices 1 and N identify the inlet-side and outlet-side segments.</p>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>port_b</code></td><td>Nominal outlet; bidirectional</td><td>FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Outlet connection; outflow enthalpy and composition are calculated from segment N</td></tr>
+<tr><td><code>T[N]</code></td><td>Monitored state array</td><td>SI.Temperature</td><td>K</td><td>Segment temperatures</td></tr>
+<tr><td><code>P_tot[N]</code></td><td>Monitored array</td><td>SI.Pressure</td><td>Pa</td><td>Total segment pressures</td></tr>
+<tr><td><code>m_NH3[N], m_H2[N], m_N2[N]</code></td><td>Monitored state arrays</td><td>SI.Mass</td><td>kg</td><td>Species inventories per segment</td></tr>
+<tr><td><code>w_NH3[N], w_H2[N], w_N2[N]</code></td><td>Monitored arrays</td><td>SI.MassFraction</td><td>1</td><td>Segment species mass fractions</td></tr>
+<tr><td><code>mol_frac_NH3[N], mol_frac_H2[N], mol_frac_N2[N]</code></td><td>Monitored arrays</td><td>Real</td><td>1</td><td>Segment species mole fractions</td></tr>
+<tr><td><code>NH3_conversion[N]</code></td><td>Monitored array</td><td>Real</td><td>1</td><td>Defined as 1 - mol_frac_NH3[i]; a composition indicator, not a feed-referenced conversion</td></tr>
+<tr><td><code>R_NH3[N]</code></td><td>Monitored array</td><td>SI.MolarFlowRate</td><td>mol/s</td><td>Ammonia consumption rate per segment</td></tr>
+<tr><td><code>Q_rxn[N], Q_loss[N]</code></td><td>Monitored arrays</td><td>SI.HeatFlowRate</td><td>W</td><td>Reaction heat demand and ambient heat loss per segment</td></tr>
+<tr><td><code>m_flow_face[N + 1]</code></td><td>Monitored array</td><td>SI.MassFlowRate</td><td>kg/s</td><td>Mass flows at segment faces; positive in the nominal inlet-to-outlet direction</td></tr>
+<tr><td><code>m_flow_balance</code></td><td>Monitored variable</td><td>SI.MassFlowRate</td><td>kg/s</td><td>port_a.m_flow + port_b.m_flow - der(sum(m_tot)); total mass-balance residual</td></tr>
+<tr><td><code>T_in</code></td><td>Monitored variable</td><td>SI.Temperature</td><td>K</td><td>Temperature inferred from the incoming port_a stream</td></tr>
+</tbody></table>
+</body></html>"),
     Icon(graphics = {Rectangle(fillColor = {215, 230, 245}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}), Text(extent = {{-100, 100}, {100, 66}}, textString = "%name"), Text(extent = {{-80, 30}, {80, -30}}, textString = "NH3 cracker\ndynamic")}));
 end AmmoniaCrackerDyn;
