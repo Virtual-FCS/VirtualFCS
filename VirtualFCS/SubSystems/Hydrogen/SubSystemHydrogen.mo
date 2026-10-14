@@ -30,7 +30,7 @@ model SubSystemHydrogen
     Placement(visible = true, transformation(origin = {-98, -12}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Thermal.HeatTransfer.Components.BodyRadiation bodyRadiation(Gr = 0.95*A_tank_H2) annotation(
     Placement(transformation(origin = {-120, 100}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
-  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = 0.13, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 2, p_start = 35000000, use_HeatTransfer = true, use_portsData = false) annotation(
+  Modelica.Fluid.Vessels.ClosedVolume tankHydrogen(redeclare package Medium = Anode_Medium, V = V_tank_H2, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, nPorts = 2, p_start = P_H2_tank_start, use_HeatTransfer = true, use_portsData = false) annotation(
     Placement(transformation(origin = {-98, 50}, extent = {{-20, 20}, {20, -20}}, rotation = -90)));
   Modelica.Fluid.Sensors.MassFlowRate sen_H2_mflow(redeclare package Medium = Anode_Medium, allowFlowReversal = true) annotation(
     Placement(transformation(origin = {40, -50}, extent = {{10, 10}, {-10, -10}}, rotation = -90)));
