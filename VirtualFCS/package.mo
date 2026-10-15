@@ -1,4 +1,4 @@
-﻿package VirtualFCS "VirtualFCS - VIRTUAL & physical platform for Fuel Cell System development"
+package VirtualFCS "VirtualFCS - VIRTUAL & physical platform for Fuel Cell System development"
   extends Modelica.Icons.Package;
   annotation (
     preferredView="info",

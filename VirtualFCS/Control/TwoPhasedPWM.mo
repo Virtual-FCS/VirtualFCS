@@ -46,6 +46,27 @@ equation
     Line(points = {{62, -50}, {110, -50}}, color = {255, 0, 255}));
 annotation(
     Diagram(graphics),
-    Icon(graphics = {Line(origin = {2, 52},points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {2, 52},points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255})}),
-  __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"));
+    Icon(graphics = {Line(origin = {2, 52}, points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {2, 52}, points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{20, -20}, {22, -20}, {24, -20}, {24, 20}, {44, 20}, {44, -20}, {64, -20}, {64, -16}}, color = {255, 0, 255}), Line(origin = {110, -52}, rotation = 180, points = {{60, -20}, {62, -20}, {64, -20}, {64, 20}, {84, 20}, {84, -20}, {84, -20}, {88, -20}}, color = {255, 0, 255})}),
+    __OpenModelica_simulationFlags(lv = "LOG_STDOUT,LOG_ASSERT,LOG_STATS", s = "dassl", variableFilter = ".*"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Two-phase pulse-width modulation block for generating complementary switching commands from a duty-cycle request.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>f</code></td><td>Modelica.Units.SI.Frequency</td><td>Hz</td><td><code>1000</code></td><td>Switching frequency</td></tr>
+<tr><td><code>theta</code></td><td>Modelica.Units.SI.Angle</td><td>rad</td><td><code>0</code></td><td>Phase angle of the two signals</td></tr>
+<tr><td><code>startTime</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>0</code></td><td>Start time</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>D</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>PWM_1</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.BooleanOutput</td><td>-</td><td></td></tr>
+<tr><td><code>PWM_2</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.BooleanOutput</td><td>-</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end TwoPhasedPWM;

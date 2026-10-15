@@ -1,5 +1,6 @@
 UsersGuide
 Examples
+Chemical
 Control
 Electrical
 Electrochemical
@@ -9,6 +10,4 @@ Thermal
 Powertrains
 SubSystems
 Vehicles
-XInTheLoop
-ComponentTesting
 Utilities

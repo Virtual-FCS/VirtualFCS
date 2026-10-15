@@ -29,6 +29,22 @@ equation
   connect(fixedTemperature.port, liIonBatteryPack_Composite.heatBoundary) annotation (
     Line(points = {{40, -50}, {6, -50}, {6, -30}, {6, -30}, {6, -30}}, color = {191, 0, 0}));
   annotation (
-    Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery pack using the <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite\">LiIonBatteryPack_Composite</a> class. The example is set up to contain nine lithium-ion batteries, with three parallel sets of three batteries in series. The battery pack is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;<div><br></div><div>The pack considered in this example is a composite model with a separate instance of <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell</a> for each cell in the pack. For investigations where cell-level resolution is not necessary and faster runtime required, please see <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\">LiIonBatteryPack_Lumped</a>.</div></body></html>"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This example cycles a composite Li-ion pack containing three parallel strings of three series cells (3p3s). A pulse current alternates between -3.3 A and +3.3 A over a 7200 s experiment.</p><p>The pack starts at ambient temperature, uses a lower BMS voltage limit of 9 V, and exposes each cell individually. Use the lumped-pack example when cell-level resolution is not required.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryPack_Composite;

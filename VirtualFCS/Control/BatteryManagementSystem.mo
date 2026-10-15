@@ -46,5 +46,29 @@ equation
   annotation (
     Icon(graphics={  Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {2, 72}, lineColor = {255, 255, 255}, extent = {{-26, 22}, {26, -22}}, textString = "Load"), Text(origin = {0, -52}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {48, -36}}, textString = "Battery"), Text(origin = {104, 146}, lineColor = {0, 0, 255}, extent = {{-26, 22}, {84, -80}}, textString = "%name"), Text(origin = {62, 24}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {26, -24}}, textString = "SOC_init"), Text(origin = {106, -52}, lineColor = {255, 255, 255}, extent = {{-44, 34}, {-8, 10}}, textString = "Q")}, coordinateSystem(extent = {{-150, -100}, {150, 100}}, initialScale = 0.1)),
     Diagram(coordinateSystem(extent = {{-150, -100}, {150, 100}})),
-    Documentation(info = "<html><head></head><body>The BatteryManagementSystem component is responsible for protecting the battery pack. It ensures that the pack is not overcharged or overdischarged to dangerous state-of-charge levels. It also limits the maximum charging and discharging current the battery pack can support.</body></html>"));
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+The BatteryManagementSystem component is responsible for protecting the battery pack. It ensures that the pack is not overcharged or overdischarged to dangerous state-of-charge levels. It also limits the maximum charging and discharging current the battery pack can support.
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_s</code></td><td>Real</td><td>1</td><td><code>-</code></td><td>Number of Cells in Series</td></tr>
+<tr><td><code>lowerVoltageLimit</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>N_s * 2</code></td><td></td></tr>
+<tr><td><code>upperVoltageLimit</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>N_s * 3.6</code></td><td></td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p_battery</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_p_load</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>SOC_init</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>chargeCapacity</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_n_battery</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_n_load</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>sensorInterface</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end BatteryManagementSystem;

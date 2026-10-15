@@ -40,5 +40,31 @@ equation
   connect(compressor.heatPort, heatPort) annotation(
     Line(points = {{20, -42}, {20, -100}, {-100, -100}}, color = {191, 0, 0}));
 annotation(
-    Documentation(info = "<html><head></head><body><div>This is an implementation of an electric compressor assembly. The unit contains a compressor driven by a DC motor, voltage-controlled by a converter, which is in turn manipulated by a PI controller that attempts to match the reference flow to the inlet flow.</div><div><br></div><div>Note that the unit has an internal controller (by default PI) that needs to be properly tuned to the problem.</div><div>Bad tuning will often show up as high-frequency oscillations in the controller output, which will slow down simulation; detune the controller gain in that case.</div></body></html>"));
+    Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+<div>This is an implementation of an electric compressor assembly. The unit contains a compressor driven by a DC motor, voltage-controlled by a converter, which is in turn manipulated by a PI controller that attempts to match the reference flow to the inlet flow.</div><div><br></div><div>Note that the unit has an internal controller (by default PI) that needs to be properly tuned to the problem.</div><div>Bad tuning will often show up as high-frequency oscillations in the controller output, which will slow down simulation; detune the controller gain in that case.</div>
+<h2>Governing Equations</h2>
+<pre>power = (pin_p.v - pin_n.v)*(pin_p.i);</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>power</code></td><td>The power consumed by the Compressor</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Optional port to which dissipated losses are transported in form of heat</td></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>-</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>-</td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>set_mass_flow</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td>-</td></tr>
+</table>
+</body>
+</html>"));
 end ElectricCompressor;

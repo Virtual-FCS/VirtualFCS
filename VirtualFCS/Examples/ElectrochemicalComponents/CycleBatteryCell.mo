@@ -59,6 +59,22 @@ equation
   connect(pulseCurrent.n, BMS.pin_p_load) annotation (
     Line(points={{18,80},{40,80},{40,58},{10,58},{10,48.9},{11,48.9}},          color = {0, 0, 255}));
   annotation (
-    Documentation(info = "<html><head></head><body>This example demonstrates a single charge-discharge cycle for a Li-ion battery cell. The battery is charged at 1C to its upper voltage limit and held as the current drops. Likewise, the cell is discharged at 1C until it reaches its lower voltage limit.&nbsp;</body></html>"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This example applies a symmetric pulse current to one Li-ion cell for a 7200 s charge-discharge cycle. The current alternates between -2.6 A and +2.6 A with a 3600 s half-period, starting from SOC = 0.</p><p>The cell has a 2.6 Ah capacity, 0.08 kg mass, and is cooled to 298.15 K. The BMS limits the cell voltage during the charge and discharge portions.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell;

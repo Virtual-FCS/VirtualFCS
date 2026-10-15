@@ -1,46 +1,24 @@
 within VirtualFCS.Examples.VehicleExamples;
+
 model RangeExtenderHybridVehicle
-  extends Modelica.Icons.Example;
-  inner Modelica.Fluid.System system annotation (
-    Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.Powertrains.RangeExtenderPowerTrain rangeExtenderPowerTrain(
-    C_bat_pack=50,
-    SOC_init=0.5,                                                                                          V_max_bat_pack = 360, V_min_bat_pack = 250, V_nom_bat_pack = 320) annotation (
-    Placement(visible = true, transformation(origin={58,3.55271e-15},    extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  VirtualFCS.Vehicles.VehicleProfile vehicleProfile(VN="Mirai",                                                 useRegenerativeBreaking = true) annotation (
-    Placement(visible = true, transformation(origin={-2,0},   extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-  VirtualFCS.Vehicles.DriveCycle driveCycle(v="NEDC")                                              annotation (
-    Placement(visible = true, transformation(origin = {-60, -6.66134e-16}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
-
-
-  Real fuel_consumption(start = 0) "The total fuel consumption at the end of simulation";
-  Modelica.Units.SI.Mass hydrogen_mass_init(start = 0) "Initial value of hydrogen mass in tank";
-  Modelica.Units.SI.Efficiency eta_vehicle "Vehicle efficiency";
+  extends BatteryElectricVehicle(redeclare Powertrains.RangeExtenderPowertrain powertrain(batterySystem(C_bat_pack = 10, V_max_bat_pack=600)));
 equation
-  when time > 0.1 then
-    hydrogen_mass_init = rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m;
-  end when;
-  when terminal() then
-    fuel_consumption = (hydrogen_mass_init - rangeExtenderPowerTrain.fuelCellSystem.fuelCellSubSystems.subSystemHydrogen.tankHydrogen.m)/max((vehicleProfile.x * 0.00001), 0.01);
-  end when;
-  if vehicleProfile.useRegenerativeBreaking then
-    if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (rangeExtenderPowerTrain.Power_del_DC_DC * (1 - (rangeExtenderPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)),0);
-    else
-      eta_vehicle = max(((abs(vehicleProfile.P)) / max(abs(vehicleProfile.P) + (abs(rangeExtenderPowerTrain.Power_del_DC_DC) * (1 - (rangeExtenderPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (abs(vehicleProfile.F_accel) * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (abs(vehicleProfile.P) * (1 - vehicleProfile.eff_brake)), 0.00001)), 0);
-    end if;
-  else
-    if vehicleProfile.P > 0 then
-      eta_vehicle = max(((vehicleProfile.P) / max((vehicleProfile.P + (rangeExtenderPowerTrain.Power_del_DC_DC * (1 - (rangeExtenderPowerTrain.eta_drivetrain))) + (vehicleProfile.F_drag * vehicleProfile.v) + (vehicleProfile.F_accel * vehicleProfile.v) + (vehicleProfile.F_roll * vehicleProfile.v) + (vehicleProfile.P * (1 - vehicleProfile.eff_drivetrain))), 0.00001)), 0);
-    else
-      eta_vehicle = 0;
-    end if;
-  end if;
-  connect(driveCycle.y, vehicleProfile.vehicleVelocity) annotation (
-    Line(points={{-36.9,0},{-27.2,0}},  color = {0, 0, 127}));
-  connect(vehicleProfile.pin_p, rangeExtenderPowerTrain.pin_p) annotation (
-    Line(points={{16.9,10.5},{42,10.5},{42,10},{40,10}},    color = {0, 0, 255}));
-  connect(vehicleProfile.pin_n, rangeExtenderPowerTrain.pin_n) annotation (
-    Line(points={{16.9,-10.5},{42,-10.5},{42,-10},{40,-10}},    color = {0, 0, 255}));
-  annotation(experiment(StartTime = 0, StopTime = 10000, Tolerance = 1e-04, Interval = 1));
+  
+  annotation(Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>Vehicle drive-cycle example using the battery-electric vehicle assembly with the powertrain redeclared as RangeExtenderPowertrain. It combines the prescribed driving cycle and vehicle load with a battery/fuel-cell hybrid powertrain.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"));
 end RangeExtenderHybridVehicle;

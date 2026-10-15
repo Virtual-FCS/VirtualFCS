@@ -1,0 +1,15 @@
+ActivationLossAnCa
+ActivationLossNone
+ActivationLossSimple
+BaseActivationLoss
+BaseMassTransportLoss
+BaseOhmic
+BaseVSource
+MassTransferLossNone
+MassTransportLossElec
+MassTransportLossSimple
+OhmicNafion
+OhmicResistance
+VSourceConstant
+VSourceNernst
+VSourceShomate

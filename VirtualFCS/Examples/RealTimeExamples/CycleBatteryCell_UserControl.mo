@@ -21,7 +21,7 @@ model CycleBatteryCell_UserControl "Example demonstrating real time user control
     Placement(visible = true, transformation(origin = {75, -70}, extent = {{15, -10}, {-15, 10}}, rotation = 0)));
   Modelica.Electrical.Analog.Sources.SignalCurrent signalCurrent annotation (
     Placement(visible = true, transformation(origin = {0, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  VirtualFCS.XInTheLoop.UserInTheLoop.ThrottleKeys throttleKeys annotation (
+  VirtualFCS.Utilities.UserInteraction.ThrottleKeys throttleKeys annotation (
     Placement(visible = true, transformation(origin = {-78, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter(uMax = 4.4, uMin = -4.4) annotation (
     Placement(visible = true, transformation(origin = {-38, 84}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -55,6 +55,22 @@ equation
   connect(limiter.y, signalCurrent.i) annotation (
     Line(points = {{-26, 84}, {0, 84}, {0, 84}, {0, 84}}, color = {0, 0, 127}));
   annotation (
-    Documentation(info = "<html><head></head><body>This example demonstrates the galvanostatic operation of a Li-ion battery cell in real time over a period of 30 seconds with the current set by the user via the up and down arrows on the keyboard.&nbsp;<div><br></div><div>Requires that the user load the library: Modelica_DeviceDrivers</div></body></html>"),
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This real-time example lets the user control Li-ion cell current with the keyboard up and down keys. The current is limited to -4.4 A to +4.4 A.</p><p>The cell starts at SOC = 0.01 and 298.15 K. It requires Modelica_DeviceDrivers for keyboard input and real-time scheduling.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+</body></html>"),
     experiment(StartTime = 0, StopTime = 30, Tolerance = 1e-06, Interval = 1));
 end CycleBatteryCell_UserControl;

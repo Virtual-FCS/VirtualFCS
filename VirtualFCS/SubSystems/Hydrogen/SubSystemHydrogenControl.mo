@@ -16,7 +16,7 @@ model SubSystemHydrogenControl
     Placement(transformation(origin = {0, 160}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Interfaces.RealInput stackCurrent annotation (
     Placement(visible = true, transformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Continuous.LimPID pumpSpeedControl_PID(yMin = 0)  annotation(
+  Modelica.Blocks.Continuous.LimPID pumpSpeedControl_PID(yMin = 0, yMax = 1, y(nominal = 1e-4))  annotation(
     Placement(transformation(origin = {0, -60}, extent = {{-20, -20}, {20, 20}})));
   Modelica.Blocks.Interfaces.RealOutput p_h2_set annotation(
     Placement(transformation(origin = {220, 160}, extent = {{-20, -20}, {20, 20}}), iconTransformation(origin = {220, 140}, extent = {{-20, -20}, {20, 20}})));
@@ -55,5 +55,28 @@ equation
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
     Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={Text(origin = {-8, 257}, textColor = {0, 0, 255}, extent = {{-264, 69}, {264, -69}}, textString = "%name"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 2, extent = {{-200, 200}, {200, -200}}, radius = 50), Text(  textColor = {255, 0, 0},extent = {{-200, 100}, {200, -100}}, textString = "H₂
 Control")}),
-    Documentation(info = "<html><head></head><body>The hydrogen sub system control governs the flow and pressure of hydrogen, based on fuel cell current.&nbsp;<br><div><br></div><div><div><br></div><div><b>Description</b></div><div><p class=\"MsoNormal\"><o:p></o:p></p><p class=\"MsoNormal\">The fuel cell interface (output current value) and hydrogen interface (mass flow rate set value) signals are inputs to the&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>&nbsp;and&nbsp;<a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>&nbsp;blocks. Other inputs include hydrogen feed pressure (from hydrogen tank to the fuel cell) and mass flow rate and are set to a constant value. The output signal is concatenated with three values, (1) Hydrogen Feed Pressure input to&nbsp;<a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">Pressure Regulator</a>, (2) Control Signal to&nbsp;<a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>&nbsp;and (3) Set Speed to&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a>. &nbsp;The&nbsp;<a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>&nbsp;blocks uses&nbsp;<span style=\"font-size: 12px;\">simple PID control to set</span>&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a><span style=\"font-size: 12px;\">&nbsp;speed as a function of mass flow and</span>,&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>&nbsp;uses logical conditions<span style=\"font-size: 12px;\">&nbsp;to control&nbsp;</span><a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>.&nbsp;</p><p class=\"MsoNormal\"><b><br></b></p><p class=\"MsoNormal\"><b>List of components</b></p><p class=\"MsoNormal\">The model comprises <a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>,&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>, <a href=\"modelica://Modelica.Blocks.Routing.DeMultiplex2\">DeMultipex2</a>, <a href=\"modelica://Modelica.Blocks.Routing.Multiplex3\">Multiplex3</a>. The subsystem features multiple interface connections all of them are control port.&nbsp;</p></div></div></body></html>"));
+Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p><b>SubSystemHydrogenControl</b> generates the three commands required by the hydrogen supply assembly: hydrogen feed pressure, purge-valve opening, and recirculation-blower speed.</p><h3>Working principle</h3><p>The stack-current input is converted to an estimated hydrogen flow using the cell count and recirculation ratio <code>RR</code>. A minimum-flow path prevents the commanded blower flow from reaching zero. A pressure controller uses the measured blower speed and requested flow to calculate the blower-speed command, while <a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">PurgeValveControl</a> determines purge operation.</p><h3>Interfaces</h3><p><code>p_h2_set</code> provides the pressure-regulator set point, <code>purge_set</code> controls the purge valve, and <code>pumpSpeed_set</code> controls the recirculation blower. The pressure target, cell count, recirculation ratio, minimum flow, and measured blower speed are inputs or parameters of the control arrangement.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>pressure_H2_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>Set H2 Pressure</td></tr>
+<tr><td><code>RR</code></td><td>Real</td><td>1</td><td><code>1.3</code></td><td>Hydrogen recirculation ratio (recirculated/consumed)</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>180</code></td><td>Number of cells in stack</td></tr>
+<tr><td><code>minimumFlow</code></td><td>Modelica.Units.SI.MassFlowRate</td><td>kg/s</td><td><code>1.22e-05</code></td><td>minimum hydrogen flow</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pumpSpeed_measured</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>p_h2_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>purge_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>pumpSpeed_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemHydrogenControl;
