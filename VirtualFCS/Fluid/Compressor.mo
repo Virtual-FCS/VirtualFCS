@@ -9,7 +9,6 @@ model Compressor "Compressor with constant isentropic efficiency"
   parameter Modelica.Units.SI.Power P_nom(displayUnit="kW") = 40000 "Nominal compressor power";
   parameter Modelica.Units.SI.AngularVelocity RPM_nom(displayUnit="rpm") = 8377.580409572781 "Nominal rounds per minute";
 
-  Modelica.Units.SI.AngularVelocity RPM(displayUnit="rpm") = RPM_nom * sqrt(sensor.power/P_nom) "Actual rounds per minute";
   Modelica.Units.SI.MassFlowRate m_flow(min=0, start=1e-4, fixed=true) "Mass flow through the unit";
 
   Modelica.Units.SI.EnthalpyFlowRate Hin  = port_a.m_flow * inStream(port_a.h_outflow) "Enthalpy inflow at inlet";
@@ -56,8 +55,7 @@ equation
 <h2>Model Description and References</h2>
 This compressor model takes a set isentropic efficiency, nominal power and RPM, and calculates the change in flow properties from inlet to outlet.<div>The unit does not implement any fluid holdup, but has an adjustable mechanical&nbsp;<tt>inertia.J</tt>.</div><div><br></div><div>Outlet conditions are calculated using the <tt>isentropicEnthalpy</tt> function of the Medium, which will need to have been implemented: this allows to handle non-ideal gases (e.g. water vapour, ammonia, or any gases at high pressures).</div><div><br></div><div>By default, <tt>heatport</tt>&nbsp;is enabled, which will result in an adiabatic compressor if nothing is connected to it; this is usually the normal case.</div><div>If&nbsp;<tt>heatport</tt>&nbsp;is not enabled, the outlet of the compressor will be set at parameter <tt>T</tt>, which may simulate e.g. an ideal cooler downstream a compressor, whose duty will be given by <tt>lossPower</tt>.</div>
 <h2>Governing Equations</h2>
-<pre>RPM = RPM_nom * sqrt(sensor.power/P_nom);
-Hin = port_a.m_flow * inStream(port_a.h_outflow);
+<pre>Hin = port_a.m_flow * inStream(port_a.h_outflow);
 Hout = port_b.m_flow * port_b.h_outflow;
 state_in = Medium.setState_phX(port_a.p, inStream(port_a.h_outflow), inStream(port_a.Xi_outflow));
 state_out = Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow);
