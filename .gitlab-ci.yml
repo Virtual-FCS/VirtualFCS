@@ -1,0 +1,122 @@
+stages:
+  - test
+
+# ---------------------------------------------------------------------------
+# Shared setup for all VirtualFCS pytest jobs (hidden job, reused via extends)
+# Each job only sets TEST_FILE (path relative to the pyvirtualfcs repo).
+# ---------------------------------------------------------------------------
+.vfcs-pytest-setup:
+  image: openmodelica/openmodelica:v1.20.0-ompython
+  stage: test
+  interruptible: true
+  before_script:
+    # Fail fast if this branch does not have the current VirtualFCS layout (pyvirtualfcs expects dev's layout)
+    - test -f VirtualFCS/Fluid/Examples/HumidifierTest.mo || { echo "This branch does not have the current VirtualFCS layout (merge dev)"; exit 1; }
+
+    # Git + SSH tooling so we can fetch private dependencies
+    - apt-get update -qq && apt-get install -y git curl
+    - command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )
+    - eval $(ssh-agent -s)
+    - echo "$vfcs_ci" | tr -d '\r' | ssh-add -
+
+    # Set up the .ssh directory
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+    # Install Python and pip
+    - apt-get install -y python3 python3-pip python3-venv
+    - python3 -m venv /opt/venv
+    - /opt/venv/bin/pip install --upgrade pip
+    - export PATH="/opt/venv/bin:$PATH"
+
+    # Clone and install PyVirtualFCS
+    - git clone git@gitlab.sintef.no:python/pyvirtualfcs.git
+    - /opt/venv/bin/pip install -r ./pyvirtualfcs/requirements.txt
+
+    # Create OpenModelica user (can't run as root)
+    - useradd -ms /bin/bash omuser
+    - chown -R omuser:omuser ./
+
+    # OpenModelica library installation script
+    - |
+      cat > /tmp/install.mos <<EOF
+      updatePackageIndex();
+      print(getErrorString());
+
+      print("Installing Modelica...\n");
+      print(String(installPackage(Modelica, "4.1.0", exactMatch=true)));
+      print(getErrorString());
+
+      print("Installing Modelica_DeviceDrivers...\n");
+      print(String(installPackage(Modelica_DeviceDrivers, "2.1.0", exactMatch=true)));
+      print(getErrorString());
+      EOF
+
+    # Connection to OpenModelica servers is intermittent from our runners: retry up to 5 times
+    - export OM_LIBS=/home/omuser/.openmodelica/libraries
+    - |
+      for i in 1 2 3 4 5; do
+        su - omuser -c "HOME=./ omc /tmp/install.mos"
+        if ls -d "$OM_LIBS"/Modelica\ 4.1.0* "$OM_LIBS"/Modelica_DeviceDrivers\ 2.1.0* >/dev/null 2>&1; then
+          echo "Modelica libraries installed (attempt $i)"; break
+        fi
+        echo "Install attempt $i failed, retrying in 30 s"; sleep 30
+      done
+    # Stop here if still missing (omc itself always exits 0)
+    - ls -d "$OM_LIBS"/Modelica\ 4.1.0*
+    - ls -d "$OM_LIBS"/Modelica_DeviceDrivers\ 2.1.0*
+
+  script:
+    - echo "Running $TEST_FILE"
+    - su - omuser -c "cd '$CI_PROJECT_DIR/pyvirtualfcs' && /opt/venv/bin/pytest '$TEST_FILE' -v --junitxml=report.xml"
+
+  artifacts:
+    when: always
+    expire_in: 1 week
+    reports:
+      junit: pyvirtualfcs/report.xml   # per-test results in the pipeline "Tests" tab
+    paths:
+      - pyvirtualfcs/report.xml
+
+# ---------------------------------------------------------------------------
+# Component tests (run in parallel)
+# ---------------------------------------------------------------------------
+pytest:compressor:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/components/test_compressor.py
+
+pytest:humidifier:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/components/test_humidifier.py
+
+pytest:fuel-cell:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/components/test_fuel_cell.py
+
+pytest:dc-converter:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/components/test_dc_converter.py
+
+pytest:ammonia-cracker:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/components/test_ammonia_cracker.py
+
+# ---------------------------------------------------------------------------
+# System tests (run in parallel)
+# ---------------------------------------------------------------------------
+pytest:sub-system-air:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/systems/test_sub_system_air.py
+
+pytest:fuel-cell-system:
+  extends: .vfcs-pytest-setup
+  variables:
+    TEST_FILE: tests/virtual_fcs/systems/test_fuel_cell_system.py
