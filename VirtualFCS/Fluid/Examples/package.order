@@ -1,4 +1,6 @@
 CompressorTest
+CompressorMapTest
+CompressorMapSweep
 ElectricCompressorTest
 HumidifierTest
 HumidifierTest_2

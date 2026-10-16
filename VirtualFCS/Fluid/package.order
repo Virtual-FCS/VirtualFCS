@@ -2,6 +2,7 @@ UsersGuide
 Examples
 CompressorInterface
 Compressor
+CompressorMap
 CompressorSimple
 ElectricCompressorInterface
 ElectricCompressor
