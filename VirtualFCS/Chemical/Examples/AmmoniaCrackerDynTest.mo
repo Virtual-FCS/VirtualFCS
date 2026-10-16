@@ -8,7 +8,7 @@ model AmmoniaCrackerDynTest
   parameter Modelica.Units.SI.Temperature T_in = 550 + 273.15 "Inlet temperature (K)";
   parameter Integer N = 10 "Number of reactor computational segments";
   parameter Real heatWeights[N] = {1.8, 1.5, 1.2, 1.0, 0.9, 0.8, 0.7, 0.6, 0.3, 0.2} "Relative heat distribution weights from inlet to outlet";
-  Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(N = N, dp_small = 100, T_out_target = T_out_target, redeclare package AmmoniaMedium = AmmoniaMedium, constantTemperature = false) annotation(
+  Chemical.AmmoniaCracker.AmmoniaCrackerDyn ammoniaCracker(N = N, dp_small = 100, T_out_target = T_out_target, redeclare package AmmoniaMedium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {9, 5}, extent = {{-23, -23}, {23, 23}})));
   Modelica.Fluid.Sources.FixedBoundary cracked_gas_sink(redeclare package Medium = AmmoniaMedium, nPorts = 1, use_p = true, p = P_out, use_T = false, T = T_in) annotation(
     Placement(transformation(origin = {86, 10}, extent = {{10, -10}, {-10, 10}})));
