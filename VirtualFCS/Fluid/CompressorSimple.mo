@@ -34,7 +34,7 @@ equation
 // heatPort not used
   lossPower = 0;
 // Power is equal to energy inflow
-  power = (pin_p.v - pin_n.v)*(pin_n.i);
+  power = (pin_p.v - pin_n.v)*(pin_p.i);
   pin_p.i + pin_n.i = 0;
 // Relate work to p ratio
   power*eta/port_a.m_flow = k*medium_in.R_s*medium_in.T/(k - 1)*((medium_out.p/medium_in.p)^((k - 1)/k) - 1);
