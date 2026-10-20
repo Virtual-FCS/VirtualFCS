@@ -10,10 +10,10 @@ HeatExchangerInterface
 HeatExchanger
 HumidifierInterface
 Humidifier
+NonHumidifier
 MembraneManifold
 MembraneTransfer
 MixingVolume
-NonHumidifier
 PSAInterface
 PSASimple
 PumpElectricDC
