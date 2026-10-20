@@ -30,7 +30,6 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   parameter Real U_tot = 1 "Heat transfer coefficient to atmosphere (W/m^2/K) ";
   parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Outlet temperature target(K)";
   parameter Modelica.Units.SI.Temperature T_start = 550 + 273.15 "Start temperature for whole reactor length";
-
   parameter Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
   parameter Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
   parameter Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
@@ -43,7 +42,6 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   final parameter Modelica.Units.SI.Area A_r = N_tubes*2*3.1415*(D_tubes - t_tubes)/2*z_tube "Catalyst-covered reaction area (m^2)";
   final parameter Modelica.Units.SI.Area A_c = N_tubes*3.1415*(D_tubes/2)^2 "Cross-sectional area (m^2)";
   final parameter Modelica.Units.SI.Area A_s = 2*(H*L + W*L + H*W) "External walls surface area (m^2)";
-
   final parameter Integer N_tubes_x = integer(floor((L + pitch)/(D_tubes + pitch))) "Number of tubes along length of reactor";
   final parameter Integer N_tubes_y = integer(floor((W + pitch)/(D_tubes + pitch))) "Number of tubes along width of reactor";
   final parameter Integer N_tubes = N_tubes_x*N_tubes_y "Number of tubes in the reactor";
@@ -91,11 +89,10 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
   // Declare medium state records and thermodynamic properties
   Modelica.Units.SI.Density rho_mix[N](start = fill(rho_NH3_start, N));
   Modelica.Units.SI.DynamicViscosity mu_mix[N];
-  
   AmmoniaMedium.BaseProperties medium_inlet "Medium in the source";
   AmmoniaMedium.BaseProperties medium_outlet "Medium in the source";
-  
   // Reaction rate
+
   function rate
     input Real a, b, T, k0, Ea, R, k_eq;
     input Real P_NH3, P_N2, P_H2;
@@ -138,7 +135,6 @@ model AmmoniaCrackerStatic "Ammonia cracker model based on a tube and shell conf
 
   // Compute mass, momentum and energy balances
 equation
-     
   g_catalyst_mol_flow_NH3 = W_cat*A_r/(mol_flow_NH3_in*3600);
 // Compute variables along reactor length
   for i in 1:N loop
@@ -159,7 +155,6 @@ equation
     if i == 1 then
 // Compute reaction rate (minimume ensures no negative ammonia fractions)
       r_rxn[i] = max(0, min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), mol_flow_NH3_in/W_cat/A_r*N));
-      
 // Mass balance
       mol_flow_NH3[i] = mol_flow_NH3_in + nu_NH3*r_rxn[i]*W_cat*A_r/N;
       mol_flow_H2[i] = mol_flow_H2_in + nu_H2*r_rxn[i]*W_cat*A_r/N;
@@ -191,8 +186,7 @@ equation
       Q_loss[i] = U_tot*A_s/N*(T[i] - T_a);
     end if;
   end for;
-  
- // Calculate total heat duty
+// Calculate total heat duty
   Q_tot = sum(Q_r) + sum(Q_loss);
 // Expose the total heat duty, evenly split, on the segmented heat port
   for i in 1:N loop
@@ -212,16 +206,13 @@ equation
   port_b.p = P_out;
   port_b.m_flow = -m_flow_feed;
   port_b.Xi_outflow = {Xi_outflow_NH3[N], Xi_outflow_H2[N]};
-  
-  //Inlet/outlet monitoring (To remove when things work)
-   port_a.p          = medium_inlet.p;
-   port_a.h_outflow  = medium_inlet.h;
-   port_a.Xi_outflow = medium_inlet.Xi;
-   
-   port_b.p          = medium_outlet.p;
-   port_b.h_outflow  = medium_outlet.h;
-   port_b.Xi_outflow = medium_outlet.Xi;
-   
+//Inlet/outlet monitoring (To remove when things work)
+  port_a.p = medium_inlet.p;
+  port_a.h_outflow = medium_inlet.h;
+  port_a.Xi_outflow = medium_inlet.Xi;
+  port_b.p = medium_outlet.p;
+  port_b.h_outflow = medium_outlet.h;
+  port_b.Xi_outflow = medium_outlet.Xi;
   annotation(
     Documentation(info = "<html><head></head><body><h2>1. Parameters and inputs</h2><p>Parameters, signal inputs, and physical input-side interfaces are listed below.&nbsp;</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr><tr><td><code>N</code></td><td>Integer</td><td>1</td><td>50</td><td>Number of reactor computational segments</td></tr>
 <tr><td><code>H</code></td><td>SI.Length</td><td>m</td><td>12.0</td><td>Reactor height (m)</td></tr>
@@ -263,5 +254,6 @@ rho_N2 = NitrogenMedium.density(state_N2);
 mu_NH3 = AmmoniaMedium.dynamicViscosity(state_NH3);</pre><h2>4. Outputs</h2><p>Declared signal outputs and output-side physical interfaces are listed below.</p><table border=\"&quot;1&quot;\" cellspacing=\"&quot;0&quot;\" cellpadding=\"&quot;4&quot;\"><tbody><tr><th>Name</th><th>Direction</th><th>Interface</th><th>Unit</th><th>Description</th></tr><tr><td><code>port_b</code></td><td>Output-side interface</td><td>FluidPort_b</td><td>-</td><td></td></tr>
 <tr><td><code>r</code></td><td>output</td><td>Real</td><td>1</td><td></td></tr>
 <tr><td><code>Pz</code></td><td>output</td><td>Real</td><td>1</td><td>Pressure at position z [Pa]</td></tr>
-<tr><td><code>f</code></td><td>output</td><td>Real</td><td>1</td><td>Friction factor</td></tr></tbody></table></body></html>"));
+<tr><td><code>f</code></td><td>output</td><td>Real</td><td>1</td><td>Friction factor</td></tr></tbody></table></body></html>"),
+    Icon(graphics = {Text(origin = {22, -44}, textColor = {0, 0, 255}, extent = {{-28, 0}, {28, -14}}, textString = "Static")}));
 end AmmoniaCrackerStatic;

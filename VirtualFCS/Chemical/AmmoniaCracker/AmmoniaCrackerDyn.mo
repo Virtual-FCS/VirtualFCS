@@ -17,7 +17,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   constant Real a = 0.37 "Kinetic parameter Co-Ba/CeO2 catalyst (Realpe 2023)";
   constant Real b = -1.04 "Kinetic parameter Co-Ba/CeO2 catalyst (Realpe 2023)";
   constant Real R = 8.314 "Gas constant (J/mol/K)";
-
   // SI molar masses (kg/mol) used consistently in the balances
   constant Modelica.Units.SI.MolarMass MM_NH3 = M_NH3/1000;
   constant Modelica.Units.SI.MolarMass MM_H2 = M_H2/1000;
@@ -25,7 +24,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   constant Integer idx_NH3 = 1 "Index of ammonia in Medium's X array";
   constant Integer idx_H2 = 2 "Index of hydrogen in Medium's X array";
   constant Integer idx_N2 = 3 "Index of nitrogen in Medium's X array";
-
   // Reactor geometry parameters
   parameter Modelica.Units.SI.Length H = 12.0 "Reactor height (m)";
   parameter Modelica.Units.SI.Length L = 1.0 "Reactor length (m)";
@@ -35,24 +33,19 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Modelica.Units.SI.Length D_tubes = 10e-2 "Tubes diameter (m)";
   parameter Modelica.Units.SI.Length t_tubes = 5e-3 "Tubes wall thickness(m)";
   parameter Real W_cat = 4 "Mass loading catalyst in reactor (g/m^2)";
- 
   // Flow and thermodynamic parameters
   parameter Modelica.Units.SI.Temperature T_out_target = 550 + 273.15 "Outlet temperature target(K)";
   parameter Modelica.Units.SI.Temperature T_start = 550 + 273.15 "Start temperature for whole reactor length";
-  
   // Reaction energetics
   parameter Modelica.Units.SI.MolarEnergy deltaH_rxn = 46.0e3 "Endothermic enthalpy of the ammonia decomposition reaction per mol of NH3 converted (J/mol)";
   parameter Modelica.Units.SI.Temperature T_a = 293.15 "Ambient temperature used by external thermal boundary models (K)";
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer U_tot = 1 "Heat transfer coefficient to atmosphere (W/m2/K)";
- 
   // Solid (tube wall + catalyst) thermal inertia seen by the gas
   parameter Modelica.Units.SI.Density rho_wall = 7850 "Tube wall material density (kg/m3)";
   parameter Modelica.Units.SI.SpecificHeatCapacity cp_wall = 500 "Tube wall material specific heat capacity (J/kg/K)";
- 
   // Dynamics options
   parameter Modelica.Units.SI.Pressure p_start = 30e5 "Initial pressure in every segment";
   parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {NH3, H2, N2} in every segment";
- 
   // Numerical regularization
   parameter Modelica.Units.SI.Pressure dp_small = 1e3 "Regularization range of the face pressure drop (Pa)";
   parameter Modelica.Units.SI.Time tau_rxn_min = 0.05 "Minimum time in which the NH3 inventory of a segment may be consumed (limits the reaction rate)";
@@ -61,7 +54,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 0.3 "Nominal feed mass flow rate used to scale dp_inlet_nominal";
   parameter Modelica.Units.SI.MassFlowRate m_flow_small = 1e-3 "Flow range over which the upwind face composition switches smoothly between the two neighbours";
   parameter Modelica.Units.SI.DynamicViscosity mu_nominal = 3.5e-5 "Viscosity used to evaluate the friction factor at nominal flow";
-  
   // Calculated parameters
   final parameter Real k0 = 3.33/3.6*1e10 "Pre-exponential factor (mol/(kg*s))";
   final parameter Modelica.Units.SI.Length z_tube = H*(1 - z_head) "Tubes length(m)";
@@ -80,16 +72,13 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   final parameter Real deltaG_0 = 95517 - 193.67*T_out_target - 0.035293*T_out_target^2 + (9.22*10e-6*T_out_target^3);
   final parameter Real k_eq = exp(-deltaG_0/R/T_out_target) "Equilibrium constant for the ammonia decomposition reaction";
   final parameter Modelica.Units.SI.Density rho_start = p_start/(R*T_start*(X_start[idx_H2]/MM_H2 + X_start[idx_N2]/MM_N2 + X_start[idx_NH3]/MM_NH3)) "Initial mixture density (ideal gas)";
-
   final parameter Real Re_nominal = m_flow_nominal*D_tubes/(A_flow*mu_nominal) "Reynolds number at nominal flow";
   final parameter Real f_nominal = frictionFactor(Re_nominal) "Friction factor at nominal flow";
- 
   // Segment states (lumped volume inventories, PartialLumpedVolume style)
   Modelica.Units.SI.Mass m_H2[N](each start = X_start[idx_H2]*rho_start*V_seg, each fixed = true) "H2 inventory of each segment";
   Modelica.Units.SI.Mass m_N2[N](each start = X_start[idx_N2]*rho_start*V_seg, each fixed = true) "N2 inventory of each segment";
   Modelica.Units.SI.Mass m_NH3[N](each start = X_start[idx_NH3]*rho_start*V_seg, each fixed = true) "NH3 inventory of each segment";
   Modelica.Units.SI.Temperature T[N](each start = T_start, each fixed = false) "Gas temperature of each segment (K)";
- 
   // Segment quantities
   Modelica.Units.SI.Mass m_tot[N] "Total gas inventory of each segment";
   Modelica.Units.SI.Density rho_mix[N] "Mixture density of each segment";
@@ -111,7 +100,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Real NH3_conversion[N] "Fraction of ammonia reacted";
   Modelica.Units.SI.HeatFlowRate Q_rxn[N] "Heat consumed by the reaction in each segment (W)";
   Modelica.Units.SI.HeatFlowRate Q_loss[N] "Heat lost from each segment through the thermal boundary (W)";
-  
   // Face (segment boundary) quantities: face j is upstream of segment j, face N+1 is the outlet
   Modelica.Units.SI.MassFlowRate m_flow_face[N + 1] "Mass flow rate through each segment boundary";
   Modelica.Units.SI.MassFlowRate m_flow_balance "Variable that checks reactor's mass conservation";
@@ -119,20 +107,18 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Modelica.Units.SI.MassFraction w_N2_face[N + 1] "Upwind N2 mass fraction at each face";
   Modelica.Units.SI.MassFraction w_NH3_face[N + 1] "Upwind NH3 mass fraction at each face";
   Real k_face[N + 1] "Quadratic friction coefficient of each face (Pa/(kg/s)^2)";
-  
   // Non-dimensional and transport variables
   Modelica.Units.SI.Velocity v_gas[N] "Gas mixture velocity (m/s)";
   Real Re[N] "Reynolds number";
   Real f[N] "Friction factor";
   Modelica.Units.SI.DynamicViscosity mu_mix[N] "Mixture dynamic viscosity";
   Modelica.Units.SI.SpecificHeatCapacity cp_mix[N] "Mixture specific heat capacity";
-  
   // Inlet conditions
   Modelica.Units.SI.SpecificEnergy h_inlet "Mixture inlet specific enthalpy";
   Modelica.Units.SI.Temperature T_in "Mixture inlet temperature";
   Modelica.Units.SI.SpecificEnthalpy h_feed_seg1 "Specific enthalpy of the feed composition at the pressure and temperature of segment 1";
-  
   // Reaction rate
+
   function rate
     input Real a, b, T, k0, Ea, R, k_eq;
     input Real P_NH3, P_N2, P_H2;
@@ -142,6 +128,7 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   end rate;
 
   // Compute friction factor
+
   function frictionFactor
     input Real Re "Reynolds number";
     output Real f "Friction factor";
@@ -157,7 +144,6 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
       f := 0.3163*Re_lim^(-0.25);
     end if;
   end frictionFactor;
-
 equation
   for i in 1:N loop
 // Inventory of the lumped volume
@@ -184,7 +170,6 @@ equation
     v_gas[i] = m_flow_face[i]/(rho_mix[i]*A_flow);
     Re[i] = rho_mix[i]*abs(v_gas[i])*D_tubes/mu_mix[i];
     f[i] = f_nominal;
-   
 // Reaction rate, limited by the NH3 inventory of the segment so that it cannot become negative
     r_rxn[i] = max(0, min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), n_NH3[i]/(tau_rxn_min*m_cat_seg)));
     R_NH3[i] = r_rxn[i]*m_cat_seg;
@@ -195,11 +180,9 @@ equation
     der(m_H2[i]) = m_flow_face[i]*w_H2_face[i] - m_flow_face[i + 1]*w_H2_face[i + 1] + nu_H2*R_NH3[i]*MM_H2;
     der(m_N2[i]) = m_flow_face[i]*w_N2_face[i] - m_flow_face[i + 1]*w_N2_face[i + 1] + nu_N2*R_NH3[i]*MM_N2;
 // Energy balance
-
 // Only the streams entering the segment change its temperature (forward inflow through face i, reverse inflow through face i+1).
 // The feed term uses enthalpies so that the latent heat of a partly liquid feed is accounted for.
-(m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = noEvent(max(m_flow_face[i], 0))*(if i == 1 then h_inlet - h_feed_seg1 else cp_mix[i]*(T[i - 1] - T[i])) + noEvent(max(-m_flow_face[i + 1], 0))*cp_mix[i]*((if i == N then T[N] else T[i + 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
-
+    (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i]) = noEvent(max(m_flow_face[i], 0))*(if i == 1 then h_inlet - h_feed_seg1 else cp_mix[i]*(T[i - 1] - T[i])) + noEvent(max(-m_flow_face[i + 1], 0))*cp_mix[i]*((if i == N then T[N] else T[i + 1]) - T[i]) - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow;
     heatPorts[i].T = T[i];
   end for;
 // Upwind (donor cell) face compositions for both flow directions (smooth switch within +-m_flow_small)
@@ -230,7 +213,7 @@ equation
   m_flow_face[N + 1] = regRoot(P_tot[N] - port_b.p, dp_small)/sqrt(k_face[N + 1]);
 // Connect fluid interfaces
   m_flow_face[1] = port_a.m_flow;
-  // Same regularised law as the internal faces: finite conductance at low (controlled) feed flows
+// Same regularised law as the internal faces: finite conductance at low (controlled) feed flows
   m_flow_face[1] = regRoot(port_a.p - P_tot[1], dp_small)/sqrt(k_face[1]);
   port_a.h_outflow = AmmoniaMedium.specificEnthalpy(AmmoniaMedium.setState_pTX(P_tot[1], T[1], {w_NH3[1], w_H2[1]}));
   port_a.Xi_outflow = {w_NH3[1], w_H2[1]};
@@ -351,5 +334,5 @@ m_flow_face[j] = regRoot(upstream pressure - downstream pressure, dp_small)
 <tr><td><code>T_in</code></td><td>Monitored variable</td><td>SI.Temperature</td><td>K</td><td>Temperature inferred from the incoming port_a stream</td></tr>
 </tbody></table>
 </body></html>"),
-    Icon(graphics = {Rectangle(fillColor = {215, 230, 245}, fillPattern = FillPattern.Solid, extent = {{-100, 60}, {100, -60}}), Text(extent = {{-100, 100}, {100, 66}}, textString = "%name"), Text(extent = {{-80, 30}, {80, -30}}, textString = "NH3 cracker\ndynamic")}));
+    Icon(graphics = {Text(extent = {{-100, 100}, {100, 66}}, textString = "%name"), Text(origin = {26, -49}, textColor = {0, 0, 255}, extent = {{-22, -7}, {22, 7}}, textString = "Dynamic")}));
 end AmmoniaCrackerDyn;

@@ -16,8 +16,8 @@ model AmmoniaCrackerDynTest
     Placement(transformation(origin = {-68, 10}, extent = {{-10, -10}, {10, 10}})));
   Modelica.Fluid.Sensors.Temperature T_out_cracker(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {46, -40}, extent = {{10, -10}, {-10, 10}})));
-  AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr(N = N, T_out_target = T_out_target)  annotation(
-    Placement(transformation(origin = {8, -42}, extent = {{-10, -10}, {10, 10}}, rotation = -180)));
+  AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr(N = N, T_out_target = T_out_target) annotation(
+    Placement(transformation(origin = {10, -42}, extent = {{-10, -10}, {10, 10}}, rotation = -180)));
 equation
   connect(ammoniaCracker.port_b, cracked_gas_sink.ports[1]) annotation(
     Line(points = {{32, 10}, {76, 10}}, color = {0, 127, 255}));
@@ -26,9 +26,9 @@ equation
   connect(T_out_cracker.port, ammoniaCracker.port_b) annotation(
     Line(points = {{46, -50}, {46, -64}, {58, -64}, {58, 10}, {32, 10}}, color = {0, 127, 255}));
   connect(T_out_cracker.T, electricHeatingDistr.T_meas) annotation(
-    Line(points = {{39, -40}, {29, -40}, {29, -39}, {17, -39}}, color = {0, 0, 127}));
+    Line(points = {{39, -40}, {29, -40}, {29, -39}, {19, -39}}, color = {0, 0, 127}));
   connect(electricHeatingDistr.heatPorts, ammoniaCracker.heatPorts) annotation(
-    Line(points = {{8, -32}, {10, -32}, {10, -18}}, color = {191, 0, 0}, thickness = 0.5));
+    Line(points = {{10, -32}, {10, -18}}, color = {191, 0, 0}, thickness = 0.5));
   annotation(
     experiment(StartTime = 0, StopTime = 100, Tolerance = 1e-06, Interval = 0.01),
     Documentation(info = "<html><p>This test feeds the dynamic ammonia cracker with 0.3 kg/s at 550 degC and evaluates the outlet at 3e5 Pa. The inlet composition is set to X = {1, 0, 0} in the cracked-ammonia medium order {NH3, H2, N2}. The example uses fewer axial segments and a wider pressure-flow regularization band than the default model to keep simulation turnaround short.</p></html>"),

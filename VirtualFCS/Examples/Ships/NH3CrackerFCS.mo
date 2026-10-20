@@ -129,9 +129,7 @@ equation
   connect(p_H2_tank.p, p_H2_filter.u) annotation(
     Line(points = {{25, -86}, {5, -86}, {5, -90}}, color = {0, 0, 127}));
   connect(ammoniaCracker.port_b, cooler.port_a) annotation(
-    Line(points = {{71, 73}, {71, 72.09}, {85, 72.09}, {85, 11.18}, {80.88, 11.18}, {80.88, 7.18}, {86.76, 7.18}}, color = {0, 127, 255}));
-  connect(cooler.port_b, psa.feed) annotation(
-    Line(points = {{86, -12}, {86, -56}, {66, -56}}, color = {0, 127, 255}));
+    Line(points = {{71, 73}, {71, 72.09}, {85, 72.09}, {85, 11.18}, {85.88, 11.18}, {85.88, 7.18}, {86.76, 7.18}}, color = {0, 127, 255}));
   connect(cooling.port, cooler.heatPorts[1]) annotation(
     Line(points = {{64, -2}, {82, -2}}, color = {191, 0, 0}));
   connect(T_cool_setpoint.y, coolController.u_s) annotation(
@@ -161,6 +159,8 @@ equation
     Line(points = {{-86, 60}, {-78, 60}}, color = {0, 0, 127}));
   connect(p_H2_filter.y, feedController.u_m) annotation(
     Line(points = {{-8, -90}, {-18, -90}, {-18, -98}, {-98, -98}, {-98, 46}, {-70, 46}, {-70, 52}}, color = {0, 0, 127}));
+  connect(cooler.port_b, psa.feed) annotation(
+    Line(points = {{86, -12}, {86, -50}, {60, -50}, {60, -52}}, color = {0, 127, 255}));
   annotation(
     experiment(StopTime = 60, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"),
     Diagram,
