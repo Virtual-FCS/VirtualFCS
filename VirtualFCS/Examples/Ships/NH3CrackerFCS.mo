@@ -104,7 +104,7 @@ equation
   connect(heater1.port, NH3Vaporizer.heatPorts[1]) annotation(
     Line(points = {{-2, 86}, {-2, 69}, {0, 69}, {0, 58}, {-11, 58}, {-11, 36}, {-12, 36}}, color = {191, 0, 0}));
   connect(NH3Vaporizer.port_b, ammoniaFeedCheck.port_a) annotation(
-    Line(points = {{-2, 32}, {16, 32}, {16, 52}}, color = {0, 127, 255}));
+    Line(points = {{-2, 32}, {9, 32}, {9, 52}, {16, 52}}, color = {0, 127, 255}));
   connect(ammoniaFeedCheck.port_b, ammoniaCracker.port_a) annotation(
     Line(points = {{28, 52}, {31, 52}, {31, 73}}, color = {0, 127, 255}));
   connect(temp_in_cracker.port, ammoniaCracker.port_a) annotation(
@@ -133,14 +133,8 @@ equation
     Line(points = {{71, 73}, {71, 72.09}, {85, 72.09}, {85, 11.18}, {85.88, 11.18}, {85.88, 7.18}, {86.76, 7.18}}, color = {0, 127, 255}));
   connect(cooling.port, cooler.heatPorts[1]) annotation(
     Line(points = {{64, -2}, {82, -2}}, color = {191, 0, 0}));
-  connect(T_cool_setpoint.y, coolController.u_s) annotation(
-    Line(points = {{-9.4, -12}, {-1.9, -12}, {-1.9, -22}, {3.6, -22}}, color = {0, 0, 127}));
-  connect(temp_in_psa.T, coolController.u_m) annotation(
-    Line(points = {{61, -36}, {14, -36}, {14, -32}}, color = {0, 0, 127}));
-  connect(coolController.y, cooling.Q_flow) annotation(
-    Line(points = {{23, -22}, {42.5, -22}, {42.5, -2}, {44, -2}}, color = {0, 0, 127}));
   connect(temp_in_psa.port, cooler.port_b) annotation(
-    Line(points = {{68, -46}, {68, -20}, {86, -20}, {86, -12}}, color = {0, 127, 255}));
+    Line(points = {{72, -40}, {72, -44}, {86, -44}, {86, -12}}, color = {0, 127, 255}));
   connect(tailSink.ports[1], psa.tail) annotation(
     Line(points = {{74, -78}, {74, -60}, {66, -60}}, color = {0, 127, 255}));
   connect(ammoniaTank.ports[1], ammoniaPump.port_a) annotation(
@@ -168,6 +162,12 @@ equation
     Line(points = {{-36, 88}, {-28, 88}, {-28, 86}, {-22, 86}}, color = {0, 0, 127}));
   connect(temp_in_cracker.T, heatController.u_m) annotation(
     Line(points = {{10, 84}, {4, 84}, {4, 70}, {-44, 70}, {-44, 78}}, color = {0, 0, 127}));
+  connect(T_cool_setpoint.y, coolController.u_s) annotation(
+    Line(points = {{-6, -6}, {0, -6}, {0, -16}, {8, -16}}, color = {0, 0, 127}));
+  connect(coolController.u_m, temp_in_psa.T) annotation(
+    Line(points = {{18, -26}, {18, -30}, {65, -30}}, color = {0, 0, 127}));
+  connect(cooling.Q_flow, coolController.y) annotation(
+    Line(points = {{44, -2}, {32, -2}, {32, -16}, {26, -16}}, color = {0, 0, 127}));
   annotation(
     experiment(StopTime = 60, Interval = 0.5, Tolerance = 1e-06, __Dymola_Algorithm = "Dassl"),
     Diagram,

@@ -2,10 +2,12 @@ within VirtualFCS.Chemical.AmmoniaCracker;
 
 model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Same kinetics as AmmoniaCracker, but each of the N computational segments is a Modelica.Fluid.Interfaces.PartialLumpedVolume-style control volume so that transient pressure build-up is captured."
   extends AmmoniaCrackerInterface;
+ 
   // Import relevant packages
   import Modelica.Fluid.Utilities.regRoot;
   import Modelica.Fluid.Utilities.regSquare;
   import Modelica.Fluid.Utilities.regStep;
+ 
   // Define constant parameters
   constant Real M_NH3 = 17 "Molar mass g/mol";
   constant Real M_H2 = 2 "Molar mass g/mol";
@@ -51,7 +53,7 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Modelica.Units.SI.Time tau_rxn_min = 0.05 "Minimum time in which the NH3 inventory of a segment may be consumed (limits the reaction rate)";
   parameter Modelica.Units.SI.Pressure dp_inlet_nominal = 0 "Pressure loss of the inlet header/distributor at m_flow_nominal (added to the inlet face)";
   parameter Modelica.Units.SI.Pressure dp_outlet_nominal = 0 "Pressure loss of the outlet header at m_flow_nominal (added to the outlet face)";
-  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 0.3 "Nominal feed mass flow rate used to scale dp_inlet_nominal";
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nominal = 0.03 "Nominal feed mass flow rate used to scale dp_inlet_nominal";
   parameter Modelica.Units.SI.MassFlowRate m_flow_small = 1e-3 "Flow range over which the upwind face composition switches smoothly between the two neighbours";
   parameter Modelica.Units.SI.DynamicViscosity mu_nominal = 3.5e-5 "Viscosity used to evaluate the friction factor at nominal flow";
   // Calculated parameters
@@ -74,11 +76,14 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   final parameter Modelica.Units.SI.Density rho_start = p_start/(R*T_start*(X_start[idx_H2]/MM_H2 + X_start[idx_N2]/MM_N2 + X_start[idx_NH3]/MM_NH3)) "Initial mixture density (ideal gas)";
   final parameter Real Re_nominal = m_flow_nominal*D_tubes/(A_flow*mu_nominal) "Reynolds number at nominal flow";
   final parameter Real f_nominal = frictionFactor(Re_nominal) "Friction factor at nominal flow";
+   Modelica.Units.SI.MassFlowRate m_flow_balance "Variable that checks reactor's mass conservation";
+
   // Segment states (lumped volume inventories, PartialLumpedVolume style)
   Modelica.Units.SI.Mass m_H2[N](each start = X_start[idx_H2]*rho_start*V_seg, each fixed = true) "H2 inventory of each segment";
   Modelica.Units.SI.Mass m_N2[N](each start = X_start[idx_N2]*rho_start*V_seg, each fixed = true) "N2 inventory of each segment";
   Modelica.Units.SI.Mass m_NH3[N](each start = X_start[idx_NH3]*rho_start*V_seg, each fixed = true) "NH3 inventory of each segment";
   Modelica.Units.SI.Temperature T[N](each start = T_start, each fixed = false) "Gas temperature of each segment (K)";
+ 
   // Segment quantities
   Modelica.Units.SI.Mass m_tot[N] "Total gas inventory of each segment";
   Modelica.Units.SI.Density rho_mix[N] "Mixture density of each segment";
@@ -100,19 +105,21 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   Real NH3_conversion[N] "Fraction of ammonia reacted";
   Modelica.Units.SI.HeatFlowRate Q_rxn[N] "Heat consumed by the reaction in each segment (W)";
   Modelica.Units.SI.HeatFlowRate Q_loss[N] "Heat lost from each segment through the thermal boundary (W)";
+ 
   // Face (segment boundary) quantities: face j is upstream of segment j, face N+1 is the outlet
   Modelica.Units.SI.MassFlowRate m_flow_face[N + 1] "Mass flow rate through each segment boundary";
-  Modelica.Units.SI.MassFlowRate m_flow_balance "Variable that checks reactor's mass conservation";
   Modelica.Units.SI.MassFraction w_H2_face[N + 1] "Upwind H2 mass fraction at each face";
   Modelica.Units.SI.MassFraction w_N2_face[N + 1] "Upwind N2 mass fraction at each face";
   Modelica.Units.SI.MassFraction w_NH3_face[N + 1] "Upwind NH3 mass fraction at each face";
   Real k_face[N + 1] "Quadratic friction coefficient of each face (Pa/(kg/s)^2)";
+  
   // Non-dimensional and transport variables
   Modelica.Units.SI.Velocity v_gas[N] "Gas mixture velocity (m/s)";
   Real Re[N] "Reynolds number";
   Real f[N] "Friction factor";
   Modelica.Units.SI.DynamicViscosity mu_mix[N] "Mixture dynamic viscosity";
   Modelica.Units.SI.SpecificHeatCapacity cp_mix[N] "Mixture specific heat capacity";
+ 
   // Inlet conditions
   Modelica.Units.SI.SpecificEnergy h_inlet "Mixture inlet specific enthalpy";
   Modelica.Units.SI.Temperature T_in "Mixture inlet temperature";
@@ -170,6 +177,7 @@ equation
     v_gas[i] = m_flow_face[i]/(rho_mix[i]*A_flow);
     Re[i] = rho_mix[i]*abs(v_gas[i])*D_tubes/mu_mix[i];
     f[i] = f_nominal;
+    //f[i] = frictionFactor(Re[i]);
 // Reaction rate, limited by the NH3 inventory of the segment so that it cannot become negative
     r_rxn[i] = max(0, min(rate(a = a, b = b, T = T[i], k0 = k0, Ea = Ea, R = R, k_eq = k_eq, P_NH3 = P_NH3[i], P_N2 = P_N2[i], P_H2 = P_H2[i]), n_NH3[i]/(tau_rxn_min*m_cat_seg)));
     R_NH3[i] = r_rxn[i]*m_cat_seg;

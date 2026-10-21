@@ -7,16 +7,17 @@ model PEMElectrolyser
   import SI = Modelica.Units.SI;
   
   final constant Integer n = 2 "Electrons exchanged in reaction";
-  parameter Integer N_cells = 42 "Number of cells in the stack";
+  //parameter Integer N_cells = 42 "Number of cells in the stack";
   parameter Real n_drag = 4 "Electro-osmotic drag coefficient";
   
+  inner parameter Integer N_cells = 42 "Number of cells in the stack";
   inner Modelica.Units.SI.Temperature T_stack = heatPort.T;
   
-  replaceable Modelica.Electrical.Analog.Sources.ConstantVoltage voltage_source(V = N_cells*1.5) annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.ECM.VSourceConstant voltage_source(V_av=1.5) annotation(
     Placement(transformation(origin = {-40, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -180)));
   replaceable Modelica.Electrical.Analog.Basic.Resistor ohmic(R=N_cells*0.01) "Internal resistance" annotation(
     Placement(transformation(origin = {80, 100}, extent = {{-20, 20}, {20, -20}}))) ;
-  replaceable Modelica.Electrical.Analog.Ideal.Short activation annotation(
+  replaceable VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossNone activation annotation(
     Placement(transformation(origin = {20, 100}, extent = {{-20, 20}, {20, -20}})));
   Modelica.Electrical.Analog.Sensors.MultiSensor multiSensor annotation(
     Placement(transformation(origin = {-100, 120}, extent = {{20, -20}, {-20, 20}}, rotation = -90)));
