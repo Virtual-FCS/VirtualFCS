@@ -1,5 +1,5 @@
 # VirtualFCS Library
-VirtualFCS is a Modelica library for fuel cell system modelling developed through the EU H2020 research project Virtual-FCS.
+VirtualFCS is an open Modelica library for dynamic modelling of hydrogen and hybrid energy systems. It brings together electrochemical, electrical, fluid, thermal, control, and vehicle models, with examples ranging from PEM fuel cell vehicles to ammonia cracking.
 
 [![2023: v2.0.0](https://img.shields.io/badge/Release-2023%3A%20v2.0.0-blue)![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220)
 [![OpenModelica v1.20 win64](https://img.shields.io/badge/OpenModelica-v1.20%20win64-blue)](https://openmodelica.org/)
@@ -25,18 +25,33 @@ Note that library versions older than v2.0.0 requires OpenModelica v1.14.
 
 The objective of the complete hybrid system model is to reproduce and simulate the dynamic behavior of all the components according to the desired architecture. Depending on the possibilities, degradation mechanisms of the components will be considered in order to predict the performance losses of the entire system.
 
+
+
+
+
+ 
+
 ![picture](img/hydrogen-high-res.jpg)
 
-The model is rather dedicated to transport applications. However, it should remain reliable for other applications. Consequently, the model must considerate dynamics phenomena linked to all applications. The perimeter of the model is limited to hybrid fuel cell system which refers to the fuel cell stack, the battery, and ancillaries. The Figure 2 highlights the system considered in the project. 
+Here is the library examplified with transport application. However, the library is well suited for other applications, such as stationary systems, electrolysers, and ammonia cracking. Under a fuel cell-battery hybrid electric vehicle, and a general layout of its propulsion system can be seen. Example of this application can be found in the library.
+
 
 ![picture](img/VirtualFCS_Model_Scope.png)
 
+### The library contains:
+
+- **Electrochemical systems:** PEM fuel cells and stacks, fuel-cell systems, batteries, and PEM electrolysers.
+- **Balance of plant:** hydrogen, air, and cooling subsystems, compressors, humidifiers, heat exchangers, and related controls.
+- **System integration:** battery-electric and fuel cell range-extender powertrains.
+- **Other applications:** ammonia-cracking system case study, vehicle drive cycles, hardware-, software-, and user-in-the-loop examples.
+
+
 
 ## System Requirements and Installation
-The VirtualFCS library is designed to work with OpenModelica and supports version 1.20. To install OpenModelica, please visit their website:
+The VirtualFCS library is designed to work with OpenModelica and supports versions from 1.20 to 1.27, and Modelica Standard Library 4.1.0. To install OpenModelica, please visit their website:
 
 [Information about OpenModelica](https://www.openmodelica.org/)<br/>
-[Download OpenModelica v1.20 for Windows](https://build.openmodelica.org/omc/builds/windows/releases/1.20/0/)<br/>
+[Download OpenModelica v1.27 for Windows](https://build.openmodelica.org/omc/builds/windows/releases/1.27/1/)<br/>
 [OpenModelica on GitHub](https://github.com/OpenModelica)<br/>
 
 To use the VirtualFCS library, follow these steps:
@@ -49,9 +64,9 @@ Development and conventions
 ------------------------
 
 ### Workflow
-The VirtualFCS library is currently in development by members of the Virtual-FCS project. The project started in 2020 and will continue through 2022. Minor releases are planned every 3 months of the project. Development should always take place on a side branch. Never pull to main. Contributions submitted as [Pull Requests](https://github.com/Virtual-FCS/VirtualFCS/pulls) are welcome. Recommended git comment method for contributors can be found here: [How to Write a Git Commit Message](https://cbea.ms/git-commit/). 
+The VirtualFCS library is currently in development by members of BeBoP, SURFER, MiNaMi projects. Development should always take place on a side branch. Never pull to main. Contributions submitted as [Pull Requests](https://github.com/Virtual-FCS/VirtualFCS/pulls) are welcome. Recommended git comment method for contributors can be found here: [How to Write a Git Commit Message](https://cbea.ms/git-commit/). 
 
-Issues can be reported using the [«Issues](https://github.com/Virtual-FCS/VirtualFCS/issues) button. 
+Issues can be reported using the [Issues](https://github.com/Virtual-FCS/VirtualFCS/issues) button. 
 
 ### Naming conventions
 Naming conventions are laid out below:
@@ -74,6 +89,7 @@ Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
 Benjamin Synnevåg, 		SINTEF Industry, Trondheim, Norway<br/>
 Dr. Daniel Pérez Clos,	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Federico Zenith, 	SINTEF Digital, Trondheim, Norway<br/>
+Dr. Karim Bendiub, SINTEF Industry, Trondheim, Norway<br/>
 Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
 Dr. Mike Gerhardt, 	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
