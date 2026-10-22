@@ -8,7 +8,7 @@ model NH3CrackerFCS
   package HydrogenMedium = Modelica.Media.IdealGases.SingleGases.H2;
   // Parameters
   parameter Modelica.Units.SI.Pressure P_H2_tank_set = 20e5 "Hydrogen tank pressure set-point";
-  parameter Modelica.Units.SI.Pressure P_H2_tank_start = P_H2_tank_set*0.8 "Initial pressure shared by the hydrogen tank and downstream process volumes";
+  parameter Modelica.Units.SI.Pressure P_H2_tank_start = P_H2_tank_set*0.99 "Initial pressure shared by the hydrogen tank and downstream process volumes";
   parameter Real dpdt_set(unit = "Pa/s", min = Modelica.Constants.small) = 1e4 "Rate at which the hydrogen pressure set-point approaches its target";
 
   parameter Modelica.Units.SI.Pressure P_NH3_tank_start = 15e5 "Initial H2 tank pressure";
@@ -21,6 +21,7 @@ model NH3CrackerFCS
   parameter Modelica.Units.SI.HeatFlowRate Q_cool_max = 1e6 "Maximum cooling duty";
   parameter Real k_cool(unit = "W/K") = 2e3 "Proportional gain of the cooler controller";
   parameter Modelica.Units.SI.Time Ti_cool = 20 "Integral time of the cooler controller";
+  parameter Modelica.Units.SI.Pressure dp_cooler_nominal = 1e4 "Linear pressure drop of the cooler at m_feed_max; decouples the cooler volume from the H2 tank pressure";
   parameter Modelica.Units.SI.MassFraction X_start[3] = {0.98, 0.01, 0.01} "Initial mass fractions {NH3, H2, N2}";
   parameter Modelica.Units.SI.MassFraction X_start_cracker[3] = {0.01, 0.01, 0.98} "Initial mass fractions {NH3, H2, N2}";
   parameter Integer N = 10 "Number of computational segments for ammonia cracker";
@@ -29,10 +30,16 @@ model NH3CrackerFCS
   parameter Modelica.Units.SI.Pressure dp_check_valve_nominal = 3e4 "Nominal pressure drop of the inline NH3 check valve";
   parameter Modelica.Units.SI.MassFlowRate m_feed_max = 0.05 "Maximum NH3 feed mass flow rate (cracker design flow)";
   parameter Modelica.Units.SI.MassFlowRate m_feed_control_max = 0.02 "Maximum ammonia pump command";
-  parameter Modelica.Units.SI.MassFlowRate m_feed_start = 0.001 "Initial NH3 feed mass flow rate";
+  parameter Modelica.Units.SI.MassFlowRate m_feed_control_min = m_feed_control_max/2 "Minimum ammonia pump command";
+  parameter Modelica.Units.SI.MassFlowRate m_feed_start = m_feed_control_min "Initial NH3 feed mass flow rate";
   parameter Modelica.Units.SI.Pressure dp_feed_control = 0.2e5 "Pressure range below tank set-point over which NH3 feed is reduced";
   parameter Modelica.Units.SI.Time T_filter = 1 "Time constant of the tank pressure measurement filter";
   parameter Modelica.Units.SI.Time T_feed = 1 "Time constant of the ammonia pump command filter";
+  parameter Real k_heater(unit = "W/K") = 2e3 "Proportional gain of the cracker heater (bed-mean temperature) controller";
+  parameter Modelica.Units.SI.Time Ti_heater = 150 "Integral time of the cracker heater (bed-mean temperature) controller";
+  parameter Real k_heater_out(unit = "1") = 1 "Proportional gain of the outer cracker outlet temperature controller";
+  parameter Modelica.Units.SI.Time Ti_heater_out = 200 "Integral time of the outer cracker outlet temperature controller";
+  parameter Modelica.Units.SI.TemperatureDifference dT_bed_start = 0 "Initial bed-mean set-point offset from T_out_target";
   final parameter Real y_inlet_start = m_feed_start/m_feed_max*sqrt(dp_distributor);
   final parameter Modelica.Units.SI.Pressure dp_inlet_start = y_inlet_start*sqrt(0.5*(y_inlet_start^2 + sqrt(y_inlet_start^4 + 4*dp_small^2)));
   final parameter Modelica.Units.SI.Pressure dp_check_valve_start = dp_check_valve_nominal*m_feed_start/m_feed_max;
@@ -54,7 +61,7 @@ model NH3CrackerFCS
     Placement(transformation(origin = {16, 84}, extent = {{10, -10}, {-10, 10}}, rotation = -0)));
   Modelica.Fluid.Sensors.Temperature temp_out_cracker(redeclare package Medium = AmmoniaMedium) annotation(
     Placement(transformation(origin = {76, 32}, extent = {{10, -10}, {-10, 10}})));
-  Chemical.AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr(N = N, useHeatFilter = true, T_heatFilter = 5, q_max = Q_cracker_max, T_out_target = T_out_target) annotation(
+  Chemical.AmmoniaCracker.ElectricHeatingDistr electricHeatingDistr(N = N, useHeatFilter = true, T_heatFilter = 5, q_max = Q_cracker_max, T_out_target = T_out_target, k_PI = k_heater, Ti_PI = Ti_heater, use_Q_ff = true, use_cascade = true, k_out = k_heater_out, Ti_out = Ti_heater_out, dT_bed_start = dT_bed_start) annotation(
     Placement(transformation(origin = {52, 28}, extent = {{-10, -10}, {10, 10}}, rotation = -180)));
   Electrochemical.Hydrogen.FuelCells.FuelCellSystem fcs(subSystemHydrogen(V_tank_H2 = 5, P_H2_tank_start = P_H2_tank_start, reducer(dp_nominal = P_H2_tank_start - fcs.p_H2_set)), fuelCell(redeclare Electrochemical.Hydrogen.ECM.ActivationLossSimple activation, anode(R_flow = 10000), cathode(R_flow = 10000), redeclare Electrochemical.Hydrogen.ECM.MassTransportLossSimple mass_transport, redeclare Electrochemical.Hydrogen.ECM.OhmicResistance ohmic, redeclare Electrochemical.Hydrogen.ECM.VSourceNernst v_source), subSystemAir(compressor(K(Ti = 1, initType = Modelica.Blocks.Types.Init.InitialOutput, y_start = 5), compressor(m_flow(start = 1E-2))))) annotation(
     Placement(transformation(origin = {-42, -82}, extent = {{10, -10}, {-10, 10}})));
@@ -71,7 +78,7 @@ model NH3CrackerFCS
     Placement(transformation(origin = {-2, -90}, extent = {{6, -6}, {-6, 6}}, rotation = -0)));
   // Keeps the fast tank/cracker pressure dynamics out of the feed loop (unfiltered: ~2x more solver steps)
   // Single node (av_b): the cooled volume is the one the PSA sees, so the duty acts directly on the measured temperature
-  Modelica.Fluid.Pipes.DynamicPipe cooler(redeclare package Medium = AmmoniaMedium, T_start = T_start, X_start = X_start_cracker, allowFlowReversal = true, diameter = 0.1, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, length = 2, m_flow_start = m_feed_start, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, modelStructure = Modelica.Fluid.Types.ModelStructure.av_b, nNodes = 1, nParallel = 5, p_a_start = P_out_PSA, p_b_start = P_out_PSA, use_HeatTransfer = true) annotation(
+  Modelica.Fluid.Pipes.DynamicPipe cooler(redeclare package Medium = AmmoniaMedium, T_start = T_start, X_start = X_start_cracker, allowFlowReversal = true, diameter = 0.1, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, length = 2, m_flow_start = m_feed_start, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, modelStructure = Modelica.Fluid.Types.ModelStructure.av_b, nNodes = 1, nParallel = 5, p_a_start = P_out_PSA, p_b_start = P_out_PSA, use_HeatTransfer = true, redeclare model FlowModel = Modelica.Fluid.Pipes.BaseClasses.FlowModels.NominalLaminarFlow(dp_nominal = dp_cooler_nominal, m_flow_nominal = m_feed_max)) annotation(
     Placement(transformation(origin = {86, -2}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow cooling annotation(
     Placement(transformation(origin = {54, -2}, extent = {{-10, -10}, {10, 10}})));
@@ -90,7 +97,7 @@ model NH3CrackerFCS
     Placement(transformation(origin = {-58, 4}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Electrical.Analog.Basic.Ground ground1 annotation(
     Placement(transformation(origin = {-38, -6}, extent = {{-10, -10}, {10, 10}})));
-  Modelica.Blocks.Continuous.LimPID feedController(Ti = 30, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput, strict = true, k = m_feed_control_max/dp_feed_control, yMax = m_feed_control_max, yMin = 0, y_start = m_feed_start) annotation(
+  Modelica.Blocks.Continuous.LimPID feedController(Ti = 30, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput, strict = true, k = m_feed_control_max/dp_feed_control, yMax = m_feed_control_max, yMin = m_feed_control_min, y_start = m_feed_start) annotation(
     Placement(transformation(origin = {-70, 60}, extent = {{-6, -6}, {6, 6}})));
   Modelica.Blocks.Continuous.FirstOrder feedFilter(T = T_feed, initType = Modelica.Blocks.Types.Init.InitialOutput, y_start = m_feed_start);
   Modelica.Blocks.Sources.Ramp P_H2_target(offset = P_H2_tank_start, height = P_H2_tank_set - P_H2_tank_start, duration = max(abs(P_H2_tank_set - P_H2_tank_start)/dpdt_set, Modelica.Constants.small)) annotation(
@@ -99,7 +106,10 @@ model NH3CrackerFCS
     Placement(transformation(origin = {-72, 90}, extent = {{-6, -6}, {6, 6}})));
   Modelica.Blocks.Continuous.LimPID heatController(Ti = Ti_cool, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.Init.InitialOutput, k = k_cool, yMax = 7e4, yMin = 0, y_start = 1e4) annotation(
     Placement(transformation(origin = {-44, 88}, extent = {{-8, -8}, {8, 8}})));
+  Modelica.Blocks.Sources.RealExpression Q_heater_ff(y = max(0, feedController.y)*X_start[1]*ammoniaCracker.deltaH_rxn/ammoniaCracker.MM_NH3) "Feed-forward of the reaction heat demand at the commanded NH3 feed" annotation(
+    Placement(transformation(origin = {76, 46}, extent = {{8, -6}, {-8, 6}})));
 equation
+  connect(Q_heater_ff.y, electricHeatingDistr.Q_ff);
   power_net = fcs.Power_system - electricHeatingDistr.PI_heater.y;
   connect(heater1.port, NH3Vaporizer.heatPorts[1]) annotation(
     Line(points = {{-2, 86}, {-2, 69}, {0, 69}, {0, 58}, {-11, 58}, {-11, 36}, {-12, 36}}, color = {191, 0, 0}));
@@ -178,7 +188,7 @@ equation
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
 <tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
 <tr><td><code>P_H2_tank_set</code></td><td>SI.Pressure</td><td>Pa</td><td>20e5</td><td>Hydrogen buffer-tank pressure target</td></tr>
-<tr><td><code>P_H2_tank_start</code></td><td>SI.Pressure</td><td>Pa</td><td>P_H2_tank_set*0.8</td><td>Initial hydrogen tank pressure and reference for downstream process initialization</td></tr>
+<tr><td><code>P_H2_tank_start</code></td><td>SI.Pressure</td><td>Pa</td><td>P_H2_tank_set*0.99</td><td>Initial hydrogen tank pressure and reference for downstream process initialization</td></tr>
 <tr><td><code>dpdt_set</code></td><td>Real</td><td>Pa/s</td><td>1e4</td><td>Rate of change of the hydrogen tank pressure target</td></tr>
 <tr><td><code>P_NH3_tank_start</code></td><td>SI.Pressure</td><td>Pa</td><td>15e5</td><td>Initial ammonia storage-tank pressure</td></tr>
 <tr><td><code>P_out_PSA</code></td><td>SI.Pressure</td><td>Pa</td><td>P_H2_tank_start</td><td>PSA tail-boundary pressure and reference for cracker and cooler initialization</td></tr>
@@ -197,8 +207,9 @@ equation
 <tr><td><code>dp_small</code></td><td>SI.Pressure</td><td>Pa</td><td>10</td><td>Regularization pressure for the cracker flow law</td></tr>
 <tr><td><code>dp_check_valve_nominal</code></td><td>SI.Pressure</td><td>Pa</td><td>3e4</td><td>Nominal pressure drop of the ammonia feed check valve</td></tr>
 <tr><td><code>m_feed_max</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>0.05</td><td>Cracker design flow and nominal flow for pressure-loss sizing; not the pump command limit</td></tr>
-<tr><td><code>m_feed_control_max</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>0.001</td><td>Upper limit of the ammonia feed-controller output</td></tr>
-<tr><td><code>m_feed_start</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>0.001</td><td>Initial feed command and reference flow for pressure initialization</td></tr>
+<tr><td><code>m_feed_control_max</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>0.02</td><td>Upper limit of the ammonia feed-controller output</td></tr>
+<tr><td><code>m_feed_control_min</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>m_feed_control_max/2</td><td>Lower limit of the ammonia feed-controller output; also the default initial feed command</td></tr>
+<tr><td><code>m_feed_start</code></td><td>SI.MassFlowRate</td><td>kg/s</td><td>m_feed_control_min</td><td>Initial feed command and reference flow for pressure initialization</td></tr>
 <tr><td><code>dp_feed_control</code></td><td>SI.Pressure</td><td>Pa</td><td>0.2e5</td><td>Pressure-error scale used to set feed-controller proportional gain</td></tr>
 <tr><td><code>T_filter</code></td><td>SI.Time</td><td>s</td><td>1</td><td>Hydrogen tank pressure measurement filter time constant</td></tr>
 <tr><td><code>T_feed</code></td><td>SI.Time</td><td>s</td><td>1</td><td>Ammonia pump command filter time constant</td></tr>
@@ -210,6 +221,16 @@ equation
 <tr><td><code>Q_cool_max</code></td><td>SI.HeatFlowRate</td><td>W</td><td>1e6</td><td>Maximum magnitude of cooling heat removal</td></tr>
 <tr><td><code>k_cool</code></td><td>Real</td><td>W/K</td><td>2e3</td><td>Cooler PI-controller proportional gain</td></tr>
 <tr><td><code>Ti_cool</code></td><td>SI.Time</td><td>s</td><td>20</td><td>Cooler PI-controller integral time</td></tr>
+<tr><td><code>dp_cooler_nominal</code></td><td>SI.Pressure</td><td>Pa</td><td>1e4</td><td>Linear (laminar) cooler pressure drop at m_feed_max. PSASimple has no storage and sets its feed pressure equal to the H2 tank pressure. Without a finite cooler resistance (the default pipe friction gives about 0.05 Pa), the cooler volume and H2 tank form a stiff pressure mode. At the 40 s purge-valve events this produces step-to-step flow ringing of about &plusmn;0.35 kg/s, including reverse flow.</td></tr>
+</tbody></table>
+<h3>Cracker heater control</h3>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>k_heater</code></td><td>Real</td><td>W/K</td><td>2e3</td><td>Proportional gain of the inner heater PI controller (bed-mean temperature)</td></tr>
+<tr><td><code>Ti_heater</code></td><td>SI.Time</td><td>s</td><td>150</td><td>Integral time of the inner heater PI controller</td></tr>
+<tr><td><code>k_heater_out</code></td><td>Real</td><td>1</td><td>1</td><td>Proportional gain of the outer outlet-temperature PI controller</td></tr>
+<tr><td><code>Ti_heater_out</code></td><td>SI.Time</td><td>s</td><td>200</td><td>Integral time of the outer outlet-temperature PI controller</td></tr>
+<tr><td><code>dT_bed_start</code></td><td>SI.TemperatureDifference</td><td>K</td><td>0</td><td>Initial offset of the bed-mean set-point from T_out_target</td></tr>
 </tbody></table>
 <h3>Derived initialization parameters</h3>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
@@ -224,15 +245,19 @@ equation
 <p>This example represents an ammonia-to-electricity system for ship power-system studies. It couples ammonia storage and feed conditioning, catalytic ammonia decomposition, gas cooling, simplified pressure-swing adsorption (PSA), hydrogen buffering, and a hydrogen fuel-cell system supplying a variable resistive load.</p>
 <p>Ammonia-rich gas is drawn from the storage tank by a controlled pump, heated in the vaporizer pipe, and passed through a check valve into the segmented <a href=\"modelica://VirtualFCS.Chemical.AmmoniaCracker.AmmoniaCrackerDyn\">AmmoniaCrackerDyn</a>. A distributed electric heater supplies heat to the endothermic cracking process. The cracked gas is cooled before entering <a href=\"modelica://VirtualFCS.Fluid.PSASimple\">PSASimple</a>; the separated hydrogen enters the fuel-cell system's buffer tank, while the tail stream is discharged to a fixed-pressure boundary.</p>
 <p>The ammonia feed PI controller compares a ramped hydrogen tank pressure target with a filtered pressure measurement. Its bounded output passes through a first-order filter before commanding the pump. A separate PI controller removes heat from the cooler to approach the PSA inlet temperature target; it cannot add heat. The fuel-cell assembly includes hydrogen pressure reduction, recirculation and purge, cathode air supply, cooling, and a battery supplying balance-of-plant equipment.</p>
+<p>The cracker heater uses feed-forward plus a cascade. The feed-forward term Q_heater_ff supplies the reaction heat expected at the commanded NH3 feed. The inner PI controller trims this to hold the mean bed temperature, which responds quickly to heater changes. A slow outer PI controller shifts the bed-mean set-point so that the outlet temperature reaches T_out_target. Controlling the outlet temperature directly causes a limit cycle at low feed: when the heat supply is short, a cold reaction zone moves through the bed and reaches the outlet only after 150-200 s.</p>
 <p>The model is intended to explore coupled process and electrical transients, controller interactions, and the effect of load changes on hydrogen inventory. The media and separation models are simplified system-level representations. In particular, the vaporizer uses the cracked-ammonia gas medium rather than an explicit liquid-to-vapor phase-change model. Initial conditions describe a preheated process, not a complete cold-start sequence.</p>
 <h2>3. Governing equations and references</h2>
 <p>Representative top-level relations are shown below. Component balance equations and fluid, thermal, and electrical connections define the complete system.</p>
 <pre>2 NH3 -&gt; 3 H2 + N2
 feedController.k = m_feed_control_max/dp_feed_control
-0 &lt;= feedController.y &lt;= m_feed_control_max
+m_feed_control_min &lt;= feedController.y &lt;= m_feed_control_max
 -Q_cool_max &lt;= coolController.y &lt;= 0
 fcs.subSystemHydrogen.reducer.dp_nominal = P_H2_tank_start - fcs.p_H2_set
-power_net = fcs.Power_system - electricHeatingDistr.PI_heater.y</pre>
+power_net = fcs.Power_system - electricHeatingDistr.PI_heater.y
+Q_heater_ff = max(0, feedController.y)*X_start[1]*deltaH_rxn/MM_NH3
+PI_heater: u_s = T_out_target + outerPI.y, u_m = mean(ammoniaCracker.T), u_ff = Q_heater_ff
+outerPI:   u_s = T_out_target, u_m = temp_out_cracker.T</pre>
 <p>The hydrogen reducer is sized at its nominal flow using the difference between the initial buffer-tank pressure and the anode pressure set-point. Net electrical power subtracts the distributed cracker heater demand from the fuel-cell system power, which already accounts for its balance-of-plant consumption. The separate vaporizer heat source and ammonia-pump power supply are not deducted in this expression.</p>
 <p>See <a href=\"modelica://VirtualFCS.Chemical.AmmoniaCracker.AmmoniaCrackerDyn\">AmmoniaCrackerDyn</a>, <a href=\"modelica://VirtualFCS.Chemical.AmmoniaCracker.ElectricHeatingDistr\">ElectricHeatingDistr</a>, <a href=\"modelica://VirtualFCS.Fluid.PSASimple\">PSASimple</a>, and <a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem\">FuelCellSystem</a> for the component formulations.</p>
 <h2>4. Outputs</h2>

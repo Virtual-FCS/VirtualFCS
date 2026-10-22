@@ -49,7 +49,8 @@ model AmmoniaCrackerDyn "Dynamic (lumped-volume per segment) ammonia cracker. Sa
   parameter Modelica.Units.SI.Pressure p_start = 30e5 "Initial pressure in every segment";
   parameter Modelica.Units.SI.MassFraction X_start[3] = {0.998, 0.001, 0.001} "Initial mass fractions {NH3, H2, N2} in every segment";
   // Numerical regularization
-  parameter Modelica.Units.SI.Pressure dp_small = 1e3 "Regularization range of the face pressure drop (Pa)";
+  parameter Modelica.Units.SI.Pressure dp_small = 1e3 "Regularization range of the inlet and outlet face pressure drop (Pa)";
+  parameter Modelica.Units.SI.Pressure dp_small_internal = 1e8 "Regularization range of the internal face pressure drop (Pa); a large value adds a small linear numerical resistance between segments";
   parameter Modelica.Units.SI.Time tau_rxn_min = 0.05 "Minimum time in which the NH3 inventory of a segment may be consumed (limits the reaction rate)";
   parameter Modelica.Units.SI.Pressure dp_inlet_nominal = 0 "Pressure loss of the inlet header/distributor at m_flow_nominal (added to the inlet face)";
   parameter Modelica.Units.SI.Pressure dp_outlet_nominal = 0 "Pressure loss of the outlet header at m_flow_nominal (added to the outlet face)";
@@ -215,8 +216,10 @@ equation
     k_face[j] = f[j - 1]*dz/(2*D_tubes*rho_mix[j - 1]*A_flow^2);
   end for;
 // Momentum balance (quasi-static): the internal and outlet faces are pressure driven
+// The internal friction is so small that the true face pressure drops lie far below the solver tolerance;
+// dp_small_internal linearizes these faces to keep the pressure coupling between segments resolvable at low flow.
   for j in 2:N loop
-    m_flow_face[j] = regRoot(P_tot[j - 1] - P_tot[j], dp_small)/sqrt(k_face[j]);
+    m_flow_face[j] = regRoot(P_tot[j - 1] - P_tot[j], dp_small_internal)/sqrt(k_face[j]);
   end for;
   m_flow_face[N + 1] = regRoot(P_tot[N] - port_b.p, dp_small)/sqrt(k_face[N + 1]);
 // Connect fluid interfaces
@@ -262,7 +265,8 @@ equation
 <h3>Flow and numerical regularization</h3>
 <table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
 <tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
-<tr><td><code>dp_small</code></td><td>SI.Pressure</td><td>Pa</td><td>1e3</td><td>Pressure range for regularizing the square-root face flow law</td></tr>
+<tr><td><code>dp_small</code></td><td>SI.Pressure</td><td>Pa</td><td>1e3</td><td>Pressure range for regularizing the square-root flow law at the inlet and outlet faces</td></tr>
+<tr><td><code>dp_small_internal</code></td><td>SI.Pressure</td><td>Pa</td><td>1e8</td><td>Pressure range for regularizing the square-root flow law at the internal faces. Below this range the flow law is approximately linear, adding a numerical resistance of about sqrt(k_face*dp_small_internal) between segments. This keeps internal pressure differences resolvable by the solver at low flow; the resulting bed pressure drop is of the order of kPa.</td></tr>
 <tr><td><code>tau_rxn_min</code></td><td>SI.Time</td><td>s</td><td>0.05</td><td>Minimum inventory-consumption time used to limit reaction rate</td></tr>
 <tr><td><code>dp_inlet_nominal</code></td><td>SI.Pressure</td><td>Pa</td><td>0</td><td>Additional inlet header pressure drop at nominal flow</td></tr>
 <tr><td><code>dp_outlet_nominal</code></td><td>SI.Pressure</td><td>Pa</td><td>0</td><td>Additional outlet header pressure drop at nominal flow</td></tr>
@@ -318,8 +322,10 @@ Q_rxn[i] = deltaH_rxn*R_NH3[i]
 Q_loss[i] = U_tot*A_s/N*(T[i] - T_a)
 (m_tot[i]*cp_mix[i] + C_solid_seg)*der(T[i])
   = inflow thermal transport - Q_loss[i] - Q_rxn[i] + heatPorts[i].Q_flow
-m_flow_face[j] = regRoot(upstream pressure - downstream pressure, dp_small)
-                 /sqrt(k_face[j])</pre>
+m_flow_face[j] = regRoot(upstream pressure - downstream pressure, dp_reg)
+                 /sqrt(k_face[j])
+dp_reg = dp_small at the inlet and outlet faces, dp_small_internal at the internal faces</pre>
+<p>The quadratic friction between neighbouring segments is very small, so the physical internal pressure drops are much smaller than the absolute tolerance of the segment pressures. Without additional regularization, the internal face flows become dominated by solver noise at low feed flow, causing very small step sizes. The default dp_small_internal = 1e8 Pa makes these faces effectively linear. This has a negligible effect on the overall pressure profile and outlet conditions.</p>
 <p>The kinetic expression follows Realpe et al. (2023), <a href=\"https://doi.org/10.1039/d2re00408a\">doi:10.1039/d2re00408a</a>, with activation energy Ea = 1.54e5 J/mol and exponents a = 0.37 and b = -1.04 for the Co-Ba/CeO2 catalyst. Partial pressures are divided by 1e5 in the rate expression; NH3 and H2 pressure ratios are floored at 1e-6. Negative net kinetic rates are clipped to zero, so the model does not implement reverse ammonia synthesis. The inventory-based upper limit restricts ammonia consumption on the timescale tau_rxn_min.</p>
 <p>As implemented, r_rxn is interpreted as mol/(s.g_cat) and multiplied by m_cat_seg in grams. The k0 declaration describes its units as mol/(kg.s); this convention should be checked when changing or calibrating catalyst data. Species balances use SI molar masses MM_NH3 = 0.017, MM_H2 = 0.002, and MM_N2 = 0.028 kg/mol.</p>
 <p>The nominal friction factor uses 64/Re for laminar flow, a linear blend between Re = 2300 and 4000, and 0.3163*Re^(-0.25) above 4000. The function floors Re at 1e-3. Positive segment volumes, flow areas, nominal flow, regularization scales, and physically consistent initial compositions are required.</p>
