@@ -1,10 +1,10 @@
 # VirtualFCS Library
 VirtualFCS is an open Modelica library for dynamic modelling of hydrogen and hybrid energy systems. It brings together electrochemical, electrical, fluid, thermal, control, and vehicle models, with examples ranging from PEM fuel cell vehicles to ammonia cracking.
 
-[![2023: v2.0.0](https://img.shields.io/badge/Release-2023%3A%20v2.0.0-blue)![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220)
-[![OpenModelica v1.20 win64](https://img.shields.io/badge/OpenModelica-v1.20%20win64-blue)](https://openmodelica.org/)
+[![2026: v3.0.0](https://img.shields.io/badge/Release-2026%3A%20v3.0.0-blue)![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6104900.svg)](https://doi.org/10.5281/zenodo.6104900)
+[![OpenModelica v1.24 win64](https://img.shields.io/badge/OpenModelica-v1.24%20win64-blue)](https://openmodelica.org/)
 
-Note that this library might also work with other platforms that win64, but that is not tested during development.
+Note that this library might also work with other versions of OpenModelica and other platforms that win64, but that is not tested during development.
 
 <details>
 <summary><b>Citing other library versions</b></summary>
