@@ -1,0 +1,696 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Battery.BatterySystem</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Battery.BatterySystem"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Battery.html">Battery</a>.BatterySystem</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:AllowPNG/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]-->
+<!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:Zoom>0</w:Zoom>
+  <w:TrackMoves/>
+  <w:TrackFormatting/>
+  <w:PunctuationKerning/>
+  <w:ValidateAgainstSchemas/>
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+  <w:DoNotPromoteQF/>
+  <w:LidThemeOther>NO-BOK</w:LidThemeOther>
+  <w:LidThemeAsian>JA</w:LidThemeAsian>
+  <w:LidThemeComplexScript>AR-SA</w:LidThemeComplexScript>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+   <w:DontGrowAutofit/>
+   <w:SplitPgBreakAndParaMark/>
+   <w:EnableOpenTypeKerning/>
+   <w:DontFlipMirrorIndents/>
+   <w:OverrideTableStyleHps/>
+  </w:Compatibility>
+  <m:mathPr>
+   <m:mathFont m:val=&quot;Cambria Math&quot;/>
+   <m:brkBin m:val=&quot;before&quot;/>
+   <m:brkBinSub m:val=&quot;&#45;-&quot;/>
+   <m:smallFrac m:val=&quot;off&quot;/>
+   <m:dispDef/>
+   <m:lMargin m:val=&quot;0&quot;/>
+   <m:rMargin m:val=&quot;0&quot;/>
+   <m:defJc m:val=&quot;centerGroup&quot;/>
+   <m:wrapIndent m:val=&quot;1440&quot;/>
+   <m:intLim m:val=&quot;subSup&quot;/>
+   <m:naryLim m:val=&quot;undOvr&quot;/>
+  </m:mathPr></w:WordDocument>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:LatentStyles DefLockedState=&quot;false&quot; DefUnhideWhenUsed=&quot;false&quot;
+  DefSemiHidden=&quot;false&quot; DefQFormat=&quot;false&quot; DefPriority=&quot;99&quot;
+  LatentStyleCount=&quot;376&quot;>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;0&quot; QFormat=&quot;true&quot; Name=&quot;Normal&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; QFormat=&quot;true&quot; Name=&quot;heading 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 7&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 8&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;9&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;heading 9&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 7&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 8&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index 9&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 7&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 8&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;toc 9&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Normal Indent&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;footnote text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;annotation text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;header&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;footer&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;index heading&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;35&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;caption&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;table of figures&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;envelope address&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;envelope return&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;footnote reference&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;annotation reference&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;line number&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;page number&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;endnote reference&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;endnote text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;table of authorities&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;macro&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;toa heading&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Bullet&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Number&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Bullet 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Bullet 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Bullet 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Bullet 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Number 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Number 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Number 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Number 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;10&quot; QFormat=&quot;true&quot; Name=&quot;Title&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Closing&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Signature&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;1&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;Default Paragraph Font&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text Indent&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Continue&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Continue 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Continue 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Continue 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;List Continue 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Message Header&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;11&quot; QFormat=&quot;true&quot; Name=&quot;Subtitle&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Salutation&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Date&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text First Indent&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text First Indent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Note Heading&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text Indent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Body Text Indent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Block Text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Hyperlink&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;FollowedHyperlink&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;22&quot; QFormat=&quot;true&quot; Name=&quot;Strong&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;20&quot; QFormat=&quot;true&quot; Name=&quot;Emphasis&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Document Map&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Plain Text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;E-mail Signature&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Top of Form&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Bottom of Form&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Normal (Web)&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Acronym&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Address&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Cite&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Code&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Definition&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Keyboard&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Preformatted&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Sample&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Typewriter&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;HTML Variable&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Normal Table&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;annotation subject&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;No List&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Outline List 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Outline List 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Outline List 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Simple 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Simple 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Simple 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Classic 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Classic 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Classic 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Classic 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Colorful 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Colorful 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Colorful 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Columns 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Columns 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Columns 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Columns 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Columns 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 7&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Grid 8&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 7&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table List 8&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table 3D effects 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table 3D effects 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table 3D effects 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Contemporary&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Elegant&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Professional&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Subtle 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Subtle 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Web 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Web 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Web 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Balloon Text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; Name=&quot;Table Grid&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Table Theme&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; Name=&quot;Placeholder Text&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;1&quot; QFormat=&quot;true&quot; Name=&quot;No Spacing&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; Name=&quot;Revision&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;34&quot; QFormat=&quot;true&quot;
+   Name=&quot;List Paragraph&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;29&quot; QFormat=&quot;true&quot; Name=&quot;Quote&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;30&quot; QFormat=&quot;true&quot;
+   Name=&quot;Intense Quote&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;60&quot; Name=&quot;Light Shading Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;61&quot; Name=&quot;Light List Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;62&quot; Name=&quot;Light Grid Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;63&quot; Name=&quot;Medium Shading 1 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;64&quot; Name=&quot;Medium Shading 2 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;65&quot; Name=&quot;Medium List 1 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;66&quot; Name=&quot;Medium List 2 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;67&quot; Name=&quot;Medium Grid 1 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;68&quot; Name=&quot;Medium Grid 2 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;69&quot; Name=&quot;Medium Grid 3 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;70&quot; Name=&quot;Dark List Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;71&quot; Name=&quot;Colorful Shading Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;72&quot; Name=&quot;Colorful List Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;73&quot; Name=&quot;Colorful Grid Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;19&quot; QFormat=&quot;true&quot;
+   Name=&quot;Subtle Emphasis&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;21&quot; QFormat=&quot;true&quot;
+   Name=&quot;Intense Emphasis&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;31&quot; QFormat=&quot;true&quot;
+   Name=&quot;Subtle Reference&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;32&quot; QFormat=&quot;true&quot;
+   Name=&quot;Intense Reference&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;33&quot; QFormat=&quot;true&quot; Name=&quot;Book Title&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;37&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; Name=&quot;Bibliography&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;39&quot; SemiHidden=&quot;true&quot;
+   UnhideWhenUsed=&quot;true&quot; QFormat=&quot;true&quot; Name=&quot;TOC Heading&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;41&quot; Name=&quot;Plain Table 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;42&quot; Name=&quot;Plain Table 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;43&quot; Name=&quot;Plain Table 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;44&quot; Name=&quot;Plain Table 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;45&quot; Name=&quot;Plain Table 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;40&quot; Name=&quot;Grid Table Light&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot; Name=&quot;Grid Table 1 Light&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot; Name=&quot;Grid Table 6 Colorful&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot; Name=&quot;Grid Table 7 Colorful&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;Grid Table 1 Light Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;Grid Table 6 Colorful Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;Grid Table 7 Colorful Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;Grid Table 1 Light Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;Grid Table 6 Colorful Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;Grid Table 7 Colorful Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;Grid Table 1 Light Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;Grid Table 6 Colorful Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;Grid Table 7 Colorful Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;Grid Table 1 Light Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;Grid Table 6 Colorful Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;Grid Table 7 Colorful Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;Grid Table 1 Light Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;Grid Table 6 Colorful Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;Grid Table 7 Colorful Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;Grid Table 1 Light Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;Grid Table 2 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;Grid Table 3 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;Grid Table 4 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;Grid Table 5 Dark Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;Grid Table 6 Colorful Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;Grid Table 7 Colorful Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot; Name=&quot;List Table 1 Light&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot; Name=&quot;List Table 6 Colorful&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot; Name=&quot;List Table 7 Colorful&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;List Table 1 Light Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4 Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;List Table 6 Colorful Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;List Table 7 Colorful Accent 1&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;List Table 1 Light Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4 Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;List Table 6 Colorful Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;List Table 7 Colorful Accent 2&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;List Table 1 Light Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4 Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;List Table 6 Colorful Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;List Table 7 Colorful Accent 3&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;List Table 1 Light Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4 Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;List Table 6 Colorful Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;List Table 7 Colorful Accent 4&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;List Table 1 Light Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4 Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;List Table 6 Colorful Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;List Table 7 Colorful Accent 5&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;46&quot;
+   Name=&quot;List Table 1 Light Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;47&quot; Name=&quot;List Table 2 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;48&quot; Name=&quot;List Table 3 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;49&quot; Name=&quot;List Table 4 Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;50&quot; Name=&quot;List Table 5 Dark Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;51&quot;
+   Name=&quot;List Table 6 Colorful Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; Priority=&quot;52&quot;
+   Name=&quot;List Table 7 Colorful Accent 6&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Mention&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Smart Hyperlink&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Hashtag&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Unresolved Mention&quot;/>
+  <w:LsdException Locked=&quot;false&quot; SemiHidden=&quot;true&quot; UnhideWhenUsed=&quot;true&quot;
+   Name=&quot;Smart Link&quot;/>
+ </w:LatentStyles>
+</xml><![endif]-->
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */
+ table.MsoNormalTable
+        {mso-style-name:&quot;Table Normal&quot;;
+        mso-tstyle-rowband-size:0;
+        mso-tstyle-colband-size:0;
+        mso-style-noshow:yes;
+        mso-style-priority:99;
+        mso-style-parent:&quot;&quot;;
+        mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+        mso-para-margin-top:0cm;
+        mso-para-margin-right:0cm;
+        mso-para-margin-bottom:8.0pt;
+        mso-para-margin-left:0cm;
+        line-height:107%;
+        mso-pagination:widow-orphan;
+        font-size:11.0pt;
+        font-family:&quot;Calibri&quot;,sans-serif;
+        mso-ascii-font-family:Calibri;
+        mso-ascii-theme-font:minor-latin;
+        mso-hansi-font-family:Calibri;
+        mso-hansi-theme-font:minor-latin;
+        mso-bidi-font-family:Arial;
+        mso-bidi-theme-font:minor-bidi;
+        mso-ansi-language:NO-BOK;
+        mso-fareast-language:EN-US;}
+</style>
+<![endif]-->
+<!--StartFragment-->
+<p class="MsoNormal"><font face="Arial" size="4">The BatterySystem class packages together a </font><a arial;="" font-size:="" href="VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped.html" large;&quot;="" style="font-family:">lumped model of a lithium-ion battery pack</a><font face="Arial" size="4"> and a </font><a arial;="" font-size:="" href="VirtualFCS.Control.BatteryManagementSystem.html" large;&quot;="" style="font-family:">battery management system</a><font face="Arial" size="4">. This class can be directly integrated into a powertrain model, for example in <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Powertrains.BatteryPowerTrain.html">BatteryPowerTrain</a> and <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Powertrains.RangeExtenderPowerTrain.html">RangeExtenderPowerTrain</a>.</font></p>
+<!--EndFragment-->
+<h2>Governing Equations</h2>
+<pre>Power = pin_p.i*pin_p.v;
+eta_batt = max((abs(Power)-(batteryPack.heatSource.Q_flow))/(max(abs(Power), 0.00001)), 0.9);</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power</code></td><td>Battery delivered power</td></tr>
+<tr><td><code>eta_batt</code></td><td>Battery efficiency, calculated by assuming loss in terms of heat</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>m_bat_pack</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>100</code></td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.6</code></td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>Modelica.Units.SI.Breadth</td><td>m</td><td><code>0.45</code></td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>Modelica.Units.SI.Height</td><td>m</td><td><code>0.1</code></td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>240</code></td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>336</code></td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>403.2</code></td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td><code>200</code></td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Battery pack initial state of charge</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>sensorOutput</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

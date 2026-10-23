@@ -1,8 +1,7 @@
 within VirtualFCS.Electrochemical;
-
 package UsersGuide "User information for the Electrochemical sub-library"
   extends Modelica.Icons.Information;
-  annotation(
+  annotation (
     Documentation(info = "<html><head></head><body>This sub-package includes electrochemical power sources and supporting components.
 
 

@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Powertrains.RangeExtenderPowertrain</title></head><body>
+<h1 id="VirtualFCS.Powertrains.RangeExtenderPowertrain"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Powertrains.html">Powertrains</a>.RangeExtenderPowertrain</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p>Battery-electric powertrain augmented with a hydrogen fuel-cell range extender. The fuel-cell system supplies the battery bus through a controlled DC converter. Battery measurements feed the replaceable energy-management system, whose power request is converted to a current command using the measured fuel-cell voltage. The fuel-cell air subsystem uses CompressorSimple and a one-cell membrane Humidifier. The converter flow-delay output starts at 1 A to avoid a zero-flow compressor initialization. In this assembly, the converter's FC-named pins connect to the battery and its Bus-named pins connect to the fuel-cell system.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Powertrains.RangeExtenderPowertrain.Cathode_Medium.html">Cathode_Medium</a></li>
+<li><a href="VirtualFCS.Powertrains.RangeExtenderPowertrain.Anode_Medium.html">Anode_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

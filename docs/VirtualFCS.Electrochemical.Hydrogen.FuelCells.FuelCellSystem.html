@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.<a href="VirtualFCS.Electrochemical.Hydrogen.FuelCells.html">FuelCells</a>.FuelCellSystem</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+The FuelCellSystem class packages together a FuelCell object and three different subsystems to control hydrogen, air, and coolant feeds into and out of the fuel cell. A battery object provides power to the subsystems.
+<h2>Governing Equations</h2>
+<pre>Power_system = Power_stack-Power_BOP;
+Power_stack = fuelCell.pin_n.i*(fuelCell.pin_p.v-fuelCell.pin_n.v);
+Power_BOP = batterySystem.pin_n.i*(batterySystem.pin_p.v-batterySystem.pin_n.v);
+eta_sys_HHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2HHV)*100, eta_max);
+eta_sys_LHV = min(Power_system/(max((fuelCell.anode_in.m_flow + fuelCell.anode_out.m_flow), 1e-10)*H2LHV)*100, eta_max);
+Modelica.Electrical.Analog.Sensors.CurrentSensor currentSensor;</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power_system</code></td><td>Power delivered from the FC system</td></tr>
+<tr><td><code>Power_stack</code></td><td>Power delivered from the FC stack</td></tr>
+<tr><td><code>Power_BOP</code></td><td>Power consumed by the BOP components</td></tr>
+<tr><td><code>eta_sys_HHV</code></td><td>Fuel cell system efficiency High Heating Value</td></tr>
+<tr><td><code>eta_sys_LHV</code></td><td>Fuel cell system efficiency Low Heating Value</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>p_air_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>air outlet set pressure</td></tr>
+<tr><td><code>p_H2_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>H2 outlet set pressure</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>FC stack number of cells</td></tr>
+<tr><td><code>V_tank_H2</code></td><td>Modelica.Units.SI.Volume</td><td>m3</td><td><code>0.606</code></td><td>H2 tank volume</td></tr>
+<tr><td><code>p_tank_H2</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>30000000</code></td><td>H2 tank initial pressure</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</table>
+
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem.Cathode_Medium.html">Cathode_Medium</a></li>
+<li><a href="VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCellSystem.Anode_Medium.html">Anode_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

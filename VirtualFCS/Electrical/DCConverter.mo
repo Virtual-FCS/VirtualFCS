@@ -3,7 +3,7 @@ within VirtualFCS.Electrical;
 model DCConverter "DC controlled single phase DC/AC converter"
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin1;
   extends Modelica.Electrical.PowerConverters.Interfaces.DCDC.DCtwoPin2;
-  // extends .PhotoVoltaics.Icons.Converter;
+  extends Modelica.Electrical.PowerConverters.Icons.Converter;
   parameter Modelica.Units.SI.Voltage vDCref = 48 "Reference DC source voltage";
   parameter Modelica.Units.SI.Time Ti = 1E-6 "Internal integration time constant";
   Modelica.Electrical.Analog.Sources.SignalVoltage signalVoltage annotation(
@@ -16,7 +16,7 @@ model DCConverter "DC controlled single phase DC/AC converter"
     Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 270, origin = {-30, 0})));
   Modelica.Electrical.Analog.Sensors.PowerSensor powerSensor annotation(
     Placement(visible = true, transformation(origin = {80, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
-  Modelica.Blocks.Continuous.Integrator integrator(k = 1 / vDCref / Ti) annotation(
+  Modelica.Blocks.Continuous.Integrator integrator(k = 1/vDCref/Ti) annotation(
     Placement(visible = true, transformation(extent = {{-18, -50}, {2, -30}}, rotation = 0)));
   Modelica.Electrical.Analog.Basic.Resistor resistor2(R = 0.01) annotation(
     Placement(visible = true, transformation(origin = {-90, -14}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -46,37 +46,47 @@ equation
   connect(resistor.n, powerSensor.pc) annotation(
     Line(points = {{80, 22}, {80, 22}, {80, 0}, {80, 0}}, color = {0, 0, 255}));
   connect(feedback.y, integrator.u) annotation(
-    Line(points = {{-30, -8}, {-30, -40}, {-20, -40}}, color = {0, 0, 127}));
+    Line(points = {{-30, -9}, {-30, -40}, {-20, -40}}, color = {0, 0, 127}));
   connect(resistor2.n, dc_n1) annotation(
     Line(points = {{-90, -24}, {-90, -24}, {-90, -60}, {-100, -60}}, color = {0, 0, 255}));
   connect(signalVoltage.v, realExpression.y) annotation(
-    Line(points = {{-78, 14}, {-60, 14}, {-60, -68}, {-60, -68}}, color = {0, 0, 127}));
+    Line(points = {{-78, 14}, {-60, 14}, {-60, -69}, {-60, -69}}, color = {0, 0, 127}));
   connect(product.u2, realExpression.y) annotation(
-    Line(points = {{-62, 24}, {-68, 24}, {-68, 14}, {-60, 14}, {-60, -68}, {-60, -68}}, color = {0, 0, 127}));
+    Line(points = {{-62, 24}, {-68, 24}, {-68, 14}, {-60, 14}, {-60, -69}, {-60, -69}}, color = {0, 0, 127}));
   connect(powerSensor.nc, variableCurrentSource.p) annotation(
     Line(points = {{80, -20}, {80, -20}, {80, -30}, {80, -30}}, color = {0, 0, 255}));
   connect(variableCurrentSource.n, dc_n2) annotation(
     Line(points = {{80, -50}, {80, -50}, {80, -60}, {100, -60}, {100, -60}}, color = {0, 0, 255}));
   connect(integrator.y, variableCurrentSource.i) annotation(
-    Line(points = {{4, -40}, {68, -40}, {68, -40}, {68, -40}}, color = {0, 0, 127}));
+    Line(points = {{3, -40}, {68, -40}, {68, -40}, {68, -40}}, color = {0, 0, 127}));
   connect(powerSensor.power, feedback.u2) annotation(
-    Line(points = {{70, 0}, {-22, 0}, {-22, 0}, {-22, 0}}, color = {0, 0, 127}));
+    Line(points = {{69, 0}, {-22, 0}, {-22, 0}, {-22, 0}}, color = {0, 0, 127}));
   annotation(
     defaultComponentName = "converter",
     Icon(coordinateSystem(preserveAspectRatio = false, initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-100, 40}, {-40, -40}}, textString = "="), Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-150, -110}, {-90, -150}}, textString = "vDCRef"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-80, 90}, {20, 50}}, textString = "hi"), Text(lineColor = {0, 0, 255}, fillColor = {0, 0, 255}, pattern = LinePattern.Dash, fillPattern = FillPattern.Solid, extent = {{-40, -50}, {60, -90}}, textString = "lo"), Text(lineColor = {0, 0, 255}, extent = {{40, 40}, {100, -40}}, textString = "=")}),
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}})),
-    Documentation(info = "<html>
-<p>This is an ideal DC/DC converter.</p>
-<p>
-The DC/DC converter is characterized by:
-</p> 
-<ul>
-<li>Losses are not considered</li> 
-<li>The AC output current is determined based on power balance, calculating with instantaneous values: 
-    <code>vDC1*iDC1 + vDC2*iDC2 = 0<code></li>
-<li>The DC input voltage <code>vDCRef</code> is applied to the DC side 1 without limitations</li>
-<li>The phase angle input <code>phi</code> influences the AC reactive power based on the following figure,
-    where underlined voltages and currents represent complex phasors</li>
-</ul>
-</html>"));
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This is an ideal DC/DC converter with internal resistances.</p>
+<p>Input voltage is set programmatically by parameter <tt>vDCref</tt>, but that does not do what you would expect since it does not account for the effect of the internal resistor; input voltage will be different from the reference one. </p>
+<p>Input voltage is not set and constant through a simulation, though, since if current changes so does the internal resistance loss on the input side.</p>
+<p>The output power sensor does not include the loss from resistor1, making output power a bit lower than measured.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>vDCref</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>48</code></td><td>Reference DC source voltage</td></tr>
+<tr><td><code>Ti</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1E-6</code></td><td>Internal integration time constant</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>dc_p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>dc_p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+</tbody></table>
+
+</body></html>"));
 end DCConverter;

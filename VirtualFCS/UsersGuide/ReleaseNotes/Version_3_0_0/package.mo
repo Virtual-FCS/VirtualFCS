@@ -1,0 +1,139 @@
+within VirtualFCS.UsersGuide.ReleaseNotes;
+
+package Version_3_0_0
+
+extends VirtualFCS.UsersGuide.ReleaseNotes;
+
+  annotation(Documentation(info="
+<html>
+
+<h2>Introduction</h2>
+
+<p>
+Since v2.0.0, VirtualFCS has been substantially reorganized and extended.
+The update adds new media and chemical-process models, makes core
+components more modular, and expands the electrical, fluid,
+electrochemical, and vehicle-modelling options.
+</p>
+
+<h2>Highlights</h2>
+
+<ul>
+<li>
+<b>Model architecture:</b>
+Increased use of standard Modelica replaceable packages and components,
+allowing media and submodels to be redeclared in derived models.
+Fuel-cell models now share a common interface for fluid, electrical,
+and thermal connections. Dependencies from Buildings and AixLib
+libraries have been removed.
+</li>
+
+<li>
+<b>Fuel-cell equivalent-circuit model:</b>
+The electrical response is assembled from replaceable open-circuit-voltage,
+ohmic-resistance, activation-loss, and mass-transport-loss elements.
+Alternative voltage-source and loss models can be selected without
+rewriting the overall fuel-cell model.
+</li>
+
+<li>
+<b>Power electronics:</b>
+Refactored and expanded the converter structure around reusable
+abstract bases. The library now includes averaged and switching
+converter approaches, boost and commutator variants, a step-up/down
+chopper, and DC/DC converter models, with PWM and component test examples.
+</li>
+
+<li>
+<b>Media:</b>
+Added a dedicated media package covering moist air and hydrogen,
+condensing mixtures, and media for PEM electrolysis and cracked ammonia.
+The package features a general framework for mixtures of multiple
+condensing species based on the Rachford-Rice equation.
+</li>
+
+<li>
+<b>Fluid and balance of plant:</b>
+Updated compressor models and added map-based compressor performance.
+Developed dynamic membrane humidification and added or revised
+supporting components including separators, PSA models, pumps,
+valves, and heat exchangers.
+</li>
+
+<li>
+<b>Batteries, vehicles, and controls:</b>
+Updated battery models and parameters, vehicle and powertrain examples,
+and energy-management controls, including an ECMS variant.
+System-level component choices and subsystem models are more configurable.
+</li>
+
+<li>
+<b>Electrolysers and ammonia processing:</b>
+Added initial electrolyser interfaces and a PEM electrolyser model.
+Added static and dynamic ammonia-cracker models, with examples coupling
+ammonia processing, hydrogen separation, and fuel-cell systems.
+</li>
+
+<li>
+<b>Documentation and tests:</b>
+Expanded and standardized model documentation, added examples,
+and moved component/system tests into the packages they exercise.
+Automated CI testing has been added.
+</li>
+
+<li>
+<b>Package structure:</b>
+Package structure has changed. In particular, the former
+<code>ComponentTesting</code> package has been removed as tests were
+moved into package-specific <code>Examples</code> packages.
+<code>XInTheLoop</code> was removed, with user-interaction utilities
+placed under <code>Utilities</code>. Existing models that reference
+old paths may need updated imports or instance paths.
+</li>
+</ul>
+
+<h2>Deprecated Features</h2>
+
+<ul>
+<li>Library is tested with OpenModelica v1.24 to v1.27 but is expected to work down to OpenModelica v1.20.</li>
+<li>Library uses MSL 4.1.0.</li>
+<li>Library uses Modelica_DeviceDriver 2.1.0.</li>
+<li>Library may work on Dymola and other platforms, but they are not tested.</li>
+</ul>
+
+<h2>Support and Feedback</h2>
+
+<p>
+Users are encouraged to report issues at
+<a href=\"https://github.com/Virtual-FCS/VirtualFCS/issues\">
+https://github.com/Virtual-FCS/VirtualFCS/issues
+</a>
+if they seek support or feedback.
+</p>
+
+<h2>Contributors</h2>
+
+<h3>List of contributors who made the development of this release</h3>
+
+<ul>
+<li>Daniel Pérez Clos</li>
+<li>Federico Zenith</li>
+<li>Benjamin Bøe Synnevåg</li>
+<li>Karim Bendioub</li>
+</ul>
+
+<h3>List of contributors who helped on the development of this release</h3>
+
+<ul>
+<li>Knut Vidar Skjersli</li>
+</ul>
+
+<h2>Release date</h2>
+
+<p>
+23 October 2026
+</p>
+
+</html>"));
+
+end Version_3_0_0;

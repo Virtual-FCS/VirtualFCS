@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Media.PartialCondensingMixture</title></head><body>
+<h1 id="VirtualFCS.Media.PartialCondensingMixture"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Media.html">Media</a>.PartialCondensingMixture</h1>
+<p></p>
+This extension of <tt>PartialMedium</tt> models a mixture of multiple components, several of which may or may not condense into liquid phase.<div>This can be used to model e.g. condensing air in a fuel cell's cathode, the anodic loop of a PEM electrolyser and ammonia-air systems.</div><div>Note that condensation is inherently an extra calculation, and gas mixtures or pure liquids should be preferred when possible.</div><h2>Derived classes</h2><div>To implement your medium, you need to provide implementations for the following:</div><div><ul><li>Molar masses <tt>MMX</tt>, reference composition <tt>reference_X</tt> (note: <i>mass</i> fractions, not molar!), and component names <tt>substanceNames</tt>;</li><li><tt>invertedKs</tt>, a function providing the inverse of equilibrium constants K<sub>i</sub>, i.e. the ratios of <u><i>molar</i></u> fraction in gas vs. in liquid. The reason why the function provides K<sub>i</sub><sup>-1</sup> instead of K<sub>i</sub> directly is that we want to allow modelling of incondensable gases, for which K<sub>i</sub>=
+<!--StartFragment--><span class="symbol large" id="symbol">∞; providing</span> K<sub>i</sub><sup>-1</sup>=0 allows to avoid dealing with infinity in calculations and the headaches that come with it.</li><li><tt>(gas|liquid)SpecificHeatCapacityCp</tt>, <tt>(gas|liquid)SpecificEnthalpy</tt>, <tt>(gas|liquid)SpecificEntropy</tt>, <tt>(gas|liquid)Density</tt>: these thermodynamic functions provide the indicated quantities for either phase. Note that their argument is a <tt>ThermodynamicState</tt> <i>already</i> referring to the relevant phase, to reduce the times the equilibrium calculations are run.</li></ul></div><div><h2>Implementation</h2><div>The model uses a <a href="https://en.wikipedia.org/wiki/Flash_evaporation#Equilibrium_flash_of_a_multi-component_liquid">Rachford-Rice equation</a> to calculate the equilibrium compositions for both phases (and whether there is one or both phases).</div><div>Rachford-Rice is an implicit equation and as such it is inherently <b>computationally onerous</b>; if your mixture has only one condensable component (e.g. water), it may be worth it to replace the implementation of <tt>flashVaporisation</tt> with a direct approach to achieve better computational performance.</div><h2>Utilities</h2></div><div>The model provides some useful functions:</div><div><ul><li><tt>massToMoleFractions</tt> and <tt>moleToMassFractions</tt>, to convert composition arrays between the two systems; Modelica uses mostly mass internally, but data is typically available on a mole basis.</li><li><tt>antoine</tt> and <tt>clausiusClapeyron</tt>, to calculate vapour pressure with the respective equation.</li></ul><h2>Reference</h2></div><!--StartFragment--><!--EndFragment--><div>Whitson, Curtis H., and Michael L. Michelsen. <a href="https://www.researchgate.net/publication/223072443_The_Negative_Flash">"The negative flash." </a><i>Fluid phase equilibria</i> 53 (1989): 51-71.</div><div><br/></div>
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.ThermodynamicState.html">ThermodynamicState</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.BaseProperties.html">BaseProperties</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.moleToMassFractions.html">moleToMassFractions</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.massToMoleFractions.html">massToMoleFractions</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.antoine.html">antoine</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.clausiusClapeyron.html">clausiusClapeyron</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.temperature.html">temperature</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.pressure.html">pressure</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.massFraction.html">massFraction</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.molarMass.html">molarMass</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.setState_pTX.html">setState_pTX</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.setState_phX.html">setState_phX</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.flashVaporisation.html">flashVaporisation</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.flashVaporisation_der.html">flashVaporisation_der</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.vaporisationRatio.html">vaporisationRatio</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.invertedKs.html">invertedKs</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.gasMolarFractions.html">gasMolarFractions</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.liquidMolarFractions.html">liquidMolarFractions</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.gasConstant.html">gasConstant</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.flashEquilibrium.html">flashEquilibrium</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.gasSpecificHeatCapacityCp.html">gasSpecificHeatCapacityCp</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.liquidSpecificHeatCapacityCp.html">liquidSpecificHeatCapacityCp</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.specificHeatCapacityCp.html">specificHeatCapacityCp</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.specificHeatCapacityCv.html">specificHeatCapacityCv</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.gasSpecificEnthalpy.html">gasSpecificEnthalpy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.liquidSpecificEnthalpy.html">liquidSpecificEnthalpy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.specificEnthalpy.html">specificEnthalpy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.gasSpecificEntropy.html">gasSpecificEntropy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.liquidSpecificEntropy.html">liquidSpecificEntropy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.specificEntropy.html">specificEntropy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.gasDensity.html">gasDensity</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.liquidDensity.html">liquidDensity</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.density.html">density</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.specificInternalEnergy.html">specificInternalEnergy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.isentropicEnthalpy.html">isentropicEnthalpy</a></li>
+<li><a href="VirtualFCS.Media.PartialCondensingMixture.setSmoothState.html">setSmoothState</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

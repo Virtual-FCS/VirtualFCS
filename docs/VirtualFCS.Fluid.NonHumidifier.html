@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Fluid.NonHumidifier</title></head><body>
+<h1 id="VirtualFCS.Fluid.NonHumidifier"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Fluid.html">Fluid</a>.NonHumidifier</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p>Pass-through implementation of the humidifier interface. Streams are connected without humidification.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>portA_in</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Wet-side connection at the first axial cell</td></tr>
+<tr><td><code>portB_in</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Dry-side connection at the last axial cell (counter-current flow)</td></tr>
+<tr><td><code>portA_out</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Wet-side connection at the last axial cell</td></tr>
+<tr><td><code>portB_out</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Dry-side connection at the first axial cell (counter-current flow)</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

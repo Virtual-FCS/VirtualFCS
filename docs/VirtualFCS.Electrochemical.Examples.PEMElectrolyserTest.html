@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Examples.PEMElectrolyserTest</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Examples.PEMElectrolyserTest"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Examples.html">Examples</a>.PEMElectrolyserTest</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+This is a simple test of a PEM electrolyser with variable current pushed through it while undergoing pressurisation.<div>Note that the sources and sinks are implemented with "hard" constraints rather than physical valves to simplify the example; it is easy to realise non-physical conditions if e.g. the pressure ramp is too fast (producing backflow into the stack).</div>
+<h2>Governing Equations</h2><pre>H_in = abs(anode_inlet.ports[1].m_flow)*anode_inlet.ports[1].h_outflow;
+H_out = H_out_anode + H_out_cathode;
+H_out_anode = abs(anode_outlet.ports[1].m_flow)*ely.port_anode_b.h_outflow;
+H_out_cathode = abs(cathode_outlet.ports[1].m_flow)*ely.port_cathode_b.h_outflow;</pre>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

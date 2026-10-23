@@ -1,0 +1,48 @@
+within VirtualFCS.Electrochemical.Hydrogen.ECM;
+
+model ActivationLossSimple
+extends VirtualFCS.Electrochemical.Hydrogen.ECM.BaseActivationLoss;
+  import Modelica.Constants.R;
+  import Modelica.Constants.F;
+    
+  parameter Modelica.Units.SI.CurrentDensity i_0 = 0.03"Exchange current density A/m^2 (Barbir 2005)";
+  parameter Real alpha = 1 "Charge transfer coefficient (-)";
+  
+  outer Modelica.Units.SI.Temperature T_stack "stack temperature";
+  outer Modelica.Units.SI.Area A_el "Area of the fuel cell electrode (m^2)";
+  
+  Modelica.Units.SI.CurrentDensity i_area;
+   
+equation
+  i_area = i/A_el;
+  v = N_cells * R*T_stack/(alpha*F) * log(max(i_area/i_0, 1));
+
+annotation(Documentation(info = "<html>
+<body>
+<h2>Model Description and References</h2>
+Voltage activation loss which occurs due to sluggish kinetics associated with small overpotentials, i.e low current regime. The formula used in this element is taken from Barbir's \"PEM Fuel Cells - Theory and Practice\", Elsevier, 2013, eq. 3-41.<div>It expresses the loss in Nernst potential when drawn current approaches the exchange current density i<sub>0</sub>&nbsp;</div>
+<h2>Governing Equations</h2>
+<pre>i_area = i/A_el;
+v = N_cells * R*T_stack/(alpha*F) * log(max(i_area/i_0, 1));</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>T_stack</code></td><td>stack temperature</td></tr>
+<tr><td><code>A_el</code></td><td>Area of the fuel cell electrode (m^2)</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>-</code></td><td>number of cells in the stack (inherited)</td></tr>
+<tr><td><code>i_0</code></td><td>Modelica.Units.SI.CurrentDensity</td><td>-</td><td><code>0.03</code></td><td>Exchange current density A/m^2 (Barbir 2005)</td></tr>
+<tr><td><code>alpha</code></td><td>Real</td><td>1</td><td><code>1</code></td><td>Charge transfer coefficient (-)</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical pin</td></tr>
+<tr><td><code>n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical pin</td></tr>
+</table>
+</body>
+</html>"));
+
+
+end ActivationLossSimple;

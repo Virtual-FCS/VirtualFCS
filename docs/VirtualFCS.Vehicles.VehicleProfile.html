@@ -1,12 +1,49 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Vehicles.VehicleProfile</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Vehicles.html">Vehicles</a>.<span class="omc-h1">VehicleProfile</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><div>The VehicleProfile block is designed to replicate the power demand of a vehicle considering a pre-determined drive cycle and vehicle parameters such as weight and frontal area. The generated power profile considers the needs to propel the vehicle plus the aerodynamic drag. The block allows the user to select if regenerative breaking is used or not.</div><div><br></div><div><div>The block enables the user to select from standard testing drive cycles including WLTC Class 1-3 and NEDC. The drive cycles are provided as .mat files in the library directory containing the block.</div></div></body></html><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.Vehicles.VehicleProfile.speed_profile.html">speed_profile</a></td><td></td></tr>
-<tr><td><a href="VirtualFCS.Vehicles.VehicleProfile.choose_speed_profile.html">choose_speed_profile</a></td><td></td></tr>
-<tr><td><a href="VirtualFCS.Vehicles.VehicleProfile.speed_profile_name.html">speed_profile_name</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Vehicles.VehicleProfile</title></head><body>
+<h1 id="VirtualFCS.Vehicles.VehicleProfile"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Vehicles.html">Vehicles</a>.VehicleProfile</h1>
+<p>Calculates the driving power for a vehicle that corresponds to a given speed profile.</p>
+
+<h2>Model Description and References</h2>
+<div>The VehicleProfile block is designed to replicate the power demand of a vehicle considering a pre-determined drive cycle and vehicle parameters such as weight and frontal area. The generated power profile considers the needs to propel the vehicle plus the aerodynamic drag. The block allows the user to select if regenerative breaking is used or not.</div><div><br/></div><div><div>The block enables the user to select from standard testing drive cycles including WLTC Class 1-3 and NEDC. The drive cycles are provided as .mat files in the library directory containing the block.</div></div>
+<h2>Governing Equations</h2>
+<pre>der(x) = v;
+der(v) = a;
+F_drag = 0.5*C_D*rho_air*v^2*A_front;
+F_accel = m*a;
+F_roll = 0.02*m*9.81;
+F_T = F_drag + F_accel + F_roll;
+P = F_T*v;<br/></pre><table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>m</code></td><td>mass of the vehicle</td></tr>
+<tr><td><code>V</code></td><td>Vehicle Speed</td></tr>
+<tr><td><code>v</code></td><td>Speed of the vehicle in m/s</td></tr>
+<tr><td><code>a</code></td><td>Vehicle acceleration</td></tr>
+<tr><td><code>F_accel</code></td><td>Vehicle acceleration force</td></tr>
+<tr><td><code>F_drag</code></td><td>Vehicle drag force</td></tr>
+<tr><td><code>F_roll</code></td><td>Vehicle rolling force</td></tr>
+<tr><td><code>F_T</code></td><td>Vehicle total force</td></tr>
+<tr><td><code>x</code></td><td>Position</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>VN</code></td><td>String</td><td>1</td><td><code>"Default"</code></td><td>Vehicle name</td></tr>
+<tr><td><code>m_user_defined</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>1000</code></td><td>Mass of vehicle if user-defined</td></tr>
+<tr><td><code>rho_air</code></td><td>Modelica.Units.SI.Density</td><td>kg/m3</td><td><code>1.2</code></td><td>Volumic mass of the air</td></tr>
+<tr><td><code>A_front</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>2.7</code></td><td>Front area of the vehicle</td></tr>
+<tr><td><code>C_D</code></td><td>Modelica.Units.SI.CoefficientOfFriction</td><td>-</td><td><code>0.26</code></td><td>Drag coefficient</td></tr>
+<tr><td><code>D_tire</code></td><td>Modelica.Units.SI.Diameter</td><td>m</td><td><code>0.4318</code></td><td>Tire Diameter</td></tr>
+<tr><td><code>useRegenerativeBreaking</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>If true, allows negative power duriing breaking.</td></tr>
+<tr><td><code>eff_brake</code></td><td>Modelica.Units.SI.Efficiency</td><td>1</td><td><code>0.5</code></td><td>Efficiency of the regenerative breaking</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>vehicleVelocity</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

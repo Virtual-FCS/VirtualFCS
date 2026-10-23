@@ -1,8 +1,57 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.html">Battery</a>.<span class="omc-h1">LiIonBatteryPack_Lumped</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><div>This model describes a lithium-ion battery pack as a lumped of LiIonCell model. It simulates the single cell equation and multiplies is by number of cells in series and parallel. This setup has the advantage of low computational time.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass&nbsp;<span class="Apple-tab-span" style="white-space: pre;">		</span>= 2.5&nbsp;<span class="Apple-tab-span" style="white-space: pre;">	</span>kg</div><div>Cp&nbsp;<span class="Apple-tab-span" style="white-space: pre;">		</span>= 1000&nbsp;<span class="Apple-tab-span" style="white-space: pre;">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class="Apple-tab-span" style="white-space: pre;">	</span>= 0.5&nbsp;<span class="Apple-tab-span" style="white-space: pre;">	</span>-</div><div>p<span class="Apple-tab-span" style="white-space: pre;">		</span>= 5<span class="Apple-tab-span" style="white-space: pre;">		</span>Cells in parallel</div><div>s&nbsp;<span class="Apple-tab-span" style="white-space: pre;">		</span>= 10&nbsp;<span class="Apple-tab-span" style="white-space: pre;">		</span>Cells in series</div></body></html><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Battery.html">Battery</a>.LiIonBatteryPack_Lumped</h1>
+<p>A Li-ion battery pack model comprising a single lumped battery model.</p>
+
+
+<h2>Model Description and References</h2>
+<div><font face="Arial">This model describes a lithium-ion battery pack as a lumped version of the <a href="VirtualFCS.Electrochemical.Battery.LiIonCell.html">LiIonCell model</a>. The primary difference is that the open-circuit voltage (OCV) is scaled by the number of cells in series in the stack, estimated as the battery pack maximum voltage divided by the maximum voltage of a single cell (</font><i 12px;&quot;="" style="font-size:">V<sub>max,bat pack</sub></i><span 12px;&quot;="" style="font-size:">/</span><i 12px;&quot;="" style="font-size:">V<sub>chem,max</sub></i><span arial;&quot;="" style="font-family:">).</span></div><div><font face="Arial"><br/></font></div><div><font face="Arial">The model includes a <a href="VirtualFCS.Control.ChargeCounter.html">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery.</font></div><div>
+<font face="Arial"><br/>
+The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard <i>et al.</i> [1], and is parameterized to the LFP chemistry by default.</font></div><div><br/></div><div>The battery pack is assumed to have a uniform temperature with a thermal mass based on its heat capacity, Cp, and mass m_bat_pack. The heat generated from passing current through the battery is calculated according to the <i>Heat Generation</i> equation below. Heat is assumed to enter or leave the battery via convection and radiation on an area equivalent to the bottom wall of the pack. The ambient temperature is determined by the connection to the heatBoundary.</div><div><br/></div><div><br/></div><div><div><b><u><font face="Arial">References</font></u></b></div><div><div 2;&quot;="" class="csl-bib-body" style="line-height:"><div class="csl-entry" left;&quot;="" style="clear:"><div 0.5em;="" 1em;&quot;="" class="csl-left-margin" left;="" padding-right:="" right;="" style="float:" text-align:="" width:=""><font face="Arial">1. </font><span style="font-family: Arial;">Vichard, L. </span><i style="font-family: Arial;">et al.</i><span style="font-family: Arial;"> A method to estimate battery SOH indicators based on vehicle operating data only. </span><i style="font-family: Arial;">Energy</i><span style="font-family: Arial;"> </span><b style="font-family: Arial;">225</b><span style="font-family: Arial;">, 120235 (2021).</span></div></div></div></div></div>
+<h2>Governing Equations</h2>
+<pre>vol_bat_pack = L_bat_pack*W_bat_pack*H_bat_pack;
+C_rate = pin_p.i/C_bat_pack;
+OCV.v = N_s*(a1 + b1*(20 - (heatPort.T - 273.15))*1/chargeCounter.SOC + c1/sqrt(chargeCounter.SOC) + d1*chargeCounter.SOC + e1*log(chargeCounter.SOC) + f1*log(1.01 - chargeCounter.SOC) + g1*log(1.001 - chargeCounter.SOC) + h1*exp(i1*(heatPort.T - 273.15)));
+heatSource.Q_flow = abs((OCV.v - pin_p.v)*sensorCurrent.i);</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>C_rate</code></td><td>Cycle rate</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>m_bat_pack</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>100</code></td><td>Mass of the pack</td></tr>
+<tr><td><code>L_bat_pack</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.6</code></td><td>Battery pack length</td></tr>
+<tr><td><code>W_bat_pack</code></td><td>Modelica.Units.SI.Breadth</td><td>m</td><td><code>0.45</code></td><td>Battery pack width</td></tr>
+<tr><td><code>H_bat_pack</code></td><td>Modelica.Units.SI.Height</td><td>m</td><td><code>0.1</code></td><td>Battery pack height</td></tr>
+<tr><td><code>Cp_bat_pack</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>V_min_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>37.5</code></td><td>Battery pack minimum voltage</td></tr>
+<tr><td><code>V_nom_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>48</code></td><td>Battery pack nominal voltage</td></tr>
+<tr><td><code>V_max_bat_pack</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>54.75</code></td><td>Battery pack maximum voltage</td></tr>
+<tr><td><code>C_bat_pack</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td><code>200</code></td><td>Battery pack nominal capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Battery pack initial state of charge</td></tr>
+<tr><td><code>heatTransferCoefficient</code></td><td>Modelica.Units.SI.CoefficientOfHeatTransfer</td><td>-</td><td><code>7.8*10^0.78</code></td><td>HeatTransferCoefficient (W/(m2.K))</td></tr>
+<tr><td><code>N_s</code></td><td>Real</td><td>1</td><td><code>ceil(V_max_bat_pack/V_chem_max)</code></td><td></td></tr>
+<tr><td><code>V_chem_max</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>3.65</code></td><td></td></tr>
+<tr><td><code>a1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>3.39</code></td><td></td></tr>
+<tr><td><code>b1</code></td><td>Real</td><td>1</td><td><code>-1e-4</code></td><td></td></tr>
+<tr><td><code>c1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-7.46e-2</code></td><td></td></tr>
+<tr><td><code>d1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>5.82e-3</code></td><td></td></tr>
+<tr><td><code>e1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-2.75e-2</code></td><td></td></tr>
+<tr><td><code>f1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>2.30e-2</code></td><td></td></tr>
+<tr><td><code>g1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-4.71e-2</code></td><td></td></tr>
+<tr><td><code>h1</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>-0.02</code></td><td></td></tr>
+<tr><td><code>i1</code></td><td>Modelica.Units.SI.LinearTemperatureCoefficient</td><td>-</td><td><code>-0.002</code></td><td></td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>heatBoundary</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b</td><td>K; W</td><td></td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

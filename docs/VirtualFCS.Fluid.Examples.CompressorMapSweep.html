@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Fluid.Examples.CompressorMapSweep</title></head><body>
+<h1 id="VirtualFCS.Fluid.Examples.CompressorMapSweep"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Fluid.html">Fluid</a>.<a href="VirtualFCS.Fluid.Examples.html">Examples</a>.CompressorMapSweep</h1>
+<p></p>
+This test drives a <tt>CompressorMap</tt> object, whose pressure ratio and isentropic efficiency are read fromCSV data file <tt>Resources/CompressorMaps/compressor_map.csv</tt>, with a shaft speed that follows (with a rate change limiter) a table sampling the RPMs values of the map's speed lines.<div><br/></div><div>The mass flow is set directly by an outlet <tt>boundary</tt> and oscillates sinusoidally between the surge and choke lines as defined for the present speed line; this is also passed through a rate change limiter.<br/><div><br/></div><div>Making a parametric plot with <tt>compressor.m_flow</tt> on the X axis and <tt>compressor.p_ratio_dyn</tt> will then provide a decent visualisation of the map, that may be compared to the original plot of the data.</div></div>
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Fluid.Examples.CompressorMapSweep.Gas.html">Gas</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

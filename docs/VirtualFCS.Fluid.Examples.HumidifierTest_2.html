@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Fluid.Examples.HumidifierTest_2</title></head><body>
+<h1 id="VirtualFCS.Fluid.Examples.HumidifierTest_2"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Fluid.html">Fluid</a>.<a href="VirtualFCS.Fluid.Examples.html">Examples</a>.HumidifierTest_2</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+<p>This alternative humidifier test uses slow sinusoidal excitation: wet flow has 0.0004 kg/s offset and 0.00003 kg/s amplitude at 0.05 mHz; temperature has 343 K offset and 10 K amplitude at 0.04 mHz; humidity has 0.75 offset and 0.25 amplitude at 0.03 mHz.</p><p>The dry feed is 0.0004 kg/s at 353.15 K with X = {0.24, 0.76, 0}; outlet pressures are 2e5 Pa and 1.8e5 Pa. </p>
+<h2>Governing Equations</h2>
+<pre>X_mol[Water] = humidity.y * Modelica.Media.Air.ReferenceMoistAir.Utilities.Water95_Utilities.psat(temperature.y)/wet_sink.p;
+X_mol[Oxygen] = 0.21 * (1-X_mol[Water]);
+X_mol[Nitrogen] = 0.79 * (1-X_mol[Water]);
+wet_source.X_in = MMX .* X_mol / (MMX*X_mol);</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>X_mol</code></td><td>Molar fraction in feed, helper variable</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Fluid.Examples.HumidifierTest_2.dry_medium.html">dry_medium</a></li>
+<li><a href="VirtualFCS.Fluid.Examples.HumidifierTest_2.wet_medium.html">wet_medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

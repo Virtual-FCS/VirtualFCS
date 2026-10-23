@@ -1,1 +1,6 @@
 *.bak-mo
+*.mat
+dsfinal.txt
+buildlog.txt
+dslog.txt
+dsmodel.c

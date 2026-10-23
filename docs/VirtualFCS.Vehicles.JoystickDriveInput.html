@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Vehicles.JoystickDriveInput</title></head><body>
+<h1 id="VirtualFCS.Vehicles.JoystickDriveInput"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Vehicles.html">Vehicles</a>.JoystickDriveInput</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p>Vehicle drive input that converts joystick commands into acceleration and braking requests and integrates them into a bounded velocity command.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>R_accel</code></td><td>Real</td><td>1</td><td><code>6</code></td><td></td></tr>
+<tr><td><code>R_decel</code></td><td>Real</td><td>1</td><td><code>-4.5</code></td><td></td></tr>
+<tr><td><code>maxVelocity</code></td><td>Modelica.Units.SI.Velocity</td><td>m/s</td><td><code>200</code></td><td></td></tr>
+<tr><td><code>minVelocity</code></td><td>Modelica.Units.SI.Velocity</td><td>m/s</td><td><code>0</code></td><td></td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>y</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

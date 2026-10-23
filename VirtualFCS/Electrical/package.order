@@ -1,6 +1,14 @@
 UsersGuide
+Examples
+AbstractCommutator
+Commutator
+AveragedCommutator
+AbstractBoostConverter
+AveragedBoostConverter
+BoostConverter
 DC_converter
-DC_DC_Converter
 DCConverterSwitch
 DCConverter
 SpeedControlledDCMotor
+ChopperStepUpDown
+PowerSource

@@ -2,9 +2,8 @@ within VirtualFCS.Control;
 
 model DCMotorControlRecirculationBlower "Control the speed of a DC motor"
   //*** DEFINE REPLACEABLE PACKAGES ***//
-  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
-    Placement(visible = true, transformation(extent = {{-248, 44}, {-228, 64}}, rotation = 0))) constrainedby Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM annotation(
-     Placement(transformation(extent = {{20, -80}, {40, -60}})));
+  replaceable parameter VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower driveData constrainedby Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DriveDataDCPM annotation(
+     Placement(transformation(extent = {{-196, -78}, {-176, -58}})));
   //*** INSTANTIATE COMPONENTS ***//
   Modelica.Electrical.Machines.Examples.ControlledDCDrives.Utilities.DcdcInverter armatureInverter(fS = driveData.fS, Td = driveData.Td, Tmf = driveData.Tmf, VMax = driveData.VaMax) annotation(
     Placement(visible = true, transformation(extent = {{30, -10}, {50, 10}}, rotation = 0)));
@@ -57,7 +56,9 @@ equation
   connect(currentController.feedForward, measuredSpeedInput) annotation(
     Line(points = {{-12, -12}, {-12, -36}, {-88, -36}, {-88, -64}}, color = {0, 0, 127}));
   annotation(
-    Documentation(info = "<html><head></head><body><p>This is a partial model of a controlled DC PM drive.</p>
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p>This is a partial model of a controlled DC PM drive.</p>
 <p>
 Electrical power is fed to the motor via a DC-DC inverter.
 The level of detail of the DC-DC inverter may be chosen from ideal averaging or switching.
@@ -68,6 +69,24 @@ The current controller is parameterized according to the absolute optimum.
 Further reading:
 <a href=\"modelica://Modelica/Resources/Documentation/Electrical/Machines/DriveControl.pdf\">Tutorial at the Modelica Conference 2017</a>
 </p><p>This model is adapted from the DC PM drive control model used in the Modelica Standard Library.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>driveData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DriveDataRBlower</td><td>-</td><td><code>-</code></td><td></td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>setSpeedInput</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>measuredSpeedInput</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>pwr_pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>pwr_pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+</tbody></table>
+
 </body></html>"),
     Diagram(coordinateSystem(extent = {{-200, -100}, {100, 100}})),
     Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-87, 9}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -21}}, textString = "s"), Text(origin = {-3, 73}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -17}}, textString = "pwr"), Text(origin = {73, 9}, textColor = {255, 255, 255}, extent = {{-19, 11}, {35, -23}}, textString = "m"), Text(origin = {-5, -57}, textColor = {255, 255, 255}, extent = {{-19, 11}, {27, -19}}, textString = "out"), Text(origin = {161, 84}, textColor = {0, 0, 255}, extent = {{-55, 18}, {55, -18}}, textString = "%name")}));

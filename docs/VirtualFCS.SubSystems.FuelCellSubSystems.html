@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.SubSystems.FuelCellSubSystems</title></head><body>
+<h1 id="VirtualFCS.SubSystems.FuelCellSubSystems"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.SubSystems.html">SubSystems</a>.FuelCellSubSystems</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p><b>FuelCellSubSystems</b> is the integrated balance-of-plant assembly around a fuel-cell stack.</p><h3>Composition</h3><p>It combines <a href="VirtualFCS.SubSystems.Air.SubSystemAir.html">SubSystemAir</a>, <a href="VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen.html">SubSystemHydrogen</a>, and <a href="VirtualFCS.SubSystems.Cooling.SubSystemCooling.html">SubSystemCooling</a>. The three assemblies provide the cathode air, anode hydrogen, and coolant paths; the stack-current and stack-temperature inputs are distributed to the relevant controls.</p><h3>Interfaces and purpose</h3><p>The external fluid ports are grouped as <code>air_toStack</code>/<code>air_fromStack</code>, <code>H2_toStack</code>/<code>H2_fromStack</code>, and <code>coolant_toStack</code>/<code>coolant_fromStack</code>. Electrical pins power the subsystem components. Use this class when a system model needs a single replaceable balance-of-plant interface; use the individual subsystem classes when testing or replacing one line independently.</p><p>The cell count and three fluid media are replaceable. Verify controller tuning and medium compatibility for the selected fuel-cell stack.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>399</code></td><td>FC stack number of cells</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>H2_toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>stackTemperature</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>air_toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>coolant_toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>H2_fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>air_fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>coolant_fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.SubSystems.FuelCellSubSystems.Cathode_Medium.html">Cathode_Medium</a></li>
+<li><a href="VirtualFCS.SubSystems.FuelCellSubSystems.Anode_Medium.html">Anode_Medium</a></li>
+<li><a href="VirtualFCS.SubSystems.FuelCellSubSystems.Coolant_Medium.html">Coolant_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

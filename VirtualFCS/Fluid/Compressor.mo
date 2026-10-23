@@ -1,83 +1,101 @@
 within VirtualFCS.Fluid;
 
-model Compressor
-  // System
-  outer Modelica.Fluid.System system "System properties";
-  //*** DEFINE REPLACEABLE PACKAGES ***//
-  // Medium declaration
-  replaceable package Medium = Modelica.Media.Air.MoistAir(Temperature(start = system.T_start), AbsolutePressure(start = system.p_start));
-  //*** INSTANTIATE COMPONENTS ***//
-  // Interfaces and boundaries
-  Modelica.Fluid.Interfaces.FluidPort_a Input(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {-78, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_b Output(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(origin = {84, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Electrical.Analog.Interfaces.PositivePin pin_p annotation(
-    Placement(visible = true, transformation(origin = {-38, 96}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {20, 60}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  Modelica.Electrical.Analog.Interfaces.NegativePin pin_n annotation(
-    Placement(visible = true, transformation(origin = {-62, 96}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {-16, 60}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  // Control components
-  Modelica.Blocks.Interfaces.RealOutput sen_Air_comp_speed annotation(
-    Placement(visible = true, transformation(origin = {72, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -66}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  Modelica.Blocks.Interfaces.RealInput controlInterface annotation(
-    Placement(visible = true, transformation(origin = {-113, 41}, extent = {{-13, -13}, {13, 13}}, rotation = 0), iconTransformation(origin = {-113, 61}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-  Modelica.Blocks.Math.Gain gain1(k = pump.N_nominal) annotation(
-    Placement(visible = true, transformation(origin = {-87, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  VirtualFCS.Control.DCMotorControlCompressor dCMotorControlCompressor annotation(
-    Placement(visible = true, transformation(origin = {-53, 41}, extent = {{-17, -17}, {17, 17}}, rotation = 0)));
-  // Machines
-  Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet dcpm(IaNominal = driveData.motorData.IaNominal, Jr = driveData.motorData.Jr, Js = driveData.motorData.Js, La = driveData.motorData.La, Ra = driveData.motorData.Ra, TaNominal = driveData.motorData.TaNominal, TaOperational = driveData.motorData.TaNominal, TaRef = driveData.motorData.TaRef, VaNominal = driveData.motorData.VaNominal, alpha20a = driveData.motorData.alpha20a, brushParameters = driveData.motorData.brushParameters, coreParameters = driveData.motorData.coreParameters, frictionParameters = driveData.motorData.frictionParameters, ia(fixed = true), phiMechanical(fixed = true), strayLoadParameters = driveData.motorData.strayLoadParameters, wMechanical(fixed = true, start = 0.10472), wNominal = driveData.motorData.wNominal) annotation(
-    Placement(visible = true, transformation(extent = {{-62, -26}, {-42, -6}}, rotation = 0)));
-  Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 0.15) annotation(
-    Placement(visible = true, transformation(origin = {-20, -16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  parameter VirtualFCS.Utilities.ParameterRecords.DriveDataDcPm driveData annotation(
-    Placement(visible = true, transformation(extent = {{-90, -24}, {-70, -4}}, rotation = 0)));
-  Modelica.Fluid.Machines.PrescribedPump pump(redeclare package Medium = Medium, N_nominal = 365, T_start = 323.15, V(displayUnit = "l") = 0.006, allowFlowReversal = false, checkValve = true, checkValveHomotopy = Modelica.Fluid.Types.CheckValveHomotopyType.Closed, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, redeclare function flowCharacteristic = Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.linearFlow(V_flow_nominal = {0, 0.00365}, head_nominal = {150000, 100000}), massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, medium(preferredMediumStates = false), nParallel = 1, use_N_in = true, use_T_start = true) annotation(
-    Placement(visible = true, transformation(origin = {0, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Mechanics.Rotational.Sources.Torque torque annotation(
-    Placement(visible = true, transformation(origin = {8, -16}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  // Sensors
-  Modelica.Mechanics.Rotational.Sensors.SpeedSensor speedSensor annotation(
-    Placement(visible = true, transformation(origin = {24, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  // Other
-  Modelica.Blocks.Math.Gain gain(k = 9.5493) annotation(
-    Placement(visible = true, transformation(origin = {67, -16}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  // Power & Efficiencies
-  Real Power_Compressor(unit = "W") "The power consumed by the Compressor";
+model Compressor "Compressor with constant isentropic efficiency"
+  extends VirtualFCS.Fluid.CompressorInterface(useHeatPort=true);
+
+  import Modelica.Constants.eps;
+
+  parameter Modelica.Units.SI.Efficiency eta = 0.8 "Isoentropic efficiency";
+  parameter Modelica.Units.SI.Power P_nom(displayUnit="kW") = 40000 "Nominal compressor power";
+  parameter Modelica.Units.SI.AngularVelocity RPM_nom(displayUnit="rpm") = 8377.580409572781 "Nominal rounds per minute";
+
+  Modelica.Units.SI.MassFlowRate m_flow(min=0, start=1e-4, fixed=true) "Mass flow through the unit";
+
+  Modelica.Units.SI.EnthalpyFlowRate Hin  = port_a.m_flow * inStream(port_a.h_outflow) "Enthalpy inflow at inlet";
+  Modelica.Units.SI.EnthalpyFlowRate Hout = port_b.m_flow * port_b.h_outflow "Enthalpy inflow at outlet (mind the sign)";
+  
+  Modelica.Mechanics.Rotational.Components.Inertia inertia(J = 1e-4)  annotation(
+    Placement(transformation(origin = {-70, -20}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Mechanics.Rotational.Sensors.MultiSensor sensor annotation(
+    Placement(transformation(origin = {-28, -20}, extent = {{-10, -10}, {10, 10}})));
+protected
+  Medium.ThermodynamicState state_in = Medium.setState_phX(port_a.p, inStream(port_a.h_outflow), inStream(port_a.Xi_outflow));
+  Medium.ThermodynamicState state_out = Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow);
+  Modelica.Units.SI.KinematicViscosity m_flow_relax=1 "Relaxation constant for mass flow, time scale << 1 s";
+  Modelica.Mechanics.Rotational.Components.Damper damper(final d = P_nom/RPM_nom^2) annotation(
+    Placement(transformation(origin = {10, -20}, extent = {{10, -10}, {-10, 10}})));
+  Modelica.Mechanics.Rotational.Components.Fixed fixed annotation(
+    Placement(transformation(origin = {50, -20}, extent = {{-10, -10}, {10, 10}})));
 equation
-  torque.tau = -9.5488*pump.W_total/pump.N;
-  Power_Compressor = pin_p.i*pin_p.v;
-  connect(dcpm.flange, inertia.flange_a) annotation(
-    Line(points = {{-42, -16}, {-30, -16}}));
-  connect(speedSensor.w, gain.u) annotation(
-    Line(points = {{35, 6}, {40, 6}, {40, -16}, {60, -16}}, color = {0, 0, 127}));
-  connect(gain.y, pump.N_in) annotation(
-    Line(points = {{74, -16}, {82, -16}, {82, -40}, {0, -40}, {0, -50}}, color = {0, 0, 127}));
-  connect(pump.port_b, Output) annotation(
-    Line(points = {{10, -60}, {84, -60}}, color = {0, 170, 255}, thickness = 1));
-  connect(pump.port_a, Input) annotation(
-    Line(points = {{-10, -60}, {-78, -60}}, color = {0, 170, 255}, thickness = 1));
-  connect(inertia.flange_b, torque.flange) annotation(
-    Line(points = {{-10, -16}, {-2, -16}}));
-  connect(speedSensor.flange, inertia.flange_b) annotation(
-    Line(points = {{14, 6}, {-10, 6}, {-10, -16}}));
-  connect(sen_Air_comp_speed, speedSensor.w) annotation(
-    Line(points = {{72, 6}, {35, 6}}, color = {0, 0, 127}));
-  connect(controlInterface, gain1.u) annotation(
-    Line(points = {{-112, 42}, {-94, 42}, {-94, 42}, {-92, 42}}, color = {0, 0, 127}));
-  connect(speedSensor.w, dCMotorControlCompressor.measuredSpeedInput) annotation(
-    Line(points = {{36, 6}, {40, 6}, {40, 41}, {-33, 41}}, color = {0, 0, 127}));
-  connect(gain1.y, dCMotorControlCompressor.setSpeedInput) annotation(
-    Line(points = {{-82, 42}, {-76, 42}, {-76, 41}, {-73, 41}}, color = {0, 0, 127}));
-  connect(pin_n, dCMotorControlCompressor.pwr_pin_n) annotation(
-    Line(points = {{-62, 96}, {-62, 76}, {-58, 76}, {-58, 56}}, color = {0, 0, 255}));
-  connect(pin_p, dCMotorControlCompressor.pwr_pin_p) annotation(
-    Line(points = {{-38, 96}, {-38, 76}, {-48, 76}, {-48, 56}}, color = {0, 0, 255}));
-  connect(dCMotorControlCompressor.pin_n, dcpm.pin_an) annotation(
-    Line(points = {{-58, 26}, {-58, -6}}, color = {0, 0, 255}));
-  connect(dCMotorControlCompressor.pin_p, dcpm.pin_ap) annotation(
-    Line(points = {{-48, 26}, {-46, 26}, {-46, -6}}, color = {0, 0, 255}));
+  port_a.m_flow = m_flow;
+  port_b.m_flow = -m_flow "No-holdup model - what goes in leaves immediately";
+  port_a.Xi_outflow = inStream(port_a.Xi_outflow) "Compositions do not change";
+  port_b.Xi_outflow  = port_a.Xi_outflow "Compositions do not change";
+  port_a.h_outflow = inStream(port_a.h_outflow) "Not supposed to be used, but must be set to balance equations";
+  
+  if noEvent(abs(port_b.m_flow) > eps) then
+    Hin + Hout + sensor.power - lossPower = 0 "Energy balance, lossPower uses opposite sign convention";
+  else
+    port_b.h_outflow = port_a.h_outflow "Handle case of no flow, or Hout definition will not be invertible";
+  end if;
+  TheatPort = Medium.temperature(state_out) "Heat port temperature set at outlet temperature";
+  m_flow_relax * der(m_flow) = Hin + sensor.power*eta - m_flow*Medium.isentropicEnthalpy(port_b.p, state_in) "Avoid spurious branch with dynamic m_flow";
+
+  connect(flange_a, inertia.flange_a) annotation(
+    Line(points = {{-100, 0}, {-90, 0}, {-90, -20}, {-80, -20}}));
+  connect(inertia.flange_b, sensor.flange_a) annotation(
+    Line(points = {{-60, -20}, {-38, -20}}));
+  connect(damper.flange_a, fixed.flange) annotation(
+    Line(points = {{20, -20}, {50, -20}}));
+  connect(damper.flange_b, sensor.flange_b) annotation(
+    Line(points = {{0, -20}, {-18, -20}}));
+
   annotation(
-    Icon(graphics = {Polygon(visible = false, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{20, -75}, {50, -85}, {20, -95}, {20, -75}}), Line(visible = false, points = {{55, -85}, {-60, -85}}, color = {0, 128, 255}), Polygon(visible = false, lineColor = {0, 128, 255}, fillColor = {0, 128, 255}, fillPattern = FillPattern.Solid, points = {{20, -70}, {60, -85}, {20, -100}, {20, -70}}), Polygon(origin = {15, 0}, fillColor = {208, 208, 208}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-115, 80}, {-115, -80}, {85, -50}, {85, 50}, {85, 50}, {-115, 80}}), Line(origin = {5.2, 0.61}, points = {{-57, 0}, {47, 0}}, thickness = 1.5, arrow = {Arrow.None, Arrow.Filled}, arrowSize = 20, smooth = Smooth.Bezier)}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body>The Compressor model is designed to compress air from the ambient environment to the desired pressure and maintain a sufficient mass flow rate to support the needs of the <a href=\"modelica:77VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">Fuel Cell Stack</a>.&nbsp;<div><br></div><div><b>Description</b></div><div><b><br></b></div><div>The model features 5 interfaces: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports provide the upstream and downstream connections for the compressor, the electrical ports connect to the low-voltage power supply for the BoP components and the control port sets the rpm of the compressor. A <a href=\"modelica://Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet\">DC Motor</a> drives the compressor and is connected to an inertia and torque source, which is linked to the resistance of the <a href=\"modelica://Modelica.Fluid.Machines.PrescribedPump\">Pump</a>.</div></body></html>"));
+    Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+This compressor model takes a set isentropic efficiency, nominal power and RPM, and calculates the change in flow properties from inlet to outlet.<div>The unit does not implement any fluid holdup, but has an adjustable mechanical&nbsp;<tt>inertia.J</tt>.</div><div><br></div><div>Outlet conditions are calculated using the <tt>isentropicEnthalpy</tt> function of the Medium, which will need to have been implemented: this allows to handle non-ideal gases (e.g. water vapour, ammonia, or any gases at high pressures).</div><div><br></div><div>By default, <tt>heatport</tt>&nbsp;is enabled, which will result in an adiabatic compressor if nothing is connected to it; this is usually the normal case.</div><div>If&nbsp;<tt>heatport</tt>&nbsp;is not enabled, the outlet of the compressor will be set at parameter <tt>T</tt>, which may simulate e.g. an ideal cooler downstream a compressor, whose duty will be given by <tt>lossPower</tt>.</div>
+<h2>Governing Equations</h2>
+<pre>Hin = port_a.m_flow * inStream(port_a.h_outflow);
+Hout = port_b.m_flow * port_b.h_outflow;
+state_in = Medium.setState_phX(port_a.p, inStream(port_a.h_outflow), inStream(port_a.Xi_outflow));
+state_out = Medium.setState_phX(port_b.p, port_b.h_outflow, port_b.Xi_outflow);
+m_flow_relax = 1;
+port_a.m_flow = m_flow;
+port_b.m_flow = -m_flow;
+port_a.Xi_outflow = inStream(port_a.Xi_outflow);
+port_b.Xi_outflow = port_a.Xi_outflow;
+port_a.h_outflow = inStream(port_a.h_outflow);
+if noEvent(abs(port_b.m_flow) &gt; eps) then Hin + Hout + sensor.power - lossPower = 0;
+else port_b.h_outflow = port_a.h_outflow;
+end if;
+TheatPort = Medium.temperature(state_out)\";
+m_flow_relax * der(m_flow) = Hin + sensor.power*eta - m_flow*Medium.isentropicEnthalpy(port_b.p, state_in);</pre><table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>RPM</code></td><td>Actual rounds per minute</td></tr>
+<tr><td><code>m_flow</code></td><td>Mass flow through the unit</td></tr>
+<tr><td><code>Hin</code></td><td>Enthalpy inflow at inlet</td></tr>
+<tr><td><code>Hout</code></td><td>Enthalpy inflow at outlet (mind the sign)</td></tr>
+<tr><td><code>m_flow_relax</code></td><td>Relaxation constant for mass flow, time scale &lt;&lt; 1 s</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>allowFlowReversal</code></td><td>Boolean</td><td>1</td><td><code>system.allowFlowReversal</code></td><td>= true to allow flow reversal, false restricts to design direction (port_a -&gt; port_b) (inherited)</td></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+<tr><td><code>eta</code></td><td>Modelica.Units.SI.Efficiency</td><td>1</td><td><code>0.8</code></td><td>Isoentropic efficiency</td></tr>
+<tr><td><code>P_nom</code></td><td>Modelica.Units.SI.Power</td><td>W</td><td><code>40000</code></td><td>Nominal compressor power</td></tr>
+<tr><td><code>RPM_nom</code></td><td>Modelica.Units.SI.AngularVelocity</td><td>rad/s</td><td><code>8377.580409572781</code></td><td>Nominal rounds per minute</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Fluid connector a (positive design flow direction is from port_a to port_b)</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Fluid connector b (positive design flow direction is from port_a to port_b)</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Optional port to which dissipated losses are transported in form of heat</td></tr>
+<tr><td><code>flange_a</code></td><td>Connection</td><td>Modelica.Mechanics.Rotational.Interfaces.Flange_a</td><td>rad; N.m</td><td>Flange of left shaft</td></tr>
+<tr><td><code>flange_b</code></td><td>Connection</td><td>Modelica.Mechanics.Rotational.Interfaces.Flange_b</td><td>rad; N.m</td><td>Flange of right shaft</td></tr>
+</tbody></table>
+
+</body></html>"));
 end Compressor;

@@ -1,10 +1,32 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.SubSystems.Air.SubSystemAir</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.html">SubSystems</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.Air.html">Air</a>.<span class="omc-h1">SubSystemAir</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>An air sub-system template is provided in the example model SubSystemAir. The model consists of an air compressor and throttle valve connected to a fixed boundary condition reflecting the ambient conditions. The subsystem model contains 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports provide the connection to the fuel cell stack. The electrical ports interface with the low-voltage DC power-supply to power the BoP components (in this case, the air compressor). The control port provides an interface to the FuelCellControlUnit, which controls the air compressor. A throttle valve is connected downstream from the fuel cell stack to maintain the set pressure in the air line. Future expansions on the air subsystem will include options for humidification and temperature control.</body></html><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.SubSystems.Air.SubSystemAir.Medium.html">Medium</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.SubSystems.Air.SubSystemAir</title></head><body>
+<h1 id="VirtualFCS.SubSystems.Air.SubSystemAir"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.SubSystems.html">SubSystems</a>.<a href="VirtualFCS.SubSystems.Air.html">Air</a>.SubSystemAir</h1>
+<p>Subsystem regulating pressure and flowrate of air to a fuel cell stack</p>
+
+<h2>Model Description and References</h2>
+<p><b>SubSystemAir</b> supplies cathode air to a fuel-cell stack and regulates the stack-side pressure.</p><h3>Composition</h3><p>The subsystem contains an electric compressor, a pressure sensor, an outlet valve, a pressure set-point source, and PI control. The compressor is powered through the electrical pins; its outlet feeds the stack through <code>toStack</code>, while <code>fromStack</code> returns the cathode flow to the environment.</p><h3>Working principle</h3><p>The stack-current input is converted to an estimated air mass-flow demand using the cell count and air excess ratio <code>lambda</code>. Compressor control supplies the required flow, while the valve and pressure controller regulate the cathode pressure toward <code>p_set</code>. The environment boundary uses the global system ambient pressure and temperature.</p><p>The compressor and valve are replaceable. Controller gains and nominal flow values are tuned for a particular stack and should be checked when changing stack size, manifold volume, or operating conditions.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>42</code></td><td>Number of cells in the stack</td></tr>
+<tr><td><code>lambda</code></td><td>Real</td><td>1</td><td><code>3</code></td><td>Air excess ratio</td></tr>
+<tr><td><code>p_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>Target cathodic pressure</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>A</td><td>A</td></tr>
+<tr><td><code>toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.SubSystems.Air.SubSystemAir.Medium.html">Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

@@ -1,48 +1,82 @@
 within VirtualFCS.SubSystems.Hydrogen;
-
 model SubSystemHydrogenControl
-  parameter Real pressure_H2_set(unit = "Pa") = 200000 "Set H2 Pressure";
-  parameter Real massFlow_H2_set(unit = "kg/s") = 1e-2 "Set H2 Recirculation Mass Flow";
-  parameter Real N_FC_stack(unit = "1") = 455 "FC stack number of cells";
-  Modelica.Blocks.Routing.Multiplex3 multiplexSignalsH2Subsystem annotation(
-    Placement(visible = true, transformation(origin = {124, 40}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression getH2MassFlow(y = deMultiplexH2Sensors.y1[1]) annotation(
-    Placement(visible = true, transformation(origin = {-81, -62}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
-  VirtualFCS.Control.PurgeValveControl purgeValveControl annotation(
-    Placement(visible = true, transformation(origin = {-1, 40}, extent = {{-31, -31}, {31, 31}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant setH2Pressure(k = pressure_H2_set) annotation(
-    Placement(visible = true, transformation(origin = {-1, 113}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
-  VirtualFCS.Control.PumpSpeedControl pumpSpeedControl(Td = 1, k = 10)  annotation(
-    Placement(visible = true, transformation(origin = {-3, -44}, extent = {{-31, -31}, {31, 31}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput controlInterface[3] annotation(
-    Placement(visible = true, transformation(origin = {210, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {210, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput signalInterface_H2[2] annotation(
-    Placement(visible = true, transformation(origin = {-218, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-218, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Routing.DeMultiplex2 deMultiplexH2Sensors annotation(
-    Placement(visible = true, transformation(origin = {-154, -120}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput signalInterface_FC annotation(
-    Placement(visible = true, transformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Blocks.Sources.RealExpression setH2MassFlow(y = max(1.1*(signalInterface_FC*(0.00202/(96485*2)*N_FC_stack)), 1.22e-06))  annotation(
-    Placement(visible = true, transformation(origin = {-81, -28}, extent = {{-23, -16}, {23, 16}}, rotation = 0)));
+
+  import Modelica.Constants.F;
+
+  constant Modelica.Units.SI.MolarMass M_H2 = Modelica.Media.IdealGases.Common.SingleGasesData.H2.MM;
+
+  parameter Modelica.Units.SI.AbsolutePressure pressure_H2_set = 200000 "Set H2 Pressure";
+  parameter Real RR = 1.3 "Hydrogen recirculation ratio (recirculated/consumed)";
+  parameter Integer N_cells = 180 "Number of cells in stack";
+  parameter Modelica.Units.SI.MassFlowRate minimumFlow = 1.22e-05 "minimum hydrogen flow";
+  
+  VirtualFCS.Control.PurgeValveControl purgeValveControl annotation (
+    Placement(transformation(origin = {0, 60}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Sources.Constant setH2Pressure(k = pressure_H2_set) annotation (
+    Placement(transformation(origin = {0, 160}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealInput stackCurrent annotation (
+    Placement(visible = true, transformation(origin = {-220, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  Modelica.Blocks.Continuous.LimPID pumpSpeedControl_PID(yMin = 0, yMax = 1, y(nominal = 1e-4))  annotation(
+    Placement(transformation(origin = {0, -60}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealOutput p_h2_set annotation(
+    Placement(transformation(origin = {220, 160}, extent = {{-20, -20}, {20, 20}}), iconTransformation(origin = {220, 140}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealOutput purge_set annotation(
+    Placement(transformation(origin = {220, 0}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealOutput pumpSpeed_set annotation(
+    Placement(transformation(origin = {220, -160}, extent = {{-20, -20}, {20, 20}}), iconTransformation(origin = {220, -140}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Math.Max max annotation(
+    Placement(transformation(origin = {-50, -60}, extent = {{-10, -10}, {10, 10}})));
+  Modelica.Blocks.Sources.Constant minFlow(k = minimumFlow)  annotation(
+    Placement(transformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Math.Gain currentToFlow(k = M_H2*RR/F/2*N_cells)  annotation(
+    Placement(transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}})));
+  Modelica.Blocks.Interfaces.RealInput pumpSpeed_measured annotation(
+    Placement(transformation(origin = {-220, -140}, extent = {{-20, -20}, {20, 20}})));
 equation
-  connect(pumpSpeedControl.setPumpSpeed, multiplexSignalsH2Subsystem.u3[1]) annotation(
-    Line(points = {{31, -44}, {52, -44}, {52, 32}, {66, 32}, {66, 29}, {105, 29}}, color = {0, 0, 127}));
-  connect(purgeValveControl.purgeValveControl, multiplexSignalsH2Subsystem.u2[1]) annotation(
-    Line(points = {{33, 40}, {105, 40}}, color = {0, 0, 127}));
-  connect(getH2MassFlow.y, pumpSpeedControl.getMassFlow) annotation(
-    Line(points = {{-56, -62}, {-37, -62}, {-37, -59.5}}, color = {0, 0, 127}));
-  connect(setH2Pressure.y, multiplexSignalsH2Subsystem.u1[1]) annotation(
-    Line(points = {{15.5, 113}, {52, 113}, {52, 55}, {59.5, 55}, {59.5, 51}, {105, 51}}, color = {0, 0, 127}));
-  connect(multiplexSignalsH2Subsystem.y, controlInterface) annotation(
-    Line(points = {{142, 40}, {204, 40}, {204, 40}, {210, 40}}, color = {0, 0, 127}));
-  connect(signalInterface_H2, deMultiplexH2Sensors.u) annotation(
-    Line(points = {{-218, -120}, {-176, -120}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(signalInterface_FC, purgeValveControl.fuelCellCurrent) annotation(
-    Line(points = {{-220, 120}, {-102, 120}, {-102, 40}, {-36, 40}, {-36, 40}}, color = {0, 0, 127}));
-  connect(setH2MassFlow.y, pumpSpeedControl.setMassFlow) annotation(
-    Line(points = {{-56, -28}, {-38, -28}}, color = {0, 0, 127}));
-  annotation(
+  connect(stackCurrent, purgeValveControl.fuelCellCurrent) annotation(
+    Line(points = {{-220, 120}, {-100, 120}, {-100, 60}, {-22, 60}}, color = {0, 0, 127}));
+  connect(setH2Pressure.y, p_h2_set) annotation(
+    Line(points = {{22, 160}, {220, 160}}, color = {0, 0, 127}));
+  connect(pumpSpeedControl_PID.y, pumpSpeed_set) annotation(
+    Line(points = {{22, -60}, {160, -60}, {160, -160}, {220, -160}}, color = {0, 0, 127}));
+  connect(purgeValveControl.purgeValveControl, purge_set) annotation(
+    Line(points = {{22, 60}, {126.5, 60}, {126.5, 0}, {220, 0}}, color = {0, 0, 127}));
+  connect(minFlow.y, max.u2) annotation(
+    Line(points = {{-98, -80}, {-80.5, -80}, {-80.5, -66}, {-62, -66}}, color = {0, 0, 127}));
+  connect(currentToFlow.u, stackCurrent) annotation(
+    Line(points = {{-144, -20}, {-160, -20}, {-160, 120}, {-220, 120}}, color = {0, 0, 127}));
+  connect(currentToFlow.y, max.u1) annotation(
+    Line(points = {{-98, -20}, {-80, -20}, {-80, -54}, {-62, -54}}, color = {0, 0, 127}));
+  connect(max.y, pumpSpeedControl_PID.u_s) annotation(
+    Line(points = {{-39, -60}, {-24, -60}}, color = {0, 0, 127}));
+  connect(pumpSpeed_measured, pumpSpeedControl_PID.u_m) annotation(
+    Line(points = {{-220, -140}, {0, -140}, {0, -84}}, color = {0, 0, 127}));
+  annotation (
     Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
-    Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics = {Rectangle(fillColor = {50, 50, 50}, fillPattern = FillPattern.Solid, extent = {{-200, 200}, {200, -200}}), Text(origin = {-9, 240}, textColor = {0, 0, 255}, extent = {{-137, 34}, {137, -34}}, textString = "%name")}),
-    Documentation(info = "<html><head></head><body>The hydrogen sub system control governs the flow and pressure of hydrogen, based on fuel cell current.&nbsp;<br><div><br></div><div><div><br></div><div><b>Description</b></div><div><p class=\"MsoNormal\"><o:p></o:p></p><p class=\"MsoNormal\">The fuel cell interface (output current value) and hydrogen interface (mass flow rate set value) signals are inputs to the&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>&nbsp;and&nbsp;<a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>&nbsp;blocks. Other inputs include hydrogen feed pressure (from hydrogen tank to the fuel cell) and mass flow rate and are set to a constant value. The output signal is concatenated with three values, (1) Hydrogen Feed Pressure input to&nbsp;<a href=\"modelica://VirtualFCS.Fluid.PressureRegulator\">Pressure Regulator</a>, (2) Control Signal to&nbsp;<a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>&nbsp;and (3) Set Speed to&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a>. &nbsp;The&nbsp;<a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>&nbsp;blocks uses&nbsp;<span style=\"font-size: 12px;\">simple PID control to set</span>&nbsp;<a href=\"modelica://VirtualFCS.Fluid.RecirculationBlower\">Recirculation Blower</a><span style=\"font-size: 12px;\">&nbsp;speed as a function of mass flow and</span>,&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>&nbsp;uses logical conditions<span style=\"font-size: 12px;\">&nbsp;to control&nbsp;</span><a href=\"modelica://Modelica.Fluid.Valves.ValveCompressible\">Purge Valve</a>.&nbsp;</p><p class=\"MsoNormal\"><b><br></b></p><p class=\"MsoNormal\"><b>List of components</b></p><p class=\"MsoNormal\">The model comprises <a href=\"modelica://VirtualFCS.Control.PumpSpeedControl\">Pump Speed Control</a>,&nbsp;<a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">Purge Valve Control</a>, <a href=\"modelica://Modelica.Blocks.Routing.DeMultiplex2\">DeMultipex2</a>, <a href=\"modelica://Modelica.Blocks.Routing.Multiplex3\">Multiplex3</a>. The subsystem features multiple interface connections all of them are control port.&nbsp;</p></div></div></body></html>"));
+    Icon(coordinateSystem(extent = {{-200, -200}, {200, 200}}, initialScale = 0.1), graphics={Text(origin = {-8, 257}, textColor = {0, 0, 255}, extent = {{-264, 69}, {264, -69}}, textString = "%name"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 2, extent = {{-200, 200}, {200, -200}}, radius = 50), Text(  textColor = {255, 0, 0},extent = {{-200, 100}, {200, -100}}, textString = "H₂
+Control")}),
+Documentation(info = "<html><head></head><body>
+<h2>Model Description and References</h2>
+<p><b>SubSystemHydrogenControl</b> generates the three commands required by the hydrogen supply assembly: hydrogen feed pressure, purge-valve opening, and recirculation-blower speed.</p><h3>Working principle</h3><p>The stack-current input is converted to an estimated hydrogen flow using the cell count and recirculation ratio <code>RR</code>. A minimum-flow path prevents the commanded blower flow from reaching zero. A pressure controller uses the measured blower speed and requested flow to calculate the blower-speed command, while <a href=\"modelica://VirtualFCS.Control.PurgeValveControl\">PurgeValveControl</a> determines purge operation.</p><h3>Interfaces</h3><p><code>p_h2_set</code> provides the pressure-regulator set point, <code>purge_set</code> controls the purge valve, and <code>pumpSpeed_set</code> controls the recirculation blower. The pressure target, cell count, recirculation ratio, minimum flow, and measured blower speed are inputs or parameters of the control arrangement.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>pressure_H2_set</code></td><td>Modelica.Units.SI.AbsolutePressure</td><td>Pa</td><td><code>200000</code></td><td>Set H2 Pressure</td></tr>
+<tr><td><code>RR</code></td><td>Real</td><td>1</td><td><code>1.3</code></td><td>Hydrogen recirculation ratio (recirculated/consumed)</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>180</code></td><td>Number of cells in stack</td></tr>
+<tr><td><code>minimumFlow</code></td><td>Modelica.Units.SI.MassFlowRate</td><td>kg/s</td><td><code>1.22e-05</code></td><td>minimum hydrogen flow</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border=\"1\" cellspacing=\"0\" cellpadding=\"4\">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pumpSpeed_measured</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>p_h2_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>purge_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+<tr><td><code>pumpSpeed_set</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput</td><td>-</td><td></td></tr>
+</tbody></table>
+
+</body></html>"));
 end SubSystemHydrogenControl;

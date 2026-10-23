@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.SubSystems.Cooling.ThermalManagement</title></head><body>
+<h1 id="VirtualFCS.SubSystems.Cooling.ThermalManagement"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.SubSystems.html">SubSystems</a>.<a href="VirtualFCS.SubSystems.Cooling.html">Cooling</a>.ThermalManagement</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p><b>ThermalManagement</b> is a compact cooling-loop example that transfers heat from a hot-water circuit to a separate coolant circuit.</p><h3>Composition and operation</h3><p>A heat exchanger connects the hot-water ports <code>HotWaterIn</code>/<code>HotWaterOut</code> to the coolant loop. The coolant loop contains a pump, temperature sensors, fixed-temperature source and sink boundaries, and a PI controller. The controller compares the cold-side temperature with a 328.15 K set point and commands the pump within a 0.2 to 0.5 flow range.</p><p>The hot-water and coolant media are replaceable. The 48 V source and boundary conditions are example values for system-level thermal-management studies.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>HotWaterIn</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>HotWaterOut</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.SubSystems.Cooling.ThermalManagement.H2O_Medium.html">H2O_Medium</a></li>
+<li><a href="VirtualFCS.SubSystems.Cooling.ThermalManagement.Cool_Medium.html">Cool_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

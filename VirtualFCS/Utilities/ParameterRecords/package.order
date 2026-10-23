@@ -3,3 +3,10 @@ DriveDataDcPm
 EVMotorData
 EVMotor1
 EVDriveData
+DCPMMCompressor
+DCPMMCoolingPump
+DCPMMRecirculationBlower
+DriveDataComp
+DriveDataRBlower
+DriveDataCpump
+DCPMMCompressor_30kW
