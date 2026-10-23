@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack</title></head><body>
+<h1 id="VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Examples.html">Examples</a>.<a href="VirtualFCS.Examples.ElectrochemicalComponents.html">ElectrochemicalComponents</a>.PolarizeFuelCellStack</h1>
+<p>Generate a polarization curve for a fuel cell stack.</p>
+
+
+<h2>Model Description and References</h2>
+<p>This example generates a reference fuel-cell polarization curve by stepping the electrical load through 20 A at 0 s, 150 A at 50 s, and 370 A at 100 s.</p><p>The stack has 180 cells and is connected to hydrogen, air, and cooling subsystems. The nominal operating conditions are 2e5 Pa on the reactant sides, 333.15 K coolant, air lambda = 1.7, and hydrogen recirculation ratio = 1.3.</p>
+<h2>Governing Equations</h2>
+<p>The assembly connects <code>system</code> (Modelica.Fluid.System), <code>fcs</code> (Electrochemical.Hydrogen.FuelCells.FuelCellSystem), <code>resistor</code> (Modelica.Electrical.Analog.Basic.VariableResistor), <code>ground</code> (Modelica.Electrical.Analog.Basic.Ground), <code>Resistance</code> (Modelica.Blocks.Sources.RealExpression), <code>I_aprox</code> (Modelica.Blocks.Sources.CombiTimeTable).</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>A_el</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>0.03</code></td><td>Electrode Area (m^2)</td></tr>
+<tr><td><code>I_final</code></td><td>Modelica.Units.SI.Current</td><td>A</td><td><code>370.0</code></td><td>Final step current [A]</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack.Anode_Medium.html">Anode_Medium</a></li>
+<li><a href="VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack.Cathode_Medium.html">Cathode_Medium</a></li>
+<li><a href="VirtualFCS.Examples.ElectrochemicalComponents.PolarizeFuelCellStack.Coolant_Medium.html">Coolant_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

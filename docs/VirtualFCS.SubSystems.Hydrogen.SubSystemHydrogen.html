@@ -1,10 +1,33 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.html">SubSystems</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.Hydrogen.html">Hydrogen</a>.<span class="omc-h1">SubSystemHydrogen</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>A hydrogen sub-system template is provided in the example model SubSystemHydrogen. The model comprises a hydrogen tank, pressure regulator, recirculation blower, and a purge valve linked to a fixed ambient boundary condition. The subsystem features 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports connect to the hydrogen interfaces on the fuel cell stack, the electrical ports connect to the low-voltage power supply to provide power to the BoP components, and the control interface connects to the FuelCellSystemControl, which controls the recirculation blower.</body></html><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen.Anode_Medium.html">Anode_Medium</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen</title></head><body>
+<h1 id="VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.SubSystems.html">SubSystems</a>.<a href="VirtualFCS.SubSystems.Hydrogen.html">Hydrogen</a>.SubSystemHydrogen</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p><b>SubSystemHydrogen</b> supplies hydrogen to a fuel-cell anode and manages recirculation, pressure reduction, and purge flow.</p><h3>Composition</h3><p>The assembly contains a 0.13 m3 hydrogen tank, pressure regulator, recirculation blower, purge valve, mass-flow and temperature sensors, and a fixed-temperature tank heat-transfer model. Hydrogen enters the stack through <code>toStack</code> and returns through <code>fromStack</code>; <code>pin_p</code> and <code>pin_n</code> supply the blower and control hardware.</p><h3>Working principle</h3><p>Stack current is converted to hydrogen consumption and passed to <a href="VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogenControl.html">SubSystemHydrogenControl</a>. The control block sets feed pressure, recirculation-blower speed, and purge-valve opening. The tank starts at 35 MPa, while exhaust hydrogen is discharged to the system ambient pressure.</p><p>The anode medium, cell count, recirculation ratio, tank area, and minimum blower flow are configurable. Pressure-control tuning and purge settings must be checked for the connected stack.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>A_tank_H2</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>2</code></td><td>H2 tank surface area</td></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>180</code></td><td>FC stack number of cells</td></tr>
+<tr><td><code>V_flow_HRB_min</code></td><td>Modelica.Units.SI.VolumeFlowRate</td><td>m3/s</td><td><code>1e-7</code></td><td>Minimum volume flow of the Hydrogen Recirculation Blower</td></tr>
+<tr><td><code>RR</code></td><td>Real</td><td>1</td><td><code>1.3</code></td><td>Hydrogen recirculation ratio</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>stackCurrent</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>A</td><td>A</td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>fromStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>toStack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen.Anode_Medium.html">Anode_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

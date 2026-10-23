@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Media.Shomate.entropy</title></head><body>
+<h1 id="VirtualFCS.Media.Shomate.entropy"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Media.html">Media</a>.<a href="VirtualFCS.Media.Shomate.html">Shomate</a>.entropy</h1>
+<p>Standard molar entropy</p>
+
+
+<h2>Model Description and References</h2>
+<p>Standard molar entropy.</p>
+<h2>Governing Equations</h2>
+<pre>t := T/1000;
+s := sh.A*log(t) + sh.B*t + sh.C*t^2/2 + sh.D*t^3/3 - sh.E/(2*t^2) + sh.G;</pre>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>T</code></td><td>Input signal</td><td>Modelica.Units.SI.Temperature</td><td>K</td><td>-</td></tr>
+<tr><td><code>sh</code></td><td>Input signal</td><td>Parameters</td><td>-</td><td>-</td></tr>
+<tr><td><code>s</code></td><td>Output signal</td><td>Modelica.Units.SI.MolarEntropy</td><td>-</td><td>-</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

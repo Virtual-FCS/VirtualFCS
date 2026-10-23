@@ -1,10 +1,37 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Fluid.PumpElectricDC</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Fluid.html">Fluid</a>.<span class="omc-h1">PumpElectricDC</span></h1><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.Fluid.PumpElectricDC.Medium.html">Medium</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Fluid.PumpElectricDC</title></head><body>
+<h1 id="VirtualFCS.Fluid.PumpElectricDC"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Fluid.html">Fluid</a>.PumpElectricDC</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<div><p class="MsoNormal"><b>References to base model/related packages</b></p><p class="MsoNormal"><a href="modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet">Permanent Magnet DC Motor</a>, <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a>, <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Control.DCMotorControl.html">DC Motor Control</a></p><p class="MsoNormal"><o:p></o:p></p>
+<p class="MsoNormal"><b>Description</b></p><p class="MsoNormal">The model has three parts input (volume flow rate, control signal motor speed), subcomponents (<a href="modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet">Permanent Magnet DC Motor</a>, <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a>, <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Control.DCMotorControl.html">DC Motor Control</a>), and output (pump outlet volume flow rate and sensors (inlet volume flow rate and pump speed).</p><p class="MsoNormal"><b><o:p></o:p></b></p>
+<p class="MsoNormal">The inlet volume flow rate is measured and depending on the rotational speed estimated by the <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Control.DCMotorControl.html">DC Motor Control</a> the <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a> changes the flow rate accordingly.  </p></div>
+<h2>Governing Equations</h2>
+<pre>torque.tau = -9.5488*pump.W_total/pump.N;
+Power_PumpElectricDC = pin_p.i*pin_p.v;</pre><table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power_PumpElectricDC</code></td><td>The power consumed by the PumpElectricDC</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>driveData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DriveDataCpump</td><td>-</td><td><code>-</code></td><td></td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>Input</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>contol_input</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>Output</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>sensors</code></td><td>Output signal</td><td>Modelica.Blocks.Interfaces.RealOutput[2]</td><td>-</td><td>-</td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Fluid.PumpElectricDC.Medium.html">Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossNone</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Hydrogen.ECM.ActivationLossNone"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.<a href="VirtualFCS.Electrochemical.Hydrogen.ECM.html">ECM</a>.ActivationLossNone</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+Trivial implementation of mass transport element with no mass transport losses.<div>Voltage across the item is simply set to zero.</div>
+<h2>Governing Equations</h2>
+<pre>v = 0;</pre>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>N_cells</code></td><td>Integer</td><td>1</td><td><code>-</code></td><td>number of cells in the stack (inherited)</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical pin</td></tr>
+<tr><td><code>n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical pin</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

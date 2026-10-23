@@ -1,19 +1,34 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Battery.Parameters.Functions.getOCP_NMC</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.html">Battery</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.Parameters.html">Parameters</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.Parameters.Functions.html">Functions</a>.<span class="omc-h1">getOCP_NMC</span></h1>
-<h4><a name="interface">Interface</a></h4>
-<blockquote><pre>function getOCP_NMC
-  extends Modelica.Icons.Function;
-  input Real SOC "State of Charge";
-  output SI.ElectricPotential OCP "Open-Circuit Potential";
-  Real A0 = 2.951;
-  Real A1 = 1;
-  Real A2 = -0.05;
-  Real A3 = -0.4;
-  Real A4 = -0.085;
-end getOCP_NMC;</pre></blockquote><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Battery.Parameters.Functions.getOCP_NMC</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Battery.Parameters.Functions.getOCP_NMC"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Battery.html">Battery</a>.<a href="VirtualFCS.Electrochemical.Battery.Parameters.html">Parameters</a>.<a href="VirtualFCS.Electrochemical.Battery.Parameters.Functions.html">Functions</a>.getOCP_NMC</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+<p>Get OCP NMC calculation, evaluating <code>OCP</code> from <code>SOC</code> (State of Charge). The expressions below specify the implemented correlation and any bounds or branch conditions.</p>
+<h2>Governing Equations</h2>
+<pre>A0 = 2.951;
+A1 = 1;
+A2 = -0.05;
+A3 = -0.4;
+A4 = -0.085;
+OCV := A0 + A1 * SOC + A2 / SOC + A3 * log(SOC + 0.001) + A4 * log(1.01 - SOC);</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>SOC</code></td><td>State of Charge</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>SOC</code></td><td>Input signal</td><td>Real</td><td>1</td><td>State of Charge</td></tr>
+<tr><td><code>OCP</code></td><td>Output signal</td><td>Modelica.Units.SI.ElectricPotential</td><td>-</td><td>Open-Circuit Potential</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

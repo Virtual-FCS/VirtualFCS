@@ -1,8 +1,39 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Battery.LiIonCell</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.html">Battery</a>.<span class="omc-h1">LiIonCell</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the internal electrochemical reaction (internal resistance) of a lithium ion cell.<div>The model comes pre-programmed with default parameters for both lithium iron phosphate (LFP) and nickel manganese cobalt (NMC) battery cells. The state-of-charge of the battery is calculated using a charge counting method.&nbsp;</div><div><div><div><br></div><div><div><b>Default Battery Parameters</b></div></div><div>chemistry <span class="Apple-tab-span" style="white-space:pre">			</span>=&nbsp;LFP-Graphite</div><div>format&nbsp;<span class="Apple-tab-span" style="white-space:pre">			</span>= 18650 Cylindrical</div><div>mass <span class="Apple-tab-span" style="white-space:pre">				</span>=&nbsp;45 g</div><div>chargeCapacity <span class="Apple-tab-span" style="white-space:pre">		</span>= 2.2 Ah</div><div><br></div><div><div><b>Default Equivalent Circuit Parameters</b></div><div>R0 = 20 mOhm</div><div>R1 = 10 mOhm</div><div>R2 = 5 mOhm</div><div>C1 = 5000 F</div><div>C2 = 20000 F</div><div><br></div><div><br></div><div><div>The heat generated from the electrochemical reaction is approximated as:</div><div></div></div><div><b><br></b></div><div><b>Default Thermal Parameters</b></div><div>specificHeatCapacity&nbsp;<span class="Apple-tab-span" style="white-space: pre;">	</span>= 1000 J/(kg*K)</div><div>surfaceEmissivity &nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>= 0.95</div><div>coolingArea&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 0.003675 m2</div><div><br></div><div><div><div><b>References</b></div></div></div></div><div>[1] Vichard et al. A method to estimate battery SOH indicators based on vehicles operating data only, Energy, vol. 225, 15 June 2021, 120235.</div><div><br></div><div>[2] Shen et al. The Co-estimation of State of Charge, State of Health, and State of Function for Lithium-Ion Batteries in Electric Vehicles, IEEE Transactions on Vehicular Technology, vol. 67, no. 1, January 2018.</div><div><br></div><div>[3] Lievre et al. Practical Online Estimation of Lithium-Ion Battery Apparent Series Resistance for Mild Hybrid Vehicles, IEEE Transactions on Vehicular Technology, vol. 65, no. 6, June 2016.</div></div></div></body></html><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Battery.LiIonCell</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Battery.LiIonCell"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Battery.html">Battery</a>.LiIonCell</h1>
+<p>An equivalent circuit model for a Li-ion battery cell.</p>
+
+<h2>Model Description and References</h2>
+The LiIonCell class implements a simple 2RC equivalent circuit model for a lithium-ion battery cell. This circuit simulates the impedance due to electrochemical reactions and the internal resistance of a lithium ion cell. The model comes pre-programmed with default parameters for lithium iron phosphate (LFP) battery cells.<div>
+<div><font face="Arial"><br/></font></div><div><font face="Arial">The model includes a <a href="VirtualFCS.Control.ChargeCounter.html">ChargeCounter</a> block to keep track of the state of charge (SOC) of the battery via a charge-counting method.</font></div>
+<div><div><br/></div><div>The equation for open-circuit voltage as a function of temperature and state of charge is taken from Vichard <i>et al.</i> [1], and is parameterized to the LFP chemistry by default.</div><div>
+<br/>
+<span 12px;&quot;="" style="font-size:">The battery pack is assumed to have a uniform temperature with a thermal mass based on its heat capacity, Cp, and mass m_bat_pack. The heat generated from passing current through the battery is calculated according to the </span><i 12px;&quot;="" style="font-size:">Heat Generation</i><span 12px;&quot;="" style="font-size:"> equation below. The provided heatPort allows connection to cooling systems or other relevant temperature boundary conditions.</span></div></div></div><div><br/></div><div><b><u>References</u></b></div><div><!--StartFragment--><div &quot;="" 2;="" class="csl-bib-body" style="line-height:">
+<div &quot;="" class="csl-entry" left;="" style="clear:">
+<div 0.5em;text-align:="" 1em;&quot;="" class="csl-left-margin" left;="" padding-right:="" right;="" style="float:" width:="">1. Vichard, L. <i>et al.</i> A method to estimate battery SOH indicators based on vehicle operating data only. <i>Energy</i> <b>225</b>, 120235 (2021).</div>
+</div>
+<span class="Z3988" title="url_ver=Z39.88-2004&amp;ctx_ver=Z39.88-2004&amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;rft_id=info%3Adoi%2F10.1016%2Fj.energy.2021.120235&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.atitle=A%20method%20to%20estimate%20battery%20SOH%20indicators%20based%20on%20vehicle%20operating%20data%20only&amp;rft.jtitle=Energy&amp;rft.stitle=Energy&amp;rft.volume=225&amp;rft.aufirst=L.&amp;rft.aulast=Vichard&amp;rft.au=L.%20Vichard&amp;rft.au=A.%20Ravey&amp;rft.au=P.%20Venet&amp;rft.au=F.%20Harel&amp;rft.au=S.%20Pelissier&amp;rft.au=D.%20Hissel&amp;rft.date=2021-06-15&amp;rft.pages=120235&amp;rft.issn=0360-5442&amp;rft.language=en"></span>
+</div><!--EndFragment--></div>
+<h2>Governing Equations</h2><pre>OCV.v = a1 + b1*(-log(chargeCounter.SOC))^m1 + c1*chargeCounter.SOC + d1*exp(n1*(chargeCounter.SOC - 1));
+heatSource.Q_flow = abs((OCV.v - pin_p.v)*abs(sensorCurrent.i));
+P_bat = pin_p.v*sensorCurrent.i;</pre>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>mass</code></td><td>Modelica.Units.SI.Mass</td><td>kg</td><td><code>0.08</code></td><td>Mass of the cell</td></tr>
+<tr><td><code>coolingArea</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>0.00143</code></td><td>Surface area for cooling</td></tr>
+<tr><td><code>specificHeatCapacity</code></td><td>Modelica.Units.SI.SpecificHeatCapacity</td><td>J/(kg.K)</td><td><code>1000</code></td><td>Specific Heat Capacity</td></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Initial State of Charge</td></tr>
+<tr><td><code>chargeCapacity</code></td><td>Modelica.Units.NonSI.ElectricCharge_Ah</td><td>Ah</td><td><code>2.6</code></td><td>Battery Cell Capacity</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrical.BoostConverter</title></head><body>
+<h1 id="VirtualFCS.Electrical.BoostConverter"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrical.html">Electrical</a>.BoostConverter</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+A rigorous model for DC-DC boost converters. The two boolean inputs allow firing the gates separately.<div>Note that the rate of simulation is directly dependent on the PWM frequency, since at each change an event is triggered. In practice, this model can be used for detailed simulations in the sub-second range.</div>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+<tr><td><code>useConstantEnable</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>Disable boolean input and use constantEnable, if true (inherited)</td></tr>
+<tr><td><code>constantEnable</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>Constant enabling of firing signals (inherited)</td></tr>
+<tr><td><code>m</code></td><td>Integer</td><td>1</td><td><code>3</code></td><td>Number of phases (inherited)</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>dc_p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>dc_p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+<tr><td><code>enable</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.BooleanInput</td><td>-</td><td>Enables fire and notFire</td></tr>
+<tr><td><code>fire_p</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.BooleanInput</td><td>-</td><td>Firing signal of positive potential transistor</td></tr>
+<tr><td><code>fire_n</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.BooleanInput</td><td>-</td><td>Firing signal of negative potential transistor</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

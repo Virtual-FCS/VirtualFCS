@@ -1,10 +1,35 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.SubSystems.Cooling.SubSystemCooling</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.html">SubSystems</a>.<a class="omc-h1-a" href = "VirtualFCS.SubSystems.Cooling.html">Cooling</a>.<span class="omc-h1">SubSystemCooling</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>The SubSystemCooling model provides a template for the construction of a cooling sub-system for the fuel cell stack. The model comprises a coolant tank, pre-heater, pump, and heat sink. The subsystem features 5 interface connections: fluid ports in and out, electrical ports for positive and negative pins, and a control port. The fluid ports connect to the cooling interfaces on the fuel cell stack, the electrical ports connect to the low-voltage power supply to provide power to the BoP components, and the control interface connects to the FuelCellControlUnit, which controls the pump, pre-heater, and heat sink.</body></html><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.SubSystems.Cooling.SubSystemCooling.Coolant_Medium.html">Coolant_Medium</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.SubSystems.Cooling.SubSystemCooling</title></head><body>
+<h1 id="VirtualFCS.SubSystems.Cooling.SubSystemCooling"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.SubSystems.html">SubSystems</a>.<a href="VirtualFCS.SubSystems.Cooling.html">Cooling</a>.SubSystemCooling</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p><b>SubSystemCooling</b> circulates coolant through a fuel-cell stack and controls both stack and reservoir temperature.</p><h3>Composition</h3><p>The model consists of an open coolant reservoir, a replaceable pump, coolant temperature sensors, a prescribed cooling-heat input, and two controllers. The stack is connected through <code>from_stack</code> and <code>to_stack</code>; <code>pin_p</code> and <code>pin_n</code> supply the pump electrically.</p><h3>Working principle</h3><p>The stack-temperature PI controller adjusts pump flow to track <code>T_stack_set</code>. A second proportional controller uses the reservoir temperature error to calculate the cooling heat-flow command. The reservoir starts at <code>tank_fill_fraction</code> of its specified height and at 323.15 K.</p><p>Tank dimensions, fill level, coolant medium, stack set point, and reservoir set point are configurable. Controller limits and tuning should be checked for the connected stack and coolant circuit.</p>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>T_stack_set</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>353</code></td><td>Target stack temperature</td></tr>
+<tr><td><code>T_coolant_set</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>300</code></td><td>Target coolant reservoir temperature</td></tr>
+<tr><td><code>tank_height</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.5</code></td><td>Height of the cooling tank</td></tr>
+<tr><td><code>tank_diameter</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>0.2</code></td><td>Height of the cooling tank</td></tr>
+<tr><td><code>tank_fill_fraction</code></td><td>Real</td><td>1</td><td><code>0.8</code></td><td>Fraction of coolant in the tank</td></tr>
+<tr><td><code>tank_csa</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>Modelica.Constants.pi * (tank_diameter/2)^2</code></td><td>Tank cross section area</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>from_stack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>stackTemperature</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>to_stack</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.SubSystems.Cooling.SubSystemCooling.Coolant_Medium.html">Coolant_Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

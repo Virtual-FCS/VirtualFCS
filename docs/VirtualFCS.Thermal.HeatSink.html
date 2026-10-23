@@ -1,10 +1,37 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Thermal.HeatSink</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Thermal.html">Thermal</a>.<span class="omc-h1">HeatSink</span></h1><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.Thermal.HeatSink.Medium.html">Medium</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Thermal.HeatSink</title></head><body>
+<h1 id="VirtualFCS.Thermal.HeatSink"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Thermal.html">Thermal</a>.HeatSink</h1>
+<p></p>
+
+<h2>Model Description and References</h2>
+<p>Liquid-cooled heat sink that transfers heat from a thermal source to a coolant stream and regulates the coolant flow.</p>
+<h2>Governing Equations</h2><pre>Power_heatsink = pin_p.i*pin_p.v;
+delT1 = max(TS_h_in.T - T_air_out, 0.0002);
+delT2 = max(TS_h_out.T - T_air_in, 0.0001);
+LMTD = max(((delT1) - (delT2))/(log((delT1)/(delT2))), 0.001);
+m_air = realExpression.y*(LMTD)/(Cp_air*(T_air_out - T_air_in));</pre><table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Power_heatsink</code></td><td>The power consumed by the Heat sink (radiator)</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>Stack_temperature</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>Set_Point</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</tbody></table>
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Thermal.HeatSink.Medium.html">Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

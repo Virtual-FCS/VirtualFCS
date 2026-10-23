@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Media.MoistAir.flashVaporisation</title></head><body>
+<h1 id="VirtualFCS.Media.MoistAir.flashVaporisation"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Media.html">Media</a>.<a href="VirtualFCS.Media.MoistAir.html">MoistAir</a>.flashVaporisation</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+We redeclare this function to use the fact that there is a single condensing phase in this model, making it possible to obtain a direct solution to the Rachford-Rice equation.
+<h2>Governing Equations</h2>
+<pre>assert(abs(iK[Water]-1) &gt; eps, "flashVaporisation: boiling point reached, Rachford-Rice is indetermined.");
+beta_mol := (1-Xmol[Water])*iK[Water]/max((iK[Water]-1), eps);</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>Xmol</code></td><td>Mole Fractions</td></tr>
+<tr><td><code>iK</code></td><td>Inverted equilibrium constants, XL[i] = iK[i]*XG[i]</td></tr>
+<tr><td><code>beta_mol</code></td><td>Generalised gas fraction</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>Xmol</code></td><td>Input signal</td><td>Modelica.Units.SI.MoleFraction[nX]</td><td>1</td><td>Mole Fractions</td></tr>
+<tr><td><code>iK</code></td><td>Input signal</td><td>Real[nX]</td><td>1</td><td>Inverted equilibrium constants, XL[i] = iK[i]*XG[i]</td></tr>
+<tr><td><code>beta_mol</code></td><td>Output signal</td><td>Real</td><td>1</td><td>Generalised gas fraction</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

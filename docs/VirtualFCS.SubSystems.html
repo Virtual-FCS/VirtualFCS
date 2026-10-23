@@ -1,13 +1,16 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.SubSystems</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<span class="omc-h1">SubSystems</span></h1><h2><a name="info">Information</a></h2><html><head></head><body>Subsystem models are designed to improve the encapsulation aspects of the modelling library. Users can design subsystems independently from the overall system design, with the option to plug-and-play different sub-system designs to determine the effect on overall system performance. Three example subsystems are provided: SubSystemAir, SubSystemCooling, and SubSystemHydrogen.</body></html><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.SubSystems.UsersGuide.html">UsersGuide</a></td><td>User information for the SubSystems sub-library</td></tr>
-<tr><td><a href="VirtualFCS.SubSystems.Hydrogen.html">Hydrogen</a></td><td>Subsystems related to the hydrogen line.</td></tr>
-<tr><td><a href="VirtualFCS.SubSystems.Air.html">Air</a></td><td>Subsystems related to the air line.</td></tr>
-<tr><td><a href="VirtualFCS.SubSystems.Cooling.html">Cooling</a></td><td>Subsystems related to the cooling line.</td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.SubSystems</title></head><body>
+<h1 id="VirtualFCS.SubSystems"><a href="VirtualFCS.html">VirtualFCS</a>.SubSystems</h1>
+<p>Encapsulated support subsystems for modelling fuel cell systems.</p>
+<p>The <b>SubSystems</b> package contains replaceable assemblies for the main support functions of a fuel-cell system. Each subsystem hides its internal components behind fluid, electrical, and control interfaces so alternative implementations can be exchanged at system level.</p><h3>Subsystems</h3><ul><li><a href="VirtualFCS.SubSystems.Air.html">Air</a>: supplies and regulates cathode air.</li><li><a href="VirtualFCS.SubSystems.Hydrogen.html">Hydrogen</a>: supplies, recirculates, regulates, and purges anode hydrogen.</li><li><a href="VirtualFCS.SubSystems.Cooling.html">Cooling</a>: circulates coolant and manages stack and reservoir temperatures.</li></ul><p>The integrated <a href="VirtualFCS.SubSystems.FuelCellSubSystems.html">FuelCellSubSystems</a> assembly combines these three functions around a fuel-cell stack. Component choices and controller tuning should be checked for the connected stack, operating range, and fluid media.</p>
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.SubSystems.UsersGuide.html">UsersGuide</a></li>
+<li><a href="VirtualFCS.SubSystems.Examples.html">Examples</a></li>
+<li><a href="VirtualFCS.SubSystems.Hydrogen.html">Hydrogen</a></li>
+<li><a href="VirtualFCS.SubSystems.Air.html">Air</a></li>
+<li><a href="VirtualFCS.SubSystems.Cooling.html">Cooling</a></li>
+<li><a href="VirtualFCS.SubSystems.FuelCellSubSystems.html">FuelCellSubSystems</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrical.ChopperStepUpDown</title></head><body>
+<h1 id="VirtualFCS.Electrical.ChopperStepUpDown"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrical.html">Electrical</a>.ChopperStepUpDown</h1>
+<p>Step up/down chopper</p>
+
+<h2>Model Description and References</h2>
+<p>This is a conventional step up/down chopper (buck-boost converter) model. It consists of a transistor, and inductance and free wheeling diode.</p>
+<p>Class made after the examples in <tt>Modelica.Electrical.PowerConverters.DCDC</tt>.</p>
+<p>Note that a plain buck-boost would invert voltage, and not be consistent with the output pin interface; therefore there is an internal inversion.</p>
+<h2>Governing Equations</h2>
+<pre>if not useHeatPort then LossPower = diode.LossPower + transistor.LossPower;
+end if;<br/></pre><table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>transistor</code></td><td>Switching transistor</td></tr>
+<tr><td><code>diode</code></td><td>Free wheeling diode</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>useConstantEnable</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>Disable boolean input and use constantEnable, if true (inherited)</td></tr>
+<tr><td><code>constantEnable</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>Constant enabling of firing signals (inherited)</td></tr>
+<tr><td><code>m</code></td><td>Integer</td><td>1</td><td><code>3</code></td><td>Number of phases (inherited)</td></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+<tr><td><code>RonTransistor</code></td><td>Modelica.Units.SI.Resistance</td><td>Ohm</td><td><code>1e-05</code></td><td>Transistor closed resistance</td></tr>
+<tr><td><code>GoffTransistor</code></td><td>Modelica.Units.SI.Conductance</td><td>S</td><td><code>1e-05</code></td><td>Transistor opened conductance</td></tr>
+<tr><td><code>L</code></td><td>Modelica.Units.SI.Inductance</td><td>H</td><td><code>25e-3</code></td><td>Charging inductance</td></tr>
+<tr><td><code>VkneeTransistor</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>0</code></td><td>Transistor threshold voltage</td></tr>
+<tr><td><code>RonDiode</code></td><td>Modelica.Units.SI.Resistance</td><td>Ohm</td><td><code>1e-05</code></td><td>Closed diode resistance</td></tr>
+<tr><td><code>GoffDiode</code></td><td>Modelica.Units.SI.Conductance</td><td>S</td><td><code>1e-05</code></td><td>Opened diode conductance</td></tr>
+<tr><td><code>VkneeDiode</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>0</code></td><td>Diode forward threshold voltage</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>dc_p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>dc_p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive DC</td></tr>
+<tr><td><code>dc_n2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative DC</td></tr>
+<tr><td><code>enable</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.BooleanInput</td><td>-</td><td>Enables fire and notFire</td></tr>
+<tr><td><code>fire_p</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.BooleanInput</td><td>-</td><td>Firing signal of positive potential transistor</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

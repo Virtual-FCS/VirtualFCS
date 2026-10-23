@@ -1,0 +1,52 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Utilities.ParameterRecords.DriveDataComp</title></head><body>
+<h1 id="VirtualFCS.Utilities.ParameterRecords.DriveDataComp"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Utilities.html">Utilities</a>.<a href="VirtualFCS.Utilities.ParameterRecords.html">ParameterRecords</a>.DriveDataComp</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+<p>
+Calculates controller parameters of a DC permanent magnet drive:
+Current controller according to absolute optimum, speed controller according to symmetric optimum.
+</p>
+<h2>Governing Equations</h2>
+<p>Parameter record; the default expressions in the parameter table define the configured data. There are no time-dependent balances.</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>motorData</code></td><td>VirtualFCS.Utilities.ParameterRecords.DCPMMCompressor</td><td>-</td><td><code>-</code></td><td>Motor data</td></tr>
+<tr><td><code>Ra</code></td><td>Modelica.Units.SI.Resistance</td><td>Ohm</td><td><code>convertResistance(motorData.Ra, motorData.TaRef, motorData.alpha20a, motorData.TaNominal)</code></td><td>Armature resistance at nominal temperature</td></tr>
+<tr><td><code>Ta</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>motorData.La / Ra</code></td><td>Armature time constant</td></tr>
+<tr><td><code>PNominal</code></td><td>Modelica.Units.SI.Power</td><td>W</td><td><code>motorData.ViNominal * motorData.IaNominal - motorData.frictionParameters.PRef - motorData.coreParameters.PRef - motorData.strayLoadParameters.PRef</code></td><td>Nominal mechanical output</td></tr>
+<tr><td><code>tauNominal</code></td><td>Modelica.Units.SI.Torque</td><td>N.m</td><td><code>PNominal / motorData.wNominal</code></td><td>Nominal torque</td></tr>
+<tr><td><code>kPhi</code></td><td>Modelica.Units.SI.ElectricalTorqueConstant</td><td>-</td><td><code>tauNominal / motorData.IaNominal</code></td><td>Torque constant</td></tr>
+<tr><td><code>w0</code></td><td>Modelica.Units.SI.AngularVelocity</td><td>rad/s</td><td><code>motorData.wNominal * motorData.VaNominal / motorData.ViNominal</code></td><td>No-load speed</td></tr>
+<tr><td><code>fS</code></td><td>Modelica.Units.SI.Frequency</td><td>Hz</td><td><code>2e3</code></td><td>Switching frequency</td></tr>
+<tr><td><code>VBat</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>VaMax</code></td><td>DC no-load voltage</td></tr>
+<tr><td><code>Td</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>0.5 / fS</code></td><td>Dead time of inverter</td></tr>
+<tr><td><code>Tmf</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>4 * Td</code></td><td>Measurement filter time constant</td></tr>
+<tr><td><code>Tsigma</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>Td + Tmf</code></td><td>Sum of small time constants</td></tr>
+<tr><td><code>JL</code></td><td>Modelica.Units.SI.Inertia</td><td>kg.m2</td><td><code>motorData.Jr</code></td><td>Load inertia</td></tr>
+<tr><td><code>VaMax</code></td><td>Modelica.Units.SI.Voltage</td><td>V</td><td><code>1.2 * motorData.VaNominal</code></td><td>Maximum Voltage</td></tr>
+<tr><td><code>IaMax</code></td><td>Modelica.Units.SI.Current</td><td>A</td><td><code>1.5 * motorData.IaNominal</code></td><td>Maximum current</td></tr>
+<tr><td><code>tauMax</code></td><td>Modelica.Units.SI.Torque</td><td>N.m</td><td><code>kPhi * IaMax</code></td><td>Maximum torque</td></tr>
+<tr><td><code>wMax</code></td><td>Modelica.Units.SI.AngularVelocity</td><td>rad/s</td><td><code>motorData.wNominal * motorData.VaNominal / motorData.ViNominal</code></td><td>Maximum speed</td></tr>
+<tr><td><code>aMax</code></td><td>Modelica.Units.SI.AngularAcceleration</td><td>-</td><td><code>tauMax / (JL + motorData.Jr)</code></td><td>Maximum acceleration</td></tr>
+<tr><td><code>kpI</code></td><td>Real</td><td>1</td><td><code>motorData.La / (2 * Tsigma)</code></td><td>Proportional gain</td></tr>
+<tr><td><code>TiI</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>Ta</code></td><td>Integral time constant</td></tr>
+<tr><td><code>Tsub</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>2 * Tsigma</code></td><td>Substitute time constant</td></tr>
+<tr><td><code>kpw</code></td><td>Real</td><td>1</td><td><code>(JL + motorData.Jr) / (2 * Tsub)</code></td><td>Proportional gain</td></tr>
+<tr><td><code>Tiw</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>4 * Tsub</code></td><td>Integral time constant</td></tr>
+<tr><td><code>Tfw</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>Tiw</code></td><td>Filter time constant</td></tr>
+<tr><td><code>kpP</code></td><td>Real</td><td>1</td><td><code>1 / (16 * Tsub)</code></td><td>Proportional gain</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><span>No additional interfaces are declared locally.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

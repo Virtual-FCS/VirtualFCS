@@ -1,10 +1,36 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Thermal.PreHeater</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Thermal.html">Thermal</a>.<span class="omc-h1">PreHeater</span></h1><h2>Contents</h2>
-<table><tr><th>Name</th><th>Description</th></tr><tr><td><a href="VirtualFCS.Thermal.PreHeater.Medium.html">Medium</a></td><td></td></tr>
-</table><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Thermal.PreHeater</title></head><body>
+<h1 id="VirtualFCS.Thermal.PreHeater"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Thermal.html">Thermal</a>.PreHeater</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+<p>The <b>PreHeater</b> models an electrically heated fluid pipe. The electrical power dissipated by the internal resistor <code>R1</code> is transferred to the pipe through a thermal conductor and heat capacity.</p>
+<h3>Implementation notes</h3>
+<p>The heater heat flow equals the resistor loss power, <code>Q_flow = R_eq*I^2</code>. The internal pipe start pressure is fixed at <b>102502 Pa</b>, the thermal conductance at <b>1777 W/K</b>, and the thermal capacity at <b>100 J/K</b>. These values are implementation constants rather than user parameters.</p>
+<h2>Governing Equations</h2>
+<pre>prescribedHeatFlow.Q_flow = R1.LossPower;</pre>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>R_eq</code></td><td>Modelica.Units.SI.Resistance</td><td>Ohm</td><td><code>1.75</code></td><td>Equivalent Resistance</td></tr>
+<tr><td><code>D_pipe</code></td><td>Modelica.Units.SI.Diameter</td><td>m</td><td><code>0.015</code></td><td>Pipe Diameter</td></tr>
+<tr><td><code>L_pipe</code></td><td>Modelica.Units.SI.Length</td><td>m</td><td><code>1</code></td><td>Pipe Length</td></tr>
+<tr><td><code>N_pipe</code></td><td>Integer</td><td>1</td><td><code>10</code></td><td>Number of Parallel Pipes</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+</table>
+
+
+<h2>Contents</h2><ul>
+<li><a href="VirtualFCS.Thermal.PreHeater.Medium.html">Medium</a></li>
+</ul>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

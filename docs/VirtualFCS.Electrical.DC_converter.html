@@ -1,10 +1,34 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrical.DC_converter</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrical.html">Electrical</a>.<span class="omc-h1">DC_converter</span></h1><h2><a name="info">Information</a></h2><html>
-<p>This is a model of an ideal DC-DC inverter based on a power balance achieved by an integral controller.</p>
-</html><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrical.DC_converter</title></head><body>
+<h1 id="VirtualFCS.Electrical.DC_converter"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrical.html">Electrical</a>.DC_converter</h1>
+<p>An ideal DC-DC converter</p>
+
+<h2>Model Description and References</h2>
+<p>This is a model of an ideal DC-DC inverter based on a power balance achieved by an integral controller.</p>
+<p>The setup is similar to the Modelica Standard Library's IdealDcDc, but with the key differences that:</p>
+<ul>
+<li>This unit is output-current-controlled rather than voltage-controlled, meaning it <em>must</em> be connected to some kind of load in order to compile;</li>
+<li>The unit does not have internal grounding in the output, so a ground has to be attached there;</li>
+<li>Due to a programming bug (or feature?), setting a positive current reference will result in inverted polarity in the output. This is because the program makes power on both sides equal, but one should be entering and the other exiting.</li>
+</ul>
+<h2>Governing Equations</h2>
+<p>-</p>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>Td</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1e-2</code></td><td>Dead time</td></tr>
+<tr><td><code>Ti</code></td><td>Modelica.Units.SI.Time</td><td>s</td><td><code>1e-6</code></td><td>Time constant of integral power controller</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_pFC</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_pBus</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>I_Ref</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td></td></tr>
+<tr><td><code>pin_nFC</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+<tr><td><code>pin_nBus</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td></td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

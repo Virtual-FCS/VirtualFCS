@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Fluid.CompressorMap</title></head><body>
+<h1 id="VirtualFCS.Fluid.CompressorMap"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Fluid.html">Fluid</a>.CompressorMap</h1>
+<p>Compressor whose pressure ratio and efficiency come from a CSV performance map</p>
+<p>This compressor derives from <tt>CompressorInterface</tt>, like <tt>Compressor</tt>, but instead of a constant isentropic efficiency it reads a performance map from a CSV file relating shaft speed, mass flow, pressure ratio and isentropic efficiency.</p>
+<p>The file is a plain comma-separated table with a single header row and four columns, in this order:</p>
+<ol><li>Shaft speed in rounds per minute;</li><li>Mass flow in kg/s;</li><li>Total-to-total pressure ratio;</li><li>Isentropic efficiency (0..1).</li></ol>
+<p>Rows must be grouped by RPM value, identifying the speed lines; there must be <tt>speedLines</tt> lines of <tt>pointsPerLine</tt> points each, with speeds listed in strictly increasing order and, within a line, mass flow in strictly increasing order. A default synthetic map lives in <tt>Resources/CompressorMaps/compressor_map.csv</tt>; set the <tt>mapFileName</tt> parameter (a file selector is offered in the parameter dialog) to use a different one, adjusting <tt>speedLines</tt> and <tt>pointsPerLine</tt> to match.</p>
+<p>The map is read once at initialisation. At every operating point the model interpolates each speed line's points along the speed axis to the actual ω, then interpolates pressure ratio and efficiency along the mass-flow axis to the actual flow (linear, with linear extrapolation beyond the mapped range).</p>
+<p>The first and last point of the speed-interpolated line define the <b>surge line</b> (<tt>m_flow_surge</tt>) and the <b>choke line</b> (<tt>m_flow_choke</tt>) at the current speed. <tt>surgeMargin</tt> gives the relative distance to surge, and the Boolean flags <tt>surging</tt> / <tt>choking</tt> together with warning-level assertions fire when the operating point leaves the mapped flow range.</p>
+<p>As in <tt>Compressor</tt>, mechanical work is delivered through the shaft, there is no fluid holdup, outlet conditions use the medium's <tt>isentropicEnthalpy</tt>, and <tt>heatPort</tt> is enabled by default (adiabatic when nothing is connected).</p>
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

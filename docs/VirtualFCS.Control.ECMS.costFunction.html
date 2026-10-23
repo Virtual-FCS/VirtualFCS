@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Control.ECMS.costFunction</title></head><body>
+<h1 id="VirtualFCS.Control.ECMS.costFunction"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Control.html">Control</a>.<a href="VirtualFCS.Control.ECMS.html">ECMS</a>.costFunction</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+<p>Evaluates the ECMS equivalent hydrogen-consumption rate in g/s for a candidate fuel-cell/battery power split. Fuel-cell consumption is estimated from the lower heating value and the empirical efficiencyFC function. The battery contribution is weighted by sigma and corrected by the battery state of charge through mu. The implementation uses SOC_max + SOC_min in the state-of-charge normalization denominator. Positive battery power contributes a positive equivalent-consumption term.</p>
+<h2>Governing Equations</h2>
+<pre>cost := ((powerFC)/(LHVH2 * efficiencyFC(powerFC))) + ((1-2*mu*((SOC - 0.5*(SOC_min+SOC_max))/(SOC_max+SOC_min))) * ((sigma * powerBatt)/(LHVH2 * efficiencyFC(powerFC))));</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>powerFC</code></td><td>Fuel cell power</td></tr>
+<tr><td><code>LHVH2</code></td><td>Lower heating value for hydrogen</td></tr>
+<tr><td><code>mu</code></td><td>ECMS parameter</td></tr>
+<tr><td><code>SOC</code></td><td>Battery SOC</td></tr>
+<tr><td><code>SOC_min</code></td><td>Battery min SOC</td></tr>
+<tr><td><code>SOC_max</code></td><td>Battery max SOC</td></tr>
+<tr><td><code>sigma</code></td><td>Sigma parameter for ECMS</td></tr>
+<tr><td><code>powerBatt</code></td><td>Battery power</td></tr>
+<tr><td><code>cost</code></td><td>Cost at the current instance</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><span>No locally declared parameters.</span></td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>powerFC</code></td><td>Input signal</td><td>Modelica.Units.SI.Power</td><td>W</td><td>Fuel cell power</td></tr>
+<tr><td><code>LHVH2</code></td><td>Input signal</td><td>Real</td><td>Ws/g</td><td>Lower heating value for hydrogen</td></tr>
+<tr><td><code>mu</code></td><td>Input signal</td><td>Real</td><td>1</td><td>ECMS parameter</td></tr>
+<tr><td><code>SOC</code></td><td>Input signal</td><td>Real</td><td>1</td><td>Battery SOC</td></tr>
+<tr><td><code>SOC_min</code></td><td>Input signal</td><td>Real</td><td>1</td><td>Battery min SOC</td></tr>
+<tr><td><code>SOC_max</code></td><td>Input signal</td><td>Real</td><td>1</td><td>Battery max SOC</td></tr>
+<tr><td><code>sigma</code></td><td>Input signal</td><td>Real</td><td>1</td><td>Sigma parameter for ECMS</td></tr>
+<tr><td><code>powerBatt</code></td><td>Input signal</td><td>Modelica.Units.SI.Power</td><td>W</td><td>Battery power</td></tr>
+<tr><td><code>cost</code></td><td>Output signal</td><td>Real</td><td>g/s</td><td>Cost at the current instance</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrical.AveragedCommutator</title></head><body>
+<h1 id="VirtualFCS.Electrical.AveragedCommutator"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrical.html">Electrical</a>.AveragedCommutator</h1>
+<p></p>
+
+
+<h2>Model Description and References</h2>
+An averaged commutator for boost converters. The unit is implemented completely in code.<div>The equations state that, given an input duty ratio <i>D</i>:</div><div><ul><li>The input voltage is <i>(1-D)</i> times the output voltage;</li><li>The sum of entering currents is zero;</li><li>The current exiting from the negative pin is <i>D</i> times the input positive pin;</li><li>No power dissipation occurs.</li></ul></div>
+<h2>Governing Equations</h2>
+<pre>p1.v - n.v = (1 - D)*(p2.v - n.v);
+p1.i + p2.i + n.i = 0;
+n.i = -D*p1.i;
+LossPower = 0;</pre><table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>D</code></td><td>Duty ratio</td></tr>
+</table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+</table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>D</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>-</td><td>Duty ratio</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+<tr><td><code>p1</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>-</td></tr>
+<tr><td><code>p2</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>-</td></tr>
+<tr><td><code>n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>-</td></tr>
+</table>
+
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

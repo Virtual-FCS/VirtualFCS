@@ -1,0 +1,45 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Hydrogen.Manifold</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Hydrogen.Manifold"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Hydrogen.html">Hydrogen</a>.Manifold</h1>
+<p>Fuel cell manifold</p>
+
+<h2>Model Description and References</h2>
+This is a specialisation of MixingVolume that implements chemical reactions.<div>The rate of reaction [mol/s] is provided by the r input; this modifies the holdup of each species depending on their stoichiometric coefficient nu and molar masses MMX.</div><div><br/></div><div><b>Note </b>that there is no enforcement that the stoichiometric coefficients are balanced: if the reaction is not balanced, the Manifold <i>must</i> be either:</div><div><ul><li>Set to zero reaction rate, or</li><li>Have the heatPort deactivated so that temperature is set to parameter T, or</li><li>Be connected through the heatPort to another Manifold with the same reaction rate and whose stoichiometry balances the first one.</li></ul><div>The last case is the one implemented e.g. in fuel cells between anode and cathode.</div></div><div><br/></div><div>An unbalanced reaction occuring in isolation is not a physically meaningful model, and will produce nonsensical results, typically with extremely high or low temperatures, often leading to numerical crashes.</div>
+<h2>Governing Equations</h2><pre>productions[Medium.nX] = r * nu .* MMX;</pre><table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Quantity</th><th>Description</th></tr>
+<tr><td><code>productions</code></td><td>Mass production of medium species</td></tr>
+</tbody></table>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>energyDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>system.energyDynamics</code></td><td>Formulation of energy balance (inherited)</td></tr>
+<tr><td><code>massDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>Modelica.Fluid.Types.Dynamics.FixedInitial</code></td><td>Formulation of mass balance (inherited)</td></tr>
+<tr><td><code>substanceDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>massDynamics</code></td><td>Formulation of substance balance (inherited)</td></tr>
+<tr><td><code>traceDynamics</code></td><td>Modelica.Fluid.Types.Dynamics</td><td>-</td><td><code>massDynamics</code></td><td>Formulation of trace substance balance (inherited)</td></tr>
+<tr><td><code>p_start</code></td><td>Medium.AbsolutePressure</td><td>Pa</td><td><code>system.p_start</code></td><td>Start value of pressure (inherited)</td></tr>
+<tr><td><code>use_T_start</code></td><td>Boolean</td><td>1</td><td><code>true</code></td><td>= true, use T_start, otherwise h_start (inherited)</td></tr>
+<tr><td><code>T_start</code></td><td>Medium.Temperature</td><td>K</td><td><code>if use_T_start then system.T_start else Medium.temperature_phX(p_start, h_start, X_start)</code></td><td>Start value of temperature (inherited)</td></tr>
+<tr><td><code>h_start</code></td><td>Medium.SpecificEnthalpy</td><td>J/kg</td><td><code>if use_T_start then Medium.specificEnthalpy_pTX(p_start, T_start, X_start) else Medium.h_default</code></td><td>Start value of specific enthalpy (inherited)</td></tr>
+<tr><td><code>X_start</code></td><td>Medium.MassFraction[Medium.nX]</td><td>1</td><td><code>Medium.X_default</code></td><td>Start value of mass fractions m_i/m (inherited)</td></tr>
+<tr><td><code>C_start</code></td><td>Medium.ExtraProperty[Medium.nC]</td><td>-</td><td><code>Medium.C_default</code></td><td>Start value of trace substances (inherited)</td></tr>
+<tr><td><code>allowFlowReversal</code></td><td>Boolean</td><td>1</td><td><code>system.allowFlowReversal</code></td><td>= true to allow flow reversal, false restricts to design direction (port_a -&gt; port_b) (inherited)</td></tr>
+<tr><td><code>useHeatPort</code></td><td>Boolean</td><td>1</td><td><code>false</code></td><td>= true, if heatPort is enabled (inherited)</td></tr>
+<tr><td><code>T</code></td><td>Modelica.Units.SI.Temperature</td><td>K</td><td><code>293.15</code></td><td>Fixed device temperature if useHeatPort = false (inherited)</td></tr>
+<tr><td><code>V</code></td><td>Modelica.Units.SI.Volume</td><td>m3</td><td><code>1E-3</code></td><td>Manifold total volume (inherited)</td></tr>
+<tr><td><code>R_flow</code></td><td>Modelica.Fluid.Types.HydraulicResistance</td><td>-</td><td><code>1000</code></td><td>Resistance to mass flow (inherited)</td></tr>
+<tr><td><code>nu</code></td><td>Real[Medium.nX]</td><td>1</td><td><code>zeros(Medium.nX)</code></td><td>Reaction stoichiometric coefficients</td></tr>
+<tr><td><code>MMX</code></td><td>Modelica.Units.SI.MolarMass[Medium.nX]</td><td>kg/mol</td><td><code>zeros(Medium.nX)</code></td><td>Molar masses of components</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>fluidVolume</code></td><td>Input signal</td><td>Modelica.Units.SI.Volume</td><td>m3</td><td>Volume</td></tr>
+<tr><td><code>port_a</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_a</td><td>Pa; kg/s; J/kg</td><td>Fluid connector a (positive design flow direction is from port_a to port_b)</td></tr>
+<tr><td><code>port_b</code></td><td>Connection</td><td>Modelica.Fluid.Interfaces.FluidPort_b</td><td>Pa; kg/s; J/kg</td><td>Fluid connector b (positive design flow direction is from port_a to port_b)</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td>Conditional heat port</td></tr>
+<tr><td><code>r</code></td><td>Input signal</td><td>Modelica.Blocks.Interfaces.RealInput</td><td>mol/s</td><td>-</td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>

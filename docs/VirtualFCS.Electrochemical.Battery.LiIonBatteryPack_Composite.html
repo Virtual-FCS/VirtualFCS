@@ -1,8 +1,39 @@
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <title>VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite</title>
-  </head>
-  <body>
-  <h1><a class="omc-h1-a" href="index.html">.</a><a class="omc-h1-a" href = "VirtualFCS.html">VirtualFCS</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.html">Electrochemical</a>.<a class="omc-h1-a" href = "VirtualFCS.Electrochemical.Battery.html">Battery</a>.<span class="omc-h1">LiIonBatteryPack_Composite</span></h1><h2><a name="info">Information</a></h2><html><head></head><body><div>This model describes a lithium-ion battery pack as a composite of LiIonCell models. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investiations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost.&nbsp;</div><div><br></div><div><b><u>Default Parameters</u></b></div><div>mass <span class="Apple-tab-span" style="white-space:pre">		</span>= 2.5&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>kg</div><div>Cp&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 1000&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>J/(kg.K)</div><div>SOC_init&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>= 0.5&nbsp;<span class="Apple-tab-span" style="white-space:pre">	</span>-</div><div>p<span class="Apple-tab-span" style="white-space:pre">		</span>= 5<span class="Apple-tab-span" style="white-space:pre">		</span>Cells in parallel</div><div>s&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>= 10&nbsp;<span class="Apple-tab-span" style="white-space:pre">		</span>Cells in series</div><div><br></div></body></html><hr />Generated at The system cannot accept the date entered.
-Enter the new date: (dd-mm-yy)  by <a href="http://openmodelica.org">OpenModelica</a>OpenModelica v1.14.1 (64-bit) using <a href="GenerateDoc.mos">GenerateDoc.mos</a></body>
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><title>VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite</title></head><body>
+<h1 id="VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Composite"><a href="VirtualFCS.html">VirtualFCS</a>.<a href="VirtualFCS.Electrochemical.html">Electrochemical</a>.<a href="VirtualFCS.Electrochemical.Battery.html">Battery</a>.LiIonBatteryPack_Composite</h1>
+<p>A Li-ion battery pack comprised of individual Li-ion cell models.</p>
+
+<h2>Model Description and References</h2>
+<div>This model describes a lithium-ion battery pack as a composite of several separate instances of the <a href="VirtualFCS.Electrochemical.Battery.LiIonCell.html">LiIonCell model</a>. This setup has the advantage of being able to consider the performance of each individual cell, which may be useful for some investigations such as cell-balancing. However, it can also lead to a very large system of equations for complex models with many cells causing high computational cost. </div><div>
+<br/>
+This class automatically generates instances of the LiIonCell model based on the user's input. The user must determine how many cells are in parallel (parameter <b>p</b>) and in series (parameter <b>s</b>). A series of <font face="Consolas">for</font> loops then connects the cells in series or in parallel based on the requested architecture. The stack voltage is accessible by <span consolas;&quot;="" style="font-family:">pin_p</span> and <span consolas;&quot;="" style="font-family:">pin_n</span>.</div><div><br/></div><div>The thermalCollector class automatically gathers all the heatPort outputs from each instance of LiIonCell and connects them to parallel convective and radiative heat transfer blocks. The effective cooling area for the blocks is the same and is assumed equal to the surface area of each cell multiplied by the number of cells in the pack. The ambient temperature T<sub>0</sub> is determined by connection to the heatBoundary.</div>
+<h2>Governing Equations</h2>
+<pre>chargeCapacity = p*liIonCell[1].chargeCapacity;
+for i in 1:p loop connect(pin_n, liIonCell[s*(i - 1) + 1].pin_n);
+connect(pin_p, liIonCell[i*s].pin_p);
+end for;
+for i in 1:p loop for j in 1:s - 1 loop connect(liIonCell[s*(i - 1) + j].pin_p, liIonCell[s*(i - 1) + j + 1].pin_n);
+end for;
+end for;
+<br/></pre>
+<h2>Parameters</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Type</th><th>Unit</th><th>Default</th><th>Description</th></tr>
+<tr><td><code>SOC_init</code></td><td>Real</td><td>1</td><td><code>0.5</code></td><td>Initial State of Charge</td></tr>
+<tr><td><code>p</code></td><td>Integer</td><td>1</td><td><code>5</code></td><td>Number of Cells in Parallel</td></tr>
+<tr><td><code>s</code></td><td>Integer</td><td>1</td><td><code>10</code></td><td>Number of Cells in Series</td></tr>
+<tr><td><code>coolingArea</code></td><td>Modelica.Units.SI.Area</td><td>m2</td><td><code>p*s*liIonCell[1].coolingArea</code></td><td>Cooling Area</td></tr>
+<tr><td><code>heatTransferCoefficient</code></td><td>Modelica.Units.SI.CoefficientOfHeatTransfer</td><td>-</td><td><code>7.8*10^0.78</code></td><td>HeatTransferCoefficient (W/(m2.K))</td></tr>
+</tbody></table>
+<h2>Interfaces and Connections</h2>
+<table border="1" cellpadding="4" cellspacing="0">
+<tbody><tr><th>Name</th><th>Kind</th><th>Type</th><th>Unit</th><th>Description</th></tr>
+<tr><td><code>pin_p</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.PositivePin</td><td>V; A</td><td>Positive electrical terminal</td></tr>
+<tr><td><code>heatPort</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a</td><td>K; W</td><td></td></tr>
+<tr><td><code>pin_n</code></td><td>Connection</td><td>Modelica.Electrical.Analog.Interfaces.NegativePin</td><td>V; A</td><td>Negative electrical terminal</td></tr>
+<tr><td><code>heatBoundary</code></td><td>Connection</td><td>Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b</td><td>K; W</td><td></td></tr>
+</tbody></table>
+
+<footer><hr>Generated at 2026-10-23 08:23:04 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+</body></html>
