@@ -1,42 +1,27 @@
 # VirtualFCS Library
+
 VirtualFCS is an open Modelica library for dynamic modelling of hydrogen and hybrid energy systems. It brings together electrochemical, electrical, fluid, thermal, control, and vehicle models, with examples ranging from PEM fuel cell vehicles to ammonia cracking.
 
-[![2026: v3.0.0](https://img.shields.io/badge/Release-2026%3A%20v3.0.0-blue)![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6104900.svg)](https://doi.org/10.5281/zenodo.6104900)
-[![OpenModelica v1.24 win64](https://img.shields.io/badge/OpenModelica-v1.24%20win64-blue)](https://openmodelica.org/)
+[![Release v3.0.0](https://img.shields.io/badge/Release-v3.0.0-blue)](https://github.com/Virtual-FCS/VirtualFCS/releases/tag/v3.0.0)
+[![Documentation](https://img.shields.io/badge/Docs-online-brightgreen)](https://virtual-fcs.github.io/VirtualFCS/)
+[![DOI 10.5281/zenodo.6104900](https://zenodo.org/badge/DOI/10.5281/zenodo.6104900.svg)](https://doi.org/10.5281/zenodo.6104900)
+[![OpenModelica v1.24 win64](https://img.shields.io/badge/OpenModelica-v1.24%20win64-0f7c8a)](https://openmodelica.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Note that this library might also work with other versions of OpenModelica and other platforms that win64, but that is not tested during development.
+The library may also work with other versions of OpenModelica and on platforms other than Win64, but these configurations are not routinely tested during development.
 
 <details>
-<summary><b>Citing other library versions</b></summary>
+<summary><b>Citing different library versions</b></summary>
 
 Note that library versions older than v2.0.0 requires OpenModelica v1.14.
 
 |  Released  | Version       | DOI |
 |------------|---------------|-----|
-| 2023-01-19 | v2.0.0        | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220) |
-| 2022-02-16 | v2022.1.0-beta| [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6104901.svg)](https://doi.org/10.5281/zenodo.6104901) |
-| 2021-12-15 | v0.2.1-beta   | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7566040.svg)](https://doi.org/10.5281/zenodo.7566040) |
-| 2021-09-22 | v0.2.0-beta   | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7566037.svg)](https://doi.org/10.5281/zenodo.7566037) |
-| 2021-07-01 | v0.1.0-beta   |     |
-
-</details>
-
-[![2023: v2.0.0](https://img.shields.io/badge/Release-2023%3A%20v2.0.0-blue)![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220)
-[![OpenModelica v1.20 win64](https://img.shields.io/badge/OpenModelica-v1.20%20win64-blue)](https://openmodelica.org/)
-
-Note that this library might also work with other platforms that win64, but that is not tested during development.
-
-<details>
-<summary><b>Citing other library versions</b></summary>
-
-Note that library versions older than v2.0.0 requires OpenModelica v1.14.
-
-|  Released  | Version       | DOI |
-|------------|---------------|-----|
-| 2023-01-19 | v2.0.0        | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220) |
-| 2022-02-16 | v2022.1.0-beta| [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6104901.svg)](https://doi.org/10.5281/zenodo.6104901) |
-| 2021-12-15 | v0.2.1-beta   | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7566040.svg)](https://doi.org/10.5281/zenodo.7566040) |
-| 2021-09-22 | v0.2.0-beta   | [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7566037.svg)](https://doi.org/10.5281/zenodo.7566037) |
+| 2026-10-23 | v3.0.0        | [![DOI 10.5281/zenodo.23604798](https://zenodo.org/badge/DOI/10.5281/zenodo.23604798.svg)](https://doi.org/10.5281/zenodo.23604798) |
+| 2023-01-19 | v2.0.0        | [![DOI 10.5281/zenodo.7552220](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220) |
+| 2022-02-16 | v2022.1.0-beta| [![DOI 10.5281/zenodo.6104901](https://zenodo.org/badge/DOI/10.5281/zenodo.6104901.svg)](https://doi.org/10.5281/zenodo.6104901) |
+| 2021-12-15 | v0.2.1-beta   | [![DOI 10.5281/zenodo.7566040](https://zenodo.org/badge/DOI/10.5281/zenodo.7566040.svg)](https://doi.org/10.5281/zenodo.7566040) |
+| 2021-09-22 | v0.2.0-beta   | [![DOI 10.5281/zenodo.7566037](https://zenodo.org/badge/DOI/10.5281/zenodo.7566037.svg)](https://doi.org/10.5281/zenodo.7566037) |
 | 2021-07-01 | v0.1.0-beta   |     |
 
 </details>
@@ -45,16 +30,9 @@ Note that library versions older than v2.0.0 requires OpenModelica v1.14.
 
 The objective of the complete hybrid system model is to reproduce and simulate the dynamic behavior of all the components according to the desired architecture. Depending on the possibilities, degradation mechanisms of the components will be considered in order to predict the performance losses of the entire system.
 
-
-
-
-
- 
-
 ![picture](img/hydrogen-high-res.jpg)
 
 Here is the library examplified with transport application. However, the library is well suited for other applications, such as stationary systems, electrolysers, and ammonia cracking. Under a fuel cell-battery hybrid electric vehicle, and a general layout of its propulsion system can be seen. Example of this application can be found in the library.
-
 
 ![picture](img/VirtualFCS_Model_Scope.png)
 
@@ -64,8 +42,6 @@ Here is the library examplified with transport application. However, the library
 - **Balance of plant:** hydrogen, air, and cooling subsystems, compressors, humidifiers, heat exchangers, and related controls.
 - **System integration:** battery-electric and fuel cell range-extender powertrains.
 - **Other applications:** ammonia-cracking system case study, vehicle drive cycles, hardware-, software-, and user-in-the-loop examples.
-
-
 
 ## System Requirements and Installation
 The VirtualFCS library is designed to work with OpenModelica and supports versions from 1.20 to 1.27, and Modelica Standard Library 4.1.0. To install OpenModelica, please visit their website:
@@ -99,7 +75,7 @@ Constants. Constants should be written in uppercase characters separated by unde
 
 License
 -------
-Virtual-FCS is shared under a MIT license. For more information, please see the file LICENSE.
+Virtual-FCS is shared under a MIT license. For more information, please see the [LICENSE file](LICENSE).
 
 Attributions and credits
 ------------------------
