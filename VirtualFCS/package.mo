@@ -2,7 +2,7 @@ package VirtualFCS "VirtualFCS - VIRTUAL & physical platform for Fuel Cell Syste
   extends Modelica.Icons.Package;
   annotation (
     preferredView="info",
-    version="5",
+    version="3.0.0",
     versionDate="2023-01-19",
     uses(Modelica(version = "4.1.0"),
       Modelica_DeviceDrivers(version="2.1.0")),
