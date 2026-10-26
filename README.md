@@ -83,9 +83,9 @@ Attributions and credits
 ### Contributors (in alphabetical order)
 Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
 Benjamin Synnevåg, 		SINTEF Industry, Trondheim, Norway<br/>
+Karim Bendioub, SINTEF Industry, Trondheim, Norway<br/>
 Dr. Daniel Pérez Clos,	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Federico Zenith, 	SINTEF Digital, Trondheim, Norway<br/>
-Dr. Karim Bendiub, SINTEF Industry, Trondheim, Norway<br/>
 Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
 Dr. Mike Gerhardt, 	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
@@ -98,6 +98,11 @@ Dr. Yash Raka, 		SINTEF Industry, Trondheim, Norway<br/>
 - [BeBoP](https://bebop-hydrogen.eu/); Grant Agreement No 101192365.
 - [MiNaMi](https://minami-project.eu/); Grant Agreement No 101250260. 
 - [SURFER](https://h2surfer.eu/); Grant Agreement No 101250344. 
+- [HYDROGENi](https://hydrogeni.no/); 333118.
+- [LowEmission](https://lowemission.no/); 296207.
+- [MarTrans](https://martrans.no/); 350371.
 
 ### Acknowledgements
   This code repository is part of a project that has received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under Grant Agreements No 875087, 101192365, 101250260, and 101250344. This Joint Undertaking receives support from the European Union’s Horizon 2020 Research and Innovation programme, Hydrogen Europe and Hydrogen Europe Research.
+
+This work has been supported by the HYDROGENi Research Centre and the LowEmissionResearch Centre , performed under the Norwegian research program FMETEKN and PETROSENTER. The authors acknowledge the industry partners in HYDROGENi and LowEmissionfor their contributions and the Research Council of Norway. 
