@@ -1,18 +1,14 @@
-﻿{
-    "output":  "c:\\Users\\benjamins\\Documents\\GitLab\\Virtual-FCS\\VirtualFCS\\docs",
-    "openmodelica":  "OpenModelica v1.24.4 (64-bit)",
-    "class_count":  408,
-    "available_class_count":  408,
-    "load_messages":  "\"\"\n",
-    "generated_at":  "2026-10-23T11:56:38.824573+00:00",
-    "compiler_messages":  "\"\"\n",
-    "elapsed_seconds":  62.54,
-    "icons_generated":  false,
-    "warnings":  [
-
-                 ],
-    "missing_local_targets":  [
-                                  "VirtualFCS.UsersGuide.ReleaseNotes.Version_3_0_0.html: %22https:/github.com/Virtual-FCS/VirtualFCS/issues%22"
-                              ],
-    "external_links_checked":  false
+{
+  "output": "C:\\Users\\benjamins\\Documents\\GitHub\\VirtualFCS\\VirtualFCS\\docs-preview-20261027T115124868933Z",
+  "openmodelica": "OpenModelica v1.24.4 (64-bit)",
+  "class_count": 409,
+  "available_class_count": 409,
+  "load_messages": "\"\"\n",
+  "generated_at": "2026-10-27T11:51:24.868933+00:00",
+  "compiler_messages": "\"\"\n",
+  "elapsed_seconds": 50.27,
+  "icons_generated": false,
+  "warnings": [],
+  "missing_local_targets": [],
+  "external_links_checked": false
 }
