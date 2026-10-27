@@ -66,12 +66,8 @@ package UsersGuide "User information for the VirtualFCS library"
             <td><a href=\"modelica://VirtualFCS.Vehicles.UsersGuide\">Vehicles</a></td>
             <td>Vehicle profiles, drive cycles, and vehicle-level models.</td>
          </tr>
-         
-         <tr>
-            <td><a href=\"modelica://VirtualFCS.XInTheLoop\">XInTheLoop</a></td>
-            <td>Hardware-, software-, model-, and user-in-the-loop functionality.</td>
-         </tr>
 
 
-      </tbody></table><h3>Projects and acknowledgements</h3><p>The library was developed with support from the <a href=\"https://www.virtual-fcs.eu/\">Virtual-FCS</a>, <a href=\"https://bebop-hydrogen.eu/\">BeBoP</a>, <a href=\"https://minami-project.eu/\">MiNaMi</a>, and <a href=\"https://h2surfer.eu/\">SURFER</a> projects. The work received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under grant agreements 875087, 101192365, 101250260, and 101250344. The Joint Undertaking receives support from the European Union's Horizon 2020 Research and Innovation programme, Hydrogen Europe, and Hydrogen Europe Research.</p></div></body></html>"));
+
+      </tbody></table><h3>Projects and acknowledgements</h3><p>The library was developed with support from the <a href=\"https://www.sintef.no/projectweb/virtual-fcs/\">Virtual-FCS</a>, <a href=\"https://bebop-hydrogen.eu/\">BeBoP</a>, <a href=\"https://minami-project.eu/\">MiNaMi</a>, and <a href=\"https://h2surfer.eu/\">SURFER</a> projects. The work received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under grant agreements 875087, 101192365, 101250260, and 101250344. The Joint Undertaking receives support from the European Union's Horizon 2020 Research and Innovation programme, Hydrogen Europe, and Hydrogen Europe Research.</p></div></body></html>"));
 end UsersGuide;
