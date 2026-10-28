@@ -6,8 +6,9 @@ extends VirtualFCS.UsersGuide.ReleaseNotes;
 
   annotation(Documentation(info= "<html><head></head><body><h2>Introduction</h2>
 
-<p>Minor patch correcting contributors, funding section, and some broken links in documentation. License is updated.&nbsp;</p><p>No new models or features are added and everything is backward-compatible.&nbsp;</p><ul>
-</ul>
+<p>Minor patch correcting contributors, funding section, and some broken links in documentation. License is updated.</p>
+<p>This release introduces no new models or features and is fully backward-compatible with
+<a href=\"modelica://VirtualFCS.UsersGuide.ReleaseNotes.Version_3_0_0\">version 3.0.0</a>.</p>
 
 <h2>Support and Feedback</h2>
 
