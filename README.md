@@ -17,7 +17,7 @@ Note that library versions older than v2.0.0 requires OpenModelica v1.14.
 
 |  Released  | Version       | DOI |
 |------------|---------------|-----|
-| 2026-10-28 | v3.0.1        | (not yet known) |
+| 2026-10-28 | v3.0.1        | [![DOI 10.5281/zenodo.23741265](https://zenodo.org/badge/DOI/10.5281/zenodo.23741265.svg)](https://doi.org/10.5281/zenodo.23741265) |
 | 2026-10-23 | v3.0.0        | [![DOI 10.5281/zenodo.23604798](https://zenodo.org/badge/DOI/10.5281/zenodo.23604798.svg)](https://doi.org/10.5281/zenodo.23604798) |
 | 2023-01-19 | v2.0.0        | [![DOI 10.5281/zenodo.7552220](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220) |
 | 2022-02-16 | v2022.1.0-beta| [![DOI 10.5281/zenodo.6104901](https://zenodo.org/badge/DOI/10.5281/zenodo.6104901.svg)](https://doi.org/10.5281/zenodo.6104901) |
