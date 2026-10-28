@@ -18,8 +18,7 @@ class Version_0_2_0
 <a href=\"modelica://VirtualFCS.SubSystems.Hydrogen.SubSystemHydrogen\">SubSystemHydrogen</a>, 
 <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\">LiIonBatteryPack_Lumped</a>, 
 <a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonCell\">LiIonCell, 
-<a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCell\">FuelCell</a>, 
-<a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCellStack\">FuelCellStack</a>, 
+<a href=\"modelica://VirtualFCS.Electrochemical.Hydrogen.FuelCells.FuelCell\">FuelCell</a>, 
  etc. by @rakayash</li>
 </ul></div>
 <div><br></div>

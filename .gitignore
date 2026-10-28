@@ -1,3 +1,5 @@
+.venv/
+docs-preview-*/
 *.bak-mo
 *.mat
 dsfinal.txt

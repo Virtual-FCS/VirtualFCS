@@ -9,7 +9,7 @@ a></td><td>Oxygen, nitrogen, condensable water.</td></tr>
 <tr><td><a href=\"modelica://VirtualFCS.Media.MoistHydrogen\">MoistHydrogen</a></td>Hydrogen and condensable water.<td></td></tr>
 <tr><td><a href=\"modelica://VirtualFCS.Media.PEMELfluid\"></a></td><td>Oxygen, nitrogen, hydrogen and condensable water.</td></tr>
 <tr><td><a href=\"modelica://VirtualFCS.Media.CrackedAmmonia\">CrackedAmmonia</a></td><td>Nitrogen, hydrogen and condensable ammonia.</td></tr>
-<tr><td><a href=\"modelica://VirtualFCS.Media.BaseShoMix\">BaseShoMix</a></td><td>Legacy medium template (deprecated).</td></tr>
-<tr><td><a href=\"modelica://VirtualFCS.Media.NH3Cracked\">NH3Cracked</a></td><td>Legacy cracked ammonia model (deprecated).</td></tr>
+<tr><td>BaseShoMix</a></td><td>Legacy medium template (deprecated).</td></tr>
+<tr><td>NH3Cracked</a></td><td>Legacy cracked ammonia model (deprecated).</td></tr>
 </tbody></table></body></html>"));
 end UserGuide;

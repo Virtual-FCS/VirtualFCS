@@ -719,7 +719,7 @@ equation
 
 <!--StartFragment-->
 
-<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">The BatterySystem class packages together a&nbsp;</font><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\" style=\"font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">lumped model of a lithium-ion battery pack</a><font face=\"Arial\" size=\"4\">&nbsp;and a&nbsp;</font><a href=\"modelica://VirtualFCS.Control.BatteryManagementSystem\" style=\"font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">battery management system</a><font face=\"Arial\" size=\"4\">. This class can be directly integrated into a powertrain model, for example in <a href=\"modelica://VirtualFCS.Powertrains.BatteryPowerTrain\">BatteryPowerTrain</a> and <a href=\"modelica://VirtualFCS.Powertrains.RangeExtenderPowerTrain\">RangeExtenderPowerTrain</a>.</font></p>
+<p class=\"MsoNormal\"><font face=\"Arial\" size=\"4\">The BatterySystem class packages together a&nbsp;</font><a href=\"modelica://VirtualFCS.Electrochemical.Battery.LiIonBatteryPack_Lumped\" style=\"font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">lumped model of a lithium-ion battery pack</a><font face=\"Arial\" size=\"4\">&nbsp;and a&nbsp;</font><a href=\"modelica://VirtualFCS.Control.BatteryManagementSystem\" style=\"font-family:\" arial;=\"\" font-size:=\"\" large;&quot;=\"\">battery management system</a><font face=\"Arial\" size=\"4\">. </font></p>
 
 <!--EndFragment-->
 <h2>Governing Equations</h2>

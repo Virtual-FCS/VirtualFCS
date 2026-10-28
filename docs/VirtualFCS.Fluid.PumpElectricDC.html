@@ -5,9 +5,9 @@
 <p></p>
 
 <h2>Model Description and References</h2>
-<div><p class="MsoNormal"><b>References to base model/related packages</b></p><p class="MsoNormal"><a href="modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet">Permanent Magnet DC Motor</a>, <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a>, <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Control.DCMotorControl.html">DC Motor Control</a></p><p class="MsoNormal"><o:p></o:p></p>
-<p class="MsoNormal"><b>Description</b></p><p class="MsoNormal">The model has three parts input (volume flow rate, control signal motor speed), subcomponents (<a href="modelica:Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet">Permanent Magnet DC Motor</a>, <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a>, <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Control.DCMotorControl.html">DC Motor Control</a>), and output (pump outlet volume flow rate and sensors (inlet volume flow rate and pump speed).</p><p class="MsoNormal"><b><o:p></o:p></b></p>
-<p class="MsoNormal">The inlet volume flow rate is measured and depending on the rotational speed estimated by the <a href="https://build.openmodelica.org/Documentation/VirtualFCS.Control.DCMotorControl.html">DC Motor Control</a> the <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a> changes the flow rate accordingly.  </p></div>
+<div><p class="MsoNormal"><b>References to base model/related packages</b></p><p class="MsoNormal"><a href="https://build.openmodelica.org/Documentation/Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet.html">Permanent Magnet DC Motor</a>, <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a>, <a href="VirtualFCS.Control.DCMotorControlPumpElectricDC.html">DC Motor Control</a></p><p class="MsoNormal"><o:p></o:p></p>
+<p class="MsoNormal"><b>Description</b></p><p class="MsoNormal">The model has three parts input (volume flow rate, control signal motor speed), subcomponents (<a href="https://build.openmodelica.org/Documentation/Modelica.Electrical.Machines.BasicMachines.DCMachines.DC_PermanentMagnet.html">Permanent Magnet DC Motor</a>, <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a>, <a href="VirtualFCS.Control.DCMotorControlPumpElectricDC.html">DC Motor Control</a>), and output (pump outlet volume flow rate and sensors (inlet volume flow rate and pump speed).</p><p class="MsoNormal"><b><o:p></o:p></b></p>
+<p class="MsoNormal">The inlet volume flow rate is measured and depending on the rotational speed estimated by the <a href="VirtualFCS.Control.DCMotorControlPumpElectricDC.html">DC Motor Control</a> the <a href="https://build.openmodelica.org/Documentation/Modelica.Fluid.Machines.PrescribedPump.html">Prescribed Pump</a> changes the flow rate accordingly.  </p></div>
 <h2>Governing Equations</h2>
 <pre>torque.tau = -9.5488*pump.W_total/pump.N;
 Power_PumpElectricDC = pin_p.i*pin_p.v;</pre><table border="1" cellpadding="4" cellspacing="0">
@@ -33,5 +33,5 @@ Power_PumpElectricDC = pin_p.i*pin_p.v;</pre><table border="1" cellpadding="4" c
 <h2>Contents</h2><ul>
 <li><a href="VirtualFCS.Fluid.PumpElectricDC.Medium.html">Medium</a></li>
 </ul>
-<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+<footer><hr>Generated at 2026-10-28 16:53:50 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.5 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
 </body></html>

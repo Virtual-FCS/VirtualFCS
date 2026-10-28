@@ -2,7 +2,7 @@
 
 VirtualFCS is an open Modelica library for dynamic modelling of hydrogen and hybrid energy systems. It brings together electrochemical, electrical, fluid, thermal, control, and vehicle models, with examples ranging from PEM fuel cell vehicles to ammonia cracking.
 
-[![Release v3.0.0](https://img.shields.io/badge/Release-v3.0.0-blue)](https://github.com/Virtual-FCS/VirtualFCS/releases/tag/v3.0.0)
+[![Release v3.0.1](https://img.shields.io/badge/Release-v3.0.1-blue)](https://github.com/Virtual-FCS/VirtualFCS/releases/tag/v3.0.1)
 [![Documentation](https://img.shields.io/badge/Docs-online-brightgreen)](https://virtual-fcs.github.io/VirtualFCS/)
 [![DOI 10.5281/zenodo.6104900](https://zenodo.org/badge/DOI/10.5281/zenodo.6104900.svg)](https://doi.org/10.5281/zenodo.6104900)
 [![OpenModelica v1.24 win64](https://img.shields.io/badge/OpenModelica-v1.24%20win64-0f7c8a)](https://openmodelica.org/)
@@ -17,6 +17,7 @@ Note that library versions older than v2.0.0 requires OpenModelica v1.14.
 
 |  Released  | Version       | DOI |
 |------------|---------------|-----|
+| 2026-10-28 | v3.0.1        | (not yet known) |
 | 2026-10-23 | v3.0.0        | [![DOI 10.5281/zenodo.23604798](https://zenodo.org/badge/DOI/10.5281/zenodo.23604798.svg)](https://doi.org/10.5281/zenodo.23604798) |
 | 2023-01-19 | v2.0.0        | [![DOI 10.5281/zenodo.7552220](https://zenodo.org/badge/DOI/10.5281/zenodo.7552220.svg)](https://doi.org/10.5281/zenodo.7552220) |
 | 2022-02-16 | v2022.1.0-beta| [![DOI 10.5281/zenodo.6104901](https://zenodo.org/badge/DOI/10.5281/zenodo.6104901.svg)](https://doi.org/10.5281/zenodo.6104901) |
@@ -28,11 +29,11 @@ Note that library versions older than v2.0.0 requires OpenModelica v1.14.
 
 ## Library Description
 
-The objective of the complete hybrid system model is to reproduce and simulate the dynamic behavior of all the components according to the desired architecture. Depending on the possibilities, degradation mechanisms of the components will be considered in order to predict the performance losses of the entire system.
+The objective of the complete hybrid system model is to reproduce and simulate the dynamic behaviour of all the components according to the desired architecture. Depending on the possibilities, degradation mechanisms of the components will be considered in order to predict the performance losses of the entire system.
 
 ![picture](img/hydrogen-high-res.jpg)
 
-Here is the library examplified with transport application. However, the library is well suited for other applications, such as stationary systems, electrolysers, and ammonia cracking. Under a fuel cell-battery hybrid electric vehicle, and a general layout of its propulsion system can be seen. Example of this application can be found in the library.
+Here is the library exemplified with transport application. However, the library is well suited for other applications, such as stationary systems, electrolysers, and ammonia cracking. Under a fuel cell-battery hybrid electric vehicle, and a general layout of its propulsion system can be seen. Example of this application can be found in the library.
 
 ![picture](img/VirtualFCS_Model_Scope.png)
 
@@ -83,9 +84,9 @@ Attributions and credits
 ### Contributors (in alphabetical order)
 Amelie Pinard, 		SINTEF Industry, Trondheim, Norway<br/>
 Benjamin Synnevåg, 		SINTEF Industry, Trondheim, Norway<br/>
+Karim Bendioub, SINTEF Industry, Trondheim, Norway<br/>
 Dr. Daniel Pérez Clos,	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Federico Zenith, 	SINTEF Digital, Trondheim, Norway<br/>
-Dr. Karim Bendiub, SINTEF Industry, Trondheim, Norway<br/>
 Dr. Loic Vichard, 	UBFC, Belfort, France<br/>
 Dr. Mike Gerhardt, 	SINTEF Industry, Trondheim, Norway<br/>
 Dr. Nadia Steiner, 	UBFC, Belfort, France<br/>
@@ -98,6 +99,11 @@ Dr. Yash Raka, 		SINTEF Industry, Trondheim, Norway<br/>
 - [BeBoP](https://bebop-hydrogen.eu/); Grant Agreement No 101192365.
 - [MiNaMi](https://minami-project.eu/); Grant Agreement No 101250260. 
 - [SURFER](https://h2surfer.eu/); Grant Agreement No 101250344. 
+- [HYDROGENi](https://hydrogeni.no/); 333118.
+- [LowEmission](https://lowemission.no/); 296207.
+- [MarTrans](https://martrans.no/); 350371.
 
 ### Acknowledgements
   This code repository is part of a project that has received funding from the Clean Hydrogen (formerly Fuel Cells and Hydrogen 2) Joint Undertaking under Grant Agreements No 875087, 101192365, 101250260, and 101250344. This Joint Undertaking receives support from the European Union’s Horizon 2020 Research and Innovation programme, Hydrogen Europe and Hydrogen Europe Research.
+
+This work has been supported by the HYDROGENi Research Centre and the LowEmissionResearch Centre , performed under the Norwegian research program FMETEKN and PETROSENTER. The authors acknowledge the industry partners in HYDROGENi and LowEmissionfor their contributions and the Research Council of Norway. 

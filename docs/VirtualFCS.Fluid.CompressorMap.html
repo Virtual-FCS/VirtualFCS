@@ -10,5 +10,5 @@
 <p>The map is read once at initialisation. At every operating point the model interpolates each speed line's points along the speed axis to the actual ω, then interpolates pressure ratio and efficiency along the mass-flow axis to the actual flow (linear, with linear extrapolation beyond the mapped range).</p>
 <p>The first and last point of the speed-interpolated line define the <b>surge line</b> (<tt>m_flow_surge</tt>) and the <b>choke line</b> (<tt>m_flow_choke</tt>) at the current speed. <tt>surgeMargin</tt> gives the relative distance to surge, and the Boolean flags <tt>surging</tt> / <tt>choking</tt> together with warning-level assertions fire when the operating point leaves the mapped flow range.</p>
 <p>As in <tt>Compressor</tt>, mechanical work is delivered through the shaft, there is no fluid holdup, outlet conditions use the medium's <tt>isentropicEnthalpy</tt>, and <tt>heatPort</tt> is enabled by default (adiabatic when nothing is connected).</p>
-<footer><hr>Generated at 2026-10-23 11:56:38 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.4 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
+<footer><hr>Generated at 2026-10-28 16:53:50 UTC by <a href="https://openmodelica.org/">OpenModelica v1.24.5 (64-bit)</a> using <a href="generate_preview.py">generate_preview.py</a>.</footer>
 </body></html>
